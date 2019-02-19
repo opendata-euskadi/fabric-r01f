@@ -15,6 +15,26 @@
 	</properties>
 
 <!-- ====================================================================== -->
+<!-- REPOSITORIES                                                             -->
+<!-- ====================================================================== -->
+	<repositories>
+		<repository>			
+			<id>central</id>
+			<name>Maven Repository third party</name>
+			<layout>default</layout>
+			<url>https://bin1.alm02.itbatera.euskadi.eus/repository/maven-public-releases/</url>
+			<releases>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+				<checksumPolicy>warn</checksumPolicy>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	
+<!-- ====================================================================== -->
 <!-- ARTIFACT                                                               -->
 <!-- ====================================================================== -->
 	<groupId>r01.r01f</groupId>
