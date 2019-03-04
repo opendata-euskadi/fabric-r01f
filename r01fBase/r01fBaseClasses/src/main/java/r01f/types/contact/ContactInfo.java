@@ -16,6 +16,7 @@ import r01f.aspects.interfaces.dirtytrack.ConvertToDirtyStateTrackable;
 import r01f.locale.Language;
 import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallType;
+import r01f.types.geo.GeoFacets.HasGeoPosition;
 import r01f.types.geo.GeoPosition;
 import r01f.util.types.collections.CollectionUtils;
 
@@ -27,7 +28,8 @@ import r01f.util.types.collections.CollectionUtils;
 @Accessors(prefix="_")
 @NoArgsConstructor
 public class ContactInfo
-     extends ContactInfoBase<ContactInfo> {
+     extends ContactInfoBase<ContactInfo>
+  implements HasGeoPosition {
 
 	private static final long serialVersionUID = 8960930452114541680L;
 

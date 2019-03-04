@@ -31,6 +31,12 @@ public @interface MarshallField {
      * If the annotated field is an string, does the String content have to be escaped?
      */
     public boolean escape() default false;
+//    /**
+//     * The annotated field is marshalled as a raw value
+//     * (this is the same as @JsonRaw jackson annotation)
+//     * If the value is an XML string it'll NOT be parsed
+//     */
+//    public boolean raw() default false;
     /**
      * how does the date will be formated if the annotated field is a date
      */

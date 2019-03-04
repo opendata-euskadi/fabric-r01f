@@ -22,7 +22,7 @@
 			<id>central</id>
 			<name>Maven Repository third party</name>
 			<layout>default</layout>
-			<url>https://bin1.alm02.itbatera.euskadi.eus/repository/maven-publico/</url>
+			<url>https://bin1.alm02.itbatera.euskadi.eus/repository/maven-public-releases/</url>
 			<releases>
 				<enabled>true</enabled>
 				<updatePolicy>always</updatePolicy>

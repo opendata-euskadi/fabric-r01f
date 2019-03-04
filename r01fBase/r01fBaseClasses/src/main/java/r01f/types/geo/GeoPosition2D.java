@@ -1,4 +1,4 @@
-package r01f.types;
+package r01f.types.geo;
 
 import java.io.Serializable;
 
@@ -31,19 +31,19 @@ public class GeoPosition2D
 				   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter @Setter private GeoPositionStandad _standard;
 
-	@MarshallField(as="latitude",
+	@MarshallField(as="x",
 				   whenXml=@MarshallFieldAsXml(attr=true))
-	@Getter @Setter private double _latitude;
+	@Getter @Setter private double _x;
 
-	@MarshallField(as="longitude",
+	@MarshallField(as="y",
 				   whenXml=@MarshallFieldAsXml(attr=true))
-	@Getter @Setter private double _longitude;
+	@Getter @Setter private double _y;
 /////////////////////////////////////////////////////////////////////////////////////////
 //  STANDARDS
 /////////////////////////////////////////////////////////////////////////////////////////
 	public static enum GeoPositionStandad {
-		GOOGLE,
-		ISO;
+		GOOGLE,		// WGS84 / ETRS89
+		ED50;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR & BUILDERS
@@ -51,18 +51,21 @@ public class GeoPosition2D
 	public GeoPosition2D() {
 		// default no-args constructor
 	}
-	public GeoPosition2D(final GeoPositionStandad standard,
-						 final double lat,final double lon) {
+	public GeoPosition2D(final GeoPositionStandad standard) {
 		_standard = standard;
-		_latitude = lat;
-		_longitude = lon;
 	}
-	public GeoPosition2D(final double lat,final double lon) {
-		this(GeoPositionStandad.ISO,
-			 lat,lon);
+	public GeoPosition2D(final GeoPositionStandad standard,
+						 final double x,final double y) {
+		this(standard);
+		_x = x;
+		_y = y;
 	}
-	public static GeoPosition2D at(final double lat,final double lon) {
-		return new GeoPosition2D(lat,lon);
+	public GeoPosition2D(final double x,final double y) {
+		this(GeoPositionStandad.GOOGLE,
+			 x,y);
+	}
+	public static GeoPosition2D at(final double x,final double y) {
+		return new GeoPosition2D(x,y);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  FLUENT

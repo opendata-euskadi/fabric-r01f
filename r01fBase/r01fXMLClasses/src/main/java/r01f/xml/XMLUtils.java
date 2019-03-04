@@ -8,6 +8,8 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.Iterator;
 
+import javax.xml.XMLConstants;
+import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -20,6 +22,8 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.EntityResolver;
@@ -237,16 +241,17 @@ public final class XMLUtils {
     /**
      * Gets the {@link Node} at the provided XPath
      * @param xml
+     * @param nsResolver
      * @param theXPath
      * @param returnType The java type returned (boolean, number, string, node o nodeSet).
      * @return
      */
-	private static Object _xPath(final Node xml,
+	private static Object _xPath(final Node xml,final NamespaceContext nsResolver,
     				      		 final String theXPath,
     				      		 final QName returnType) throws XPathExpressionException {
-
         final XPathFactory xPathFactory = XPathFactory.newInstance();
         final XPath xPath = xPathFactory.newXPath();
+        if (nsResolver != null) xPath.setNamespaceContext(nsResolver);
         final XPathExpression xPathExpr = xPath.compile(theXPath.trim());
 
         Object outObj = null;
@@ -272,7 +277,21 @@ public final class XMLUtils {
 	 */
 	public static Node nodeByXPath(final Node xml,
     				        	   final String theXPath) throws XPathExpressionException {
-		return (Node)_xPath(xml,theXPath,XPathConstants.NODE);
+		return XMLUtils.nodeByXPath(xml,null,	// no namespace resolver
+									theXPath);
+	}
+	/**
+	 * Gets the {@link Node} at the provided XPath
+	 * @param xml
+	 * @param nsResolver
+	 * @param theXPath
+	 * @return
+	 * @throws XPathExpressionException
+	 */
+	public static Node nodeByXPath(final Node xml,final NamespaceContext nsResolver,
+    				        	   final String theXPath) throws XPathExpressionException {
+		return (Node)_xPath(xml,nsResolver,
+							theXPath,XPathConstants.NODE);
 	}
 	/**
 	 * Gets the {@link NodeList} at the provided XPath
@@ -283,7 +302,21 @@ public final class XMLUtils {
 	 */
 	public static NodeList nodeListByXPath(final Node xml,
     				                	   final String theXPath) throws XPathExpressionException {
-		return (NodeList)_xPath(xml,theXPath,XPathConstants.NODESET);
+		return XMLUtils.nodeListByXPath(xml,null,	// no namespace resolver
+										theXPath);
+	}
+	/**
+	 * Gets the {@link NodeList} at the provided XPath
+	 * @param xml
+	 * @param nsResolver
+	 * @param theXPath
+	 * @return
+	 * @throws XPathExpressionException
+	 */
+	public static NodeList nodeListByXPath(final Node xml,final NamespaceContext nsResolver,
+    				                	   final String theXPath) throws XPathExpressionException {
+		return (NodeList)_xPath(xml,nsResolver,
+								theXPath,XPathConstants.NODESET);
 	}
 	/**
 	 * Gets a {@link String} at the provided XPath
@@ -294,7 +327,21 @@ public final class XMLUtils {
 	 */
 	public static String stringByXPath(final Node xml,
 									   final String theXPath) throws XPathExpressionException {
-		return (String)_xPath(xml,theXPath,XPathConstants.STRING);
+		return XMLUtils.stringByXPath(xml,null,		// no namespace resolver
+									  theXPath);
+	}
+	/**
+	 * Gets a {@link String} at the provided XPath
+	 * @param xml
+	 * @param nsResolver
+	 * @param theXPath
+	 * @return
+	 * @throws XPathExpressionException
+	 */
+	public static String stringByXPath(final Node xml,final NamespaceContext nsResolver,
+									   final String theXPath) throws XPathExpressionException {
+		return (String)_xPath(xml,nsResolver,
+							 theXPath,XPathConstants.STRING);
 	}
 	/**
 	 * Gets the {@link Number} at the provided XPath
@@ -305,7 +352,21 @@ public final class XMLUtils {
 	 */
 	public static Number numberByXPath(final Node xml,
 									   final String theXPath) throws XPathExpressionException {
-		return (Number)_xPath(xml,theXPath,XPathConstants.NUMBER);
+		return XMLUtils.numberByXPath(xml,null,		// no namespace resolver
+									  theXPath);
+	}
+	/**
+	 * Gets the {@link Number} at the provided XPath
+	 * @param xml
+	 * @param nsResolver
+	 * @param theXPath
+	 * @return
+	 * @throws XPathExpressionException
+	 */
+	public static Number numberByXPath(final Node xml,final NamespaceContext nsResolver,
+									   final String theXPath) throws XPathExpressionException {
+		return (Number)_xPath(xml,nsResolver,
+							  theXPath,XPathConstants.NUMBER);
 	}
 	/**
 	 * Gets the {@link Boolean} at the provided XPath
@@ -316,7 +377,21 @@ public final class XMLUtils {
 	 */
 	public static boolean booleanByXPath(final Node xml,
 								  		 final String theXPath) throws XPathExpressionException {
-		return (Boolean)_xPath(xml,theXPath,XPathConstants.BOOLEAN);
+		return XMLUtils.booleanByXPath(xml,null,		// no namespace resolver
+									   theXPath);
+	}
+	/**
+	 * Gets the {@link Boolean} at the provided XPath
+	 * @param xml
+	 * @param nsResolver
+	 * @param theXPath
+	 * @return
+	 * @throws XPathExpressionException
+	 */
+	public static boolean booleanByXPath(final Node xml,final NamespaceContext nsResolver,
+								  		 final String theXPath) throws XPathExpressionException {
+		return (Boolean)_xPath(xml,nsResolver,
+							   theXPath,XPathConstants.BOOLEAN);
 	}
 ///////////////////////////////////////////////////////////////////////////////
 //  UTILITY
@@ -393,23 +468,34 @@ public final class XMLUtils {
      * @param nodeList
      * @return
      */
-    public Iterator<Node> nodeListIteratorFrom(final NodeList nodeList) {
+    public static Iterator<Node> nodeListIteratorFrom(final NodeList nodeList) {
     	return new Iterator<Node>() {
     					private int _currPos = 0;
 
 						@Override
 						public boolean hasNext() {
-							return nodeList != null ? _currPos < nodeList.getLength() - 1
+							return nodeList != null ? _currPos < nodeList.getLength() 
 													: false;
 						}
 						@Override
 						public Node next() {
-							return nodeList != null ? nodeList.item(_currPos)
-													: null;
+							Node outNode = nodeList != null ? nodeList.item(_currPos)
+															: null;
+							_currPos = _currPos + 1;
+							return outNode;
 						}
 						@Override
 						public void remove() {
 							throw new UnsupportedOperationException();
+						}
+    		   };
+    }
+    public static Iterable<Node> nodeListIterableFrom(final NodeList nodeList) {
+    	final Iterator<Node> it = XMLUtils.nodeListIteratorFrom(nodeList);
+    	return new Iterable<Node>() {
+						@Override
+						public Iterator<Node> iterator() {
+							return it;
 						}
     		   };
     }
@@ -424,4 +510,83 @@ public final class XMLUtils {
     private static String _linarizeXml(final String xml) {
         return (Strings.isNOTNullOrEmpty(xml)) ? xml.trim().replaceAll(XMLUtils.XML_LINARIZATION_REGEX, XMLUtils.XML_LINARIZATION_REPLACEMENT) : "";
     }
+/////////////////////////////////////////////////////////////////////////////////////////
+//  
+/////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Starting from a node, find the namespace declaration for a prefix. for a
+	 * matching namespace declaration.
+	 * @param node  search up from here to search for namespace definitions
+	 * @param searchPrefix the prefix we are searching for
+	 * @return the namespace if found.
+	 */
+	public static String findNamespace(final Node node,final String searchPrefix) {
+		Element el;
+		
+		// [1] - find the parent node
+		Node theNode = node;
+		while (!(theNode instanceof Element)) {
+			theNode = theNode.getParentNode();
+		}
+		el = (Element)theNode;
+
+		// Find the namespace attr
+		NamedNodeMap atts = el.getAttributes();
+		for (int i = 0; i < atts.getLength(); i++) {
+			Node currentAttribute = atts.item(i);
+			String currentLocalName = currentAttribute.getLocalName();
+			String currentPrefix = currentAttribute.getPrefix();
+			if (searchPrefix.equals(currentLocalName) 
+			 && "xmlns".equals(currentPrefix)) {
+				return currentAttribute.getNodeValue();
+			} 
+			else if (Strings.isNullOrEmpty(searchPrefix) 
+				  && "xmlns".equals(currentLocalName) 
+				  && Strings.isNullOrEmpty(currentPrefix)) {
+				return currentAttribute.getNodeValue();
+			}
+		}
+		// recurse: parent node
+		Node parent = el.getParentNode();
+		if (parent instanceof Element) {
+			return XMLUtils.findNamespace(parent,searchPrefix);
+		}
+		return null;
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//  
+/////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * A namespace resolver that delegates the namespace solving to the xml document
+	 */
+	public static class XmlDocumentDelegatingNamespaceResolver 
+	   		 implements NamespaceContext {
+		
+		// Store the source document to search the namespaces
+		private Document _srcXmlDoc;
+
+		public XmlDocumentDelegatingNamespaceResolver(final Document xmlDoc) {
+	        _srcXmlDoc = xmlDoc;
+	    }
+		@Override
+		public String getNamespaceURI(final String prefix) {
+			// The lookup for the namespace uris is delegated to the stored document.
+			String outUri = null;
+			if (prefix.equals(XMLConstants.DEFAULT_NS_PREFIX)) {
+				outUri = _srcXmlDoc.lookupNamespaceURI(null);
+			} else {
+				outUri = _srcXmlDoc.lookupNamespaceURI(prefix);
+			}
+			return outUri;
+		}
+		@Override
+		public String getPrefix(final String namespaceURI) {
+			String outPrefix = _srcXmlDoc.lookupPrefix(namespaceURI);
+			return outPrefix;
+		}
+		@Override @SuppressWarnings("rawtypes")
+		public Iterator getPrefixes(final String namespaceURI) {
+			return null;
+		}
+	}
  }

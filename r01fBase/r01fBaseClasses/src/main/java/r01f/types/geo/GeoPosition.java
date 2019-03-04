@@ -10,21 +10,21 @@ import r01f.aspects.interfaces.dirtytrack.ConvertToDirtyStateTrackable;
 import r01f.locale.LanguageTexts;
 import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallType;
-import r01f.types.GeoPosition2D;
 import r01f.types.geo.GeoOIDs.GeoZipCode;
 
 /**
  * Data about a geographical point
  * <pre>
  *		- x,y
- * 		- Country
- *   		|_Territory
- *   	 		|_State
- *   		 		|_Locality
- *   					|_Municipality
- *   						|_District
- *   							|_Street
- *   								|_Portal
+ *      - Country
+ *          |_Territory
+ *          	 |_State
+ *          		 |_County
+ *          		 	|_Region
+ *          				|_Municipality
+ *          					|_District
+ *          						|_Street
+ *          							|_portal
  *		- Textual info
  * </pre>
  * Uso:

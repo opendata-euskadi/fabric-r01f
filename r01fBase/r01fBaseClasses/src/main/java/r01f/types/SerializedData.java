@@ -1,5 +1,7 @@
 package r01f.types;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.Serializable;
 
 import lombok.AccessLevel;
@@ -12,7 +14,6 @@ import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 import r01f.objectstreamer.annotations.MarshallFormat;
 import r01f.objectstreamer.annotations.MarshallType;
-import r01f.types.CanBeRepresentedAsString;
 
 /**
  * Contains an object in a serialized format json / xml ...
@@ -99,12 +100,77 @@ public class SerializedData<T>
 		super();
 	}
 	public SerializedData(final MarshallFormat format,
-							  final Class<T> type,
-							  final String dataString) {
+						  final Class<T> type,
+						  final String dataString) {
 		_format = format;
 		_type = type;
 		_serializedData = dataString;
 	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	STRING
+/////////////////////////////////////////////////////////////////////////////////////////	
+	@Override
+	public String asString() {
+		return _serializedData;
+	}
+	@Override
+	public String toString() {
+		return this.asString();
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	
+/////////////////////////////////////////////////////////////////////////////////////////
+	public T toModelObjUsing(final Marshaller m) {
+		return m.forReading()
+				.from(_serializedData,_format,
+					  _type);
+	}
+	public <U> U toModelObjUsing(final Marshaller m,
+							     final Class<U> type) {
+		return m.forReading()
+				.from(_serializedData,_format,
+					  type);
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//  FROM XML
+/////////////////////////////////////////////////////////////////////////////////////////	
+	public static <T> SerializedConfigDataBuilderTypeStep<T> fromXml(final String xmlIs) {
+		return new SerializedConfigDataBuilderTypeStep<T>(new ByteArrayInputStream(xmlIs.getBytes()),
+													      MarshallFormat.XML);
+	}
+	public static <T> SerializedConfigDataBuilderTypeStep<T> fromJson(final String xmlIs) {
+		return new SerializedConfigDataBuilderTypeStep<T>(new ByteArrayInputStream(xmlIs.getBytes()),
+													      MarshallFormat.JSON);
+	}
+	@RequiredArgsConstructor(access=AccessLevel.PRIVATE)
+	public static class SerializedConfigDataBuilderTypeStep<T> {
+		private final InputStream _is;
+		private final MarshallFormat _marshallFormat;
+		
+		@SuppressWarnings("unchecked")
+		public SerializedConfigDataBuilderMarshallerStep<T> ofType(final Class<?> type) {
+			return new SerializedConfigDataBuilderMarshallerStep<T>(_is,
+																    _marshallFormat,
+																	(Class<T>)type);
+		}
+	}
+	@RequiredArgsConstructor(access=AccessLevel.PRIVATE)
+	public static class SerializedConfigDataBuilderMarshallerStep<T> {
+		private final InputStream _is;
+		private final MarshallFormat _marshallFormat;
+		private final Class<T> _type;
+		
+		public SerializedData<T> marsalledUsing(final Marshaller marshaller) {
+			T data = marshaller.forReading()
+							   .fromXml(_is,_type);
+			return SerializedData.from(data)
+								 .marshalledUsing(marshaller)
+								 .to(_marshallFormat);
+		}
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//  
+/////////////////////////////////////////////////////////////////////////////////////////	
 	public static <T> SerializedConfigDataBuilderMarshallStep<T> from(final T configObj) {
 		return new SerializedConfigDataBuilderMarshallStep<T>(configObj);
 	}
@@ -143,24 +209,5 @@ public class SerializedData<T>
 												   (Class<T>)_obj.getClass(),
 												   configAsString);	
 		}
-	}
-/////////////////////////////////////////////////////////////////////////////////////////
-//	STRING
-/////////////////////////////////////////////////////////////////////////////////////////	
-	@Override
-	public String asString() {
-		return _serializedData;
-	}
-	@Override
-	public String toString() {
-		return this.asString();
-	}
-/////////////////////////////////////////////////////////////////////////////////////////
-//	
-/////////////////////////////////////////////////////////////////////////////////////////
-	public T toModelObjUsing(final Marshaller m) {
-		return m.forReading()
-				.from(_serializedData,_format,
-					  _type);
 	}
 }

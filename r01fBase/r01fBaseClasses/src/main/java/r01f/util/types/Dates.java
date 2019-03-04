@@ -28,6 +28,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
 
 import r01f.locale.Language;
+import r01f.types.datetime.MonthOfYear;
 import r01f.util.types.locale.Languages;
 
 /**
@@ -467,14 +468,14 @@ public abstract class Dates {
                 outDate = new StringBuilder()
                 				 .append(_getDayOfWeekName(dayOfWeek,Language.SPANISH)).append(", ")
                 				 .append(Integer.toString(calendar.get(Calendar.DAY_OF_MONTH))).append(" de ")
-                				 .append(_getMonthName(monthOfYear,Language.SPANISH)).append(" de ")
+                				 .append(getMonthName(monthOfYear,Language.SPANISH)).append(" de ")
                 				 .append(Integer.toString(year)).toString();
                 break;
             case BASQUE:
                 outDate = new StringBuilder()
                 				 .append(_getDayOfWeekName(dayOfWeek,Language.BASQUE)).append(", ")
                 				 .append(Integer.toString(year)).append("-ko ")
-                				 .append(_getMonthName(monthOfYear,Language.BASQUE)).append("ren ")
+                				 .append(getMonthName(monthOfYear,Language.BASQUE)).append("ren ")
                 				 .append(Integer.toString(calendar.get(Calendar.DAY_OF_MONTH))).toString();
                 break;
             case ENGLISH:
@@ -515,7 +516,10 @@ public abstract class Dates {
         }
         return outDayName;
     }
-    private static String _getMonthName(final int month,final Language language) {
+    public static String getMonthName(final MonthOfYear month,final Language language) {
+    	return Dates.getMonthName(month.asInteger(),language);
+    }
+    public static String getMonthName(final int month,final Language language) {
     	String outMonthName = null;
         switch(language) {
             case SPANISH:

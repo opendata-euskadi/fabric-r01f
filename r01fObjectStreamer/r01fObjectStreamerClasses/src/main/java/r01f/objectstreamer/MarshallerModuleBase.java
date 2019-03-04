@@ -33,7 +33,6 @@ import r01f.types.AppVersion;
 import r01f.types.Color;
 import r01f.types.Range;
 import r01f.types.TimeLapse;
-import r01f.types.XY;
 import r01f.types.contact.Phone;
 import r01f.types.datetime.DayOfMonth;
 import r01f.types.datetime.DayOfWeek;

@@ -10,7 +10,13 @@ import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 import r01f.objectstreamer.annotations.MarshallType;
 import r01f.types.geo.GeoFacets.GeoLocationBelongsToCountry;
+import r01f.types.geo.GeoFacets.GeoLocationBelongsToCounty;
+import r01f.types.geo.GeoFacets.GeoLocationBelongsToState;
+import r01f.types.geo.GeoFacets.GeoLocationBelongsToTerritory;
 import r01f.types.geo.GeoOIDs.GeoCountryID;
+import r01f.types.geo.GeoOIDs.GeoCountyID;
+import r01f.types.geo.GeoOIDs.GeoRegionID;
+import r01f.types.geo.GeoOIDs.GeoStateID;
 import r01f.types.geo.GeoOIDs.GeoTerritoryID;
 
 /**
@@ -41,12 +47,15 @@ import r01f.types.geo.GeoOIDs.GeoTerritoryID;
  * </pre>
  */
 @ConvertToDirtyStateTrackable
-@MarshallType(as="geoTerritory")
+@MarshallType(as="geoRegion")
 @Accessors(prefix="_")
 @NoArgsConstructor
-public class GeoTerritory
-     extends GeoLocationBase<GeoTerritoryID,GeoTerritory>
-  implements GeoLocationBelongsToCountry {
+public class GeoRegion
+     extends GeoLocationBase<GeoRegionID,GeoRegion> 
+  implements GeoLocationBelongsToCountry,
+  			 GeoLocationBelongsToTerritory,
+  			 GeoLocationBelongsToState,
+  			 GeoLocationBelongsToCounty {
 
 	private static final long serialVersionUID = 3765925107420809443L;
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -54,32 +63,44 @@ public class GeoTerritory
 /////////////////////////////////////////////////////////////////////////////////////////
 	@MarshallField(as="countryId",
 				   whenXml=@MarshallFieldAsXml(attr=true))
-	@Getter @Setter private GeoCountryID _countryId; 
+	@Getter @Setter private GeoCountryID _countryId;
+	
+	@MarshallField(as="territoryId",
+				   whenXml=@MarshallFieldAsXml(attr=true))
+	@Getter @Setter private GeoTerritoryID _territoryId;
+	
+	@MarshallField(as="stateId",
+				   whenXml=@MarshallFieldAsXml(attr=true))
+	@Getter @Setter private GeoStateID _stateId;
+	
+	@MarshallField(as="countyId",
+				   whenXml=@MarshallFieldAsXml(attr=true))
+	@Getter @Setter private GeoCountyID _countyId;
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
-	public GeoTerritory(final GeoTerritoryID oid,
-						final String officialName,final LanguageTexts nameByLang,
-					    final GeoPosition2D position2D) {
+	public GeoRegion(final GeoRegionID oid,
+				     final String officialName,final LanguageTexts nameByLang,
+					 final GeoPosition2D position2D) {
 		super(oid,
 			  officialName,nameByLang,
 			  position2D);
 	}
-	public GeoTerritory(final GeoTerritoryID oid,
-						final LanguageTexts nameByLang,
-					    final GeoPosition2D position2D) {
+	public GeoRegion(final GeoRegionID oid,
+				     final LanguageTexts nameByLang,
+					 final GeoPosition2D position2D) {
 		super(oid,
 			  null,nameByLang,	// no official name
 			  position2D);
 	}
-	public GeoTerritory(final GeoTerritoryID oid,
-					 	final String officialName,final LanguageTexts nameByLang) {
+	public GeoRegion(final GeoRegionID oid,
+					 final String officialName,final LanguageTexts nameByLang) {
 		super(oid,
 			  officialName,nameByLang,
 			  null);	// no position
 	}
-	public GeoTerritory(final GeoTerritoryID oid,
-					 	final LanguageTexts nameByLang) {
+	public GeoRegion(final GeoRegionID oid,
+					 final LanguageTexts nameByLang) {
 		super(oid,
 			  null,nameByLang,	// no official name
 			  null);			// no position
@@ -87,11 +108,11 @@ public class GeoTerritory
 /////////////////////////////////////////////////////////////////////////////////////////
 //  FACTORY
 /////////////////////////////////////////////////////////////////////////////////////////
-	public static GeoTerritory create() {
-		return new GeoTerritory();
+	public static GeoRegion create() {
+		return new GeoRegion();
 	}
-	public static GeoTerritory create(final GeoTerritoryID geoID) {
-		GeoTerritory outGeo = new GeoTerritory();
+	public static GeoRegion create(final GeoRegionID geoID) {
+		GeoRegion outGeo = new GeoRegion();
 		outGeo.setId(geoID);
 		return outGeo;
 	}

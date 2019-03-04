@@ -161,6 +161,17 @@ public abstract class LanguageTextsBase<SELF_TYPE extends LanguageTextsBase<SELF
 							   : null;
 	}
 	@Override
+	public String getAny(final Language... langs) {
+		if (CollectionUtils.isNullOrEmpty(langs)) throw new IllegalArgumentException();
+		String outText = null;
+		for (Language lang : langs) {
+			outText = this.get(lang);
+			if (Strings.isNOTNullOrEmpty(outText)) break;
+		}
+		if (Strings.isNullOrEmpty(outText)) outText = this.getAny();
+		return outText;
+	}
+	@Override
 	public boolean isTextDefinedFor(final Language... langs) {
 		if (CollectionUtils.isNullOrEmpty(langs)) return false;
 		boolean allLangsDefined = true;

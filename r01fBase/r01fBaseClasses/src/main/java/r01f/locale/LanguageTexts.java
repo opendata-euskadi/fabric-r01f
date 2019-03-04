@@ -97,6 +97,12 @@ public interface LanguageTexts
 	 */
 	public String getAny();
 	/**
+	 * Returns the first text in any of the given langs
+	 * @param lang
+	 * @return
+	 */
+	public String getAny(final Language...lang);
+	/**
 	 * Returns true if some text is defined for the lang
 	 * @param lang the language
 	 * @return false is NO text is defined for the lang; false otherwise

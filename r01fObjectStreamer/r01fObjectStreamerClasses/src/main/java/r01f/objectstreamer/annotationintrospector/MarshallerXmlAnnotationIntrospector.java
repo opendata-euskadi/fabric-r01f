@@ -464,6 +464,7 @@ public class MarshallerXmlAnnotationIntrospector
 																  final AnnotatedMember am,final JavaType containerType) {
 		return _marshallerAnnotationIntrospector.findPropertyContentTypeResolver(config, am, containerType);
 	}
+	@Override
 	public List<NamedType> findSubtypes(final Annotated ann) {
 		return _marshallerAnnotationIntrospector.findSubtypes(ann);
 	}
