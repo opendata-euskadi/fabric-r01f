@@ -5,7 +5,7 @@ package r01f.enums;
  * @see EnumExtendedWrapper
  * @param <T>
  */
-public interface EnumExtended<T> {	  
+public interface EnumExtended<T> {	
 	/**
 	 * Returns the {@link Enum}'s element name
 	 * (it uses java's type erasure to emulate the name() method of an enum)

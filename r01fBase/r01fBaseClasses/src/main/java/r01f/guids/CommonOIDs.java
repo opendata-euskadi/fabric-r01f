@@ -167,6 +167,27 @@ public class CommonOIDs {
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Immutable
+	@MarshallType(as="workPlaceCode")
+	@EqualsAndHashCode(callSuper=true)
+	@NoArgsConstructor
+	public static final class WorkPlaceCode
+	     		      extends OIDBaseMutable<String> {
+		private static final long serialVersionUID = -9005995212776716044L;
+		
+		public WorkPlaceCode(final String oid) {
+			super(oid);
+		}
+		public static WorkPlaceCode forId(final String id) {
+			return new WorkPlaceCode(id);
+		}
+		public static WorkPlaceCode valueOf(final String id) {
+			return WorkPlaceCode.forId(id);
+		}
+		public static WorkPlaceCode forAuthenticatedUserId(final AuthenticatedActorID authActorId) {
+			return new WorkPlaceCode(authActorId.asString());
+		}
+	}
+	@Immutable
 	@MarshallType(as="userGroupCode")
 	@EqualsAndHashCode(callSuper=true)
 	@NoArgsConstructor

@@ -49,9 +49,17 @@ public class UrlQueryStringParam
 		_name = name;
 		_value = value;
 	}
+	public UrlQueryStringParam(final String name,final CanBeRepresentedAsString value) {
+		this(name,
+			 value != null ? value.asString() : null);
+	}
 	public static UrlQueryStringParam of(final String paramName,final String paramValue) {
 		UrlQueryStringParam outParam = new UrlQueryStringParam(paramName,paramValue);
 		return outParam;
+	}
+	public static UrlQueryStringParam of(final String name,final CanBeRepresentedAsString value) {
+		return UrlQueryStringParam.of(name,
+									  value != null ? value.asString() : null);
 	}
 	public static UrlQueryStringParam from(final String paramAndValue) {
 		String[] paramAndValueSplitted = paramAndValue.split("=");

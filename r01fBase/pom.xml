@@ -30,5 +30,6 @@
     	<module>r01fXMLClasses</module>
     	<module>r01fIOClasses</module>
     	<module>r01fGuiceClasses</module>
+    <module>r01fMimeClasses</module>
   </modules>
 </project>

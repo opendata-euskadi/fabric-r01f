@@ -21,8 +21,8 @@ import r01f.types.summary.Summary;
 @NoArgsConstructor @AllArgsConstructor
 public class PersonWithContactInfo
   implements Serializable,
-		     HasSummaryFacet {
-	
+  			 HasSummaryFacet {
+
 	private static final long serialVersionUID = 1530908840360246971L;
 /////////////////////////////////////////////////////////////////////////////////////////
 //  FIELDS

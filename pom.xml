@@ -17,6 +17,7 @@
 <!-- ====================================================================== -->
 <!-- REPOSITORIES                                                             -->
 <!-- ====================================================================== -->
+<!-- 
 	<repositories>
 		<repository>			
 			<id>central</id>
@@ -33,7 +34,7 @@
 			</snapshots>
 		</repository>
 	</repositories>
-	
+ -->	
 <!-- ====================================================================== -->
 <!-- ARTIFACT                                                               -->
 <!-- ====================================================================== -->
@@ -54,7 +55,10 @@
 			<module>r01fResourceLoad</module>
 			 <module>r01fLocale</module>
 			<module>r01fFileStore</module>
-		</modules>
+    <module>r01fHttpClientClasses</module>
+    <module>r01fHttpClient</module>
+    <module>r01fIOC</module>
+  </modules>
 
 <!-- ====================================================================== -->
 <!-- PLUGINS                                                                -->

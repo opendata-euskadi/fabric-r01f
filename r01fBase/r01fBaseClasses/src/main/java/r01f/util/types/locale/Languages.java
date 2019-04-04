@@ -53,7 +53,7 @@ public class Languages {
 	static {
 		LANGUAGE_NAMES.put(Language.SPANISH,
 							new LanguageTextsMapBacked(LangTextNotFoundBehabior.RETURN_NULL)
-									.add(Language.SPANISH,"EspaÃ±ol")
+									.add(Language.SPANISH,"Español")
 									.add(Language.BASQUE,"Gaztelania")
 									.add(Language.ENGLISH,"Spanish"));
 		LANGUAGE_NAMES.put(Language.BASQUE,
@@ -63,17 +63,17 @@ public class Languages {
 									.add(Language.ENGLISH,"Basque"));
 		LANGUAGE_NAMES.put(Language.ENGLISH,
 						   new LanguageTextsMapBacked(LangTextNotFoundBehabior.RETURN_NULL)
-									.add(Language.SPANISH,"InglÃ©s")
+									.add(Language.SPANISH,"Inglés")
 									.add(Language.BASQUE,"Ingelesa")
 									.add(Language.ENGLISH,"English"));
 		LANGUAGE_NAMES.put(Language.DEUTCH,
 						   new LanguageTextsMapBacked(LangTextNotFoundBehabior.RETURN_NULL)
-									.add(Language.SPANISH,"AlemÃ¡n")
-									.add(Language.BASQUE,"[eu] AlemÃ¡n")
+									.add(Language.SPANISH,"Alemán")
+									.add(Language.BASQUE,"[eu] Alemán")
 									.add(Language.ENGLISH,"Deutch"));
 		LANGUAGE_NAMES.put(Language.FRENCH,
 						   new LanguageTextsMapBacked(LangTextNotFoundBehabior.THROW_EXCEPTION)
-									.add(Language.SPANISH,"FrancÃ©s")
+									.add(Language.SPANISH,"Francés")
 									.add(Language.BASQUE,"[eu] Frances")
 									.add(Language.ENGLISH,"French"));
 		// TODO completar
@@ -373,7 +373,7 @@ public class Languages {
 	}
 	/**
 	 * Returns the language name in a given language
-	 * (ie: spanish in Language.SPANISH is "EspaÃ±ol"
+	 * (ie: spanish in Language.SPANISH is "Español"
 	 * @param lang
 	 * @return
 	 */

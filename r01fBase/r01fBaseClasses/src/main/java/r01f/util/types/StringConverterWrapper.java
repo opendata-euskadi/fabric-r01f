@@ -432,8 +432,7 @@ public class StringConverterWrapper {
 	 *									   })
 	 *							   .orDefault(MyOID.forId("default"));
 	 * </pre>
-	 * @param fromStringTransform a function that transforms the string to an instance of the given type
-	 * @param defValue
+	 * @param oidType
 	 * @return
 	 */
 	@GwtIncompatible("GWT does NOT supports reflection")
