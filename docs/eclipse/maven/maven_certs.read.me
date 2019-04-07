@@ -1,0 +1,34 @@
+
+[1] - Using a [web browser], goto to the repository url
+	  (the one at the [repository] with id=EJIE of the pom.xml)
+	  	   
+	  		https://bin1.alm02.itbatera.euskadi.eus/repository/maven-public-releases/
+
+[2] - Check the certificate chain:
+			[Izenpe.com]
+				|- EAEKo Herri Administrazioen CA - CA AAPP Vascas (2)
+						|- builds1.alm02.itbatera.euskadi.eus
+						
+		Download all the certificate chain as CER files (the [root], [intermediate] and leaf certs)
+		(only the [root] certificate is really needed)
+
+[3] - Guess what is the eclipse workspace active jdk
+			[window] > [preferences] > [java] > [installed JREs]
+			
+[3] - Open a system console
+		a) goto to the [jdk] bin directory
+				$> cd {jdk_root}/bin
+		b) run the [keytool]
+			- If JRE <= 8
+					$>keytool -keystore {jdk_root}\jre\lib\security\cacerts -import -file {develop_root}\projects\fabric\r01f\docs\eclipse\maven\certs\izenpe.com.cer -alias izenpe_root -storepass changeit
+					
+					(the following should NOT be necessary)
+					$>keytool -keystore {jdk_root}\jre\lib\security\cacerts -import -file {develop_root}\projects\fabric\r01f\docs\eclipse\maven\certs\CAAAPPVascas.cer -alias CAAAPPVascas -storepass changeit
+					$>keytool -keystore {jdk_root}\jre\lib\security\cacerts -import -file {develop_root}\projects\fabric\r01f\docs\eclipse\maven\certs\builds1.alm02.itbatera.euskadi.eus.cer -alias builds1.alm02.itbatera.euskadi.eus -storepass changeit
+			
+			- If JRE > 8
+					$>keytool -keystore {jdk_root}\lib\security\cacerts -import -file {develop_root}\projects\fabric\r01f\docs\eclipse\maven\certs\izenpe.com.cer -alias izenpe_root -storepass changeit
+					
+					(the following should NOT be necessary)
+					$>keytool -keystore {jdk_root}\lib\security\cacerts -import -file {develop_root}p\projects\fabric\r01f\docs\eclipse\maven\certs\CAAAPPVascas.cer -alias CAAAPPVascas -storepass changeit
+					$>keytool -keystore {jdk_root}\lib\security\cacerts -import -file {develop_root}\projects\fabric\r01f\docs\eclipse\maven\certs\builds1.alm02.itbatera.euskadi.eus.cer -alias builds1.alm02.itbatera.euskadi.eus -storepass changeit
