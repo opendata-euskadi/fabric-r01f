@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 
@@ -15,41 +17,52 @@
 	</properties>
 
 <!-- ====================================================================== -->
-<!-- REPOSITORIES                                                             -->
+<!-- REPOSITORIES                                                           -->
 <!-- ====================================================================== -->
-<!-- 
+	<!--
+	IMPORTANT: IZENPE's root certificate MUST be installed at the jdk's [cert-store]
+	[1] - Using a [web browser], goto to the repository url
+		  		https://bin1.alm02.itbatera.euskadi.eus/repository/maven-public-releases/
+	[2] - Check the certificate chain:
+				[Izenpe.com]
+					|- EAEKo Herri Administrazioen CA - CA AAPP Vascas (2)
+							|- builds1.alm02.itbatera.euskadi.eus
+							
+			Download the ROOT certificate as CER files (only the [root] certificate is really needed)
+	
+	[3] - When in [eclipse], guess what is the eclipse workspace active jdk
+				[window] > [preferences] > [java] > [installed JREs]
+				
+	[3] - Open a system console
+			a) goto to the [jdk] bin directory
+					$> cd {jdk_root}/bin
+			b) run the [keytool]
+				- If JRE <= 8
+						$>keytool -keystore {jdk_root}\jre\lib\security\cacerts -import -file {develop_root}\projects\fabric\r01f\docs\eclipse\maven\certs\izenpe.com.cer -alias izenpe_root -storepass changeit
+				
+				- If JRE > 8
+						$>keytool -keystore {jdk_root}\lib\security\cacerts -import -file {develop_root}\projects\fabric\r01f\docs\eclipse\maven\certs\izenpe.com.cer -alias izenpe_root -storepass changeit
+			BEWARE!!!
+				- DO NOT delete the jdk's origina keystore at {jdk_root}\jre\lib\security\cacerts since it contains the 
+				  most common certificate-authorities public root certificates
+	-->
 	<repositories>
-		<repository>			
-			<id>central</id>
-			<name>Maven Repository third party</name>
-			<layout>default</layout>
-			<url>https://bin1.alm02.itbatera.euskadi.eus/repository/maven-public-releases/</url>
-			<releases>
-				<enabled>true</enabled>
-				<updatePolicy>always</updatePolicy>
-				<checksumPolicy>warn</checksumPolicy>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
- -->	
-	<repositories>
-		<repository>			
-			<id>central</id>
-			<name>Maven Repository third party</name>
-			<layout>default</layout>
-			<url>https://bin1.alm02.itbatera.euskadi.eus/repository/maven-publico/</url>
-			<releases>
-				<enabled>true</enabled>
-				<updatePolicy>always</updatePolicy>
-				<checksumPolicy>warn</checksumPolicy>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
+	    <repository>
+	      <id>EJIE</id>
+	      <name>EJIE Public Releases</name>
+	      <url>https://bin1.alm02.itbatera.euskadi.eus/repository/maven-public-releases/</url>
+	      <releases>
+	        <enabled>true</enabled>
+	        <updatePolicy>always</updatePolicy>
+	        <checksumPolicy>warn</checksumPolicy>
+	      </releases>
+	      <snapshots>
+	        <enabled>false</enabled>
+	        <updatePolicy>never</updatePolicy>
+	        <checksumPolicy>fail</checksumPolicy>
+	      </snapshots>
+	      <layout>default</layout>
+	    </repository> 
 	</repositories>
 	
 <!-- ====================================================================== -->
@@ -68,47 +81,24 @@
 		<module>r01fAspect</module>
 		<module>r01fObjectStreamer</module>
 		<module>r01fBase</module>
-			<module>r01fProperties</module>
-			<module>r01fResourceLoad</module>
-			 <module>r01fLocale</module>
-			<module>r01fFileStore</module>
-    <module>r01fHttpClientClasses</module>
+		<module>r01fProperties</module>
+		<module>r01fResourceLoad</module>
+		<module>r01fLocale</module>
+		<module>r01fFileStore</module>
     <module>r01fHttpClient</module>
     <module>r01fIOC</module>
   </modules>
-
-<!-- ====================================================================== -->
-<!-- PLUGINS                                                                -->
-<!-- ====================================================================== -->
-	<build>
-		<pluginManagement>
-			<plugins>
-				<!-- Java compile -->
-				<!--
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.8.0</version> 
-					<configuration>
-						<source>${maven.compiler.source}</source>
-						<target>${maven.compiler.target}</target>
-					</configuration>
-				</plugin>
-				-->
-				<!-- Version plugin -->
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>versions-maven-plugin</artifactId>
-					<version>2.7</version>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	</build>
-
+  
 <!-- ====================================================================== -->
 <!-- DEPENDENCIES                                                           -->
 <!-- ====================================================================== -->
 	<dependencies>
+		<dependency>
+		  <groupId>ejie.latinia</groupId>
+		  <artifactId>w91d_client</artifactId>
+		  <version>1.0</version>
+		</dependency>
+		
 		<!-- ///////////////////////////////////////// -->
 		<!-- Project lombok                            -->
 		<!-- ///////////////////////////////////////// -->
@@ -162,4 +152,81 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+  
+<!-- ====================================================================== -->
+<!-- PLUGINS                                                                -->
+<!-- ====================================================================== -->
+	<build>
+		<pluginManagement>
+			<plugins>
+				<!-- Java compile -->
+				<!--
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.8.0</version> 
+					<configuration>
+						<source>${maven.compiler.source}</source>
+						<target>${maven.compiler.target}</target>
+					</configuration>
+				</plugin>
+				-->
+				<!-- Version plugin -->
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>versions-maven-plugin</artifactId>
+					<version>2.7</version>
+				</plugin>
+				
+				<!-- Mav4en deploy: https://maven.apache.org/plugins/maven-deploy-plugin/usage.html -->
+                <plugin>
+                	<artifactId>maven-deploy-plugin</artifactId>
+                   	<version>3.0.0-M1</version>
+                   	<executions>
+                    	<execution>
+                        	<id>default-deploy</id>
+                         	<phase>deploy</phase>
+                        	<goals>
+                            	<goal>deploy-release</goal>
+                         	</goals>
+                      	</execution>
+                	</executions>
+                </plugin>
+
+			</plugins>
+		</pluginManagement>
+	</build>
+	
+	<!-- Maven deploy -->
+	<distributionManagement>
+		<repository>			
+			<id>maven-public-releases</id>
+			<name>maven-public-releases</name>
+			<layout>default</layout>
+			<url>https://bin1.alm02.itbatera.euskadi.eus/repository/maven-public-releases/</url>
+			<releases>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+				<checksumPolicy>warn</checksumPolicy>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<snapshotRepository>
+			<id>maven-snapshots</id>
+			<name>maven-public-releases</name>
+			<layout>default</layout>
+			<url>https://bin1.alm02.itbatera.euskadi.eus/repository/maven-snapshots/</url>
+			<releases>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+				<checksumPolicy>warn</checksumPolicy>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</snapshotRepository>
+	</distributionManagement>	
+	
 </project>
