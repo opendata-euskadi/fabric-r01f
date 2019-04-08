@@ -1,0 +1,24 @@
+package r01f.model.builders;
+
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.Accessors;
+import r01f.guids.OID;
+import r01f.model.PersistableModelObject;
+
+@Accessors(prefix="_")
+@RequiredArgsConstructor
+public class PersistableModelObjectBuilderBuildStep<M extends PersistableModelObject<? extends OID>> {
+/////////////////////////////////////////////////////////////////////////////////////////
+//  FIELDS
+/////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * The {@link PersistableModelObject} instance that's being built
+	 */
+	protected final M _modelObject;
+/////////////////////////////////////////////////////////////////////////////////////////
+//  BUILD
+/////////////////////////////////////////////////////////////////////////////////////////
+	public M build() {
+		return _modelObject;
+	}
+}

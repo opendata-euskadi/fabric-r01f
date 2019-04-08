@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+			 
+	<modelVersion>4.0.0</modelVersion>
+
+<!-- ====================================================================== -->
+<!-- PARENT                                                                 -->
+<!-- ====================================================================== -->
+	<parent>
+		<groupId>r01.r01f</groupId>
+		<artifactId>r01f</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	
+<!-- ====================================================================== -->
+<!-- ARTIFACT                                                               -->
+<!-- ====================================================================== -->
+	<groupId>r01.r01f.businessservices</groupId>
+	<name>r01fBusinessSeervices</name>
+	<artifactId>r01fBusinessSeervices</artifactId>
+	<packaging>pom</packaging>				<!-- it's a parent project -->
+	
+<!-- ====================================================================== -->
+<!-- MODULES                                                                -->
+<!-- ====================================================================== -->
+	<modules>
+    <module>r01fModelClasses</module>
+    <module>r01fBusinessServicesClasses</module>
+    <module>r01fBusinessServicesCoreClasses</module>
+    <module>r01fBusinessServicesGuice</module>
+    <module>r01fBusinessServicesCoreDBPersistence</module>
+    <module>r01fBusinessServicesCoreSearchPersistence</module>
+  </modules>
+</project>

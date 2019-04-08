@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+		xmlns="http://maven.apache.org/POM/4.0.0"
+			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+
+<!-- ====================================================================== -->
+<!-- PARENT                                                                 -->
+<!-- ====================================================================== -->
+	<parent>
+		<groupId>r01.r01f.businessservices.core.persistence.search</groupId>
+    	<artifactId>r01fBusinessServicesCoreSearchPersistence</artifactId>
+    	<version>0.0.1-SNAPSHOT</version>
+  	</parent>
+  	
+<!-- ====================================================================== -->
+<!-- ARTIFACT                                                               -->
+<!-- ====================================================================== -->
+	<name>r01fSearchLuceneClasses</name>
+	<artifactId>r01fSearchLuceneClasses</artifactId>
+	
+<!-- ====================================================================== -->
+<!-- DEPENDENCIES                                                           -->
+<!-- ====================================================================== -->
+	<dependencies>
+		<!-- ///////////////////////////////////////// -->
+		<!-- SearchPersistence                         -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+			<groupId>r01.r01f.businessservices.core.persistence.search</groupId>
+			<artifactId>r01fSearchPersistenceClasses</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		
+		<!-- ///////////////////////////////////////// -->
+		<!-- Lucene                                    -->
+		<!-- http://archive.apache.org/dist/lucene/java-->
+		<!-- ///////////////////////////////////////// -->
+		<!-- last version supported by java 6 is v4.7.2 https://lucene.apache.org/core/4_7_2/SYSTEM_REQUIREMENTS.html -->		
+		<!-- last version supported by java 7 is v5.5.4 https://lucene.apache.org/core/5_5_4/SYSTEM_REQUIREMENTS.html -->
+		<dependency>
+		    <groupId>org.apache.lucene</groupId>
+		    <artifactId>lucene-core</artifactId>
+		    <version>4.7.2</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.lucene</groupId>
+		    <artifactId>lucene-queryparser</artifactId>
+		    <version>4.7.2</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.lucene</groupId>
+		    <artifactId>lucene-analyzers-common</artifactId>
+		    <version>4.7.2</version>
+		</dependency>
+	</dependencies>
+</project>
