@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+<!-- ====================================================================== -->
+<!-- PARENT                                                                 -->
+<!-- ====================================================================== -->
+	<parent>
+		<groupId>r01.r01f.scheduler</groupId>
+		<artifactId>r01fScheduler</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+<!-- ====================================================================== -->
+<!-- ARTIFACT                                                               -->
+<!-- ====================================================================== -->
+	<name>r01fSchedulerGuiceClasses</name>
+	<artifactId>r01fSchedulerGuiceClasses</artifactId>
+
+<!-- ====================================================================== -->
+<!-- DEPENDENCIES                                                           -->
+<!-- ====================================================================== -->
+	<dependencies>
+		<!-- ///////////////////////////////////////// -->
+		<!-- Scheduler                                 -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+			<groupId>r01.r01f.scheduler</groupId>
+			<artifactId>r01fSchedulerClasses</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		
+		<!-- ///////////////////////////////////////// -->
+		<!-- BusinessServices                          -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+			<groupId>r01.r01f.businessservices.guice</groupId>
+			<artifactId>r01fBusinessServicesGuiceClasses</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		
+	</dependencies>
+</project>

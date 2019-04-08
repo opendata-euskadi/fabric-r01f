@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+			 
+	<modelVersion>4.0.0</modelVersion>
+
+<!-- ====================================================================== -->
+<!-- PARENT                                                                 -->
+<!-- ====================================================================== -->
+	<parent>
+		<groupId>r01.r01f</groupId>
+		<artifactId>r01f</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	
+<!-- ====================================================================== -->
+<!-- ARTIFACT                                                               -->
+<!-- ====================================================================== -->
+	<groupId>r01.r01f.scheduler</groupId>
+	<name>r01fScheduler</name>
+	<artifactId>r01fScheduler</artifactId>
+	<packaging>pom</packaging>				<!-- it's a parent project -->
+	
+<!-- ====================================================================== -->
+<!-- MODULES                                                                -->
+<!-- ====================================================================== -->
+	<modules>
+    <module>r01fSchedulerClasses</module>
+    <module>r01fSchedulerGuiceClasses</module>
+  </modules>
+  
+<!-- ====================================================================== -->
+<!-- DEPENDENCIES                                                           -->
+<!-- ====================================================================== -->
+	<dependencies>
+
+	</dependencies>
+</project>
