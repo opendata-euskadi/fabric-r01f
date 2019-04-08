@@ -86,6 +86,7 @@
     <module>r01fHttpClient</module>
     <module>r01fIOC</module>
     <module>r01fBusinessServices</module>
+    <module>r01fScheduler</module>
   </modules>
   
 <!-- ====================================================================== -->
