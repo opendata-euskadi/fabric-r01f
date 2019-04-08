@@ -15,55 +15,6 @@
 	</properties>
 
 <!-- ====================================================================== -->
-<!-- REPOSITORIES                                                           -->
-<!-- ====================================================================== -->
-	<!--
-	IMPORTANT: IZENPE's root certificate MUST be installed at the jdk's [cert-store]
-	[1] - Using a [web browser], goto to the repository url
-		  		https://bin1.alm02.itbatera.euskadi.eus/repository/maven-public-releases/
-	[2] - Check the certificate chain:
-				[Izenpe.com]
-					|- EAEKo Herri Administrazioen CA - CA AAPP Vascas (2)
-							|- builds1.alm02.itbatera.euskadi.eus
-							
-			Download the ROOT certificate as CER files (only the [root] certificate is really needed)
-	
-	[3] - When in [eclipse], guess what is the eclipse workspace active jdk
-				[window] > [preferences] > [java] > [installed JREs]
-				
-	[3] - Open a system console
-			a) goto to the [jdk] bin directory
-					$> cd {jdk_root}/bin
-			b) run the [keytool]
-				- If JRE <= 8
-						$>keytool -keystore {jdk_root}\jre\lib\security\cacerts -import -file {develop_root}\projects\fabric\r01f\docs\eclipse\maven\certs\izenpe.com.cer -alias izenpe_root -storepass changeit
-				
-				- If JRE > 8
-						$>keytool -keystore {jdk_root}\lib\security\cacerts -import -file {develop_root}\projects\fabric\r01f\docs\eclipse\maven\certs\izenpe.com.cer -alias izenpe_root -storepass changeit
-			BEWARE!!!
-				- DO NOT delete the jdk's origina keystore at {jdk_root}\jre\lib\security\cacerts since it contains the 
-				  most common certificate-authorities public root certificates
-	-->
-	<repositories>
-	    <repository>
-	      <id>EJIE</id>
-	      <name>EJIE Public Releases</name>
-	      <url>https://bin1.alm02.itbatera.euskadi.eus/repository/maven-public-releases/</url>
-	      <releases>
-	        <enabled>true</enabled>
-	        <updatePolicy>always</updatePolicy>
-	        <checksumPolicy>warn</checksumPolicy>
-	      </releases>
-	      <snapshots>
-	        <enabled>false</enabled>
-	        <updatePolicy>never</updatePolicy>
-	        <checksumPolicy>fail</checksumPolicy>
-	      </snapshots>
-	      <layout>default</layout>
-	    </repository> 
-	</repositories>
-	
-<!-- ====================================================================== -->
 <!-- ARTIFACT                                                               -->
 <!-- ====================================================================== -->
 	<groupId>r01.r01f</groupId>
@@ -152,7 +103,57 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+<!-- ====================================================================== -->
+<!-- REPOSITORIES                                                           -->
+<!-- ====================================================================== -->
+	<!--
+	IMPORTANT: IZENPE's root certificate MUST be installed at the jdk's [cert-store]
+	[1] - Using a [web browser], goto to the repository url
+		  		https://bin1.alm02.itbatera.euskadi.eus/repository/maven-public-releases/
+	[2] - Check the certificate chain:
+				[Izenpe.com]
+					|- EAEKo Herri Administrazioen CA - CA AAPP Vascas (2)
+							|- builds1.alm02.itbatera.euskadi.eus
+							
+			Download the ROOT certificate as CER files (only the [root] certificate is really needed)
+	
+	[3] - When in [eclipse], guess what is the eclipse workspace active jdk
+				[window] > [preferences] > [java] > [installed JREs]
+				
+	[3] - Open a system console
+			a) goto to the [jdk] bin directory
+					$> cd {jdk_root}/bin
+			b) run the [keytool]
+				- If JRE <= 8
+						$>keytool -keystore {jdk_root}\jre\lib\security\cacerts -import -file {develop_root}\projects\fabric\r01f\docs\eclipse\maven\certs\izenpe.com.cer -alias izenpe_root -storepass changeit
+				
+				- If JRE > 8
+						$>keytool -keystore {jdk_root}\lib\security\cacerts -import -file {develop_root}\projects\fabric\r01f\docs\eclipse\maven\certs\izenpe.com.cer -alias izenpe_root -storepass changeit
+			BEWARE!!!
+				- DO NOT delete the jdk's origina keystore at {jdk_root}\jre\lib\security\cacerts since it contains the 
+				  most common certificate-authorities public root certificates
+	-->
+	<repositories>
+	    <repository>
+	      <id>EJIE</id>
+	      <name>EJIE Public Releases</name>
+	      <url>https://bin1.alm02.itbatera.euskadi.eus/repository/maven-public-releases/</url>
+	      <releases>
+	        <enabled>true</enabled>
+	        <updatePolicy>always</updatePolicy>
+	        <checksumPolicy>warn</checksumPolicy>
+	      </releases>
+	      <snapshots>
+	        <enabled>false</enabled>
+	        <updatePolicy>never</updatePolicy>
+	        <checksumPolicy>fail</checksumPolicy>
+	      </snapshots>
+	      <layout>default</layout>
+	    </repository> 
+	</repositories>  
   
+
 <!-- ====================================================================== -->
 <!-- PLUGINS                                                                -->
 <!-- ====================================================================== -->
