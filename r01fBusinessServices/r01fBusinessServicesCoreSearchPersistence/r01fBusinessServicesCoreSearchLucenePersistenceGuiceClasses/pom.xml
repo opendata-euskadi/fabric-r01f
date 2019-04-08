@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+		xmlns="http://maven.apache.org/POM/4.0.0"
+			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+
+<!-- ====================================================================== -->
+<!-- PARENT                                                                 -->
+<!-- ====================================================================== -->
+	<parent>
+		<groupId>r01.r01f.businessservices.core.persistence.search</groupId>
+    	<artifactId>r01fBusinessServicesCoreSearchPersistence</artifactId>
+    	<version>0.0.1-SNAPSHOT</version>
+  	</parent>
+  	
+<!-- ====================================================================== -->
+<!-- ARTIFACT                                                               -->
+<!-- ====================================================================== -->
+	<name>r01fBusinessServicesCoreSearchLucenePersistenceGuiceClasses</name>
+	<artifactId>r01fBusinessServicesCoreSearchLucenePersistenceGuiceClasses</artifactId>
+	
+<!-- ====================================================================== -->
+<!-- DEPENDENCIES                                                           -->
+<!-- ====================================================================== -->
+	<dependencies>
+		<!-- ///////////////////////////////////////// -->
+		<!-- SearchPersistence guice                     -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+			<groupId>r01.r01f.businessservices.core.persistence.search</groupId>
+			<artifactId>r01fBusinessServicesCoreSearchPersistenceGuiceClasses</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<!-- ///////////////////////////////////////// -->
+		<!-- Lucene SearchPersistence                  -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+			<groupId>r01.r01f.businessservices.core.persistence.search</groupId>
+			<artifactId>r01fSearchLuceneClasses</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+</project>

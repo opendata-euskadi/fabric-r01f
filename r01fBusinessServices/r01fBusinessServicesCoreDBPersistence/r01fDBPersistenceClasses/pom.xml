@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+		xmlns="http://maven.apache.org/POM/4.0.0"
+			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+
+<!-- ====================================================================== -->
+<!-- PARENT                                                                 -->
+<!-- ====================================================================== -->
+	<parent>
+		<groupId>r01.r01f.businessservices.core.persistence.db</groupId>
+    	<artifactId>r01fBusinessServicesCoreDBPersistence</artifactId>
+    	<version>0.0.1-SNAPSHOT</version>
+  	</parent>
+  	
+<!-- ====================================================================== -->
+<!-- ARTIFACT                                                               -->
+<!-- ====================================================================== -->
+	<name>r01fDBPersistenceClasses</name>
+	<artifactId>r01fDBPersistenceClasses</artifactId>
+	
+<!-- ====================================================================== -->
+<!-- DEPENDENCIES                                                           -->
+<!-- ====================================================================== -->
+	<dependencies>
+		<!-- ///////////////////////////////////////// -->
+		<!-- ResourceLoad                              -->
+		<!-- WTF!! needed because of DBSQLExecutor     -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+			<groupId>r01.r01f.resourceload</groupId>
+			<artifactId>r01fResourceLoadClasses</artifactId>	<!-- TODO maybe DBSQLExecutor should be moved anywhere else -->
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		
+		<!-- ///////////////////////////////////////// -->
+		<!-- Guice Persist                             -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+		    <groupId>com.google.inject.extensions</groupId>
+		    <artifactId>guice-persist</artifactId>
+		    <version>4.1.0</version>	<!-- TODO 4.2.2 version exists BUT somehow it cannot be loaded! -->
+		</dependency>
+		
+		<!-- ///////////////////////////////////////// -->
+		<!-- EclipseLink                               -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+		    <groupId>org.eclipse.persistence</groupId>
+		    <artifactId>eclipselink</artifactId>
+		    <version>2.5.2</version>
+		</dependency>
+	</dependencies>
+</project>
