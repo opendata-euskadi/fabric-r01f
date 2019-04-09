@@ -39,6 +39,7 @@
     <module>r01fBusinessServices</module>
     <module>r01fScheduler</module>
     <module>r01fSpring</module>
+    <module>r01fNotifier</module>
   </modules>
   
 <!-- ====================================================================== -->
