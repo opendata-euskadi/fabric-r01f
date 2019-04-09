@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+<!-- ====================================================================== -->
+<!-- PARENT                                                                 -->
+<!-- ====================================================================== -->
+	<parent>
+		<groupId>r01.r01f.spring</groupId>
+		<artifactId>r01fSpring</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+<!-- ====================================================================== -->
+<!-- ARTIFACT                                                               -->
+<!-- ====================================================================== -->
+	<name>r01fSpringGuiceIntegrationClasses</name>
+	<artifactId>r01fSpringGuiceIntegrationClasses</artifactId>
+
+<!-- ====================================================================== -->
+<!-- DEPENDENCIES                                                           -->
+<!-- ====================================================================== -->
+	<dependencies>
+		<!-- ///////////////////////////////////////// -->
+		<!-- R01:Guice                                 -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+			<groupId>r01.r01f.base</groupId>
+			<artifactId>r01fGuiceClasses</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+</project>
