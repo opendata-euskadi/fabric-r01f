@@ -8,36 +8,42 @@
 <!-- PARENT                                                                 -->
 <!-- ====================================================================== -->
 	<parent>
-		<groupId>r01.r01f.businessservices</groupId>
-    	<artifactId>r01fBusinessSeervices</artifactId>
+		<groupId>r01.r01f.ejie</groupId>
+    	<artifactId>r01fEJIE</artifactId>
     	<version>0.0.1-SNAPSHOT</version>
   	</parent>
   	
 <!-- ====================================================================== -->
 <!-- ARTIFACT                                                               -->
 <!-- ====================================================================== -->
-	<name>r01fBusinessServicesClasses</name>
-	<artifactId>r01fBusinessServicesClasses</artifactId>
+	<name>r01fEJIEClasses</name>
+	<artifactId>r01fEJIEClasses</artifactId>
 	
 <!-- ====================================================================== -->
 <!-- DEPENDENCIES                                                           -->
 <!-- ====================================================================== -->
 	<dependencies>
 		<!-- ///////////////////////////////////////// -->
-		<!-- R01: BusinessServices Model               -->
+		<!-- R01: Base                                 -->
 		<!-- ///////////////////////////////////////// -->
 		<dependency>
-			<groupId>r01.r01f.businessservices</groupId>
-			<artifactId>r01fModelClasses</artifactId>
+			<groupId>r01.r01f.base</groupId>
+			<artifactId>r01fBaseClasses</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		
 		<!-- ///////////////////////////////////////// -->
-		<!-- R01: Properties                           -->
+		<!-- R01: Base                                 -->
 		<!-- ///////////////////////////////////////// -->
+		<!-- 
+			BEWARE!!! 	Xerces / Xalan / xml-apis dependencies are a nightmare in weblogic
+						EXCLUDE these deps when deploying in weblogic server
+						(see: https://stackoverflow.com/questions/11677572/dealing-with-xerces-hell-in-java-maven)
+		-->
 		<dependency>
-			<groupId>r01.r01f.properties</groupId>
-			<artifactId>r01fPropertiesInterfaceClasses</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+		    <groupId>javax.xml.rpc</groupId>
+		    <artifactId>javax.xml.rpc-api</artifactId>
+		    <version>1.1.2</version>
 		</dependency>
 	</dependencies>
 </project>
