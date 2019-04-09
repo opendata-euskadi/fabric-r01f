@@ -35,7 +35,6 @@
 		<module>r01fLocale</module>
 		<module>r01fFileStore</module>
     <module>r01fHttpClient</module>
-    <module>r01fIOC</module>
     <module>r01fBusinessServices</module>
     <module>r01fScheduler</module>
     <module>r01fSpring</module>
@@ -142,6 +141,24 @@
 	      <id>EJIE</id>
 	      <name>EJIE Public Releases</name>
 	      <url>https://bin1.alm02.itbatera.euskadi.eus/repository/maven-public-releases/</url>
+	      <releases>
+	        <enabled>true</enabled>
+	        <updatePolicy>always</updatePolicy>
+	        <checksumPolicy>warn</checksumPolicy>
+	      </releases>
+	      <snapshots>
+	        <enabled>false</enabled>
+	        <updatePolicy>never</updatePolicy>
+	        <checksumPolicy>fail</checksumPolicy>
+	      </snapshots>
+	      <layout>default</layout>
+	    </repository>
+	    
+	    <!-- ORACLE -->
+	    <repository>
+	      <id>ORACLE</id>
+	      <name>ORACLE</name>
+	      <url>https://bin1.alm02.itbatera.euskadi.eus/repository/maven-oracle/</url>
 	      <releases>
 	        <enabled>true</enabled>
 	        <updatePolicy>always</updatePolicy>
