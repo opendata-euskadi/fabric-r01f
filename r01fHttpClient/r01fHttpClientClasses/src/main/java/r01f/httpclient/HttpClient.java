@@ -157,7 +157,8 @@ public static enum RequestMethod
 		}
 
 		log.warn("It seems that there's NO internet connection... try with proxy");
-		HttpClientProxySettings proxySettings = HttpClientProxySettings.loadFromProperties(props,propsRootNode + "/proxy");
+		HttpClientProxySettings proxySettings = HttpClientProxySettingsBuilder.loadFromProperties(props,
+																								  propsRootNode + "/proxy");
 		if (proxySettings == null) {
 			throw new IllegalStateException(Throwables.message("It seems that there's NO direct internet connection; tried using a proxy BUT no config found at {} in {} properties file",
 															   propsRootNode + "/proxy",props.getAppCode()));
