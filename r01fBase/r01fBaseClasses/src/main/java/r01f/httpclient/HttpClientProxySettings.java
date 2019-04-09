@@ -14,7 +14,6 @@ import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 import r01f.objectstreamer.annotations.MarshallType;
 import r01f.types.url.Host;
 import r01f.util.types.Strings;
-import r01f.xmlproperties.XMLPropertiesForAppComponent;
 
 /**
  * Proxy info
@@ -97,31 +96,5 @@ public class HttpClientProxySettings
 			outDbg = "DISABLED";
 		}
 		return outDbg;
-	}
-/////////////////////////////////////////////////////////////////////////////////////////
-//  CONFIG LOAD
-/////////////////////////////////////////////////////////////////////////////////////////
-	public static HttpClientProxySettings loadFromProperties(final XMLPropertiesForAppComponent props,
-															 final String baseXPath) {
-		boolean enabled = props.propertyAt(baseXPath + "/@enabled")
-							   .asBoolean(true);
-		Host proxyHost = props.propertyAt(baseXPath + "/host")
-							   		  .asHost();
-		UserCode userCode = props.propertyAt(baseXPath + "/user")
-								 .asUserCode();
-		Password password = props.propertyAt(baseXPath + "/password")
-								 .asPassword();
-		
-		HttpClientProxySettings outProxySettings = null;
-		if (proxyHost == null || userCode == null || password == null) {
-			log.warn("Proxy info is NOT propertly configured at {}: there's no host, user or password info!",
-					 baseXPath);
-		} 
-		else {
-			outProxySettings = new HttpClientProxySettings(proxyHost,
-														   userCode,password,
-														   enabled);
-		}
-		return outProxySettings;
 	}
 }
