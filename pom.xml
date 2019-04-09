@@ -38,6 +38,7 @@
     <module>r01fIOC</module>
     <module>r01fBusinessServices</module>
     <module>r01fScheduler</module>
+    <module>r01fSpring</module>
   </modules>
   
 <!-- ====================================================================== -->
