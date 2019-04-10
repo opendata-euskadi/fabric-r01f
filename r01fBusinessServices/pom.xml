@@ -30,5 +30,6 @@
     <module>r01fBusinessServicesGuice</module>
     <module>r01fBusinessServicesCoreDBPersistence</module>
     <module>r01fBusinessServicesCoreSearchPersistence</module>
+    <module>r01fBusinessServicesRESTClientClasses</module>
   </modules>
 </project>
