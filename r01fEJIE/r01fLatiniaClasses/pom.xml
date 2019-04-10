@@ -64,11 +64,14 @@
 			<artifactId>w91d_client</artifactId>
 			<version>1.0</version>
 		</dependency>
-		
+
+		<!-- ///////////////////////////////////////// -->
+		<!-- ORACLE                                    -->
+		<!-- ///////////////////////////////////////// -->		
 		<dependency>
 			<groupId>com.oracle.weblogic</groupId>
-			<artifactId>wlfullclient</artifactId>
-			<version>12.1.3-0-0</version>
+			<artifactId>webserviceclient</artifactId>
+			<version>12.2.1</version>
 		</dependency>
 	</dependencies>
 </project>
