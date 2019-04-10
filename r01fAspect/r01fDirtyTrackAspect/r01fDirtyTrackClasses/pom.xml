@@ -16,8 +16,8 @@
 <!-- ====================================================================== -->
 <!-- ARTIFACT                                                               -->
 <!-- ====================================================================== -->
-	<name>r01fDirtyTrackAspectClasses</name>
-	<artifactId>r01fDirtyTrackAspectClasses</artifactId>
+	<name>r01fDirtyTrackClasses</name>
+	<artifactId>r01fDirtyTrackClasses</artifactId>
 
 
 <!-- ====================================================================== -->
@@ -25,11 +25,19 @@
 <!-- ====================================================================== -->
 	<dependencies>
 		<!-- ///////////////////////////////////////// -->
-		<!-- Base                                      -->
+		<!-- R01: AspectUtil                           -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+			<groupId>r01.r01f.aspect</groupId>
+			<artifactId>r01fAspectUtilClasses</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<!-- ///////////////////////////////////////// -->
+		<!-- R01: DirtyTrack interfaces                -->
 		<!-- ///////////////////////////////////////// -->
 		<dependency>
 			<groupId>r01.r01f.aspect.dirtytrack</groupId>
-			<artifactId>r01fDirtyTrackClasses</artifactId>
+			<artifactId>r01fDirtyTrackInterfaceClasses</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
