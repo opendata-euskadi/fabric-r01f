@@ -16,8 +16,8 @@
 <!-- ARTIFACT                                                               -->
 <!-- ====================================================================== -->
 	<groupId>r01.r01f.businessservices</groupId>
-	<name>r01fBusinessSeervices</name>
-	<artifactId>r01fBusinessSeervices</artifactId>
+	<name>r01fBusinessServices</name>
+	<artifactId>r01fBusinessServices</artifactId>
 	<packaging>pom</packaging>				<!-- it's a parent project -->
 	
 <!-- ====================================================================== -->
@@ -26,10 +26,9 @@
 	<modules>
     <module>r01fModelClasses</module>
     <module>r01fBusinessServicesClasses</module>
-    <module>r01fBusinessServicesCoreClasses</module>
+    <module>r01fBusinessServicesClient</module>
+    <module>r01fBusinessServicesCore</module>
     <module>r01fBusinessServicesGuice</module>
-    <module>r01fBusinessServicesCoreDBPersistence</module>
-    <module>r01fBusinessServicesCoreSearchPersistence</module>
-    <module>r01fBusinessServicesRESTClientClasses</module>
+    <module>r01fBusinessRESTServicesClasses</module>
   </modules>
 </project>

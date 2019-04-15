@@ -1,25 +1,24 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+		xmlns="http://maven.apache.org/POM/4.0.0"
+			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 
 <!-- ====================================================================== -->
 <!-- PARENT                                                                 -->
 <!-- ====================================================================== -->
 	<parent>
-		<groupId>r01.r01f.web</groupId>
-		<artifactId>r01fWeb</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	</parent>
-
+		<groupId>r01.r01f.businessservices.guice</groupId>
+    	<artifactId>r01fBusinessServicesGuice</artifactId>
+    	<version>0.0.1-SNAPSHOT</version>
+  	</parent>
+  	
 <!-- ====================================================================== -->
 <!-- ARTIFACT                                                               -->
 <!-- ====================================================================== -->
-	<name>r01fRESTServicesClasses</name>
-	<artifactId>r01fRESTServicesClasses</artifactId>
-
+	<name>r01fBusinessWebServicesGuiceClasses</name>
+	<artifactId>r01fBusinessWebServicesGuiceClasses</artifactId>
+	
 <!-- ====================================================================== -->
 <!-- DEPENDENCIES                                                           -->
 <!-- ====================================================================== -->
@@ -46,6 +45,33 @@
 		</dependency>
 		
 		<!-- ///////////////////////////////////////// -->
+		<!-- R01F: BusinessServices                    -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+			<groupId>r01.r01f.businessservices.guice</groupId>
+			<artifactId>r01fBusinessServicesGuiceClasses</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		
+		<!-- ///////////////////////////////////////// -->
+		<!-- GUICE WEb                                 -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+		    <groupId>com.google.inject.extensions</groupId>
+		    <artifactId>guice-servlet</artifactId>
+		    <version>4.1.0</version>
+		    
+		    <!-- sometimes guice-servlet forces guice-xxx-tests.jar artifact
+		         this conflicts with guice.jar main artifcat -->
+		    <exclusions>
+		    	<exclusion>
+		    		<groupId>com.google.inject</groupId>
+		    		<artifactId>guice</artifactId>
+		    	</exclusion>
+		    </exclusions>
+		</dependency>
+		
+		<!-- ///////////////////////////////////////// -->
 		<!-- ServletAPI                                -->
 		<!-- ///////////////////////////////////////// -->
 		<!-- [r01fWebProfileClasses] has SevletAPI as a dependency, 
@@ -56,15 +82,6 @@
 		    <artifactId>javax.servlet-api</artifactId>
 		    <version>3.1.0</version>
 		    <scope>provided</scope>		<!-- BEWARE!!! -->
-		</dependency>
-		
-		<!-- ///////////////////////////////////////// -->
-		<!-- REST Service                              -->
-		<!-- ///////////////////////////////////////// -->
-		<dependency>
-		    <groupId>javax.ws.rs</groupId>
-		    <artifactId>javax.ws.rs-api</artifactId>
-		    <version>2.0.1</version>
 		</dependency>
 	</dependencies>
 </project>

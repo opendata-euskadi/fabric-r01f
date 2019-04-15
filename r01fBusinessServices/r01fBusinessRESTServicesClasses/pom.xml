@@ -16,8 +16,8 @@
 <!-- ====================================================================== -->
 <!-- ARTIFACT                                                               -->
 <!-- ====================================================================== -->
-	<name>r01fBusinessServicesClasses</name>
-	<artifactId>r01fBusinessServicesClasses</artifactId>
+	<name>r01fBusinessRESTServicesClasses</name>
+	<artifactId>r01fBusinessRESTServicesClasses</artifactId>
 	
 <!-- ====================================================================== -->
 <!-- DEPENDENCIES                                                           -->
@@ -28,16 +28,30 @@
 		<!-- ///////////////////////////////////////// -->
 		<dependency>
 			<groupId>r01.r01f.businessservices</groupId>
-			<artifactId>r01fModelClasses</artifactId>
+			<artifactId>r01fBusinessServicesClasses</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		
 		<!-- ///////////////////////////////////////// -->
-		<!-- R01: Properties                           -->
+		<!-- R01: REST                                 -->
 		<!-- ///////////////////////////////////////// -->
 		<dependency>
-			<groupId>r01.r01f.properties</groupId>
-			<artifactId>r01fPropertiesInterfaceClasses</artifactId>
+			<groupId>r01.r01f.web</groupId>
+			<artifactId>r01fRESTServicesClasses</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		
+		<!-- ///////////////////////////////////////// -->
+		<!-- ServletAPI                                -->
+		<!-- ///////////////////////////////////////// -->
+		<!-- [r01fWebProfileClasses] has SevletAPI as a dependency, 
+			 ... BUT it's SCOPE is PROVIDED so it has to be defined
+			     here again -->
+		<dependency>
+		    <groupId>javax.servlet</groupId>
+		    <artifactId>javax.servlet-api</artifactId>
+		    <version>3.1.0</version>
+		    <scope>provided</scope>		<!-- BEWARE!!! -->
 		</dependency>
 	</dependencies>
 </project>
