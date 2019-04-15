@@ -18,11 +18,7 @@
 <!-- ARTIFACT                                                               -->
 <!-- ====================================================================== -->
 	<name>r01fHTMLParserClasses</name>
-<<<<<<< Upstream, based on origin/master
-	<artifactId>r01fHTMLParseClasses</artifactId>
-=======
 	<artifactId>r01fHTMLParserClasses</artifactId>
->>>>>>> 012695d Added [r01fHTML] module projects: [r01fHTMLProcessorClasses] & [r01fHTMLParserClasses]
 
 <!-- ====================================================================== -->
 <!-- DEPENDENCIES                                                           -->
