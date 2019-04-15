@@ -18,6 +18,10 @@
 		     		 for [artifact] versioning use maven versions plugin:
 		     		 	> mvn versions:set -DnewVersion=1.0.3 -->
 		<r01f.version>0.0.1-SNAPSHOT</r01f.version>
+		
+		<!-- Dependencies versions -->
+		<guice.version>4.2.1</guice.version>	<!-- TODO 4.2.2 version exists BUT somehow it cannot be loaded! -->
+		<rxjava.version>2.2.8</rxjava.version>
 	</properties>
 
 <!-- ====================================================================== -->
