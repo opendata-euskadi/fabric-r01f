@@ -6,28 +6,28 @@
 <!-- PARENT                                                                 -->
 <!-- ====================================================================== -->
 	<parent>
-		<groupId>r01.r01f.businessservices</groupId>
-    	<artifactId>r01fBusinessServices</artifactId>
+		<groupId>r01.r01f.businessservices.core</groupId>
+    	<artifactId>r01fBusinessServicesCore</artifactId>
     	<version>0.0.1-SNAPSHOT</version>
   	</parent>
   	
 <!-- ====================================================================== -->
 <!-- ARTIFACT                                                               -->
 <!-- ====================================================================== -->
-	<groupId>r01.r01f.businessservices.guice</groupId>
-	<name>r01fBusinessServicesGuice</name>
-	<artifactId>r01fBusinessServicesGuice</artifactId>
+	<groupId>r01.r01f.businessservices.core.persistence.search</groupId>
+	<name>r01fBusinessServicesCoreSearchPersistence</name>
+	<artifactId>r01fBusinessServicesCoreSearchPersistence</artifactId>
 	<packaging>pom</packaging>				<!-- it's a parent project -->
 	
 <!-- ====================================================================== -->
 <!-- MODULES                                                                -->
 <!-- ====================================================================== -->
   <modules>
-    <module>r01fBusinessServicesClientGuiceClasses</module>
-    <module>r01fBusinessServicesCoreGuiceClasses</module>
-    <module>r01fBusinessServicesGuiceClasses</module>
-	<module>r01fBusinessWebServicesGuiceClasses</module>
-	<module>r01fBusinessRESTServicesGuiceClasses</module>
+    <module>r01fSearchDBClasses</module>
+    <module>r01fSearchPersistenceClasses</module>
+    <module>r01fSearchLuceneClasses</module>
+    <module>r01fBusinessServicesCoreSearchPersistenceGuiceClasses</module>
+    <module>r01fBusinessServicesCoreSearchLucenePersistenceGuiceClasses</module>
   </modules>
 	
 <!-- ====================================================================== -->
@@ -35,11 +35,11 @@
 <!-- ====================================================================== -->
 	<dependencies>
 		<!-- ///////////////////////////////////////// -->
-		<!-- Guice                                     -->
+		<!-- BusinessServices CORE                     -->
 		<!-- ///////////////////////////////////////// -->
 		<dependency>
-			<groupId>r01.r01f.base</groupId>
-			<artifactId>r01fGuiceClasses</artifactId>
+			<groupId>r01.r01f.businessservices</groupId>
+			<artifactId>r01fBusinessServicesCoreClasses</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
