@@ -39,7 +39,7 @@
 		<dependency>
 		    <groupId>com.google.inject.extensions</groupId>
 		    <artifactId>guice-persist</artifactId>
-		    <version>4.1.0</version>	<!-- TODO 4.2.2 version exists BUT somehow it cannot be loaded! -->
+		    <version>${guice.version}</version>	
 		</dependency>
 		
 		<!-- ///////////////////////////////////////// -->

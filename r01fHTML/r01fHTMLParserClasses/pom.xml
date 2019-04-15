@@ -37,13 +37,10 @@
 			<version>${r01f.version}</version>
 		</dependency>
 		
-		<!-- ///////////////////////////////////////// -->
-		<!-- RxJava (html parser)                      -->
-		<!-- ///////////////////////////////////////// -->
 		<dependency>
-		    <groupId>io.reactivex.rxjava2</groupId>
-		    <artifactId>rxjava</artifactId>
-		    <version>2.2.8</version>
+		    <groupId>r01.r01f.base</groupId>
+		    <artifactId>r01fRXJavaClasses</artifactId>
+		    <version>${r01f.version}</version>
 		</dependency>
 	</dependencies>
 </project>

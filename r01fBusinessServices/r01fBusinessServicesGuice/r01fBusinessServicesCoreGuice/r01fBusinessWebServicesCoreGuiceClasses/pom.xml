@@ -59,7 +59,7 @@
 		<dependency>
 		    <groupId>com.google.inject.extensions</groupId>
 		    <artifactId>guice-servlet</artifactId>
-		    <version>4.1.0</version>
+		    <version>${guice.version}</version>
 		    
 		    <!-- sometimes guice-servlet forces guice-xxx-tests.jar artifact
 		         this conflicts with guice.jar main artifcat -->

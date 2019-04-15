@@ -31,5 +31,6 @@
     	<module>r01fIOClasses</module>
     	<module>r01fGuiceClasses</module>
     <module>r01fMimeClasses</module>
+    <module>r01fRXJavaClasses</module>
   </modules>
 </project>
