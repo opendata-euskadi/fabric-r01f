@@ -23,11 +23,9 @@
 <!-- MODULES                                                                -->
 <!-- ====================================================================== -->
   <modules>
-    <module>r01fBusinessServicesClientGuiceClasses</module>
-    <module>r01fBusinessServicesCoreGuiceClasses</module>
     <module>r01fBusinessServicesGuiceClasses</module>
-	<module>r01fBusinessWebServicesGuiceClasses</module>
-	<module>r01fBusinessRESTServicesGuiceClasses</module>
+    <module>r01fBusinessServicesClientGuice</module>
+    <module>r01fBusinessServicesCoreGuice</module>
   </modules>
 	
 <!-- ====================================================================== -->

@@ -8,50 +8,38 @@
 <!-- PARENT                                                                 -->
 <!-- ====================================================================== -->
 	<parent>
-		<groupId>r01.r01f.businessservices</groupId>
-    	<artifactId>r01fBusinessServices</artifactId>
+		<groupId>r01.r01f.businessservices.guice.core</groupId>
+    	<artifactId>r01fBusinessServicesCoreGuice</artifactId>
     	<version>0.0.1-SNAPSHOT</version>
   	</parent>
   	
 <!-- ====================================================================== -->
 <!-- ARTIFACT                                                               -->
 <!-- ====================================================================== -->
-	<name>r01fBusinessRESTServicesClasses</name>
-	<artifactId>r01fBusinessRESTServicesClasses</artifactId>
+	<name>r01fBusinessServicesCoreGuiceClasses</name>
+	<artifactId>r01fBusinessServicesCoreGuiceClasses</artifactId>
 	
 <!-- ====================================================================== -->
 <!-- DEPENDENCIES                                                           -->
 <!-- ====================================================================== -->
 	<dependencies>
 		<!-- ///////////////////////////////////////// -->
-		<!-- R01: BusinessServices Model               -->
+		<!-- BusinessServices Core                     -->
 		<!-- ///////////////////////////////////////// -->
 		<dependency>
 			<groupId>r01.r01f.businessservices</groupId>
-			<artifactId>r01fBusinessServicesClasses</artifactId>
+			<artifactId>r01fBusinessServicesCoreClasses</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<!-- ///////////////////////////////////////// -->
+		<!-- BusinessServices Guice                    -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+			<groupId>r01.r01f.businessservices.guice</groupId>
+			<artifactId>r01fBusinessServicesGuiceClasses</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		
-		<!-- ///////////////////////////////////////// -->
-		<!-- R01: REST                                 -->
-		<!-- ///////////////////////////////////////// -->
-		<dependency>
-			<groupId>r01.r01f.web</groupId>
-			<artifactId>r01fRESTServicesClasses</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		
-		<!-- ///////////////////////////////////////// -->
-		<!-- ServletAPI                                -->
-		<!-- ///////////////////////////////////////// -->
-		<!-- [r01fWebProfileClasses] has SevletAPI as a dependency, 
-			 ... BUT it's SCOPE is PROVIDED so it has to be defined
-			     here again -->
-		<dependency>
-		    <groupId>javax.servlet</groupId>
-		    <artifactId>javax.servlet-api</artifactId>
-		    <version>3.1.0</version>
-		    <scope>provided</scope>		<!-- BEWARE!!! -->
-		</dependency>
+
 	</dependencies>
 </project>

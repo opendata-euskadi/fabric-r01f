@@ -8,16 +8,16 @@
 <!-- PARENT                                                                 -->
 <!-- ====================================================================== -->
 	<parent>
-		<groupId>r01.r01f.businessservices.guice</groupId>
-    	<artifactId>r01fBusinessServicesGuice</artifactId>
+		<groupId>r01.r01f.businessservices.guice.core</groupId>
+    	<artifactId>r01fBusinessServicesCoreGuice</artifactId>
     	<version>0.0.1-SNAPSHOT</version>
   	</parent>
   	
 <!-- ====================================================================== -->
 <!-- ARTIFACT                                                               -->
 <!-- ====================================================================== -->
-	<name>r01fBusinessWebServicesGuiceClasses</name>
-	<artifactId>r01fBusinessWebServicesGuiceClasses</artifactId>
+	<name>r01fBusinessWebServicesCoreGuiceClasses</name>
+	<artifactId>r01fBusinessWebServicesCoreGuiceClasses</artifactId>
 	
 <!-- ====================================================================== -->
 <!-- DEPENDENCIES                                                           -->
