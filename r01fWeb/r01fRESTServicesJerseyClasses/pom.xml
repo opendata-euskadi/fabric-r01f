@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+<!-- ====================================================================== -->
+<!-- PARENT                                                                 -->
+<!-- ====================================================================== -->
+	<parent>
+		<groupId>r01.r01f.web</groupId>
+		<artifactId>r01fWeb</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+<!-- ====================================================================== -->
+<!-- ARTIFACT                                                               -->
+<!-- ====================================================================== -->
+	<name>r01fRESTServicesJerseyClasses</name>
+	<artifactId>r01fRESTServicesJerseyClasses</artifactId>
+
+<!-- ====================================================================== -->
+<!-- DEPENDENCIES                                                           -->
+<!-- ====================================================================== -->
+	<dependencies>
+		<!-- ///////////////////////////////////////// -->
+		<!-- RESTServices                              -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+			<groupId>r01.r01f.web</groupId>
+			<artifactId>r01fRESTServicesClasses</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		
+		<!-- ///////////////////////////////////////// -->
+		<!-- GUICE WEb                                 -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+		    <groupId>com.google.inject</groupId>
+		    <artifactId>guice</artifactId>
+		    <version>4.1.0</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.google.inject.extensions</groupId>
+		    <artifactId>guice-servlet</artifactId>
+		    <version>4.1.0</version>
+		    
+		    <!-- sometimes guice-servlet forces guice-xxx-tests.jar artifact
+		         this conflicts with guice.jar main artifcat -->
+		    <exclusions>
+		    	<exclusion>
+		    		<groupId>com.google.inject</groupId>
+		    		<artifactId>guice</artifactId>
+		    	</exclusion>
+		    </exclusions>
+		</dependency>
+		
+		<!-- ///////////////////////////////////////// -->
+		<!-- ServletAPI                                -->
+		<!-- ///////////////////////////////////////// -->
+		<!-- [r01fWebProfileClasses] has SevletAPI as a dependency, 
+			 ... BUT it's SCOPE is PROVIDED so it has to be defined
+			     here again -->
+		<dependency>
+		    <groupId>javax.servlet</groupId>
+		    <artifactId>javax.servlet-api</artifactId>
+		    <version>3.1.0</version>
+		    <scope>provided</scope>		<!-- BEWARE!!! -->
+		</dependency>
+		
+		<!-- ///////////////////////////////////////// -->
+		<!-- Jersey                                    -->
+		<!-- ///////////////////////////////////////// -->		
+		<dependency>
+		    <groupId>com.sun.jersey</groupId>
+		    <artifactId>jersey-core</artifactId>
+		    <version>1.19.4</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.sun.jersey</groupId>
+		    <artifactId>jersey-servlet</artifactId>
+		    <version>1.19.4</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.sun.jersey</groupId>
+		    <artifactId>jersey-server</artifactId>
+		    <version>1.19.4</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.sun.jersey.contribs</groupId>
+		    <artifactId>jersey-guice</artifactId>
+		    <version>1.19.4</version>
+		    
+		    <!-- guice-servlet exclusion -->
+		    <exclusions>
+		    	<exclusion>
+		    		<groupId>com.google.inject.extensions</groupId>
+		    		<artifactId>guice-servlet</artifactId>
+		    	</exclusion>
+		    </exclusions>
+		</dependency>
+	</dependencies>
+</project>

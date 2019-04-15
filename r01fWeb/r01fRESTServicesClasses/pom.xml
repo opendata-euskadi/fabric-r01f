@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+<!-- ====================================================================== -->
+<!-- PARENT                                                                 -->
+<!-- ====================================================================== -->
+	<parent>
+		<groupId>r01.r01f.web</groupId>
+		<artifactId>r01fWeb</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+<!-- ====================================================================== -->
+<!-- ARTIFACT                                                               -->
+<!-- ====================================================================== -->
+	<name>r01fRESTServicesClasses</name>
+	<artifactId>r01fRESTServicesClasses</artifactId>
+
+<!-- ====================================================================== -->
+<!-- DEPENDENCIES                                                           -->
+<!-- ====================================================================== -->
+	<dependencies>
+		<!-- ///////////////////////////////////////// -->
+		<!-- Web                                       -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+			<groupId>r01.r01f.web</groupId>
+			<artifactId>r01fWebProfileClasses</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			
+			<!-- exclude httpclient & fileupload usded by servlet proxy -->
+			<exclusions>
+				<exclusion>
+					<groupId>r01.r01f.httpclient</groupId>
+					<artifactId>r01fHttpClientClasses</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>commons-fileupload</groupId>
+					<artifactId>commons-fileupload</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<!-- ///////////////////////////////////////// -->
+		<!-- ServletAPI                                -->
+		<!-- ///////////////////////////////////////// -->
+		<!-- [r01fWebProfileClasses] has SevletAPI as a dependency, 
+			 ... BUT it's SCOPE is PROVIDED so it has to be defined
+			     here again -->
+		<dependency>
+		    <groupId>javax.servlet</groupId>
+		    <artifactId>javax.servlet-api</artifactId>
+		    <version>3.1.0</version>
+		    <scope>provided</scope>		<!-- BEWARE!!! -->
+		</dependency>
+		
+		<!-- ///////////////////////////////////////// -->
+		<!-- REST Service                              -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+		    <groupId>javax.ws.rs</groupId>
+		    <artifactId>javax.ws.rs-api</artifactId>
+		    <version>2.0.1</version>
+		</dependency>
+	</dependencies>
+</project>
