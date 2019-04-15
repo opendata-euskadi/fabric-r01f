@@ -67,11 +67,23 @@
 
 		<!-- ///////////////////////////////////////// -->
 		<!-- ORACLE                                    -->
-		<!-- ///////////////////////////////////////// -->		
+		<!-- ///////////////////////////////////////// -->
+		<!--
+		Oracle Maven repo: https://maven.oracle.com > https://www.oracle.com/webfolder/application/maven/index.html 
+		is NOT browseable: https://blogs.oracle.com/weblogicserver/oracle-maven-repository-index-now-available
+		(the only solution is to download the index and use [NetBeans] to browse it)
+		-->		
 		<dependency>
 			<groupId>com.oracle.weblogic</groupId>
 			<artifactId>webserviceclient</artifactId>
 			<version>12.2.1</version>
 		</dependency>
+		<!-- 
+        <dependency>
+                 <groupId>com.oracle.weblogic</groupId>
+                 <artifactId>wls-api-part</artifactId>
+                 <version>12.2.1-0-0</version>
+         </dependency>
+          -->
 	</dependencies>
 </project>
