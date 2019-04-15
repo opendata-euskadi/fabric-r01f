@@ -30,7 +30,7 @@
 		<dependency>
 			<groupId>r01.r01f.web</groupId>
 			<artifactId>r01fRESTServicesClasses</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${r01f.version}</version>
 		</dependency>
 		
 		<!-- ///////////////////////////////////////// -->

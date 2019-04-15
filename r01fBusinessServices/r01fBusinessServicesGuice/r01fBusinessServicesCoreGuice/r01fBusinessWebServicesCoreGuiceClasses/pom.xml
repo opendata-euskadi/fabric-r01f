@@ -29,7 +29,7 @@
 		<dependency>
 			<groupId>r01.r01f.web</groupId>
 			<artifactId>r01fWebProfileClasses</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${r01f.version}</version>
 			
 			<!-- exclude httpclient & fileupload usded by servlet proxy -->
 			<exclusions>
@@ -50,7 +50,7 @@
 		<dependency>
 			<groupId>r01.r01f.businessservices.guice</groupId>
 			<artifactId>r01fBusinessServicesGuiceClasses</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${r01f.version}</version>
 		</dependency>
 		
 		<!-- ///////////////////////////////////////// -->

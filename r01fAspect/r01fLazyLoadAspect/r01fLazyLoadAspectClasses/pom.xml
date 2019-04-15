@@ -30,7 +30,7 @@
 		<dependency>
 			<groupId>r01.r01f.aspect.lazyload</groupId>
 			<artifactId>r01fLazyLoadClasses</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${r01f.version}</version>
 		</dependency>
 	</dependencies>
 </project>

@@ -29,7 +29,7 @@
 		<dependency>
 			<groupId>r01.r01f.businessservices.core.persistence.search</groupId>
 			<artifactId>r01fSearchPersistenceClasses</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${r01f.version}</version>
 		</dependency>
 		
 		<!-- ///////////////////////////////////////// -->
