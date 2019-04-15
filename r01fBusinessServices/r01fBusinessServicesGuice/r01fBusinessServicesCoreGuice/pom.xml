@@ -1,33 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-			 
 	<modelVersion>4.0.0</modelVersion>
 
 <!-- ====================================================================== -->
 <!-- PARENT                                                                 -->
 <!-- ====================================================================== -->
 	<parent>
-		<groupId>r01.r01f</groupId>
-		<artifactId>r01f</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	</parent>
-	
+		<groupId>r01.r01f.businessservices.guice</groupId>
+    	<artifactId>r01fBusinessServicesGuice</artifactId>
+    	<version>0.0.1-SNAPSHOT</version>
+  	</parent>
+  	
 <!-- ====================================================================== -->
 <!-- ARTIFACT                                                               -->
 <!-- ====================================================================== -->
-	<groupId>r01.r01f.businessservices</groupId>
-	<name>r01fBusinessServices</name>
-	<artifactId>r01fBusinessServices</artifactId>
+	<groupId>r01.r01f.businessservices.guice.core</groupId>
+	<name>r01fBusinessServicesCoreGuice</name>
+	<artifactId>r01fBusinessServicesCoreGuice</artifactId>
 	<packaging>pom</packaging>				<!-- it's a parent project -->
 	
 <!-- ====================================================================== -->
 <!-- MODULES                                                                -->
 <!-- ====================================================================== -->
-	<modules>
-    <module>r01fModelClasses</module>
-    <module>r01fBusinessServicesClasses</module>
-    <module>r01fBusinessServicesClient</module>
-    <module>r01fBusinessServicesCore</module>
-    <module>r01fBusinessServicesGuice</module>
+  <modules>
+  	<module>r01fBusinessServicesCoreGuiceClasses</module>
+  	<module>r01fBusinessRESTServicesCoreGuiceClasses</module>
+  	<module>r01fBusinessServicesCoreSearchPersistenceGuiceClasses</module>
+  	<module>r01fBusinessServicesCoreSearchLucenePersistenceGuiceClasses</module>
+    <module>r01fBusinessWebServicesCoreGuiceClasses</module>
   </modules>
+	
+<!-- ====================================================================== -->
+<!-- DEPENDENCIES                                                           -->
+<!-- ====================================================================== -->
+	<dependencies>
+
+	</dependencies>
 </project>

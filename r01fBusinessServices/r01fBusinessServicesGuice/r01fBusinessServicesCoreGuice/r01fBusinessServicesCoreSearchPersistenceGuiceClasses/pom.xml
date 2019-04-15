@@ -8,8 +8,8 @@
 <!-- PARENT                                                                 -->
 <!-- ====================================================================== -->
 	<parent>
-		<groupId>r01.r01f.businessservices.core.persistence.search</groupId>
-    	<artifactId>r01fBusinessServicesCoreSearchPersistence</artifactId>
+		<groupId>r01.r01f.businessservices.guice.core</groupId>
+    	<artifactId>r01fBusinessServicesCoreGuice</artifactId>
     	<version>0.0.1-SNAPSHOT</version>
   	</parent>
   	

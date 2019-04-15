@@ -8,20 +8,37 @@
 <!-- PARENT                                                                 -->
 <!-- ====================================================================== -->
 	<parent>
-		<groupId>r01.r01f.businessservices.guice</groupId>
-    	<artifactId>r01fBusinessServicesGuice</artifactId>
+		<groupId>r01.r01f.businessservices.client</groupId>
+    	<artifactId>r01fBusinessServicesClient</artifactId>
     	<version>0.0.1-SNAPSHOT</version>
   	</parent>
   	
 <!-- ====================================================================== -->
 <!-- ARTIFACT                                                               -->
 <!-- ====================================================================== -->
-	<name>r01fBusinessServicesClientGuiceClasses</name>
-	<artifactId>r01fBusinessServicesClientGuiceClasses</artifactId>
+	<name>r01fBusinessRESTServicesClientClasses</name>
+	<artifactId>r01fBusinessRESTServicesClientClasses</artifactId>
 	
 <!-- ====================================================================== -->
 <!-- DEPENDENCIES                                                           -->
 <!-- ====================================================================== -->
 	<dependencies>
+		<!-- ///////////////////////////////////////// -->
+		<!-- R01: BusinessServices                     -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+			<groupId>r01.r01f.businessservices</groupId>
+			<artifactId>r01fBusinessServicesClasses</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		
+		<!-- ///////////////////////////////////////// -->
+		<!-- R01: HttpClient                           -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+			<groupId>r01.r01f.httpclient</groupId>
+			<artifactId>r01fHttpClientClasses</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 </project>

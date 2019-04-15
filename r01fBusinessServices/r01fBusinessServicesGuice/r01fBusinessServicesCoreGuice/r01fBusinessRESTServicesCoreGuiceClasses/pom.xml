@@ -8,16 +8,16 @@
 <!-- PARENT                                                                 -->
 <!-- ====================================================================== -->
 	<parent>
-		<groupId>r01.r01f.businessservices.client</groupId>
-    	<artifactId>r01fBusinessServicesClient</artifactId>
+		<groupId>r01.r01f.businessservices.guice.core</groupId>
+    	<artifactId>r01fBusinessServicesCoreGuice</artifactId>
     	<version>0.0.1-SNAPSHOT</version>
   	</parent>
   	
 <!-- ====================================================================== -->
 <!-- ARTIFACT                                                               -->
 <!-- ====================================================================== -->
-	<name>r01fBusinessServicesRESTClientClasses</name>
-	<artifactId>r01fBusinessServicesRESTClientClasses</artifactId>
+	<name>r01fBusinessRESTServicesCoreGuiceClasses</name>
+	<artifactId>r01fBusinessRESTServicesCoreGuiceClasses</artifactId>
 	
 <!-- ====================================================================== -->
 <!-- DEPENDENCIES                                                           -->
@@ -28,16 +28,12 @@
 		<!-- ///////////////////////////////////////// -->
 		<dependency>
 			<groupId>r01.r01f.businessservices</groupId>
-			<artifactId>r01fBusinessServicesClasses</artifactId>
+			<artifactId>r01fBusinessRESTServicesClasses</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		
-		<!-- ///////////////////////////////////////// -->
-		<!-- R01: HttpClient                           -->
-		<!-- ///////////////////////////////////////// -->
 		<dependency>
-			<groupId>r01.r01f.httpclient</groupId>
-			<artifactId>r01fHttpClientClasses</artifactId>
+			<groupId>r01.r01f.businessservices.guice</groupId>
+			<artifactId>r01fBusinessWebServicesGuiceClasses</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>

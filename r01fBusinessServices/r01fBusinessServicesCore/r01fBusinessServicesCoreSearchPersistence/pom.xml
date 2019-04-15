@@ -26,8 +26,6 @@
     <module>r01fSearchDBClasses</module>
     <module>r01fSearchPersistenceClasses</module>
     <module>r01fSearchLuceneClasses</module>
-    <module>r01fBusinessServicesCoreSearchPersistenceGuiceClasses</module>
-    <module>r01fBusinessServicesCoreSearchLucenePersistenceGuiceClasses</module>
   </modules>
 	
 <!-- ====================================================================== -->
