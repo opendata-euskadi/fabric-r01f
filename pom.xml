@@ -12,6 +12,12 @@
 		<!-- Java version -->
 		<maven.compiler.source>1.6</maven.compiler.source>
 		<maven.compiler.target>1.6</maven.compiler.target>
+		
+		<!-- R01F version -->
+		<!-- BEWARE! use this property on [dependencies] ONLY
+		     		 for [artifact] versioning use maven versions plugin:
+		     		 	> mvn versions:set -DnewVersion=1.0.3 -->
+		<r01f.version>0.0.1-SNAPSHOT</r01f.version>
 	</properties>
 
 <!-- ====================================================================== -->

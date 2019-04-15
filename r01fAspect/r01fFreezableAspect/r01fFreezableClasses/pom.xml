@@ -29,12 +29,12 @@
 		<dependency>
 			<groupId>r01.r01f.aspect</groupId>
 			<artifactId>r01fAspectUtilClasses</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${r01f.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>r01.r01f.aspect.freezable</groupId>
 			<artifactId>r01fFreezableInterfaceClasses</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${r01f.version}</version>
 		</dependency>
 	</dependencies>
 </project>

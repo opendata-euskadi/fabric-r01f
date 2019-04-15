@@ -30,12 +30,12 @@
 		<dependency>
 			<groupId>r01.r01f.base</groupId>
 			<artifactId>r01fBaseClasses</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${r01f.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>r01.r01f.base</groupId>
 			<artifactId>r01fReflectionClasses</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${r01f.version}</version>
 		</dependency>
 		<!-- ///////////////////////////////////////// -->
 		<!-- Object Streamer                           -->
@@ -43,7 +43,7 @@
 		<dependency>
 			<groupId>r01.r01f.objectstreamer</groupId>
 			<artifactId>r01fObjectStreamerInterfaceClasses</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${r01f.version}</version>
 		</dependency>
 		<!-- ///////////////////////////////////////// -->
 		<!-- Inject                                    -->

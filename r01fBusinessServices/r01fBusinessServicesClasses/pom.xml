@@ -29,7 +29,7 @@
 		<dependency>
 			<groupId>r01.r01f.businessservices</groupId>
 			<artifactId>r01fModelClasses</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${r01f.version}</version>
 		</dependency>
 		<!-- ///////////////////////////////////////// -->
 		<!-- R01: Properties                           -->
@@ -37,7 +37,7 @@
 		<dependency>
 			<groupId>r01.r01f.properties</groupId>
 			<artifactId>r01fPropertiesInterfaceClasses</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${r01f.version}</version>
 		</dependency>
 	</dependencies>
 </project>

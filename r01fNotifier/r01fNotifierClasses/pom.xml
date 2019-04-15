@@ -30,7 +30,7 @@
 		<dependency>
 			<groupId>r01.r01f.businessservices</groupId>
 			<artifactId>r01fBusinessServicesClasses</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${r01f.version}</version>
 		</dependency>
 		
   		<!-- ///////////////////////////////////////// -->
@@ -39,7 +39,7 @@
 		<dependency>
 			<groupId>r01.r01f.httpclient</groupId>
 			<artifactId>r01fHttpClientClasses</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${r01f.version}</version>
 		</dependency>
 		
   		<!-- ///////////////////////////////////////// -->
@@ -48,7 +48,7 @@
 		<dependency>
 			<groupId>r01.r01f.spring</groupId>
 			<artifactId>r01fSpringClasses</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${r01f.version}</version>
 		</dependency>
 		
   		<!-- ///////////////////////////////////////// -->
