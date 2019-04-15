@@ -27,5 +27,6 @@
     <module>r01fLatiniaClasses</module>
     <module>r01fEJIEClasses</module>
     <module>r01fPIFClasses</module>
+    <module>r01fXLNetsClasses</module>
   </modules>
 </project>
