@@ -47,6 +47,7 @@
     <module>r01fNotifier</module>
     <module>r01fEJIE</module>
     <module>r01fWeb</module>
+    <module>r01fHTML</module>
   </modules>
   
 <!-- ====================================================================== -->
