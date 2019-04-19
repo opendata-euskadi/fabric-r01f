@@ -47,16 +47,11 @@ public abstract class XMLPropertiesBuilder
 		private XMLProperties _buildXMLProperties(final boolean useCache) {
 			return new XMLPropertiesImpl(new XMLPropertiesForAppCacheFactory() {
 												@Override
-												public XMLPropertiesForAppCache createFor(final AppCode appCode,
+												public XMLPropertiesForAppCache createFor(final Environment env,
+																						  final AppCode appCode,
 																						  final int componentsNumberEstimation) {
-													return new XMLPropertiesForAppCache(appCode,
-																					    componentsNumberEstimation,
-																					    useCache);
-												}
-												@Override
-												public XMLPropertiesForAppCache createFor(final Environment env,final AppCode appCode,
-																						  final int componentsNumberEstimation) {
-													return new XMLPropertiesForAppCache(env,appCode,
+													return new XMLPropertiesForAppCache(env,
+																						appCode,
 																						componentsNumberEstimation,
 																						useCache);
 												}

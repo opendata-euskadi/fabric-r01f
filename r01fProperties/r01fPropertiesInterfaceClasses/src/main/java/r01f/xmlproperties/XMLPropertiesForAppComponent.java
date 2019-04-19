@@ -1,5 +1,7 @@
 package r01f.xmlproperties;
 
+import org.w3c.dom.Document;
+
 import lombok.RequiredArgsConstructor;
 import r01f.guids.CommonOIDs.AppCode;
 import r01f.guids.CommonOIDs.AppComponent;
@@ -78,7 +80,7 @@ public class XMLPropertiesForAppComponent {
 	 * Retrieves a property from it's xPath in the XMLProperties file
 	 * @param xPathWithPlaceHolders a XPath sentence with placeholders that are replaced by vars
 	 * @param vars the vars
-	 * @return a property wrapper that ofers diferent type retrieving
+	 * @return a property wrapper that ofers different type retrieving
 	 */
 	public XMLPropertyWrapper propertyAt(final String xPathWithPlaceHolders,final String... vars) {
 		String theXPath = Strings.customized(xPathWithPlaceHolders,
@@ -89,9 +91,17 @@ public class XMLPropertiesForAppComponent {
 	 * Retrieves a property from it's xPath in the XMLProperties file
 	 * @param xPathWithPlaceHolders a XPath sentence with placeholders that are replaced by vars
 	 * @param vars the vars
-	 * @return a property wrapper that ofers diferent type retrieving
+	 * @return a property wrapper that ofers different type retrieving
 	 */
 	public XMLPropertyWrapper propertyAt(final Path xPathWithPlaceHolders,final String... vars) {
 		return this.propertyAt(xPathWithPlaceHolders.asString(),vars);
+	}
+	/**
+	 * Returns the XML {@link Document} that backs the component's properties
+	 * @return
+	 */
+	public Document getXMLDocument() {
+		return _propertiesForAppManager.of(_component)
+									   .getXMLDocument();
 	}
 }

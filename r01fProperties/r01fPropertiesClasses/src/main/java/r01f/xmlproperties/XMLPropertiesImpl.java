@@ -53,7 +53,8 @@ implements XMLProperties {
 																	: null;
 		if (propsForApp == null) {
 			log.trace("The properties for application {} are not present in the cache: they must be loaded NOW",appCode);
-			XMLPropertiesForAppCache propsForAppCache = _propsForAppCacheFactory.createFor(appCode,
+			XMLPropertiesForAppCache propsForAppCache = _propsForAppCacheFactory.createFor(XMLPropertiesEnv.guessEnvironmentFromSystemEnvProp(),
+																						   appCode,
 																						   componentsNumberEstimation);
 			
 			propsForApp = new XMLPropertiesForAppImpl(propsForAppCache);		
@@ -61,37 +62,20 @@ implements XMLProperties {
 		}
 		return propsForApp;		
 	}
+	@Override
 	public XMLPropertiesForApp forApp(final AppCode appCode) {
 		return this.forApp(appCode,DEF_APP_NUM_PROPS); 	// Component number estimation for the app
 	}
-	/**
-	 * Gets an app properties manager {@link XMLPropertiesForApp} 
-	 * @param appCode app code
-	 * @return the manager that provides access to components and from there to properties
-	 */
+	@Override
 	public XMLPropertiesForApp forApp(final String appCode) {
 		return this.forApp(AppCode.forId(appCode));
 	}
-	/**
-	 * Gets an app properties manager (a {@link XMLPropertiesForApp} instance) and from it
-	 * an manager of component properties (a {@link XMLPropertiesForAppComponent}) that provides
-	 * access to properties
-	 * @param appCode
-	 * @param component
-	 * @return
-	 */
+	@Override
 	public XMLPropertiesForAppComponent forAppComponent(final AppCode appCode,final AppComponent component) {
 		XMLPropertiesForApp propsForApp = this.forApp(appCode);
 		return propsForApp.forComponent(component);
 	}
-	/**
-	 * Gets an app properties manager (a {@link XMLPropertiesForApp} instance) and from it
-	 * an manager of component properties (a {@link XMLPropertiesForAppComponent}) that provides
-	 * access to properties
-	 * @param appCode
-	 * @param component
-	 * @return
-	 */
+	@Override
 	public XMLPropertiesForAppComponent forAppComponent(final String appCode,final String component) {
 		return this.forAppComponent(AppCode.forId(appCode),AppComponent.forId(component));
 	}

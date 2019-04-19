@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -43,8 +44,8 @@ import r01f.util.types.collections.CollectionUtils;
  */
 @Slf4j
 @Accessors(prefix="_")
-public  class XMLPropertiesForAppCache 
-   implements XMLPropertiesComponentLoadedListener {
+public class XMLPropertiesForAppCache 
+  implements XMLPropertiesComponentLoadedListener {
 /////////////////////////////////////////////////////////////////////////////////////////
 // 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -58,21 +59,14 @@ public  class XMLPropertiesForAppCache
 	static interface XMLPropertiesForAppCacheFactory {
 		/**
 		 * Creates a {@link XMLPropertiesForAppCache} instance from the appCode and prop number estimation
-		 * @param appCode 
-		 * @param componentsNumberEstimation 
-		 * @return
-		 */
-		public XMLPropertiesForAppCache createFor(final AppCode appCode,
-												  final int componentsNumberEstimation);
-		/**
-		 * Creates a {@link XMLPropertiesForAppCache} instance from the appCode and prop number estimation
 		 * @param appCode
 		 * @param environment 
 		 * @param componentsNumberEstimation 
 		 * @param useCache true if cache is used, false otherwise
 		 * @return
 		 */
-		public XMLPropertiesForAppCache createFor(final Environment env,final AppCode appCode,
+		public XMLPropertiesForAppCache createFor(final Environment env,
+												  final AppCode appCode,
 												  final int componentsNumberEstimation);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -106,22 +100,6 @@ public  class XMLPropertiesForAppCache
 		_componentXMLManager = new XMLPropertiesForAppComponentsContainer(this,									// component loading listener
 																	      env,									// environment
 																	      _appCode,componentsNumberEstimation);	// appCode / props estimation
-	}
-	public XMLPropertiesForAppCache(final AppCode appCode,final int componentsNumberEstimation) {
-    	this(null,
-    		 appCode,componentsNumberEstimation,
-    		 true);		// use cache by default
-	}
-	public XMLPropertiesForAppCache(final AppCode appCode,final int componentsNumberEstimation,
-							      	final boolean useCache) {
-    	this(null,
-    		 appCode,componentsNumberEstimation,
-    		 useCache);
-	}
-	public XMLPropertiesForAppCache(final AppCode appCode) {
-		this(null,
-			 appCode,DEFAULT_PROPERTIES_PER_COMPONENT,
-			 false);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  INTERFACE XMLPropertiesComponentLoadedListener
@@ -251,6 +229,14 @@ public  class XMLPropertiesForAppCache
 	 */
 	public boolean existsComponentPropertiesFile(final AppComponent component) {
 		return _componentXMLManager.existsComponentPropertiesFile(component);
+	}
+	/**
+	 * Returns the XML {@link Document} that backs a component's properties
+	 * @param component
+	 * @return
+	 */
+	public Document getXMLDocumentFor(final AppComponent component) {
+		return _componentXMLManager.getXMLDocumentFor(component);
 	}
     /**
      * Checks if a property exists
@@ -512,9 +498,9 @@ public  class XMLPropertiesForAppCache
     			obj = (T)_componentXMLManager.getMapOfStringsProperty(component,xPath);
 
     		} else if (transformFuncion != null) {
-    			obj = (T)_componentXMLManager.getBeanPropertyUsingTransformFunction(component,xPath,
-    														  				 		type,
-    														  				 		transformFuncion);
+    			obj = _componentXMLManager.getBeanPropertyUsingTransformFunction(component,xPath,
+    														  				 	 type,
+    														  				 	 transformFuncion);
     		} else {
     			log.warn("{} type is not a supported for a property. Property {} from appCode/component={}/{}: cannot be converted",
     					 type.getName(),xPath,_appCode.asString(),component);
@@ -600,6 +586,7 @@ public  class XMLPropertiesForAppCache
     	@Getter @Setter private long _invalidCount;	// total invalid
     	@Getter @Setter private long _defaultCount;	// total default values
     	
+    	@Override
     	public String debugInfo() {
     		StringBuilder dbg = new StringBuilder("");
     		dbg.append("XMLProperties cache stats:")
