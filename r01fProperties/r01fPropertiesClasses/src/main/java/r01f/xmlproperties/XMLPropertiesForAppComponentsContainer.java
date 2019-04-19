@@ -3,12 +3,15 @@ package r01f.xmlproperties;
  * Manages XML properties files access
  */
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.xml.namespace.QName;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
@@ -41,6 +44,7 @@ import r01f.types.Path;
 import r01f.xml.XMLDocumentBuilder;
 import r01f.xml.XMLStringSerializer;
 import r01f.xml.XMLUtils;
+import r01f.xml.merge.XMLMerger;
 
 
 /**
@@ -224,6 +228,19 @@ class XMLPropertiesForAppComponentsContainer {
 //  PUBLIC METHODS
 /////////////////////////////////////////////////////////////////////////////////////////
     /**
+     * Returns the xml {@link Document} that backs a component's properties
+     * @param component
+     * @return
+     */
+    Document getXMLDocumentFor(final AppComponent component) {
+        // [1]- Load the document's DOM
+        ComponentCacheXML comp = _retrieveComponent(component);
+		if (comp == null) return null;		// the component could NOT be loaded... return null
+		
+		// [2] - Return the xml
+		return comp.getXml();
+    }
+    /**
      * Returns the XML's DOM's {@link Node} obtained applying the given xpath expression to the app/component properties XML.
      * @param component
      * @param xPath
@@ -398,16 +415,60 @@ class XMLPropertiesForAppComponentsContainer {
     	// [1] Get a resources loader
     	ResourcesLoader resLoader = ResourcesLoaderBuilder.createResourcesLoaderFor(compDef.getLoaderDef());
 
-    	// [2] Load the XML file using the configured resourcesLoader and parse it
 		XMLDocumentBuilder domBuilder = new XMLDocumentBuilder(resLoader);
+    	
+    	// [2] Load the XML file using the configured resourcesLoader and parse it
+		Path propsFileUri = compDef.getPropertiesFileURI();
 		Document xmlDoc = null;
 		try {
-			xmlDoc = domBuilder.buildXMLDOM(compDef.getPropertiesFileURI());
-		} catch(SAXException saxEx) {
-			throw Throwables.getRootCause(saxEx) instanceof FileNotFoundException ? XMLPropertiesException.propertiesLoadError(_systemSetEnvironment,_appCode,compDef.getName())
-																				  : XMLPropertiesException.propertiesXMLError(_systemSetEnvironment,_appCode,compDef.getName());
+			xmlDoc = domBuilder.buildXMLDOM(propsFileUri);
+		} catch (SAXException saxEx) {
+			if (Throwables.getRootCause(saxEx) instanceof FileNotFoundException) {
+				log.error("Could NOT load xml properties file at {} using {} loader",
+						  propsFileUri,
+						  compDef.getLoaderDef().getLoader());
+				throw XMLPropertiesException.propertiesLoadError(_systemSetEnvironment,_appCode,compDef.getName());
+			} 
+			throw XMLPropertiesException.propertiesXMLError(_systemSetEnvironment,_appCode,compDef.getName());
 		}
-		return xmlDoc;
+		// [3] Try to find an env-dependent XML Properties file
+		Document envXmlDoc = null;
+		Path envDepPropsFileUri = Path.from(_systemSetEnvironment)
+									  .joinedWith(compDef.getPropertiesFileURI());
+		if (_systemSetEnvironment != null) {
+			InputStream envDepPropsFileIS = null;
+			try {
+				envDepPropsFileIS = resLoader.getInputStream(envDepPropsFileUri);
+			} catch (IOException ioEx) {
+				log.info("...NO environment dependent properties file found at {}",envDepPropsFileUri);
+			}
+			if (envDepPropsFileIS != null) {
+				try {
+					log.info("...loading environment dependent properties file at {}",envDepPropsFileUri);
+					envXmlDoc = domBuilder.buildXMLDOM(envDepPropsFileUri);
+				} catch (SAXException saxEx) {
+					saxEx.printStackTrace();
+				}
+			}
+		}
+		// [4] Merge all files if necessary
+		Document outXml = null;
+		if (envXmlDoc != null) {
+			try {
+				XMLMerger merger = new XMLMerger();
+				merger.merge(xmlDoc);		// recessive
+				merger.merge(envXmlDoc);	// dominant
+				outXml = merger.buildDocument();
+			} catch (ParserConfigurationException cfgEx) {
+				log.error("Error while merging properties xml doc at {} with the environment-dependent at {}: {}",
+						  propsFileUri,envDepPropsFileUri,
+						  cfgEx.getMessage(),cfgEx);
+				outXml = xmlDoc;
+			}
+    	} else {
+    		outXml = xmlDoc;
+    	}
+		return outXml;
     }
     private static ResourcesReloadControl _loadReloadControlImpl(final XMLPropertiesComponentDef compDef) {
 		ResourcesReloadControlDef reloadControlDef = compDef.getLoaderDef()

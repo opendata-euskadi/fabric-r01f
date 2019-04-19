@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -97,7 +98,9 @@ public final class XMLPropertiesForAppImpl
       implements ComponentProperties {
     	
     	private final Environment _systemSetEnv;
-    	private final AppCode _appCode;
+    	
+    	@SuppressWarnings("unused")
+		private final AppCode _appCode;
     	private final AppComponent _component;
 
     	ComponentPropertiesImpl(final Environment systemEnv,
@@ -396,6 +399,10 @@ public final class XMLPropertiesForAppImpl
 	    								  null,
 	    								  null,transformFuncion);
 			return outObj;
+		}
+		@Override
+		public Document getXMLDocument() {
+			return _cache.getXMLDocumentFor(_component);
 		}
 	    @Override
 	    public ResourcesLoaderDef getResourcesLoaderDef(final Path propXPath) {

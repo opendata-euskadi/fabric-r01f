@@ -21,6 +21,7 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -499,6 +500,39 @@ public final class XMLUtils {
 						}
     		   };
     }
+	/**
+	 * Copies attributes from one {@link Element} to the other.
+	 * @param document
+	 * @param source      source element
+	 * @param destination destination element
+	 */
+	public static void copyAttributes(final Document document,
+							   		  final Element source,final Element destination) {
+		if (source == null) {
+			return;
+		}
+		NamedNodeMap attributes = source.getAttributes();
+		for (int i = 0; i < attributes.getLength(); i++) {
+			Attr attribute = (Attr) attributes.item(i);
+			Attr destAttribute = destination.getAttributeNodeNS(attribute.getNamespaceURI(),attribute.getName());
+
+			if (destAttribute == null) {
+				destination.setAttributeNodeNS((Attr)document.importNode(attribute,true));
+			} else {
+				destAttribute.setValue(attribute.getValue());
+			}
+		}
+	}
+	public static void removeWhitespace(final Element element) {
+		NodeList list = element.getChildNodes();
+		for (int i = list.getLength() - 1; i >= 0; i--) {
+			Node node = list.item(i);
+			if (node instanceof Element) {
+				break;
+			}
+			element.removeChild(node);
+		}
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////

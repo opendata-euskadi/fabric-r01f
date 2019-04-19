@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -370,6 +371,11 @@ public interface ComponentProperties {
 	 */
 	public <T> T getObject(final Path propXPath,
 						   final Function<Node,T> transformFuncion);
+	/**
+	 * Returns the xml {@link Document} that backs the component's properties
+	 * @return
+	 */
+	public Document getXMLDocument();
     /**
      * Returns the property as a resources load definition{@link ResourcesLoaderDef}
      * (the XML MUST conform the xml structure mandated by {@link ResourcesLoaderDef}).
