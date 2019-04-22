@@ -1,0 +1,100 @@
+<!-- 
+================================================================================ 
+	 LOGBACK CONFIG
+================================================================================
+Every project will have it's own logback.xml file like:
+	<configuration debug="false">
+		<property name="appName" value="appCode" />
+		
+		<jmxConfigurator contextName="appCode" />
+		
+		<include resource="r01fLogbackGlobal.xml"/>
+		<include resource="r01fLogback.xml"/>
+		
+		<include resource="appCode/appCodeLogback.xml"/>
+	</configuration>
+
+This main logback.xml is NOT ENVIRONMENT DEPENDENT so it's located at 
+[{appCode}Classes] project's /resources source folder alongside with the source code
+
+In order to set environment-dependent values, the included appCode/appCodeLogback.xml files 
+are used. These appCode/appCodeLogback.xml files are at [{appCode}Config] project
+which contains environment-dependent configurable values
+-->
+<included>
+	<!-- To indicate that any configuration changes to occur is displayed on console -->
+	<statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener" />
+
+	<!-- <property name="USER_HOME" value="${user.home}" />  -->
+		
+	<!-- 
+		LogPath config:
+			- EJIE environments: 
+				Usually the /r01fb/r01fbEnvironment.xml file WILL NOT be present at the EJIE environment so 
+				the ${DATA_HOME} will NOT be defined ad the ${logPath} var will get the DEFAULT value: /datos
+				BEWARE!!!	If the /r01fb/r01fbEnvironment.xml is present a the environment CHECK the ${DATA_HOME} var value
+				
+			- Local environment:
+				The [r01fbConfig] project will be present in the eclipse workspace and if the /r01fb/r01fbEnvironment.xml is 
+				classpath-accesible, the ${DATA_HOME} var will have the d:/temp_dev/log value
+				BEWARE!!!	Ensure the /r01fb/r01fbEnvironment.xml is accesible at the classpath
+	<include resource="r01fb/r01fbEnvironment.xml"/>
+	-->
+	
+	<!-- 
+		local (see [Condigional processing of configuration files at http://logback.qos.ch/manual/configuration.html)
+		-requires Janino dependency- 
+	 -->
+	<!-- 
+	<if condition='isNull("DATA_HOME")'>
+		<then>
+			<if condition='property("os.name").contains("win")'>
+				<then>
+					<property name="DATA_HOME" value="d:/temp_dev/log" />
+				</then>
+			</if>
+		</then>
+	</if>
+	-->
+	<property name="logPath" value="${DATA_HOME:-/datos}/${appName}/log" />
+
+	<!-- 1 por día. Nivel DEBUG. 10 días de historia
+		 logger{10} líneas de stacktrace para las excepciones
+	-->
+	<appender name="app_log" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>TRACE</level>
+		</filter>
+		<!-- When in a weblogic cluster and logs located in a NAS, if the log file name does NOT include something 
+			 for each cluster node (like the server's name), N JVMs will be writing at the same file; this is a performance botlenect.
+			 To avoid this problem, the log file name includes an environmental variable that each weblogic server sets with it's own name: weblogic.Name
+			 When in a NOT-weblogic environmente (ie Tomcat), the default value is used $(weblogic.Name:-[defaultValue])
+			 see http://logback.qos.ch/manual/configuration.html#variableSubstitution 	 
+		-->
+		<file>${logPath}/${appName}_${weblogic.Name:-default}.log</file>	
+		<encoder>
+			<pattern>%date %-5level %logger{0} [%method - %line] - %message%n %exception{30}</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<fileNamePattern>${logPath}/rolled/${appName}_${weblogic.Name:-default}_%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+			<!-- keep 10 days' worth of history -->
+			<maxHistory>10</maxHistory>
+		</rollingPolicy>
+	</appender>
+	
+	<!-- sends logs to logback-beagle -->
+	<!-- <consolePlugin /> -->
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<!-- encoders are assigned the type
+		     ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<!-- Root Logger -->
+	<root level="DEBUG">
+		<appender-ref ref="STDOUT" />
+	</root>
+</included>
