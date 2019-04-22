@@ -77,6 +77,7 @@
 			<groupId>com.oracle.weblogic</groupId>
 			<artifactId>webserviceclient</artifactId>
 			<version>12.2.1</version>
+			<scope>provided</scope>		<!-- BEWARE!!! -->
 		</dependency>
 		<!-- 
         <dependency>
