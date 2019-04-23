@@ -15,6 +15,7 @@ abstract class XMLPropertiesEnv {
 	public static Environment guessEnvironmentFromSystemEnvProp() {
 		String envProp = null;
 							 				envProp = System.getProperty("R01ENV");
+		if (Strings.isNullOrEmpty(envProp)) envProp = System.getProperty("r01Env");							 				
 		if (Strings.isNullOrEmpty(envProp)) envProp = System.getProperty("R01Env");
 		if (Strings.isNullOrEmpty(envProp)) envProp = System.getProperty("ENV");
 		if (Strings.isNullOrEmpty(envProp)) envProp = System.getProperty("env");
