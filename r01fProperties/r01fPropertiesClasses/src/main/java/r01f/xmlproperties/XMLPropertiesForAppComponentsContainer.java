@@ -310,11 +310,14 @@ class XMLPropertiesForAppComponentsContainer {
 		NodeList nodeList = this.getPropertyNodeList(component,propXPath);
 		if (nodeList != null && nodeList.getLength() > 0) {
 			outMap = new HashMap<String,List<String>>(nodeList.getLength());
-			for (int i=0; i<nodeList.getLength(); i++) {
+			for (int i=0; i < nodeList.getLength(); i++) {
 				Node node = nodeList.item(i);
-
+				
+				if (XMLUtils.isTextNode(node)) continue;
+				
 				// Get the item name
-				String nodeName = node.getLocalName();
+				String nodeName = node.getLocalName() != null ? node.getLocalName() : node.getNodeName();
+				
 				// Get the item value
 				String nodeStrValue = null;
 				Node contentNode = node.getFirstChild();
@@ -418,56 +421,67 @@ class XMLPropertiesForAppComponentsContainer {
 		XMLDocumentBuilder domBuilder = new XMLDocumentBuilder(resLoader);
     	
     	// [2] Load the XML file using the configured resourcesLoader and parse it
-		Path propsFileUri = compDef.getPropertiesFileURI();
-		Document xmlDoc = null;
+		Path defPropsFileUri = compDef.getPropertiesFileURI();
+		Document defXmlDoc = null;
 		try {
-			xmlDoc = domBuilder.buildXMLDOM(propsFileUri);
+			defXmlDoc = domBuilder.buildXMLDOM(defPropsFileUri);
 		} catch (SAXException saxEx) {
 			if (Throwables.getRootCause(saxEx) instanceof FileNotFoundException) {
 				log.error("Could NOT load xml properties file at {} using {} loader",
-						  propsFileUri,
+						  defPropsFileUri,
 						  compDef.getLoaderDef().getLoader());
 				throw XMLPropertiesException.propertiesLoadError(_systemSetEnvironment,_appCode,compDef.getName());
 			} 
 			throw XMLPropertiesException.propertiesXMLError(_systemSetEnvironment,_appCode,compDef.getName());
 		}
+		
 		// [3] Try to find an env-dependent XML Properties file
 		Document envXmlDoc = null;
 		Path envDepPropsFileUri = Path.from(_systemSetEnvironment)
 									  .joinedWith(compDef.getPropertiesFileURI());
 		if (_systemSetEnvironment != null) {
+			log.warn("...trying to find env-dependent properties file at {}",envDepPropsFileUri);
 			InputStream envDepPropsFileIS = null;
 			try {
 				envDepPropsFileIS = resLoader.getInputStream(envDepPropsFileUri);
 			} catch (IOException ioEx) {
-				log.info("...NO environment dependent properties file found at {}",envDepPropsFileUri);
+				log.warn("...NO env-dependent properties file found at {}",envDepPropsFileUri);
 			}
 			if (envDepPropsFileIS != null) {
 				try {
-					log.info("...loading environment dependent properties file at {}",envDepPropsFileUri);
+					log.warn("...loading env-dependent properties file at {}",
+							 envDepPropsFileUri);
 					envXmlDoc = domBuilder.buildXMLDOM(envDepPropsFileUri);
 				} catch (SAXException saxEx) {
 					saxEx.printStackTrace();
 				}
 			}
+		} else {
+			log.warn("...no env set with -DR01ENV={env}: NO env-dependent properties file is used!");
 		}
 		// [4] Merge all files if necessary
 		Document outXml = null;
 		if (envXmlDoc != null) {
 			try {
+				log.warn("... merge xml properties file at {} with env-dependent at {}",
+						 defPropsFileUri,envDepPropsFileUri);
 				XMLMerger merger = new XMLMerger();
-				merger.merge(xmlDoc);		// recessive
+				merger.merge(defXmlDoc);		// recessive
 				merger.merge(envXmlDoc);	// dominant
+						
 				outXml = merger.buildDocument();
 			} catch (ParserConfigurationException cfgEx) {
-				log.error("Error while merging properties xml doc at {} with the environment-dependent at {}: {}",
-						  propsFileUri,envDepPropsFileUri,
+				log.error("Error while merging properties xml doc at {} with the env-dependent at {}: {}",
+						  defPropsFileUri,envDepPropsFileUri,
 						  cfgEx.getMessage(),cfgEx);
-				outXml = xmlDoc;
+				outXml = defXmlDoc;
 			}
     	} else {
-    		outXml = xmlDoc;
+    		outXml = defXmlDoc;
     	}
+		if (log.isDebugEnabled()) log.debug("Effective xml properties at {}\n{}",
+											compDef.getPropertiesFileURI(),
+											XMLUtils.asString(outXml));	
 		return outXml;
     }
     private static ResourcesReloadControl _loadReloadControlImpl(final XMLPropertiesComponentDef compDef) {

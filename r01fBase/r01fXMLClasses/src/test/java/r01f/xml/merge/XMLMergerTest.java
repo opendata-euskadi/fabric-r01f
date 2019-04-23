@@ -35,9 +35,9 @@ public class XMLMergerTest {
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Test
 	public void miscTest() throws SAXException, 
-							  IOException,
-							  ParserConfigurationException,
-							  TransformerConfigurationException,TransformerException {
+								  IOException,
+								  ParserConfigurationException,
+								  TransformerConfigurationException,TransformerException {
 		String recessive = "\n"
 				+ "<config>\n"
 				+ "    <service id='1'>\n"
