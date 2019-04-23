@@ -48,7 +48,7 @@ public class DBConnectionPoolData
 					  xPath,appCode);
 		} else {
 			Map<String,String> propsMap = CollectionUtils.toMap(props);
-
+			
 			// Driver User / password
 			user = propsMap.remove(PersistenceUnitProperties.JDBC_USER);
 			pwd = propsMap.remove(PersistenceUnitProperties.JDBC_PASSWORD);

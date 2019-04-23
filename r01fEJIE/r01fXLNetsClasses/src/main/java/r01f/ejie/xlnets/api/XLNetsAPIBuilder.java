@@ -61,7 +61,7 @@ import r01f.xmlproperties.XMLPropertiesForAppComponent;
  *       		<url>http://svc.intra.integracion.jakina.ejiedes.net/ctxapp/Y31JanoServiceXlnetsTokenCreatorServlet?login_app={}</url>
  *       	</httpSessionTokenProviderService>
  *
- *      	<!-- mock tokens (see aa14aUIWar) -->
+ *      	<!-- mock tokens -->
  *      	<mockFiles>
  *      		<userSessionToken for='{userCode}'>aa14a/xlnets/mock/aa14a-xlnetsSession.xml</userSessionToken>
  *      		<appSessionToken for='{appCode}'>aa14a/xlnets/mock/aa14a-xlnetsSession.xml</appSessionToken>

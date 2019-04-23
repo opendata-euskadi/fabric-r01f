@@ -455,6 +455,8 @@ class XMLPropertiesForAppComponentsContainer {
 				} catch (SAXException saxEx) {
 					saxEx.printStackTrace();
 				}
+			} else {
+				log.warn("...NO env-dependent properties file found at {}",envDepPropsFileUri);
 			}
 		} else {
 			log.warn("...no env set with -DR01ENV={env}: NO env-dependent properties file is used!");
@@ -482,6 +484,7 @@ class XMLPropertiesForAppComponentsContainer {
 		if (log.isDebugEnabled()) log.debug("Effective xml properties at {}\n{}",
 											compDef.getPropertiesFileURI(),
 											XMLUtils.asString(outXml));	
+//		System.out.println(XMLUtils.asString(outXml));
 		return outXml;
     }
     private static ResourcesReloadControl _loadReloadControlImpl(final XMLPropertiesComponentDef compDef) {
