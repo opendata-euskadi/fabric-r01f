@@ -20,7 +20,7 @@ import r01f.types.geo.GeoOIDs.GeoZipCode;
  *      	+ Country
  *          	  + State
  *          		 +_County
- *          		 	 + Region
+ *          		 	 + Locality
  *          				 + Municipality
  *          					 + District
  *          						+ Street
