@@ -20,6 +20,7 @@ import r01f.file.FileProperties;
 import r01f.filestore.api.FileFilter;
 import r01f.filestore.api.FileStoreChecksDelegate;
 import r01f.filestore.api.FileStoreFilerAPI;
+import r01f.types.IsPath;
 import r01f.util.types.collections.CollectionUtils;
 
 @Slf4j
@@ -29,11 +30,6 @@ public class HDFSFileStoreFilerAPI
 /////////////////////////////////////////////////////////////////////////////////////////
 // 	FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
-	/**
-	 * Common checkings
-	 */
-	protected final FileStoreChecksDelegate _check;
-	
 	protected final HDFSFileStoreAPI _api;
 	
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -143,7 +139,8 @@ public class HDFSFileStoreFilerAPI
     			  existingPath,newName);
 
 
-		r01f.types.Path dstPath = r01f.types.Path.from(existingPath.withoutLastPathElement())
+		@SuppressWarnings("cast")
+		r01f.types.Path dstPath = r01f.types.Path.from((IsPath)existingPath.withoutLastPathElement())
 						  						 .joinedWith(newName);
 
 		// check
