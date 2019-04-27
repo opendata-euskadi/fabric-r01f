@@ -156,7 +156,8 @@ a) **General**
 
 b) **[Maven]**
 
-> `[Maven] > Download artifact sources` : true
+> `[Maven > Download artifact sources]` : true
+> `[Maven > Archetypes]` > Add a NEW remote catalog at: http://repo1.maven.org/maven2/archetype-catalog.xml 
 > `[Maven > User Settings] > Global Settings`: {dev_home}/projects/fabric/r01f/docs/eclipse/maven/settings_{env}.xml
 
 *BEWARE*: Ensure that `[Local Repository] (from merged user and global settings)` is `{dev_home}/maven_libs`
