@@ -23,7 +23,6 @@
 		<slf4j.version>1.7.25</slf4j.version>
 		<logback.verson>1.2.3</logback.verson>
 		<guice.version>4.2.1</guice.version>	<!-- TODO 4.2.2 version exists BUT somehow it cannot be loaded! -->
-		<rxjava.version>2.2.8</rxjava.version>
 	</properties>
 
 <!-- ====================================================================== -->
@@ -47,10 +46,7 @@
 		<module>r01fLocale</module>
 		<module>r01fFileStore</module>
     <module>r01fHttpClient</module>
-    <module>r01fBusinessServices</module>
-    <module>r01fScheduler</module>
     <module>r01fSpring</module>
-    <module>r01fNotifier</module>
     <module>r01fWeb</module>
     <module>r01fHTML</module>
     <module>r01fConfig</module>
