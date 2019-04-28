@@ -26,6 +26,7 @@
 	<modules>
     	<module>r01fBaseClasses</module>
     	<module>r01fCollectionClasses</module>
+    	<module>r01fModelClasses</module>
     	<module>r01fReflectionClasses</module>
     	<module>r01fXMLClasses</module>
     	<module>r01fIOClasses</module>

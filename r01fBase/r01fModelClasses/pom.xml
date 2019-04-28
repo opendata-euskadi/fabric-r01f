@@ -3,40 +3,38 @@
 		xmlns="http://maven.apache.org/POM/4.0.0"
 			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
-	
-<!-- ====================================================================== -->
-<!-- PROPERTIES                                                             -->
-<!-- ====================================================================== -->
-	<properties>
-		<rxjava.version>2.2.8</rxjava.version>
-	</properties>
-	
+
 <!-- ====================================================================== -->
 <!-- PARENT                                                                 -->
 <!-- ====================================================================== -->
 	<parent>
 		<groupId>r01.r01f.base</groupId>
-		<artifactId>r01fBase</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	</parent>
-	
+    	<artifactId>r01fBase</artifactId>
+    	<version>0.0.1-SNAPSHOT</version>
+  	</parent>
+  	
 <!-- ====================================================================== -->
 <!-- ARTIFACT                                                               -->
 <!-- ====================================================================== -->
-	<name>r01fRXJavaClasses</name>
-	<artifactId>r01fRXJavaClasses</artifactId>
+	<name>r01fModelClasses</name>
+	<artifactId>r01fModelClasses</artifactId>
 	
 <!-- ====================================================================== -->
 <!-- DEPENDENCIES                                                           -->
 <!-- ====================================================================== -->
 	<dependencies>
 		<!-- ///////////////////////////////////////// -->
-		<!-- RxJava                                    -->
+		<!-- Base                                      -->
 		<!-- ///////////////////////////////////////// -->
 		<dependency>
-		    <groupId>io.reactivex.rxjava2</groupId>
-		    <artifactId>rxjava</artifactId>
-		    <version>${rxjava.version}</version>
+			<groupId>r01.r01f.base</groupId>
+			<artifactId>r01fBaseClasses</artifactId>
+			<version>${r01f.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>r01.r01f.base</groupId>
+			<artifactId>r01fReflectionClasses</artifactId>
+			<version>${r01f.version}</version>
 		</dependency>
 	</dependencies>
 </project>
