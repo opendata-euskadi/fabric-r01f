@@ -6,6 +6,7 @@ import r01f.exceptions.EnrichedRuntimeException;
 import r01f.guids.CommonOIDs.AppCode;
 import r01f.guids.CommonOIDs.AppComponent;
 import r01f.guids.CommonOIDs.Environment;
+import r01f.types.Path;
 import r01f.util.types.Strings;
 
 public class XMLPropertiesException 
@@ -32,23 +33,25 @@ public class XMLPropertiesException
 /////////////////////////////////////////////////////////////////////////////////////////
 //  BUILDERS
 /////////////////////////////////////////////////////////////////////////////////////////
-	public static XMLPropertiesException componentDefLoadError(final Environment env,final AppCode appCode,final AppComponent component) {
+	public static XMLPropertiesException componentDefLoadError(final Environment env,
+															   final AppCode appCode,final AppComponent component) {
 		return XMLPropertiesException.componentDefLoadError(env,appCode,component,
 							   		  						null);
 	}
-	public static XMLPropertiesException componentDefLoadError(final Environment env,final AppCode appCode,final AppComponent component,
+	public static XMLPropertiesException componentDefLoadError(final Environment env,
+															   final AppCode appCode,final AppComponent component,
 															   final IOException ioEx) {
 		String err = null;
 		if (env == null || env.equals(Environment.NO_ENV)) {
-			err = Strings.customized("Error trying to load the component definition xml for appCode/component={}/{}; Ensure that the file /{}/components/{}.{}.xml is in the application classpath " + 
-									"(ie: /config/{}/components/{}.{}.xml",
-						 			 appCode,component,appCode,appCode,component,
-						 			 appCode,appCode,component);
+			err = Strings.customized("Error trying to load the component definition xml for appCode/component={}/{}; Ensure that the file {} is in the application classpath",
+						 			 appCode,component,
+						 			 XMLPropertiesComponentDefLoader.componentDefFilePath(appCode,component));
 		} else {
-			err = Strings.customized("Error trying to load the component definition xml for env/appCode/component={}/{}/{}; Ensure that the file /{}/{}/components/{}.{}.xml  is in the application classpath " +
-									 "(ie: /config/{}/components/{}.{}.xml",
-						 			 env,appCode,component,env,appCode,appCode,component,
-						 			 appCode,appCode,component);
+			err = Strings.customized("Error trying to load the component definition xml for env/appCode/component={}/{}/{}; Ensure that the file {} or {}  is in the application classpath",
+						 			 env,appCode,component,
+						 			 XMLPropertiesComponentDefLoader.componentDefFilePath(appCode,component),
+						 			 XMLPropertiesComponentDefLoader.componentDefFilePath(env,
+						 					 											  appCode, component));
 		}
 		return new XMLPropertiesException(err,
 										  ioEx,
@@ -70,7 +73,7 @@ public class XMLPropertiesException
         				            		 		 : "the definition was NOT found",
         				             appCode,component);
         } else {
-        	err = Strings.customized("The XML properties file {} was NOT found for env/appCode/component={}/{}/{} loaded at: {}",
+        	err = Strings.customized("The XML properties file {} was NOT found for env/appCode/component={}/{}/{}",
         				             compDef != null ? Strings.customized("{} ({})", 
         				            		 							  compDef.getPropertiesFileURI(),
         				            		 							  compDef.getLoaderDef() != null ? compDef.getLoaderDef().getLoader() : "unknown loader type")
