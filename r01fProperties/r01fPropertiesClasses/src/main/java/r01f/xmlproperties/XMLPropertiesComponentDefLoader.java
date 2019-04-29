@@ -1,6 +1,7 @@
 package r01f.xmlproperties;
 
 import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
@@ -14,7 +15,6 @@ import org.xml.sax.SAXException;
 
 import com.google.common.collect.Maps;
 
-import lombok.Cleanup;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +35,7 @@ import r01f.xml.XMLUtils;
 @Slf4j
 @Accessors(prefix="_")
 @NoArgsConstructor
-public class XMLPropertiesComponentDefLoader {
+class XMLPropertiesComponentDefLoader {
 /////////////////////////////////////////////////////////////////////////////////////////
 //  LOAD METHODS
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -50,31 +50,55 @@ public class XMLPropertiesComponentDefLoader {
 	public static XMLPropertiesComponentDef load(final Environment env,
     											 final AppCode appCode,
     											 final AppComponent component) throws XMLPropertiesException {
-    	XMLPropertiesComponentDef outDef = null;
+    	XMLPropertiesComponentDef outDef = null;    	
 		// Load the component definition from /config/appCode/components/appCode.component.xml
+        ResourcesLoader resourcesLoader = ResourcesLoaderBuilder.DEFAULT_RESOURCES_LOADER;
+
+    	// Get an IS to the xml definition
+    	// This file is ALWAYS loaded from the CLASSPATH at components/[appCode].[component].xml
+    	// BEWARE!! It's a RELATIVE path since the classloader is used (see ClassPathResourcesLoader)
+        
+        // Load the component definition file
+        InputStream defXmlIS = null;
         try {
-        	// Get an IS to the xml definition
-        	// This file is ALWAYS loaded from the CLASSPATH at components/[appCode].[component].xml
-        	// BEWARE!! It's a RELATIVE path since the classloader is used (see ClassPathResourcesLoader)
-        	String filePath = null;
-        	if (env == null || env.equals(Environment.NO_ENV)) {
-        		filePath = Strings.customized("{}/components/{}.{}.xml",			// ie: /components/r01.default.xml
-        						  			  appCode,appCode,component);	
-        	} else {
-        		filePath = Strings.customized("{}/{}/components/{}.{}.xml",			// ie: /components/loc/r01.default.xml
-        						   			  env,appCode,appCode,component);
-        	}
-        	
-        	ResourcesLoader resourcesLoader = ResourcesLoaderBuilder.DEFAULT_RESOURCES_LOADER;					
-			@Cleanup InputStream defXmlIS = resourcesLoader.getInputStream(Path.from(filePath),true);	// true: use cache
-			outDef = XMLPropertiesComponentDefLoader.load(defXmlIS);
+        	// a) - Try the env-independent file
+        	Path compDefEnvIndepFilePath = XMLPropertiesComponentDefLoader.componentDefFilePath(appCode,component);
+			defXmlIS = resourcesLoader.getInputStream(Path.from(compDefEnvIndepFilePath),
+													  true);	// true: use cache
         } catch (IOException ioEx) {
-    		throw XMLPropertiesException.componentDefLoadError(env,appCode,component,
-    														   ioEx);
+        	// b) - Try the env-dependent file
+        	if (ioEx instanceof FileNotFoundException
+        	 && env != null && env != Environment.NO_ENV) {
+        		try {
+	        		Path compDefEnvDepFilePath = XMLPropertiesComponentDefLoader.componentDefFilePath(env,
+	        													   									  appCode,component);
+					defXmlIS = resourcesLoader.getInputStream(Path.from(compDefEnvDepFilePath),
+															  true);
+        		} catch (IOException ioEx2) {
+        			// nothing...
+        		}
+        	}
         }
-        // Add the name  (it's not at the xml)
-        outDef.setName(component);
-    	return outDef;
+        // c) - If not found throw
+        if (defXmlIS == null)  throw XMLPropertiesException.componentDefLoadError(env,appCode,component);
+        
+        // d) - Return
+        try {
+			outDef = XMLPropertiesComponentDefLoader.load(defXmlIS);
+	        outDef.setName(component);		// Add the name  (it's not at the xml)
+        } catch (IOException ioEx) {
+        	throw XMLPropertiesException.componentDefLoadError(env,appCode,component,
+        													   ioEx);
+        } finally {
+        	if (defXmlIS != null) {
+        		try {
+        			defXmlIS.close();
+        		} catch (IOException ioEx) {
+        			/* ignored */
+        		}
+        	}
+        }
+        return outDef;
     }
 	/**
 	 * Loads a component definition XML or a default one if it's NOT found
@@ -92,9 +116,9 @@ public class XMLPropertiesComponentDefLoader {
 		try {
     		compDef = XMLPropertiesComponentDefLoader.load(env,
     													   appCode,component);
-		} catch(XMLPropertiesException xmlPropsEx) {
+		} catch (XMLPropertiesException xmlPropsEx) {
 			// If the component definition was NOT found, try a default one
-			if (xmlPropsEx.is(XMLPropertiesErrorType.COMPONENTDEF_NOT_FOUND) ) {
+			if (xmlPropsEx.is(XMLPropertiesErrorType.COMPONENTDEF_NOT_FOUND)) {
 				// try the default component definition
 				compDef = new XMLPropertiesComponentDef();
 				compDef.setName(component);
@@ -102,14 +126,38 @@ public class XMLPropertiesComponentDefLoader {
 				compDef.setPropertiesFileURI(Path.from(String.format("%s/%s.%s.properties.xml",
 																	 appCode,appCode,component)));
 				compDef.setLoaderDef(ResourcesLoaderDef.DEFAULT);
-				log.warn("Could NOT found the xml properties component definition for appCode={} / component={}... trying to find it at {}",
-						 appCode,component,
-						 compDef.getPropertiesFileURI());
+				if (env != null && env != Environment.NO_ENV) {
+					log.warn("Could NOT found the xml properties component definition for appCode/component={}/{} for env={} at {} or {}",
+							 appCode,component,env,
+							 XMLPropertiesComponentDefLoader.componentDefFilePath(appCode,component),
+							 XMLPropertiesComponentDefLoader.componentDefFilePath(env,
+									 				   							  appCode,component));
+				} else {
+					log.warn("Could NOT found the xml properties component definition for appCode/component={}/{} for env={} at {}",
+							 appCode,component,env,
+							 XMLPropertiesComponentDefLoader.componentDefFilePath(appCode,component));					
+				}
 			} else {
 				throw xmlPropsEx;
 			}
 		}
 		return compDef;
+	}
+	static Path componentDefFilePath(final Environment env,
+    								 final AppCode appCode,final AppComponent component) {
+    	Path filePath = null;
+    	if (env == null || env.equals(Environment.NO_ENV)) {
+    		filePath = XMLPropertiesComponentDefLoader.componentDefFilePath(appCode,component);
+    	} else {
+    		filePath = Path.from(Strings.customized("{}/{}/components/{}.{}.xml",			// ie: /components/loc/r01.default.xml
+    						   			  			env,appCode,appCode,component));
+    	}
+    	return filePath;
+	}
+	static Path componentDefFilePath(final AppCode appCode,final AppComponent component) {
+    	String filePath = Strings.customized("{}/components/{}.{}.xml",			// ie: /components/r01.default.xml
+    						  			  	 appCode,appCode,component);	
+    	return Path.from(filePath);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	
