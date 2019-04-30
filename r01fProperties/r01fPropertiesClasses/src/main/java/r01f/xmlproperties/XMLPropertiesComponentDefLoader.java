@@ -48,8 +48,10 @@ class XMLPropertiesComponentDefLoader {
      * @throws XMLPropertiesException if the file cannot be loaded or it's malformed
      */
 	public static XMLPropertiesComponentDef load(final Environment env,
-    											 final AppCode appCode,
-    											 final AppComponent component) throws XMLPropertiesException {
+    											 final AppCode appCode,final AppComponent component) throws XMLPropertiesException {
+		log.warn("Loading xml properties component definition for appCode/compoennt={}/{} (env={})",
+				 appCode,component,
+				 env);
     	XMLPropertiesComponentDef outDef = null;    	
 		// Load the component definition from /config/appCode/components/appCode.component.xml
         ResourcesLoader resourcesLoader = ResourcesLoaderBuilder.DEFAULT_RESOURCES_LOADER;
@@ -119,28 +121,35 @@ class XMLPropertiesComponentDefLoader {
 		} catch (XMLPropertiesException xmlPropsEx) {
 			// If the component definition was NOT found, try a default one
 			if (xmlPropsEx.is(XMLPropertiesErrorType.COMPONENTDEF_NOT_FOUND)) {
-				// try the default component definition
+				// warn
+				if (env != null && env != Environment.NO_ENV) {
+					log.warn("\t... Could NOT find the xml properties component definition for appCode/component={}/{} for env={} at {} or {}",
+							 appCode,component,env,
+							 XMLPropertiesComponentDefLoader.componentDefFilePath(appCode,component),
+							 XMLPropertiesComponentDefLoader.componentDefFilePath(env,
+									 				   							  appCode,component));
+				} else {
+					log.warn("\t... Could NOT find the xml properties component definition for appCode/component={}/{} for env={} at {}",
+							 appCode,component,env,
+							 XMLPropertiesComponentDefLoader.componentDefFilePath(appCode,component));					
+				}
+				// build a default component definition
 				compDef = new XMLPropertiesComponentDef();
 				compDef.setName(component);
 				compDef.setNumberOfPropertiesEstimation(50);
 				compDef.setPropertiesFileURI(Path.from(String.format("%s/%s.%s.properties.xml",
 																	 appCode,appCode,component)));
 				compDef.setLoaderDef(ResourcesLoaderDef.DEFAULT);
-				if (env != null && env != Environment.NO_ENV) {
-					log.warn("Could NOT found the xml properties component definition for appCode/component={}/{} for env={} at {} or {}",
-							 appCode,component,env,
-							 XMLPropertiesComponentDefLoader.componentDefFilePath(appCode,component),
-							 XMLPropertiesComponentDefLoader.componentDefFilePath(env,
-									 				   							  appCode,component));
-				} else {
-					log.warn("Could NOT found the xml properties component definition for appCode/component={}/{} for env={} at {}",
-							 appCode,component,env,
-							 XMLPropertiesComponentDefLoader.componentDefFilePath(appCode,component));					
-				}
+				log.warn("\t... The properties file will be loaded using {} loader from path {}",
+						 compDef.getLoaderDef().getLoader(),compDef.getPropertiesFileURI());
 			} else {
 				throw xmlPropsEx;
 			}
 		}
+		log.debug("xml properties component loader definition for appCode/component={}/{} (env={}):\n{}",
+				  appCode,component,
+				  env,
+				  component,compDef.debugInfo());
 		return compDef;
 	}
 	static Path componentDefFilePath(final Environment env,

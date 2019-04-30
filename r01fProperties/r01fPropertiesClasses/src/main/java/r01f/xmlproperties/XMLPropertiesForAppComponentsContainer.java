@@ -153,7 +153,7 @@ class XMLPropertiesForAppComponentsContainer {
      * @return the number of removed property entries
      */
     int clear(final AppComponent component) {
-    	log.trace("Clearing XML documents cache for {}/{}",_appCode,component);
+    	log.warn("Clearing XML documents cache for {}/{}",_appCode,component);
     	int numMatches = 0;
         if (component == null) {
         	numMatches = _componentsXMLCache.size();
@@ -207,8 +207,8 @@ class XMLPropertiesForAppComponentsContainer {
 	    	if (timeElapsed > checkInterval) {
 		    	outReload = reloadControlImpl.needsReload(component.asString());
 		    	if (outReload) {
-		    		log.debug("***** RELOAD component {}/{} ******",
-		    				  _appCode,component);
+		    		log.warn("***** RELOAD component {}/{} ******",
+		    				 _appCode,component);
 		    		this.clear(component);		// If a reload is needed, delete the component's definition
 		    	}
 	    	}
@@ -384,8 +384,9 @@ class XMLPropertiesForAppComponentsContainer {
         		// Load the component definition
         		XMLPropertiesComponentDef compDef = XMLPropertiesComponentDefLoader.loadOrDefault(_systemSetEnvironment,
 	        													   								  _appCode,component);
-    			log.trace("Loading properties for {}/{} with component definition:{}",
-    					 _appCode.asString(),component,compDef.debugInfo().toString());
+    			log.warn("Loading xml properties for {}/{} using {} loader",
+    					 _appCode,component,
+    					 compDef.getLoaderDef().getLoader());
 
     			// [0] -- Tell the cache that a new properties component has been loaded
     			//		  (at this point the cache is re-built to accommodate the new estimated property number)
@@ -424,7 +425,11 @@ class XMLPropertiesForAppComponentsContainer {
 		Path defPropsFileUri = compDef.getPropertiesFileURI();
 		Document defXmlDoc = null;
 		try {
+			log.warn("\t... trying to find env-independent properties file at {}",
+					 defPropsFileUri);
 			defXmlDoc = domBuilder.buildXMLDOM(defPropsFileUri);
+			log.warn("\t... found xml properties env-independent properties file at {}",
+					 defPropsFileUri);
 		} catch (SAXException saxEx) {
 			if (Throwables.getRootCause(saxEx) instanceof FileNotFoundException) {
 				log.error("Could NOT load xml properties file at {} using {} loader",
@@ -440,32 +445,32 @@ class XMLPropertiesForAppComponentsContainer {
 		Path envDepPropsFileUri = Path.from(_systemSetEnvironment)
 									  .joinedWith(compDef.getPropertiesFileURI());
 		if (_systemSetEnvironment != null) {
-			log.warn("...trying to find env-dependent properties file at {}",envDepPropsFileUri);
+			log.warn("\t... trying to find env-dependent properties file at {}",envDepPropsFileUri);
 			InputStream envDepPropsFileIS = null;
 			try {
 				envDepPropsFileIS = resLoader.getInputStream(envDepPropsFileUri);
 			} catch (IOException ioEx) {
-				log.warn("...NO env-dependent properties file found at {}",envDepPropsFileUri);
+				log.warn("\t... NO env-dependent properties file found at {}",envDepPropsFileUri);
 			}
 			if (envDepPropsFileIS != null) {
 				try {
-					log.warn("...loading env-dependent properties file at {}",
-							 envDepPropsFileUri);
 					envXmlDoc = domBuilder.buildXMLDOM(envDepPropsFileUri);
+					log.warn("\t... found env-dependent properties file at {}",
+							 envDepPropsFileUri);
 				} catch (SAXException saxEx) {
 					saxEx.printStackTrace();
 				}
 			} else {
-				log.warn("...NO env-dependent properties file found at {}",envDepPropsFileUri);
+				log.warn("\t... NO env-dependent properties file found at {}",envDepPropsFileUri);
 			}
 		} else {
-			log.warn("...no env set with -DR01ENV={env}: NO env-dependent properties file is used!");
+			log.warn("\t... NO env set with -DR01ENV={env}: NO env-dependent properties file is used!");
 		}
 		// [4] Merge all files if necessary
 		Document outXml = null;
 		if (envXmlDoc != null) {
 			try {
-				log.warn("... merge xml properties file at {} with env-dependent at {}",
+				log.warn("\t... merge xml properties file at {} with env-dependent at {}",
 						 defPropsFileUri,envDepPropsFileUri);
 				XMLMerger merger = new XMLMerger();
 				merger.merge(defXmlDoc);		// recessive
