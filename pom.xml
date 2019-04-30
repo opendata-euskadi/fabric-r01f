@@ -175,22 +175,22 @@
 	-->
 	<repositories>
 	    <repository>
-	      <id>EJIE</id>
-	      <name>EJIE Public Releases</name>
-	      <url>https://bin1.alm02.itbatera.euskadi.eus/repository/maven-public-releases/</url>
-	      <releases>
-	        <enabled>true</enabled>
-	        <updatePolicy>always</updatePolicy>
-	        <checksumPolicy>warn</checksumPolicy>
-	      </releases>
-	      <snapshots>
-	        <enabled>false</enabled>
-	        <updatePolicy>never</updatePolicy>
-	        <checksumPolicy>fail</checksumPolicy>
-	      </snapshots>
-	      <layout>default</layout>
-	    </repository>
-	</repositories>  
+			<id>EJIE</id>
+			<name>EJIE Public Releases</name>
+			<url>https://bin1.alm02.itbatera.euskadi.eus/repository/maven-public-releases/</url>
+			<releases>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+				<checksumPolicy>warn</checksumPolicy>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+				<updatePolicy>never</updatePolicy>
+				<checksumPolicy>fail</checksumPolicy>
+			</snapshots>
+			<layout>default</layout>
+	    </repository> 
+	</repositories>
   
 
 <!-- ====================================================================== -->
