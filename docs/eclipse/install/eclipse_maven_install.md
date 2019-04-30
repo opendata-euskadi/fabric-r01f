@@ -143,6 +143,7 @@ c) **Eclipse WTP tools** (from eclipse update site)
 If you have compatibility problems uninstall "Eclipse XML Editors and Tools" checking the option "Update my installation to be compatible with the items being installed".
 
 d) **[AnyEdit Tools]** either using the [eclipse marketplace] or from the update site at: http://andrei.gmxhome.de/eclipse/
+
 		[X] Eclipse 3.8 - 4.11 plugins
 			[X] AnyEditTools
 
@@ -157,16 +158,18 @@ a) **General**
 b) **[Maven]**
 
 > `[Maven > Download artifact sources]` : true
+
 > `[Maven > Archetypes]` > Add a NEW remote catalog at: http://repo1.maven.org/maven2/archetype-catalog.xml 
+
 > `[Maven > User Settings] > Global Settings`: {dev_home}/projects/fabric/r01f/docs/eclipse/maven/settings_{env}.xml
 
-*BEWARE*: Ensure that `[Local Repository] (from merged user and global settings)` is `{dev_home}/maven_libs`
+*BEWARE*:
+* Ensure that `[Local Repository] (from merged user and global settings)` is `{dev_home}/maven_libs`
 
+* Some artifacts are NOT published at MAVEN CENTRAL; this is the case of javax.ejb / javax.servlet-api or javax.jms. The only workarround is to put all those artifacts at `{dev_home}/maven_libs/` manually
 
-*BEWARE*: Some artifacts are NOT published at MAVEN CENTRAL; this is the case of javax.ejb / javax.servlet-api or javax.jms. The only workarround is to put all those artifacts at `{dev_home}/maven_libs/` manually
+* create a weblogic fullclient jar to be used as external dependency:
 
-
-*BEWARE*: to create a weblogic fullclient jar to be used as external dependency:
 ```
 	> cd \app-server\wls_10.3.6\wlserver\server\lib
 	> java -jar d:\app-server\wls_10.3.6\modules\com.bea.core.jarbuilder_1.7.0.0.jar
@@ -179,11 +182,12 @@ c) **[Java]**
 
 > `[Java] > [Editor] > [Templates]` add a NEW **Java** template named **_sep** with the following content
 
-> /////////////////////////////////////////////////////////////////////////////////////////
-> //	${cursor}
-> /////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////
+	//	${cursor}
+	/////////////////////////////////////////////////////////////////////////////////////////
 
 > `[Java] > [Editor] > [Typing]`
+
 >       - Automatically insert at correct position [X] semicolons [X] braces
 >       - When pasting (remove check):  [-] Adjust indentation
 
@@ -198,4 +202,5 @@ This excludes .class files from synchronized files.
 ## [7]: Create a workspace for a project
 
 Just copy the _template_ workspace folde: `/{dev_home}/workspaces/master_[instance_name]` with a new name id: `/{dev_home}/workspaces/my_project`
+
 ... now simply launch eclipse from  `/{dev_home}/instances/[instance_name]` as usual and when asked, select the workspace folder

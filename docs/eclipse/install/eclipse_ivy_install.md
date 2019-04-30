@@ -113,6 +113,7 @@ b) **IvyDE** > https://builds.apache.org/job/IvyDE-updatesite/lastSuccessfulBuil
 ```
 c) **Eclipse WTP tools** (from eclipse update site)
 For Eclipse 2018-19 version use this site http://download.eclipse.org/releases/2018-09
+
 ```
 		  Web, XML, Java EE and OSGi Enterprise Development
 			[X]	Eclipse Faceted Project Framework
@@ -139,7 +140,9 @@ d) **Collaboration Tools: SVN**
 ```
 
 **Eclipse Photon NOTE:** Eclipse Photon has discontinued the SVN support so in order to install SVN in Photon SVN MUST be installed from Oxygen update site: http://download.eclipse.org/releases/oxygen
+
 For eclipse 2018-19 only check this:
+
 				Collaboration
 					[X] Subversive SVN Team Provider
 
@@ -160,8 +163,7 @@ Select AT LEAST [svnkit]
 
 	4.- Add a new repository and install
 
- If this DOES NOT WORKS, try to install from a ZIP file downloaded from:
-	http://community.polarion.com/projects/subversive/download/eclipse/6.0/builds/
+ If this DOES NOT WORKS, try to install from a ZIP file downloaded from: <http://community.polarion.com/projects/subversive/download/eclipse/6.0/builds/>
 
  If this DOES NOT EVEN WORKS try:
 
@@ -169,6 +171,7 @@ Select AT LEAST [svnkit]
 		2.- DELETE all polarion ARTIFACTS from d:\eclipse\instances\{workspace_name}\artifacts.xml
 
 f) **[AnyEdit Tools]** either using the [eclipse marketplace] or from the update site at: http://andrei.gmxhome.de/eclipse/
+
 		[X] Eclipse 3.8 - 4.11 plugins
 			[X] AnyEditTools
 
@@ -181,13 +184,17 @@ a) **General**
 b) **[Ivy]**
 
 > `[Classpath container] > Resolve dependencies in workspace` : true
+
 > `[settings] > Ivy user dir`: /{dev_home}/ivy_libs
+
 > `[settings] > Property files`: Add the file at `/{dev_home}/eclipse/projects_r01/base/r01fbDocs/ivy/r01.versions.properties}`
 
-*BEWARE*: Some artifacts are NOT published at MAVEN CENTRAL; this is the case of javax.ejb / javax.servlet-api or javax.jms. The only workarround is to put all those artifacts in {dev_home}/ivy_libs/local
+*BEWARE*: 
+* Some artifacts are NOT published at MAVEN CENTRAL; this is the case of javax.ejb / javax.servlet-api or javax.jms. The only workarround is to put all those artifacts in {dev_home}/ivy_libs/local
 just extract the file `[r01fbDocs]/ivy/artifacts-not-published-at-maven-central.zip`  at {dev_home}/ivy_libs/local
 
-*BEWARE*: to create a weblogic fullclient jar to be used as external dependency:
+* to create a weblogic fullclient jar to be used as external dependency:
+
 ```
 	> cd \app-server\wls_10.3.6\wlserver\server\lib
 	> java -jar d:\app-server\wls_10.3.6\modules\com.bea.core.jarbuilder_1.7.0.0.jar
@@ -200,9 +207,9 @@ c) **[Java]**
 
 > `[Java] > [Editor] > [Templates]` add a NEW **Java** template named **_sep** with the following content
 
-> /////////////////////////////////////////////////////////////////////////////////////////
-> //	${cursor}
-> /////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////
+	//	${cursor}
+	/////////////////////////////////////////////////////////////////////////////////////////
 
 > `[Java] > [Editor] > [Typing]`
 >       - Automatically insert at correct position [X] semicolons [X] braces
@@ -222,10 +229,11 @@ a) **[Java]**
 > `[Java] > [Installed JREs]`: Add a NEW JRE named R01FB_JRE
 
 b) **Local User Libraries**
-Import eclipse's local libs from `[r01fbDocs]/eclipse/libs/pci-localLibs_(linux|win)_userlibraries`
+> Import eclipse's local libs from `[r01fbDocs]/eclipse/libs/pci-localLibs_(linux|win)_userlibraries`
 > `[Java] > [Build Path] > [User Libraries] > [Import]`
 
 ## [7]: Create a workspace for a project
 
 Just copy the _template_ workspace folde: `/{dev_home}/eclipse/workspaces/master_[instance_name]` with a new name id: `/{dev_home}/eclipse/workspaces/my_project`
+
 ... now simply launch eclipse from  `/{dev_home}/eclipse/instances/[instance_name]` as usual and when asked, select the workspace folder
