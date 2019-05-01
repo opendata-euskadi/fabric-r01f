@@ -50,6 +50,7 @@
     <module>r01fWeb</module>
     <module>r01fHTML</module>
     <module>r01fConfig</module>
+    <module>r01fS3</module> 
   </modules>
   
 <!-- ====================================================================== -->
