@@ -29,7 +29,7 @@ public class GeoPosition2D
 /////////////////////////////////////////////////////////////////////////////////////////
 	@MarshallField(as="standard",
 				   whenXml=@MarshallFieldAsXml(attr=true))
-	@Getter @Setter private GeoPositionStandad _standard;
+	@Getter @Setter private GeoPositionStandard _standard;
 
 	@MarshallField(as="x",
 				   whenXml=@MarshallFieldAsXml(attr=true))
@@ -41,7 +41,7 @@ public class GeoPosition2D
 /////////////////////////////////////////////////////////////////////////////////////////
 //  STANDARDS
 /////////////////////////////////////////////////////////////////////////////////////////
-	public static enum GeoPositionStandad {
+	public static enum GeoPositionStandard {
 		GOOGLE,		// WGS84 / ETRS89
 		ED50;
 	}
@@ -51,17 +51,17 @@ public class GeoPosition2D
 	public GeoPosition2D() {
 		// default no-args constructor
 	}
-	public GeoPosition2D(final GeoPositionStandad standard) {
+	public GeoPosition2D(final GeoPositionStandard standard) {
 		_standard = standard;
 	}
-	public GeoPosition2D(final GeoPositionStandad standard,
+	public GeoPosition2D(final GeoPositionStandard standard,
 						 final double x,final double y) {
 		this(standard);
 		_x = x;
 		_y = y;
 	}
 	public GeoPosition2D(final double x,final double y) {
-		this(GeoPositionStandad.GOOGLE,
+		this(GeoPositionStandard.GOOGLE,
 			 x,y);
 	}
 	public static GeoPosition2D at(final double x,final double y) {
@@ -70,7 +70,7 @@ public class GeoPosition2D
 /////////////////////////////////////////////////////////////////////////////////////////
 //  FLUENT
 /////////////////////////////////////////////////////////////////////////////////////////
-	public GeoPosition2D encodedUsing(final GeoPositionStandad std) {
+	public GeoPosition2D encodedUsing(final GeoPositionStandard std) {
 		_standard = std;
 		return this;
 	}
