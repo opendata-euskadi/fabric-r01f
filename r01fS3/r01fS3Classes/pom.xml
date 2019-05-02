@@ -47,6 +47,7 @@
 			<artifactId>r01fHttpClientClasses</artifactId>
 			<version>${r01f.version}</version>
 		</dependency>
+		
 		<!-- ///////////////////////////////////////// -->
 		<!--  Amazon S3 Client Classes                 -->
 		<!-- ///////////////////////////////////////// -->
