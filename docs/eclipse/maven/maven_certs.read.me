@@ -32,3 +32,20 @@
 					(the following should NOT be necessary)
 					$>keytool -keystore {jdk_root}\lib\security\cacerts -import -file {develop_root}\projects\fabric\r01f\docs\eclipse\maven\certs\CAAAPPVascas.cer -alias CAAAPPVascas -storepass changeit
 					$>keytool -keystore {jdk_root}\lib\security\cacerts -import -file {develop_root}\projects\fabric\r01f\docs\eclipse\maven\certs\builds1.alm02.itbatera.euskadi.eus.cer -alias builds1.alm02.itbatera.euskadi.eus -storepass changeit
+
+[4] - If you access from Eusko Jaurlaritza Network using proxy, you need to solve this problem:
+
+		[ERROR] Plugin org.apache.maven.plugins:maven-clean-plugin:2.5 or one of its dependencies could not be resolved: Failed to read artifact descriptor
+				for org.apache.maven.plugins:maven-clean-plugin:jar:2.5: Could not transfer artifact org.apache.maven.plugins:maven-clean-plugin:pom:2.5
+				from/to central (https://repo.maven.apache.org/maven2): sun.security.validator.ValidatorException: PKIX path building failed:
+				sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target -> [Help 1]
+
+,install another cert (from https://repo.maven.apache.org/maven2) as follow:
+			- If JRE <= 8
+					$>keytool -keystore {jdk_root}\jre\lib\security\cacerts -import -file {develop_root}\projects\fabric\r01f\docs\eclipse\maven\certs\McAffeeWebGatewayEuskoJaurlaritza.cer -alias mcaffee_eus_root -storepass changeit
+			- If JRE > 8
+					$>keytool -keystore {jdk_root}\lib\security\cacerts -import -file {develop_root}\projects\fabric\r01f\docs\eclipse\maven\certs\McAffeeWebGatewayEuskoJaurlaritza.cer -alias mcaffee_eus_root -storepass changeit
+
+
+
+
