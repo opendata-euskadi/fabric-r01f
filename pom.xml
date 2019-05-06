@@ -12,13 +12,13 @@
 		<!-- Java version -->
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		
+
 		<!-- R01F version -->
 		<!-- BEWARE! use this property on [dependencies] ONLY
 		     		 for [artifact] versioning use maven versions plugin:
 		     		 	> mvn versions:set -DnewVersion=1.0.3 -->
 		<r01f.version>0.0.1-SNAPSHOT</r01f.version>
-		
+
 		<!-- Dependencies versions -->
 		<slf4j.version>1.7.25</slf4j.version>
 		<logback.verson>1.2.3</logback.verson>
@@ -50,13 +50,13 @@
     <module>r01fWeb</module>
     <module>r01fHTML</module>
     <module>r01fConfig</module>
-    <module>r01fS3</module> 
+    <module>r01fS3</module>
   </modules>
-  
+
 <!-- ====================================================================== -->
 <!-- DEPENDENCIES                                                           -->
 <!-- ====================================================================== -->
-	<dependencies>		
+	<dependencies>
 		<!-- ///////////////////////////////////////// -->
 		<!-- Project lombok                            -->
 		<!-- ///////////////////////////////////////// -->
@@ -74,7 +74,7 @@
 			<artifactId>slf4j-api</artifactId>
 			<version>${slf4j.version}</version>
 		</dependency>
-		
+
 		<!-- ///////////////////////////////////////// -->
 		<!-- Logback                                   -->
 		<!-- ///////////////////////////////////////// -->
@@ -88,7 +88,7 @@
 		    <artifactId>logback-classic</artifactId>
 		    <version>${logback.verson}</version>
 		</dependency>
-		
+
 		<!-- ///////////////////////////////////////// -->
 		<!-- SL4FJ BRIDGES                             -->
 		<!-- ///////////////////////////////////////// -->
@@ -155,23 +155,23 @@
 				[Izenpe.com]
 					|- EAEKo Herri Administrazioen CA - CA AAPP Vascas (2)
 							|- builds1.alm02.itbatera.euskadi.eus
-							
+
 			Download the ROOT certificate as CER files (only the [root] certificate is really needed)
-	
+
 	[3] - When in [eclipse], guess what is the eclipse workspace active jdk
 				[window] > [preferences] > [java] > [installed JREs]
-				
+
 	[3] - Open a system console
 			a) goto to the [jdk] bin directory
 					$> cd {jdk_root}/bin
 			b) run the [keytool]
 				- If JRE <= 8
 						$>keytool -keystore {jdk_root}\jre\lib\security\cacerts -import -file {develop_root}\projects\fabric\r01f\docs\eclipse\maven\certs\izenpe.com.cer -alias izenpe_root -storepass changeit
-				
+
 				- If JRE > 8
 						$>keytool -keystore {jdk_root}\lib\security\cacerts -import -file {develop_root}\projects\fabric\r01f\docs\eclipse\maven\certs\izenpe.com.cer -alias izenpe_root -storepass changeit
 			BEWARE!!!
-				- DO NOT delete the jdk's origina keystore at {jdk_root}\jre\lib\security\cacerts since it contains the 
+				- DO NOT delete the jdk's origina keystore at {jdk_root}\jre\lib\security\cacerts since it contains the
 				  most common certificate-authorities public root certificates
 	-->
 	<repositories>
@@ -190,9 +190,9 @@
 				<checksumPolicy>fail</checksumPolicy>
 			</snapshots>
 			<layout>default</layout>
-	    </repository> 
+	    </repository>
 	</repositories>
-  
+
 
 <!-- ====================================================================== -->
 <!-- PLUGINS                                                                -->
@@ -205,7 +205,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.8.0</version> 
+					<version>3.8.0</version>
 					<configuration>
 						<source>${maven.compiler.source}</source>
 						<target>${maven.compiler.target}</target>
@@ -218,7 +218,7 @@
 					<artifactId>versions-maven-plugin</artifactId>
 					<version>2.7</version>
 				</plugin>
-				
+
 				<!-- Mav4en deploy: https://maven.apache.org/plugins/maven-deploy-plugin/usage.html -->
                 <plugin>
                 	<artifactId>maven-deploy-plugin</artifactId>
@@ -233,7 +233,7 @@
                       	</execution>
                 	</executions>
                 </plugin>
-                
+
                 <!-- Add the [resources] dir to the compile & package phase -->
                 <!-- https://www.mojohaus.org/build-helper-maven-plugin/usage.html -->
 				<plugin>
@@ -261,37 +261,21 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-	
+
 	<!-- Maven deploy -->
 	<distributionManagement>
-		<repository>			
+		<repository>
 			<id>maven-public-releases</id>
 			<name>maven-public-releases</name>
 			<layout>default</layout>
 			<url>https://bin1.alm02.itbatera.euskadi.eus/repository/maven-public-releases/</url>
-			<releases>
-				<enabled>true</enabled>
-				<updatePolicy>always</updatePolicy>
-				<checksumPolicy>warn</checksumPolicy>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
 		</repository>
 		<snapshotRepository>
 			<id>maven-snapshots</id>
 			<name>maven-public-releases</name>
 			<layout>default</layout>
 			<url>https://bin1.alm02.itbatera.euskadi.eus/repository/maven-snapshots/</url>
-			<releases>
-				<enabled>true</enabled>
-				<updatePolicy>always</updatePolicy>
-				<checksumPolicy>warn</checksumPolicy>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
 		</snapshotRepository>
-	</distributionManagement>	
-	
+	</distributionManagement>
+
 </project>

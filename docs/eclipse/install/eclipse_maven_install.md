@@ -104,7 +104,7 @@ When asked for the `[workspace]` location select: `/{dev_home}/workspaces/master
 
 a) **AJDT: AspectJ Development Tools** > 	http://download.eclipse.org/tools/ajdt/410/dev/update
 
-b) **Eclipse GIT plugins** (from eclipse update site)
+b) **Eclipse GIT plugins** (from eclipse update site) (install Git Client https://git-scm.com/download/gui/windows)
 
 ```
         Collaboration
@@ -201,6 +201,6 @@ This excludes .class files from synchronized files.
 
 ## [7]: Create a workspace for a project
 
-Just copy the _template_ workspace folde: `/{dev_home}/workspaces/master_[instance_name]` with a new name id: `/{dev_home}/workspaces/my_project`
+Just copy the _template_ workspace folder: `/{dev_home}/workspaces/master_[instance_name]` with a new name id: `/{dev_home}/workspaces/my_project`
 
 ... now simply launch eclipse from  `/{dev_home}/instances/[instance_name]` as usual and when asked, select the workspace folder
