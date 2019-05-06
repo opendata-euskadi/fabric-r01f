@@ -31,16 +31,18 @@
 			<artifactId>r01fBaseClasses</artifactId>
 			<version>${r01f.version}</version>
 		</dependency>
+		
 		<!-- ///////////////////////////////////////// -->
-		<!--  IO Classes                            -->
+		<!--  IO Classes                               -->
 		<!-- ///////////////////////////////////////// -->
 		<dependency>
 			<groupId>r01.r01f.base</groupId>
 			<artifactId>r01fIOClasses</artifactId>
 			<version>${r01f.version}</version>
 		</dependency>
+		
 		<!-- ///////////////////////////////////////// -->
-		<!--  Http Client                             -->
+		<!--  Http Client                              -->
 		<!-- ///////////////////////////////////////// -->
 		<dependency>
 			<groupId>r01.r01f.httpclient</groupId>
