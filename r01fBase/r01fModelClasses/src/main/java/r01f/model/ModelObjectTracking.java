@@ -20,7 +20,6 @@ import r01f.securitycontext.SecurityContext;
 /**
  * Object's Tracking info (author/a, create date, update date, etc)
  */
-
 @ConvertToDirtyStateTrackable
 @MarshallType(as="tracking")
 @Accessors(prefix="_")
@@ -136,14 +135,12 @@ public class ModelObjectTracking
 		}
 		else if (op == PersistencePerformedOperation.UPDATED) {
 			_lastUpdateDate = new Date();
-			if (_lastUpdatorUserCode == null) {
-				if (other.getLastUpdatorUserCode() != null) {
-					_lastUpdatorUserCode = other.getLastUpdatorUserCode();
-				} else if (securityContext.getUserCode() != null) {
-					_lastUpdatorUserCode = securityContext.getUserCode();
-				} else if (securityContext.getAppCode() != null) {
-					_lastUpdatorUserCode = UserCode.forId(securityContext.getAppCode().asString());
-				}
+			if (securityContext.getUserCode() != null) {
+				_lastUpdatorUserCode = securityContext.getUserCode();
+			} else if (other.getLastUpdatorUserCode() != null) {
+				_lastUpdatorUserCode = other.getLastUpdatorUserCode();
+			} else if (securityContext.getAppCode() != null) {
+				_lastUpdatorUserCode = UserCode.forId(securityContext.getAppCode().asString());
 			}
 		}
 	}
