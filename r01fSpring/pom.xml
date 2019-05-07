@@ -26,6 +26,7 @@
 	<modules>
     <module>r01fSpringClasses</module>
     <module>r01fSpringGuiceIntegrationClasses</module>
+    <module>r01fSpringWeb</module>   
   </modules>
   
 <!-- ====================================================================== -->
