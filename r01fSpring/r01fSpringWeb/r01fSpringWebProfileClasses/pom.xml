@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+<!-- ====================================================================== -->
+<!-- PARENT                                                                 -->
+<!-- ====================================================================== -->
+  <parent>
+    <groupId>r01.r01f.spring.web</groupId>
+    <artifactId>r01fSpringWeb</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+
+<!-- ====================================================================== -->
+<!-- ARTIFACT                                                               -->
+<!-- ====================================================================== -->
+	<name>r01fSpringWebProfileClasses</name>
+	<artifactId>r01fSpringWebProfileClasses</artifactId>
+
+<!-- ====================================================================== -->
+<!-- DEPENDENCIES                                                           -->
+<!-- ====================================================================== -->
+	<dependencies>
+	
+		<!-- ///////////////////////////////////////// -->
+		<!-- ServletAPI                                -->
+		<!-- ///////////////////////////////////////// -->
+		<!-- [r01fWebProfileClasses] has SevletAPI as a dependency, 
+			 ... BUT it's SCOPE is PROVIDED so it has to be defined
+			     here again -->
+		<dependency>
+		    <groupId>javax.servlet</groupId>
+		    <artifactId>javax.servlet-api</artifactId>
+		    <version>3.1.0</version>
+		    <scope>provided</scope>		<!-- BEWARE!!! -->
+		</dependency>
+		
+		<!-- ///////////////////////////////////////// -->
+		<!-- GUICE WEb                                 -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+		    <groupId>com.google.inject</groupId>
+		    <artifactId>guice</artifactId>
+		    <version>${guice.version}</version>
+		</dependency>
+	
+		<!-- ///////////////////////////////////////// -->
+		<!-- R01: Web Profile                          -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+			<groupId>r01.r01f.web</groupId>
+			<artifactId>r01fWebProfileClasses</artifactId>
+			<version>${r01f.version}</version>
+		</dependency>
+		<!-- ///////////////////////////////////////// -->
+		<!-- R01: REST :
+		      Note:  Spring does not uses  javax.ws.rs-api,
+		              but this dependency is needed for this kind of interface clases: 
+		                             RESTResource,  RESTResourceBase, RESTDelegate...
+		              		                            -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+			<groupId>r01.r01f.web</groupId>
+			<artifactId>r01fRESTServicesClasses</artifactId>
+			<version>${r01f.version}</version>
+		</dependency>		
+		<!-- ///////////////////////////////////////// -->
+		<!--  Spring Web MVC			               -->
+		<!-- ///////////////////////////////////////// -->			
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-webmvc</artifactId>
+		    <version>4.2.4.RELEASE</version>
+		</dependency>
+		
+	</dependencies>
+</project>
+
+
+
