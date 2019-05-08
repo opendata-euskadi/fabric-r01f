@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info>
+	<mime-type type="application/rdf+xml">
+		<glob pattern="*.rdf"/>
+		<glob pattern="*.rdfs"/>
+		<glob pattern="*.owl"/>
+		<glob pattern="*.xml"/>
+	</mime-type>
+	<mime-type type="application/ld+json">
+		<glob pattern="*.jsonld"/>
+	</mime-type>
+	<mime-type type="text/plain">
+		<glob pattern="*.nt"/>
+	</mime-type>
+	<mime-type type="application/x-n-triples-RDR">
+		<glob pattern="*.ntx"/>
+	</mime-type>
+	<mime-type type="application/x-turtle">
+		<glob pattern="*.ttl"/>
+	</mime-type>
+	<mime-type type="application/x-turtle-RDR">
+		<glob pattern="*.ttlx"/>
+	</mime-type>
+	<mime-type type="text/rdf+n3">
+		<glob pattern="*.n3"/>
+	</mime-type>
+	<mime-type type="application/trix">
+		<glob pattern="*.trix"/>
+	</mime-type>
+	<mime-type type="application/x-trig">
+		<glob pattern="*.trig"/>
+	</mime-type>
+	<mime-type type="text/x-nquads">
+		<glob pattern="*.nq"/>
+	</mime-type>
+</mime-info>
