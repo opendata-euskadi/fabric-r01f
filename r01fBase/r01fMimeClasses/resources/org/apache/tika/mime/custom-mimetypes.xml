@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- see http://tika.apache.org/1.5/parser_guide.html -->
+<mime-info>
+	<!-- Other CSS extensions -->
+	<mime-type type="text/css">
+		<glob pattern="*.scss" />
+		<glob pattern="*.sass" />
+
+		<sub-class-of type="text/css"/>
+	</mime-type>
+	<!-- SHTML -->
+	<mime-type type="text/html">
+		<glob pattern="*.shtml" />
+		<alias type="text/html"/>
+		<!-- <sub-class-of type="text/html"/> -->
+	</mime-type>
+
+</mime-info>
