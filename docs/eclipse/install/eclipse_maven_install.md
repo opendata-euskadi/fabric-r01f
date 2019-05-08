@@ -175,7 +175,23 @@ b) **[Maven]**
 	> java -jar d:\app-server\wls_10.3.6\modules\com.bea.core.jarbuilder_1.7.0.0.jar
 ```
 
-
+> Configure maven settings file if access via proxy.
+	First copy file {dev_home}/projects/fabric/r01f/docs/eclipse/maven/settings_{env}.xml to another local directory.
+	Edit the file and configure it as this block:
+		<proxies>
+			<proxy>
+			  <id>intercon</id>
+			  <active>true</active>
+			  <protocol>http</protocol>
+			  <username>proxyuser</username>
+			  <password>proxypass</password>
+			  <host>proxyejgv.ejgvdns</host>
+			  <port>8080</port>
+			  <nonProxyHosts>localhost|127.0.0.1</nonProxyHosts>
+			</proxy>
+		</proxies>
+	Use this new file in `[Maven > User Settings] > Global Settings`
+	
 c) **[Java]**
 
 > Import `[compiler preferences]`: `[File] > [Import] > [Preferences]` browse filesystem and select `/{dev_home}/projects/fabric/r01f/docs/eclipse/preferences/pci_compiler_preferences.epf`
