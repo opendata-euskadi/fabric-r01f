@@ -1,16 +1,10 @@
 package r01f.model;
 
-import r01f.guids.CommonOIDs.UserCode;
+import r01f.model.facets.HasCreationData;
+import r01f.model.facets.HasLastUpdateData;
 
-public interface HasTrackingInfo {
-	/**
-	 * @param updator
-	 */
-	public void setLastUpdatorUserCode(final UserCode updator);
-	/**
-	 * @param creator
-	 */
-	public void setCreatorUserCode(final UserCode creator);
+public interface HasTrackingInfo 
+		 extends HasCreationData,HasLastUpdateData {
 	/**
 	 * @return the {@link ModelObjectTracking} info
 	 */

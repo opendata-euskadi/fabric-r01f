@@ -121,7 +121,7 @@ public class ModelObjectTracking
 		if (other == null) return;
 		if (op == PersistencePerformedOperation.CREATED) {
 			_createDate = new Date();
-			_lastUpdateDate = null;
+			_lastUpdateDate = _createDate;
 			if (_creatorUserCode == null) {
 				if (other.getCreatorUserCode() != null) {
 					_creatorUserCode = other.getCreatorUserCode();
