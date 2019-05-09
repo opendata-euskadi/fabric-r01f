@@ -11,7 +11,7 @@
 				
 			- Local environment:
 				The [r01fbConfig] project will be present in the eclipse workspace and if the /r01fb/r01fbEnvironment.xml is 
-				classpath-accesible, the ${DATA_HOME} var will have the d:/temp_dev/log value
+				classpath-accesible, the ${DATA_HOME} var will have the {HOME}/log value
 				BEWARE!!!	Ensure the /r01fb/r01fbEnvironment.xml is accesible at the classpath
 	-->
 	<property name="DATA_HOME" value="d:/temp_dev/log" />	<!-- /datos -->
