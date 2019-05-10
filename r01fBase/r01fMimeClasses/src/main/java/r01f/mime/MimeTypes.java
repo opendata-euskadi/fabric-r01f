@@ -40,7 +40,7 @@ public class MimeTypes {
 																				try {
 																					return MimeTypesFactory.create(resLoader.getInputStream(Path.from("org/apache/tika/mime/tika-mimetypes.xml")),		// tika's core (located at tika-core.jar)
 																												   resLoader.getInputStream(Path.from("org/apache/tika/mime/custom-mimetypes.xml")),	// tika's extension (located at R01F)
-																												   resLoader.getInputStream(Path.from("r01fb/mime/rdf-mimetypes.xml")));				// tika's extension (located at R01F)
+																												   resLoader.getInputStream(Path.from("r01f/mime/rdf-mimetypes.xml")));				// tika's extension (located at R01F)
 																				} catch (final Throwable th) {
 																					log.error("Error loading TIKA mime-types: {}",th.getMessage(),th);
 																					throw new InternalError(th.getMessage());
