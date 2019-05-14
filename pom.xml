@@ -249,6 +249,7 @@
 				      		</goals>
 				      		<configuration>
 				        		<sources>
+				        			<source>src/main/aspect</source>
 				          			<source>src/main/resources</source>
 				          			<source>src/test/resources</source>
 				          			<source>src/main/config</source>
