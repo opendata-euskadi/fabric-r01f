@@ -49,7 +49,6 @@ public class S3ServiceForObjectsImpl
 							   final InputStream stream){
 		return putObject(bucketName,key,stream,null);
 	}
-
 	@Override
 	public PutResult putObject(final S3BucketName bucketName,final S3ObjectKey key,
 							   final InputStream streamToUpload ,final ObjectMetaData objectMetadata){
@@ -98,13 +97,13 @@ public class S3ServiceForObjectsImpl
 		PutObjectResult result =  _s3Client.putObject(new PutObjectRequest(bucketName.asString(),key.asString(),file));
 
 		return PutResultBuilder.create()
-					.forObject(key)
-		               .withVersionId(result.getVersionId())
-		               .etag(result.getETag())
-		               .contentMD5(result.getContentMd5())
-		               .andExpirationTime(result.getExpirationTime())
-		               .withMetadata(ObjectMetaDataTransformer.fromS3ObjectMetaData(result.getMetadata()))
-	               .build();
+								.forObject(key)
+					               .withVersionId(result.getVersionId())
+					               .etag(result.getETag())
+					               .contentMD5(result.getContentMd5())
+					               .andExpirationTime(result.getExpirationTime())
+					               .withMetadata(ObjectMetaDataTransformer.fromS3ObjectMetaData(result.getMetadata()))
+				               .build();
 
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
