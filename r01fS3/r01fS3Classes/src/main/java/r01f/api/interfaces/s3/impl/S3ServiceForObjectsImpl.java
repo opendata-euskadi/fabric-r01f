@@ -2,7 +2,6 @@ package r01f.api.interfaces.s3.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 
 import com.amazonaws.services.s3.AmazonS3;
@@ -50,12 +49,13 @@ public class S3ServiceForObjectsImpl
 							   final InputStream stream){
 		return putObject(bucketName,key,stream,null);
 	}
-
 	@Override
 	public PutResult putObject(final S3BucketName bucketName,final S3ObjectKey key,
 							   final InputStream streamToUpload ,final ObjectMetaData objectMetadata){
-		try {
-
+		try {			
+			if (streamToUpload == null) {
+				throw new IllegalArgumentException(Strings.customized(" The object of key  {}  CANNOT be null to store!!!", key.asString()));
+			}
 			byte[]  contentBytes = Streams.inputStreamBytes(streamToUpload);
 		    ByteArrayInputStream  stream = new ByteArrayInputStream(contentBytes);
 			log.warn(" > Put input stream  {}  of size {} on bucket {}",
@@ -90,17 +90,20 @@ public class S3ServiceForObjectsImpl
 	@Override
 	public PutResult putObject(final S3BucketName bucketName,final S3ObjectKey key,
 							  final File file) {
+		if (file == null) {
+			throw new IllegalArgumentException(Strings.customized(" The object of key  {}  CANNOT be null to store!!!", key.asString()));
+		}
 		log.warn("Put file {} on bucket {}", key, bucketName );
 		PutObjectResult result =  _s3Client.putObject(new PutObjectRequest(bucketName.asString(),key.asString(),file));
 
 		return PutResultBuilder.create()
-					.forObject(key)
-		               .withVersionId(result.getVersionId())
-		               .etag(result.getETag())
-		               .contentMD5(result.getContentMd5())
-		               .andExpirationTime(result.getExpirationTime())
-		               .withMetadata(ObjectMetaDataTransformer.fromS3ObjectMetaData(result.getMetadata()))
-	               .build();
+								.forObject(key)
+					               .withVersionId(result.getVersionId())
+					               .etag(result.getETag())
+					               .contentMD5(result.getContentMd5())
+					               .andExpirationTime(result.getExpirationTime())
+					               .withMetadata(ObjectMetaDataTransformer.fromS3ObjectMetaData(result.getMetadata()))
+				               .build();
 
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
