@@ -6,13 +6,13 @@
 		LogPath config:
 			- EJIE environments: 
 				Usually the /r01fb/r01fbEnvironment.xml file WILL NOT be present at the EJIE environment so 
-				the ${DATA_HOME} will NOT be defined ad the ${logPath} var will get the DEFAULT value: /datos
-				BEWARE!!!	If the /r01fb/r01fbEnvironment.xml is present a the environment CHECK the ${DATA_HOME} var value
+				the ${LOG_HOME} will NOT be defined ad the ${logPath} var will get the DEFAULT value: /datos
+				BEWARE!!!	If the /r01fb/r01fbEnvironment.xml is present a the environment CHECK the ${LOG_HOME} var value
 				
 			- Local environment:
 				The [r01fbConfig] project will be present in the eclipse workspace and if the /r01fb/r01fbEnvironment.xml is 
-				classpath-accesible, the ${DATA_HOME} var will have the {HOME}/log value
+				classpath-accesible, the ${LOG_HOME} var will have the {HOME}/log value
 				BEWARE!!!	Ensure the /r01fb/r01fbEnvironment.xml is accesible at the classpath
 	-->
-	<property name="DATA_HOME" value="d:/temp_dev/log" />	<!-- /datos -->
+	<property name="LOG_HOME" value="${R01_HOME}/log" />	
 </included>
