@@ -6,7 +6,6 @@ import r01f.exceptions.EnrichedRuntimeException;
 import r01f.guids.CommonOIDs.AppCode;
 import r01f.guids.CommonOIDs.AppComponent;
 import r01f.guids.CommonOIDs.Environment;
-import r01f.types.Path;
 import r01f.util.types.Strings;
 
 public class XMLPropertiesException 
@@ -42,7 +41,7 @@ public class XMLPropertiesException
 															   final AppCode appCode,final AppComponent component,
 															   final IOException ioEx) {
 		String err = null;
-		if (env == null || env.equals(Environment.NO_ENV)) {
+		if (env == null) {
 			err = Strings.customized("Error trying to load the component definition xml for appCode/component={}/{}; Ensure that the file {} is in the application classpath",
 						 			 appCode,component,
 						 			 XMLPropertiesComponentDefLoader.componentDefFilePath(appCode,component));
@@ -65,7 +64,7 @@ public class XMLPropertiesException
 			/* ignore */
 		}
         String err = null;
-        if (env == null || env.equals(Environment.NO_ENV)) {
+        if (env == null) {
         	err = Strings.customized("The XML properties file {} was NOT found for appCode/component={}/{}",
         				             compDef != null ? Strings.customized("{} ({})", 
         				            		 							  compDef.getPropertiesFileURI(),
@@ -85,7 +84,7 @@ public class XMLPropertiesException
 	}
 	public static XMLPropertiesException propertiesXMLError(final Environment env,final AppCode appCode,final AppComponent component) {
 		String err = null;
-		if (env == null || env.equals(Environment.NO_ENV)) {
+		if (env == null) {
 			err = Strings.customized("The properties XML for appCode/contentType={}/{} contains some error or is malformed",
 						 			 appCode,component);
 		} else {

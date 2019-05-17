@@ -40,14 +40,14 @@ public class XMLPropertyDefaultValueByEnv<T>
 	 */
 	public T getFor(final Environment env) {
 		T outVal = _envValues.get(env);
-		if (outVal == null) outVal = _envValues.get(Environment.NO_ENV);	// try the default value
+		if (outVal == null) outVal = _envValues.get(Environment.DEFAULT);	// try the default value
 		return outVal;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	BUILDER 
 /////////////////////////////////////////////////////////////////////////////////////////
 	public XMLPropertyDefaultValueByEnv<T> defaultValue(final T value) {
-		return this.when(Environment.NO_ENV)
+		return this.when(Environment.DEFAULT)
 				   .use(value);
 	}
 	public XMLPropertyDefaultValueByEnvBuilderValStep when(final Env env) {

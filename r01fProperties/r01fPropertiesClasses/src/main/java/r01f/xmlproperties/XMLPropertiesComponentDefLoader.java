@@ -70,7 +70,7 @@ class XMLPropertiesComponentDefLoader {
         } catch (IOException ioEx) {
         	// b) - Try the env-dependent file
         	if (ioEx instanceof FileNotFoundException
-        	 && env != null && env != Environment.NO_ENV) {
+        	 && env != null) {
         		try {
 	        		Path compDefEnvDepFilePath = XMLPropertiesComponentDefLoader.componentDefFilePath(env,
 	        													   									  appCode,component);
@@ -122,7 +122,7 @@ class XMLPropertiesComponentDefLoader {
 			// If the component definition was NOT found, try a default one
 			if (xmlPropsEx.is(XMLPropertiesErrorType.COMPONENTDEF_NOT_FOUND)) {
 				// warn
-				if (env != null && env != Environment.NO_ENV) {
+				if (env != null) {
 					log.warn("\t... Could NOT find the xml properties component definition for appCode/component={}/{} for env={} at {} or {}",
 							 appCode,component,env,
 							 XMLPropertiesComponentDefLoader.componentDefFilePath(appCode,component),
@@ -155,7 +155,7 @@ class XMLPropertiesComponentDefLoader {
 	static Path componentDefFilePath(final Environment env,
     								 final AppCode appCode,final AppComponent component) {
     	Path filePath = null;
-    	if (env == null || env.equals(Environment.NO_ENV)) {
+    	if (env == null) {
     		filePath = XMLPropertiesComponentDefLoader.componentDefFilePath(appCode,component);
     	} else {
     		filePath = Path.from(Strings.customized("{}/{}/components/{}.{}.xml",			// ie: /components/loc/r01.default.xml

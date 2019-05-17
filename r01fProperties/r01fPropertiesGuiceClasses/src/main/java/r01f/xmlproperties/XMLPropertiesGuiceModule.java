@@ -37,7 +37,7 @@ public class XMLPropertiesGuiceModule
 		//		  a classPath folder at /{appCode}/components/{appCode}.{component}.xml
 		Environment envSystemProp = XMLPropertiesEnv.guessEnvironmentFromSystemEnvProp();
 		Environment theEnv = envSystemProp != null ? envSystemProp
-												   : Environment.NO_ENV;		// default
+												   : Environment.DEFAULT;		// default
 		binder.bind(Environment.class)
 			  .annotatedWith(XMLPropertiesEnvironment.class)
 			  .toInstance(theEnv);
