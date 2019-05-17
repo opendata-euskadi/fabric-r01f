@@ -411,8 +411,7 @@ public class CommonOIDs {
 
 		private static final long serialVersionUID = -2820663417050382971L;
 
-		public static Environment NO_ENV = Environment.forId("noEnv");
-		public static Environment LOCAL = Environment.forId("loc");
+		public static Environment DEFAULT = Environment.forId("default");
 		
 		public Environment(final String oid) {
 			super(oid);
