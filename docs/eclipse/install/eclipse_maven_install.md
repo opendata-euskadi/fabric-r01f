@@ -23,6 +23,8 @@ The idea is:
 			+ master_[instance_name]
 			+ ...
 		+ projects
+		+ DB
+			+ ddl_scripts 
 ```
 
 ## [2]: Install Eclipse

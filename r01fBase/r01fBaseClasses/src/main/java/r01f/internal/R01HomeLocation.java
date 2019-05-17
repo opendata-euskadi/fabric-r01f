@@ -30,7 +30,7 @@ import r01f.util.types.collections.CollectionUtils;
  */
 @Slf4j
 @RequiredArgsConstructor(access=AccessLevel.PRIVATE)
-abstract class R01HomeLocation {
+public abstract class R01HomeLocation {
 /////////////////////////////////////////////////////////////////////////////////////////
 //	                                                                          
 /////////////////////////////////////////////////////////////////////////////////////////	
