@@ -4,42 +4,35 @@
 ================================================================================
 Every project will have it's own logback.xml file like:
 	<configuration debug="false">
-		<property name="appName" value="appCode" />
-		
-		<jmxConfigurator contextName="appCode" />
-		
-		<include resource="r01fLogbackGlobal.xml"/>
-		<include resource="r01fLogback.xml"/>
-		
-		<include resource="appCode/appCodeLogback.xml"/>
+	
+		<property name="appName" value="THE_APP_NAME" />
+		<jmxConfigurator contextName="THE_APP_NAME" />
+	
+		Global
+		<include resource="r01f/r01fLogbackGlobal.xml"/>
+		<include resource="r01f/r01fLogback.xml"/>
+		<include resource="r01f/r01fEnvironment.xml"/>
+	
+		Specific
+		<include resource="r01t/r01tLogback.xml"/>
 	</configuration>
 
-This main logback.xml is NOT ENVIRONMENT DEPENDENT so it's located at 
-[{appCode}Classes] project's /resources source folder alongside with the source code
+IMPORTANT: LOG LOCATION
+=====================================================
+Logs location is determined using an ENVIRONMNET variable named R01_HOME
+This environment variable is usually set at JVM env property like:
+	-DR01_HOME=/data/r01  
+If the R01_HOME environment var is NOT found, logs are located at /log folder 
 
-In order to set environment-dependent values, the included appCode/appCodeLogback.xml files 
-are used. These appCode/appCodeLogback.xml files are at [{appCode}Config] project
-which contains environment-dependent configurable values
+
+This GLOBAL logback.xml is NOT ENVIRONMENT DEPENDENT 
+In order to set environment-dependent values, the included r01fEnvironment file is used
 -->
 <included>
 	<!-- To indicate that any configuration changes to occur is displayed on console -->
 	<statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener" />
 
 	<!-- <property name="USER_HOME" value="${user.home}" />  -->
-		
-	<!-- 
-		LogPath config:
-			- EJIE environments: 
-				Usually the /r01fb/r01fbEnvironment.xml file WILL NOT be present at the EJIE environment so 
-				the ${LOG_HOME} will NOT be defined ad the ${logPath} var will get the DEFAULT value: /datos
-				BEWARE!!!	If the /r01fb/r01fbEnvironment.xml is present a the environment CHECK the ${LOG_HOME} var value
-				
-			- Local environment:
-				The [r01fbConfig] project will be present in the eclipse workspace and if the /r01fb/r01fbEnvironment.xml is 
-				classpath-accesible, the ${LOG_HOME} var will have the {HOME}/log value
-				BEWARE!!!	Ensure the /r01fb/r01fbEnvironment.xml is accesible at the classpath
-	<include resource="r01fb/r01fbEnvironment.xml"/>
-	-->
 	
 	<!-- 
 		local (see [Conditional processing of configuration files at http://logback.qos.ch/manual/configuration.html)
@@ -56,7 +49,7 @@ which contains environment-dependent configurable values
 		</then>
 	</if>
 	-->
-	<property name="logPath" value="${LOG_HOME:-/log}/${appName}/log" />
+	<property name="logPath" value="${R01_HOME:-/log}/log/${appName}/" />
 
 	<!-- 1 por día. Nivel DEBUG. 10 días de historia
 		 logger{10} líneas de stacktrace para las excepciones
