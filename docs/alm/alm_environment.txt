@@ -1,5 +1,4 @@
 
-
 URLS
 ===============================================================
 Jenkins	
@@ -22,6 +21,8 @@ USERS
 =============================================================
 Usuario: ELKARLAN\{name}.{surname}
 Password change: https://adfs.elkarlan.euskadi.eus/adfs/portal/updatepassword
+                          User: elkarlan\{user}
+                    Old Passwd: 
 
 Gitlab:  user_contenidos / xq6TV0Ge6s
 
