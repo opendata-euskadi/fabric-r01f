@@ -417,7 +417,7 @@ public class CustomStreamers {
 /////////////////////////////////////////////////////////////////////////////////////////
 //	LANG-TEXTS
 /////////////////////////////////////////////////////////////////////////////////////////
-	private static abstract class LanguageTextsSerializerBase<L extends LanguageTexts>
+	public static abstract class LanguageTextsSerializerBase<L extends LanguageTexts>
 				          extends JsonSerializer<L>
 			           implements ContextualSerializer {
 
@@ -456,7 +456,7 @@ public class CustomStreamers {
 			gen.writeEndObject();
 		}
 	}
-	private static abstract class LanguageTextsDeserializerBase<L extends LanguageTexts>
+	public static abstract class LanguageTextsDeserializerBase<L extends LanguageTexts>
 		 	    		  extends StdDeserializer<L>
     		 		   implements ContextualDeserializer {
 
