@@ -99,12 +99,14 @@ public abstract class HtmlLinkRenderer {
 		 * @return
 		 */
 		public String render() {
-			String outLink = Strings.customized("<a href='{}' {}>{}</a>",
-										   		_link.getUrl().asStringNotUrlEncodingQueryStringParamsValues(),
-										   		_renderPresentationData(_link.getText() != null ? _link.getTitle() : null,
-										   								_link.getPresentation()),
-										   		_link != null ? _link.getText() != null ? _link.getText() : ""
-										   					  : null);
+			String outLink = "<a href=''></a>";
+			if(_link != null) {
+				outLink = Strings.customized("<a href='{}' {}>{}</a>",
+											   		_link.getUrl().asStringNotUrlEncodingQueryStringParamsValues(),
+											   		_renderPresentationData(_link.getText() != null ? _link.getTitle() : null,
+											   								_link.getPresentation()),
+											   		_link.getText() != null ? _link.getText() : "");
+			}
 			return outLink;
 		}
 		/**
