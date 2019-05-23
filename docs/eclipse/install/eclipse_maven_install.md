@@ -161,6 +161,8 @@ b) **[Maven]**
 
 > `[Maven > Download artifact sources]` : true
 
+> `[Maven > Hide folders of physically nested modules`: true  > this avoids duplicate search results of resources within nested projects
+
 > `[Maven > Archetypes]` > Add a NEW remote catalog at: http://repo1.maven.org/maven2/archetype-catalog.xml 
 
 > `[Maven > User Settings] > Global Settings`: {dev_home}/projects/fabric/r01f/docs/eclipse/maven/settings_{env}.xml
