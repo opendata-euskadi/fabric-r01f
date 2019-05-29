@@ -14,6 +14,14 @@ import lombok.extern.slf4j.Slf4j;
 import r01f.types.Path;
 import r01f.util.types.collections.Lists;
 
+/**
+ * Usage:
+ * <pre class='brush:java'>
+ * 		FindFilesDirectoryWalker finder = new FindFilesDirectoryWalker(path,
+ * 																	   filter);
+ * 		List<File> files = finder.getFiles();
+ * </pre>
+ */
 @Slf4j
 @Accessors(prefix="_")
 public class FindFilesDirectoryWalker 
@@ -26,15 +34,18 @@ public class FindFilesDirectoryWalker
 /////////////////////////////////////////////////////////////////////////////////////////
 // 	CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////	
-    public FindFilesDirectoryWalker(final Path startingPath,final FileFilter filter ) {
-        super(filter, -1);
+    public FindFilesDirectoryWalker(final Path startingPath,
+    								final FileFilter filter ) {
+        super(filter,
+        	  -1);	// deepth limit=--1 (no limit)
         _startingPath = startingPath;
     }
 /////////////////////////////////////////////////////////////////////////////////////////
 // 	DirectoryWalker
 /////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    protected void handleFile(final File file,final int depth,final Collection<File> results) throws IOException {
+    protected void handleFile(final File file,final int depth,
+    						  final Collection<File> results) throws IOException {
         log.trace("Found file: {}",file.getAbsolutePath());
         results.add(file);
     }

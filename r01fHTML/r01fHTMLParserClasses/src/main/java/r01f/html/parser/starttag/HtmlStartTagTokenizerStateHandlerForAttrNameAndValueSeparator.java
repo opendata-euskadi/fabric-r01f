@@ -18,7 +18,6 @@ extends HtmlTokenizerStateHandlerBase<HtmlStartTagTokenizer> {
 		char c = charReader.read();
 		
 		if (c == '=') {
-			if (tokenizer.getPreviousState() != HtmlStartTagParserTokenizerState.AttributeName) throw new IllegalStateException("= not preceeded by an attribute name!");
 			tokenizer.addTextToCurrentToken("=");
 			tokenizer.nextState(HtmlStartTagParserTokenizerState.WhiteSpace);
 			tokenFinished = true;

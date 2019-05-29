@@ -307,7 +307,7 @@ public abstract class FolderWalker<T> {
                 
                 Collection<FileProperties> folderChildren = this.listFolderContents(folderProps.getPath(),
                 											   	 		   	   		_filter);	// not recursive
-                // give an oportunity to filter folder contents
+                // give an opportunity to filter folder contents
                 folderChildren = _filterFolderContents(folderProps,depth,
                 									   folderChildren);
                 if (CollectionUtils.isNullOrEmpty(folderChildren)) {

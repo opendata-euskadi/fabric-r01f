@@ -21,6 +21,12 @@ import r01f.filestore.api.FileStoreFilerAPI;
 import r01f.types.Path;
 import r01f.util.types.collections.CollectionUtils;
 
+/**
+ * Usage:
+ * <pre class='brush:java'>
+ * 		LocalFileStoreFilerAPI api = new LocalFileStoreFilerAPI();	// ouch!
+ * </pre>
+ */
 @Slf4j
 public class LocalFileStoreFilerAPI
 	 extends LocalFileStoreAPIBase
