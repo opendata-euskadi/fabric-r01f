@@ -21,7 +21,10 @@ import r01f.filestore.api.FileStoreChecksDelegate;
 import r01f.types.Path;
 
 /**
- *
+ * Usage:
+ * <pre class='brush:java'>
+ * 		LocalFileStoreAPI api = new LocalFileStoreAPI();	// ouch!
+ * </pre>
  */
 @Slf4j
 public class LocalFileStoreAPI 
