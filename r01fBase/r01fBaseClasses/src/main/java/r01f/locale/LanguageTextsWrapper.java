@@ -90,7 +90,7 @@ public class LanguageTextsWrapper<T> {
 														return langTextsContainer.getNameByLanguage();
 													}
 													@Override
-													public void set(LanguageTexts langText) {
+													public void set(final LanguageTexts langText) {
 														langTextsContainer.setNameByLanguage(langText);
 													}
 										   });
@@ -111,7 +111,7 @@ public class LanguageTextsWrapper<T> {
 //  PUT
 /////////////////////////////////////////////////////////////////////////////////////////
 	public T add(final Language lang,
-			  	 final String title) {
+			  	 final String text) {
 		// get the lang texts
 		LanguageTexts hasLangTexts = _hasLangTexts.get();
 		// ensure there's a lang texts containers
@@ -120,9 +120,13 @@ public class LanguageTextsWrapper<T> {
 			this.set(hasLangTexts);
 		}
 		// add
-		hasLangTexts.add(lang,title);
+		hasLangTexts.add(lang,text);
 		
 		return _langTextsContainer;
+	}
+	public T setIn(final Language lang,
+				   final String text) {
+		return this.add(lang,text);
 	}
 	public T set(final LanguageTexts langTexts) {
 		_hasLangTexts.set(langTexts);

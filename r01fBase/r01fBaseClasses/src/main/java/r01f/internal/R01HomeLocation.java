@@ -59,7 +59,7 @@ public abstract class R01HomeLocation {
 			if (CollectionUtils.hasData(roots)) {
 				for (File root : roots) {
 					Path devPath = Path.from(root)
-									   .joinedWith("development");
+									   .joinedWith("develop");
 					File home = new File(devPath.asAbsoluteString());
 					if (home.exists()) {
 						outPath = Path.from(home);
