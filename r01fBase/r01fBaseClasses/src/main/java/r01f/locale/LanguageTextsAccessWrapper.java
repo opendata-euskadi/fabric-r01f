@@ -24,9 +24,12 @@ public final class LanguageTextsAccessWrapper {
 /////////////////////////////////////////////////////////////////////////////////////////
 	public Optional<String> getIn(final Language lang) {
 		if (_hasLangTexts == null) return Optional.fromNullable(null);
-		return Optional.fromNullable(_hasLangTexts != null ? _hasLangTexts.get()
-																		  .get(lang)
-														   : null);
+		return Optional.fromNullable(_hasLangTexts != null 
+											? _hasLangTexts.get() != null
+													? _hasLangTexts.get()
+											  			   		   .get(lang)
+											  		: null
+											: null);
 	}
 	public String getInOrNull(final Language lang) {
 		return this.getIn(lang)
@@ -39,8 +42,10 @@ public final class LanguageTextsAccessWrapper {
 	}
 	public Optional<String> getInAnyLanguage() {
 		if (_hasLangTexts == null) return Optional.fromNullable(null);
-		return Optional.fromNullable(_hasLangTexts != null ? _hasLangTexts.get()
-																		  .getAny()
+		return Optional.fromNullable(_hasLangTexts != null ? _hasLangTexts.get() != null
+																	? _hasLangTexts.get()
+																				   .getAny()
+																	: null
 														   : null);
 	}
 	public String getInAnyLanguageOrDefault(final String def) {
