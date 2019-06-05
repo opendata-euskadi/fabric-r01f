@@ -199,6 +199,8 @@ c) **[Java]**
 >       - Automatically insert at correct position [X] semicolons [X] braces
 >       - When pasting (remove check):  [-] Adjust indentation
 
+> Verify that `[Java] > [Compiler] > [Java Compliance level]` is 1.8.
+
 d) **[AnyEdit Tools]**
 > `[General] > [Editors] > [AnyEditTools]` Remove Trailing whitespace (DISABLE)
 
