@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workingSets>
+<workingSet editPageId="org.eclipse.jdt.internal.ui.DynamicSourcesWorkingSet" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1556786397921_0" label="Java Main Sources" name="Java Main Sources"/>
+<workingSet editPageId="org.eclipse.jdt.internal.ui.DynamicSourcesWorkingSet" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1556786397944_1" label="Java Test Sources" name="Java Test Sources"/>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1558530823033_8" label="R01F" name="R01F">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fLoggingClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fMimeClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fBaseClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fConfig" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fObjectStreamerGuiceClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fDirtyTrackAspectClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fSearchLuceneClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fIOClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fObjectStreamerClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fRESTServicesJerseyClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fSpringClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fSearchPersistenceClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fAspectUtilClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fRESTServicesClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fLoggingInterfaceClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fLocaleClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fPropertiesClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fGuiceClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fDirtyTrackClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fXMLClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fObjectStreamerInterfaceClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fRXJavaClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fSpringWebProfileClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fFreezableClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fDBPersistenceClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fLazyLoadInterfaceClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fSpringGuiceIntegrationClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fDirtyTrackInterfaceClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fFileStoreGuiceClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fReflectionClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fRESTServicesSpringClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fModelClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fHTMLParserClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fS3GuiceClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fLazyLoadAspectClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fFreezableAspectClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fLocaleGuiceClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fHTMLProcessorsClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fLazyLoadClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fPropertiesInterfaceClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fFreezableInterfaceClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fResourceLoadClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fCollectionClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fLoggingAspectClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fS3Classes" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fSearchDBClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fFileStoreClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fPropertiesGuiceClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fHDFSFileStoreClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fResourceLoadInterfaceClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fWebProfileClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fHttpClientClasses" type="4"/>
+</workingSet>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1558531129912_10" label="R01FBusinessServices" name="R01FBusinessServices">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fBusinessServicesCoreDBGuiceClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fBusinessServicesTestClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fBusinessWebServicesCoreGuiceClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fBusinessWebServicesCoreGuiceSpringClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fBusinessServicesCoreSearchPersistenceGuiceClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fBusinessRESTServicesCoreClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fBusinessServicesCoreSearchLucenePersistenceGuiceClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fBusinessRESTServicesClientClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fBusinessRESTServicesCoreGuiceClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fBusinessRESTServicesCoreSpringClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fBusinessServicesClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fBusinessServicesGuiceClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fBusinessServicesCoreGuiceClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fBusinessServicesCoreClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fBusinessServicesClientGuiceClasses" type="4"/>
+</workingSet>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1558609342770_42" label="R01FEJIE" name="R01FEJIE">
+<item elementID="=r01fLatiniaClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSet>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1558530851191_9" label="R01PlateaWebAPI" name="R01PlateaWebAPI">
+<item elementID="=r01PLATEAWebAPIGuiceCommonClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01PLATEAWebPortalAPIClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01PLATEAWebUrlAPIClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01PLATEAWebStructureCatalogAPIClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01PLATEAWebStructureCatalogModelClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01PLATEAWebUrlBuilderAPIClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01PLATEAWebAPIConfig" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01PLATEAWebPublishEngineModelClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01PLATEAWebFileStoreModelClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01PLATEAWebUrlModelClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01PLATEAWebModelCommonClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01PLATEAWebPublishEngineAPIClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01PLATEAWebBOPVAPIClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01PLATEAWebBOPVModelClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01PLATEAWebPortalModelClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01PLATEAWebCatalogableObjectsModelClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01PLATEAWebAssetModelClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01PLATEAWebPathModelClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01PLATEAWebCommonClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01PLATEAWebAspectClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01PLATEAWebAPICommonClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSet>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1558532363175_16" label="R01PlateaWebCommon" name="R01PlateaWebCommon">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01PLATEAWebCatalogableObjectsCOREClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01PLATEAWebCORECommonClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01PLATEAWebCORESearchDBPersistenceCommonClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01PLATEAWebCORESearchLucenePersistenceClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01PLATEAWebCOREDBPersistenceCommonClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01PLATEAWebCORESearchPersistenceCommonClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01PLATEAWebCOREFileStoreCommonClasses" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01PLATEAWebCatalogableObjectsCOREBaseClasses" type="4"/>
+<item elementID="=r01PLATEAWebCatalogableObjectsAPIClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSet>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1558532459871_21" label="R01PlateaWebUICommon" name="R01PlateaWebUICommon">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01PLATEAWebUIVaadin8CommonClasses" type="4"/>
+</workingSet>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1558609293433_40" label="R01PlateaWebUIStructureCatalog" name="R01PlateaWebUIStructureCatalog">
+<item elementID="=r01PLATEAWebStructureCatalogUIWar" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSet>
+</workingSets>
