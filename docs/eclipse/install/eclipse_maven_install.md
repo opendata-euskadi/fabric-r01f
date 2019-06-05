@@ -24,7 +24,7 @@ The idea is:
 			+ ...
 		+ projects
 		+ DB
-			+ ddl_scripts 
+			+ ddl_scripts
 ```
 
 ## [2]: Install Eclipse
@@ -118,7 +118,7 @@ b) **Eclipse GIT plugins** (from eclipse update site) (install Git Client https:
             [X] Java implementation of Git - Optional Http support using Apache httpclient.
             [X] Java implementation of Git - Optional LFS support.
             [X] Java implementation of Git - Ssh support using Apache MINA sshd.
-            
+
 ```
 
 c) **Eclipse WTP tools** (from eclipse update site)
@@ -163,18 +163,18 @@ b) **[Maven]**
 
 > `[Maven > Hide folders of physically nested modules`: true  > this avoids duplicate search results of resources within nested projects
 
-> `[Maven > Archetypes]` > Add a NEW remote catalog at: http://repo1.maven.org/maven2/archetype-catalog.xml 
+> `[Maven > Archetypes]` > Add a NEW remote catalog at: http://repo1.maven.org/maven2/archetype-catalog.xml
 
 > `[Maven > User Settings] > Global Settings`: {dev_home}/projects/fabric/r01f/docs/eclipse/maven/settings_{env}.xml
 
-By default, EGit automatically adds resources marked as "Derived" to .gitignore 
-... if `[Maven > Hide folders of physically nested modules` is **enabled** (true), eclipse adds nested modules' folders to .gitignore 
+By default, EGit automatically adds resources marked as "Derived" to .gitignore
+... if `[Maven > Hide folders of physically nested modules` is **enabled** (true), eclipse adds nested modules' folders to .gitignore
 This behavior an be disabled at `[Team] > [Git] > [Projects]` and **deselect** _"Automatically ignore derived resources by adding them to .gitignore"_
 
 *BEWARE*:
 * Ensure that `[Local Repository] (from merged user and global settings)` is `{dev_home}/maven_libs`
 
-* Some artifacts are NOT published at MAVEN CENTRAL; this is the case of javax.ejb / javax.servlet-api or javax.jms. The only workarround is to put all those artifacts at `{dev_home}/maven_libs/` manually
+* Some artifacts are NOT published at MAVEN CENTRAL; this is the case of javax.ejb / javax.servlet-api or javax.jms. The only workarround is to put all those artifacts at `{dev_home}/maven_libs/` manually (See fabric\r01f\docs\maven_local_libs\read.me file)
 
 * create a weblogic fullclient jar to be used as external dependency:
 
