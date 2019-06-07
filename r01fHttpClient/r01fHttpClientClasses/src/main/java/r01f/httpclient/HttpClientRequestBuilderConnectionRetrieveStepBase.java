@@ -132,7 +132,7 @@ public class HttpClientRequestBuilderConnectionRetrieveStepBase<T> {
 		 * @param timeOutMillis max time (in millis) to get a connection
 		 */
 		public HttpClientRequestBuilderConnectionAuthStep withTimeOut(final long timeOutMillis) {
-			_conxTimeOut = timeOutMillis;
+			_conxTimeOut = timeOutMillis > 0 ? timeOutMillis : -1;
 			return new HttpClientRequestBuilderConnectionAuthStep();
 		}
 		public HttpClientRequestBuilderConnectionAuthStep withoutTimeOut() {

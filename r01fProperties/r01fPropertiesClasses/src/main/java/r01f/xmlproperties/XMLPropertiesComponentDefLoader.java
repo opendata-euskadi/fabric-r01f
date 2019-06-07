@@ -111,8 +111,7 @@ class XMLPropertiesComponentDefLoader {
 	 * @throws XMLPropertiesException
 	 */
 	public static XMLPropertiesComponentDef loadOrDefault(final Environment env,
-    											 		  final AppCode appCode,
-    											 		  final AppComponent component) throws XMLPropertiesException {
+    											 		  final AppCode appCode,final AppComponent component) throws XMLPropertiesException {
 		// Load the component definition
 		XMLPropertiesComponentDef compDef = null;
 		try {
@@ -135,10 +134,17 @@ class XMLPropertiesComponentDefLoader {
 				}
 				// build a default component definition
 				compDef = new XMLPropertiesComponentDef();
-				compDef.setName(component);
+				compDef.setName(component != null ? component : AppComponent.NO_COMPONENT);
 				compDef.setNumberOfPropertiesEstimation(50);
-				compDef.setPropertiesFileURI(Path.from(String.format("%s/%s.%s.properties.xml",
-																	 appCode,appCode,component)));
+				if (component != null && component.isNOT(AppComponent.NO_COMPONENT)) {
+					// component set (the most usual case)
+					compDef.setPropertiesFileURI(Path.from(String.format("%s/%s.%s.properties.xml",
+																		 appCode,appCode,component)));
+				} else {
+					// no component
+					compDef.setPropertiesFileURI(Path.from(String.format("%s/%s.properties.xml",
+																		 appCode,appCode)));
+				}
 				compDef.setLoaderDef(ResourcesLoaderDef.DEFAULT);
 				log.warn("\t... The properties file will be loaded using {} loader from path {}",
 						 compDef.getLoaderDef().getLoader(),compDef.getPropertiesFileURI());
@@ -157,15 +163,28 @@ class XMLPropertiesComponentDefLoader {
     	Path filePath = null;
     	if (env == null) {
     		filePath = XMLPropertiesComponentDefLoader.componentDefFilePath(appCode,component);
-    	} else {
+    	} else if (component != null && component.isNOT(AppComponent.NO_COMPONENT)) {
+    		// component set (the most usual case)
     		filePath = Path.from(Strings.customized("{}/{}/components/{}.{}.xml",			// ie: /components/loc/r01.default.xml
     						   			  			env,appCode,appCode,component));
+    	} else {
+    		// no component
+    		filePath = Path.from(Strings.customized("{}/{}/components/{}.xml",			// ie: /components/loc/r01.xml
+    						   			  			env,appCode,appCode));    		
     	}
     	return filePath;
 	}
 	static Path componentDefFilePath(final AppCode appCode,final AppComponent component) {
-    	String filePath = Strings.customized("{}/components/{}.{}.xml",			// ie: /components/r01.default.xml
-    						  			  	 appCode,appCode,component);	
+		String filePath = null;
+		if (component != null && component.isNOT(AppComponent.NO_COMPONENT)) {
+			// ... this is the most common case
+			filePath = Strings.customized("{}/components/{}.{}.xml",		// ie: /components/r01.default.xml
+    						  			  appCode,appCode,component);
+		} else {
+			// no component
+			filePath = Strings.customized("{}/components/{}.xml",			// ie: /components/r01.xml
+    						  			  appCode,appCode);
+		}
     	return Path.from(filePath);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
