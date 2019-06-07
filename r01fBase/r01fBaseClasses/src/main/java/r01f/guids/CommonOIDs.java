@@ -105,9 +105,13 @@ public class CommonOIDs {
 		private static final long serialVersionUID = 2884200091000668089L;
 		
 		public static final AppComponent DEFAULT = AppComponent.forId("default");
+		public static final AppComponent NO_COMPONENT = AppComponent.forId("_no_component_");
 
 		public AppComponentBase(final String oid) {
 			super(oid);
+		}
+		public boolean isNoComponent() {
+			return this.is(NO_COMPONENT);
 		}
 	}
 	/**

@@ -176,8 +176,8 @@ public class HttpClientRequestBuilderMethodStep
 	 */
 	public HttpClientRequestBuilderGETMethodStep GET() {
 		return new HttpClientRequestBuilderGETMethodStep(_targetUrl,
-														  _targetServerCharset,
-														  _headers,_cookies);
+														 _targetServerCharset,
+														 _headers,_cookies);
 	}
 	/**
 	 * Sets the POST Http method
@@ -185,8 +185,8 @@ public class HttpClientRequestBuilderMethodStep
 	 */
 	public HttpClientRequestBuilderHEADMethodStep HEAD() {
 		return new HttpClientRequestBuilderHEADMethodStep(_targetUrl,
-														   _targetServerCharset,
-														   _headers,_cookies);
+														  _targetServerCharset,
+														  _headers,_cookies);
 	}
 	/**
 	 * Sets the POST Http method
@@ -194,8 +194,8 @@ public class HttpClientRequestBuilderMethodStep
 	 */
 	public HttpClientRequestBuilderDELETEMethodStep DELETE() {
 		return new HttpClientRequestBuilderDELETEMethodStep(_targetUrl,
-															 _targetServerCharset,
-														     _headers,_cookies);
+															_targetServerCharset,
+														    _headers,_cookies);
 	}
 	/**
 	 * Sets the POST Http method
@@ -203,8 +203,8 @@ public class HttpClientRequestBuilderMethodStep
 	 */
 	public HttpClientRequestBuilderPOSTMethodStep POST() {
 		return new HttpClientRequestBuilderPOSTMethodStep(_targetUrl,
-														   _targetServerCharset,
-														   _headers,_cookies);
+														  _targetServerCharset,
+														  _headers,_cookies);
 	}
 	/**
 	 * Sets the POST Form Http method
@@ -212,8 +212,8 @@ public class HttpClientRequestBuilderMethodStep
 	 */
 	public HttpClientRequestBuilderPOSTFormURLEncodedMethodStep POSTForm() {
 		return new HttpClientRequestBuilderPOSTFormURLEncodedMethodStep(_targetUrl,
-																		  _targetServerCharset,
-																		 _headers,_cookies);
+																		_targetServerCharset,
+																		_headers,_cookies);
 	}
 	/**
 	 * Sets the POST MultiPart Http method
@@ -239,8 +239,8 @@ public class HttpClientRequestBuilderMethodStep
 	 */
 	public HttpClientRequestBuilderPUTMethodStep PUT() {
 		return new HttpClientRequestBuilderPUTMethodStep(_targetUrl,
-														  _targetServerCharset,
-														  _headers,_cookies);
+														 _targetServerCharset,
+														 _headers,_cookies);
 	}
 	/**
 	 * Sets the PUT Form Http method
@@ -248,8 +248,8 @@ public class HttpClientRequestBuilderMethodStep
 	 */
 	public HttpClientBuilderPUTFormURLEncodedMethodStep PUTForm() {
 		return new HttpClientBuilderPUTFormURLEncodedMethodStep(_targetUrl,
-																	    _targetServerCharset,
-																		_headers,_cookies);
+																_targetServerCharset,
+																_headers,_cookies);
 	}
 	/**
 	 * Sets the PUT Multipart Http method
@@ -257,7 +257,7 @@ public class HttpClientRequestBuilderMethodStep
 	 */
 	public HttpClientRequestBuilderPUTMultiPartMethodStep PUTMultiPart() {
 		return new HttpClientRequestBuilderPUTMultiPartMethodStep(_targetUrl,
-																   _targetServerCharset,
-																   _headers,_cookies);
+																  _targetServerCharset,
+																  _headers,_cookies);
 	}
 }
