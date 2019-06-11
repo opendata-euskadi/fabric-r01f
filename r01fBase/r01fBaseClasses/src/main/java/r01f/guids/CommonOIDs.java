@@ -429,6 +429,9 @@ public class CommonOIDs {
 		public Env getEnv() {
 			return Env.from(this);
 		}
+		public boolean isLocal() {
+			return this.asString().startsWith("loc");
+		}
 	}
 	@Immutable
 	@MarshallType(as="execContextOid")
