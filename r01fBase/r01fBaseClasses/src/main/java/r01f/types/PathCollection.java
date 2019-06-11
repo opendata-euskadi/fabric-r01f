@@ -34,6 +34,7 @@ public class PathCollection<P extends HasPath<?> & HasID<?> & HasTaggeableFacet<
 	public PathCollection(final int length) {
 		super(length);
 	}
+	@SuppressWarnings("unchecked")
 	public PathCollection(final P... items) {
 		if (CollectionUtils.hasData(items)) this.addAll(Arrays.asList(items));
 	}
@@ -43,6 +44,7 @@ public class PathCollection<P extends HasPath<?> & HasID<?> & HasTaggeableFacet<
 /////////////////////////////////////////////////////////////////////////////////////////
 //  METHODS
 /////////////////////////////////////////////////////////////////////////////////////////
+	@SuppressWarnings("unchecked")
 	public PathCollection<P> addPaths(final P... urls) {
 		if (CollectionUtils.hasData(urls)) return this.addPaths(Arrays.asList(urls));
 		return this;
