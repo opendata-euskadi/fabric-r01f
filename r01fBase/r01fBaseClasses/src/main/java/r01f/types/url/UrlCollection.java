@@ -38,6 +38,7 @@ public class UrlCollection<U extends HasUrl & HasID<?> & HasLanguage & HasTaggea
 	public UrlCollection(final int length) {
 		super(length);
 	}
+	@SuppressWarnings("unchecked")
 	public UrlCollection(final U... items) {
 		if (CollectionUtils.hasData(items)) this.addAll(Arrays.asList(items));
 	}
@@ -47,6 +48,7 @@ public class UrlCollection<U extends HasUrl & HasID<?> & HasLanguage & HasTaggea
 /////////////////////////////////////////////////////////////////////////////////////////
 //  METHODS
 /////////////////////////////////////////////////////////////////////////////////////////
+	@SuppressWarnings("unchecked")
 	public UrlCollection<U> addUrls(final U... urls) {
 		if (CollectionUtils.hasData(urls)) return this.addUrls(Arrays.asList(urls));
 		return this;
