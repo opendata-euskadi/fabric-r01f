@@ -27,13 +27,17 @@ public class Streams {
 	 * @throws IOException if an I/O error occurs
 	 */
 	public static byte[] inputStreamBytes(final InputStream is) throws IOException {
-		byte[] outBytes = IOUtils.toByteArray(is);
-		return outBytes;
+		try {
+			byte[] outBytes = IOUtils.toByteArray(is);
+			return outBytes;
+		} finally {
+			IOUtils.closeQuietly(is);
+		}
 	}
     /**
-     * Loads the wrapped {@link InputStream} as a String 
-     * @param is 
-     * @return 
+     * Loads the wrapped {@link InputStream} as a String
+     * @param is
+     * @return
      * @throws IOException
      */
 	public static String inputStreamAsString(final InputStream is) throws IOException {
@@ -42,9 +46,9 @@ public class Streams {
     /**
      * Loads the wrapped {@link InputStream} as a String
      * @param is
-     * @param charset 
-     * @return 
-     * @throws IOException 
+     * @param charset
+     * @return
+     * @throws IOException
      */
 	public static String inputStreamAsString(final InputStream is,final Charset charSet) throws IOException {
 		Writer writer = null;
@@ -64,7 +68,7 @@ public class Streams {
             		/* ignore */
             	}
             }
-        }         
+        }
         return writer != null ? writer.toString()
         					  : null;
 	}
@@ -74,7 +78,7 @@ public class Streams {
 	/**
 	 * (from org.apache.tomcat.util.http.fileupload.util.Streams)
 	 * Copies the contents from the given {@link InputStream} to the given {@link OutputStream}
-	 * Shortcut of 
+	 * Shortcut of
 	 * <pre class='brush:java'>
 	 * 		copy(pInputStream, pOutputStream, new byte[8192]);
 	 * </pre>
@@ -90,7 +94,7 @@ public class Streams {
 						 	pOutputStream,
 						 	pClose,
 						 	2 * 1024);
-		 
+
 	}
 	/**
 	 * (from org.apache.tomcat.util.http.fileupload.util.Streams)
@@ -174,7 +178,7 @@ public class Streams {
 							final int buffSize) throws IOException {
 		CharBuffer buff = CharBuffer.allocate(2 * 1024);
 	    char[] chars = buff.array();
-	
+
 	    while (r.read(buff) != -1) { // Read from channel until EOF
 	      // Put the char buffer into drain mode, and write its contents
 	      // to the Writer, reading them from the backing array.
@@ -184,5 +188,5 @@ public class Streams {
 	      buff.clear(); 		// Clear the character buffer
 	    }
 	}
-		
+
 }
