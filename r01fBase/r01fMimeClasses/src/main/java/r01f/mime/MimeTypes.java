@@ -155,9 +155,9 @@ public class MimeTypes {
 												  				      "application/postscript");
 //--HTML
 	static final MimeTypeGroupDef WEB_GRP = new MimeTypeGroupDef("text/html","application/xhtml+xml",
-													 				    "text/css",
-													 				    "application/javascript",
-													 				    "application/x-www-form-urlencoded");
+													 			 "text/css",
+													 			 "application/javascript",
+													 			 "application/x-www-form-urlencoded");
 //--MultiPart
 	static final MimeTypeGroupDef MULTI_PART_GRP = new MimeTypeGroupDef("multipart/form-data",
 																		"multipart/mixed",

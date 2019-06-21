@@ -20,7 +20,6 @@ public class MimeType
   implements CanBeRepresentedAsString {
 
 	private static final long serialVersionUID = 2645976149870626567L;
-
 /////////////////////////////////////////////////////////////////////////////////////////
 //  FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -63,4 +62,15 @@ public class MimeType
 	public int hashCode() {
 		return _name.hashCode();
 	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	CONSTANTS                                                                          
+/////////////////////////////////////////////////////////////////////////////////////////
+	public static MimeType TEXT_PLAIN = new MimeType("text/plain");
+	public static MimeType APPLICATION_XML = new MimeType("application/xml");
+	public static MimeType APPLICATION_JSON = new MimeType("application/json");
+	public static MimeType OCTECT_STREAM = new MimeType("application/octet-stream");
+	public static MimeType XHTML = new MimeType("application/xhtml+xml");
+	public static MimeType HTML = new MimeType("text/html");
+	public static MimeType JAVASCRIPT = new MimeType("application/javascript");
+	public static MimeType STYLESHEET = new MimeType("text/css");
 }
