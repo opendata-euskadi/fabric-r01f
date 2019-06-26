@@ -13,6 +13,20 @@ import r01f.patterns.Memoized;
 import r01f.util.types.Strings;
 import r01f.util.types.collections.CollectionUtils;
 
+/**
+ * Html META tag can adopt several forms:
+ *  	a) <meta name="keywords" content="HTML, CSS, XML, XHTML, JavaScript">
+ *		b) <meta http-equiv="refresh" content="30">
+ *		c) <meta charset="UTF-8">
+ * {@link MetaHtmlEl} type models a META tag and has three concrete subtypes:
+ * 		- {@link NamedMetaHtmlEl} that models a <meta name="foo" content="bar">
+ * 		- {@link HttpEquivMetaHtmlEl} that models a <meta http-equiv="foo" content="bar">
+ * 		- {@link CharsetMetaHtmlEl} that models a <meta charset="foo">
+ * In order to construct a META from it's textual representation, just:
+ * <pre class='brush:java'>
+ * 		MetaHtmlEl meta = MetaHtmlEl.from("<meta http-equiv='refresh' content='30'>");
+ * </pre>
+ */
 @Slf4j
 @NoArgsConstructor(access=AccessLevel.PRIVATE)
 public abstract class HtmlMetas {
