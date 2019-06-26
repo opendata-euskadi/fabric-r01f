@@ -228,7 +228,7 @@
                         	<id>default-deploy</id>
                          	<phase>deploy</phase>
                         	<goals>
-                            	<goal>deploy-release</goal>
+                            	<goal>deploy</goal>
                          	</goals>
                       	</execution>
                 	</executions>
@@ -276,7 +276,7 @@
 			<name>maven-public-releases</name>
 			<layout>default</layout>
 			<url>https://bin1.alm02.itbatera.euskadi.eus/repository/maven-snapshots/</url>
-		</snapshotRepository>
+		</snapshotRepository> 
 	</distributionManagement>
 
 </project>
