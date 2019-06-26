@@ -22,6 +22,8 @@ public abstract class HtmlMetas {
 	@Accessors(prefix="_")
 	public static abstract class MetaHtmlEl 
 	    	             extends HtmlElementBase {
+		private static final long serialVersionUID = -4116162026386653681L;
+		
 		private Memoized<Map.Entry<String,String>> _metaCont = new Memoized<Map.Entry<String,String>>() {
 																		@Override
 																		protected Entry<String,String> supply() {
@@ -94,6 +96,8 @@ public abstract class HtmlMetas {
 	@Accessors(prefix="_")
 	public static class NamedMetaHtmlEl 
 	            extends MetaHtmlEl {
+		private static final long serialVersionUID = -2337440173438210287L;
+
 		public NamedMetaHtmlEl(final String name,final String content) {
 			super(name,content);
 		}
@@ -104,6 +108,8 @@ public abstract class HtmlMetas {
 	@Accessors(prefix="_")
 	public static class HttpEquivMetaHtmlEl 
 	            extends MetaHtmlEl {
+		private static final long serialVersionUID = -5902383810156923996L;
+
 		public HttpEquivMetaHtmlEl(final String name,final String content) {
 			super(name,content);
 		}
@@ -113,6 +119,8 @@ public abstract class HtmlMetas {
 /////////////////////////////////////////////////////////////////////////////////////////	
 	public static class CharsetMetaHtmlEl 
 	            extends MetaHtmlEl {
+		private static final long serialVersionUID = -2499272951024608888L;
+
 		public CharsetMetaHtmlEl(final String content) {
 			super("charset",content);
 		}
