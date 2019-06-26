@@ -228,7 +228,7 @@
                         	<id>default-deploy</id>
                          	<phase>deploy</phase>
                         	<goals>
-                            	<goal>deploy-release</goal>
+                            	<goal>deploy</goal>
                          	</goals>
                       	</execution>
                 	</executions>
