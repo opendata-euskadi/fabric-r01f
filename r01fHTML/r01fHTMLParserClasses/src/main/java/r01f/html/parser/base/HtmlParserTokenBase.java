@@ -9,6 +9,8 @@ import r01f.types.CanBeRepresentedAsString;
 @RequiredArgsConstructor
 public abstract class HtmlParserTokenBase<T extends Enum<T> & HtmlParserTokenTypeBase<?>>
      implements CanBeRepresentedAsString {
+
+	private static final long serialVersionUID = -4901258886923459008L;
 /////////////////////////////////////////////////////////////////////////////////////////
 //  FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////

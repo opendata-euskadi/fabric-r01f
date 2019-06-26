@@ -21,5 +21,6 @@ public interface HtmlParserTokenizerStateBase<T extends Enum<T> & HtmlParserToke
 	 * @param other
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public boolean isIn(final SELF_TYPE... other);
 }

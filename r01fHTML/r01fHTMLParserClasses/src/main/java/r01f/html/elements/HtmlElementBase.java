@@ -13,6 +13,7 @@ import r01f.util.types.collections.CollectionUtils;
 @Accessors(prefix="_")
 public abstract class HtmlElementBase 
            implements CanBeRepresentedAsString {
+	private static final long serialVersionUID = -6645578980932528503L;
 /////////////////////////////////////////////////////////////////////////////////////////
 //	FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
