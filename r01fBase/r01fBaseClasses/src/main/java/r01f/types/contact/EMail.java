@@ -35,7 +35,7 @@ public class EMail
 	}
 	public static EMail createValidating(final String mail) {
 		if ( ! EMail.validate(mail)) {
-			throw new IllegalArgumentException("Not a valid email address!!");
+			throw new IllegalArgumentException( Strings.customized(" {} is not a valid email address!!", mail));
 		}
 		return EMail.of(mail);
 	}
