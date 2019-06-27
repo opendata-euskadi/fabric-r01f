@@ -2,6 +2,7 @@ package r01f.api.interfaces.s3.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 
 import com.amazonaws.services.s3.AmazonS3;
@@ -111,20 +112,41 @@ public class S3ServiceForObjectsImpl
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public S3Object getObject(final S3BucketName bucketName,final S3ObjectKey key) {
-		GetObjectRequest objectRequest = new GetObjectRequest(bucketName.asString(), key.asString());
-		com.amazonaws.services.s3.model.S3Object remoteObject = _s3Client.getObject(objectRequest);
-
-		return S3ObjectBuilder.create()
-	               .forObject(key)
-	               .onBucket(bucketName)
-	               .withContent(remoteObject.getObjectContent())
-	               .withMetadata(ObjectMetaDataTransformer.fromS3ObjectMetaData(remoteObject.getObjectMetadata()))
-	               .andRedirectLocation( (remoteObject.getRedirectLocation() != null) ?
-	            		   													 UrlPath.from(remoteObject.getRedirectLocation()) : null)
-	               .taggingCount(remoteObject.getTaggingCount())
-
-	               .isCharged(remoteObject.isRequesterCharged())
-               .build();
+		com.amazonaws.services.s3.model.S3Object remoteObject  = null;
+		try {
+			GetObjectRequest objectRequest = new GetObjectRequest(bucketName.asString(), key.asString());
+			remoteObject = _s3Client.getObject(objectRequest);
+			
+			//Content reading.
+			byte[]  contentBytes = Streams.inputStreamBytes(remoteObject.getObjectContent());
+		    ByteArrayInputStream stream = new ByteArrayInputStream(contentBytes);
+	
+			return S3ObjectBuilder.create()
+		               .forObject(key)
+		               .onBucket(bucketName)
+		               .withContent(stream)
+		               .withMetadata(ObjectMetaDataTransformer.fromS3ObjectMetaData(remoteObject.getObjectMetadata()))
+		               .andRedirectLocation( (remoteObject.getRedirectLocation() != null) ?
+		            		   													 UrlPath.from(remoteObject.getRedirectLocation()) : null)
+		               .taggingCount(remoteObject.getTaggingCount())
+	
+		               .isCharged(remoteObject.isRequesterCharged())
+	               .build();
+		
+		} catch (final IOException e) {			
+			e.printStackTrace();
+			log.error( " Error {}  loading object of key '{}'  on bucket '{}'" , e.getLocalizedMessage(), key, bucketName);
+			throw Throwables.throwUnchecked(e);
+		} finally {
+			if ( remoteObject != null ) {
+				try {
+					remoteObject.close();
+				} catch (final IOException e){				
+					e.printStackTrace();
+				}
+			}
+			
+		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	DELETE METHODS
