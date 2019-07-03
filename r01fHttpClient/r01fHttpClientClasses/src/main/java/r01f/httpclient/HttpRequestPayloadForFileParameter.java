@@ -48,7 +48,7 @@ public class HttpRequestPayloadForFileParameter
 																								  false,
 																								   _createReqPayloadParamFactory());
 	}
-	@SuppressWarnings("resource")
+	
 	public static HttpRequestPayloadParameterBuilderNameStep<HttpRequestPayloadForFileParameter> wrap(final File file) throws IOException {
 		@Cleanup InputStream fis = new FileInputStream(file);
 		byte[] fileBytes = IOUtils.toByteArray(fis);
@@ -56,7 +56,8 @@ public class HttpRequestPayloadForFileParameter
 																	 							  false,
 																	 							  _createReqPayloadParamFactory());
 	}
-	@SuppressWarnings("resource")
+	
+	@SuppressWarnings("deprecation")
 	public static HttpRequestPayloadParameterBuilderNameStep<HttpRequestPayloadForFileParameter> wrap(final Reader reader) throws IOException {
 		@Cleanup ReaderInputStream ris = new ReaderInputStream(reader);
 		byte[] readerBytes = IOUtils.toByteArray(ris);

@@ -67,20 +67,24 @@ public class HexDumpEncoder extends CharacterEncoder {
         p.write(c);
     }
 
-    protected int bytesPerAtom() {
+    @Override
+	protected int bytesPerAtom() {
         return (1);
     }
 
-    protected int bytesPerLine() {
+    @Override
+	protected int bytesPerLine() {
         return (16);
     }
 
-    protected void encodeBufferPrefix(OutputStream o) throws IOException {
+    @Override
+	protected void encodeBufferPrefix(OutputStream o) throws IOException {
         offset = 0;
         super.encodeBufferPrefix(o);
     }
 
-    protected void encodeLinePrefix(OutputStream o, int len) throws IOException {
+    @Override
+	protected void encodeLinePrefix(OutputStream o, int len) throws IOException {
         hexDigit(pStream, (byte)((offset >>> 8) & 0xff));
         hexDigit(pStream, (byte)(offset & 0xff));
         pStream.print(": ");
@@ -88,7 +92,8 @@ public class HexDumpEncoder extends CharacterEncoder {
         thisLineLength = len;
     }
 
-    protected void encodeAtom(OutputStream o, byte buf[], int off, int len) throws IOException {
+    @Override
+	protected void encodeAtom(OutputStream o, byte buf[], int off, int len) throws IOException {
         thisLine[currentByte] = buf[off];
         hexDigit(pStream, buf[off]);
         pStream.print(" ");
@@ -97,7 +102,8 @@ public class HexDumpEncoder extends CharacterEncoder {
             pStream.print("  ");
     }
 
-    protected void encodeLineSuffix(OutputStream o) throws IOException {
+    @Override
+	protected void encodeLineSuffix(OutputStream o) throws IOException {
         if (thisLineLength < 16) {
             for (int i = thisLineLength; i < 16; i++) {
                 pStream.print("   ");

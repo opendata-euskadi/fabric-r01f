@@ -37,14 +37,15 @@ public class HttpRequestPayloadForBinaryParameter
 		return new HttpRequestPayloadForBinaryParameter(bytes,
 														false);
 	}
-	@SuppressWarnings("resource")
+
 	public static HttpRequestPayloadForBinaryParameter wrap(final File file) throws IOException {
 		@Cleanup InputStream fis = new FileInputStream(file);
 		byte[] fileBytes = IOUtils.toByteArray(fis);
 		return new HttpRequestPayloadForBinaryParameter(fileBytes,
 														false);
 	}
-	@SuppressWarnings("resource")
+
+	@SuppressWarnings("deprecation")
 	public static HttpRequestPayloadForBinaryParameter wrap(final Reader reader) throws IOException {
 		@Cleanup ReaderInputStream ris = new ReaderInputStream(reader);
 		byte[] readerBytes = IOUtils.toByteArray(ris);
