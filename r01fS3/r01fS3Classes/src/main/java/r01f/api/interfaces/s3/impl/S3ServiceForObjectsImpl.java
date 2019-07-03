@@ -57,17 +57,19 @@ public class S3ServiceForObjectsImpl
 			if (streamToUpload == null) {
 				throw new IllegalArgumentException(Strings.customized(" The object of key  {}  CANNOT be null to store!!!", key.asString()));
 			}
-			byte[]  contentBytes = Streams.inputStreamBytes(streamToUpload);
+			byte[]  contentBytes = Streams.inputStreamBytes(streamToUpload); // This Streams.inputStreamBytes method closes the stream.
 		    ByteArrayInputStream  stream = new ByteArrayInputStream(contentBytes);
 			log.warn(" > Put input stream  {}  of size {} on bucket {}",
 					 key,  contentBytes.length, bucketName );
+			
+			// All systems compatible with S3 should provide a metadata system, but there are some that don't, f.e  MINIO
 			ObjectMetadata metadata = null;
 			if (objectMetadata != null
 			 && CollectionUtils.hasData(objectMetadata.getItems())) {
 				log.warn(" Metadata externally provided {}",
 						 objectMetadata.debugInfo());
 				metadata = ObjectMetaDataTransformer.toS3ObjectMetaData(objectMetadata);
-			} else {
+			} else {			
 				metadata = new ObjectMetadata();
 			}
 		    metadata.setContentLength( contentBytes.length);
@@ -92,7 +94,8 @@ public class S3ServiceForObjectsImpl
 	public PutResult putObject(final S3BucketName bucketName,final S3ObjectKey key,
 							  final File file) {
 		if (file == null) {
-			throw new IllegalArgumentException(Strings.customized(" The object of key  {}  CANNOT be null to store!!!", key.asString()));
+			throw new IllegalArgumentException(Strings.customized(" The object of key  {} "
+																	+ " CANNOT be null to store!!!", key.asString()));
 		}
 		log.warn("Put file {} on bucket {}", key, bucketName );
 		PutObjectResult result =  _s3Client.putObject(new PutObjectRequest(bucketName.asString(),key.asString(),file));

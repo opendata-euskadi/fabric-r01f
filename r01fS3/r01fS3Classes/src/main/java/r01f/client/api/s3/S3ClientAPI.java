@@ -41,8 +41,9 @@ public class S3ClientAPI
 /////////////////////////////////////////////////////////////////////////////////////////
 //S3 LOW LEVEL MULTIPART SUB-API :
 /*	The AWS SDK for Java exposes a low-level API that closely resembles the Amazon S3 REST API
- *  for multipart uploads (see Uploading Objects Using Multipart Upload API. Use the low-level API when you need to pause and resume multipart uploads, vary part sizes during the upload, or do not know the size of the upload data in advance.
-	When you don't have these requirements, use the high-level */
+ *  for multipart uploads (see Uploading Objects Using Multipart Upload API. Use the low-level API when you need
+ *   to pause and resume multipart uploads, vary part sizes during the upload, or do not know the size of the upload data in advance.
+ *	When you don't have these requirements, use the high-level */
 	private final S3ClientAPIDelegateForOperationsLowLevel  _forMultipartLowLevel;
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR
