@@ -197,14 +197,16 @@ class DigestAuthentication extends AuthenticationInfo {
     /**
      * @return true if this authentication supports preemptive authorization
      */
-    boolean supportsPreemptiveAuthorization() {
+    @Override
+	boolean supportsPreemptiveAuthorization() {
         return true;
     }
 
     /**
      * @return the name of the HTTP header this authentication wants set
      */
-    String getHeaderName() {
+    @Override
+	String getHeaderName() {
         if (type == SERVER_AUTHENTICATION) {
             return "Authorization";
         } else {
@@ -216,7 +218,8 @@ class DigestAuthentication extends AuthenticationInfo {
      * Reclaculates the request-digest and returns it.
      * @return the value of the HTTP header this authentication wants set
      */
-    String getHeaderValue(URL url, String method) {
+    @Override
+	String getHeaderValue(URL url, String method) {
         return getHeaderValueImpl (url.getFile(), method);
     }
 
@@ -228,7 +231,8 @@ class DigestAuthentication extends AuthenticationInfo {
      * returning false means we have to go back to the user to ask for a new
      * username password.
      */
-    boolean isAuthorizationStale (String header) {
+    @Override
+	boolean isAuthorizationStale (String header) {
         HeaderParser p = new HeaderParser (header);
         String s = p.findValue ("stale");
         if (s == null || !s.equals("true"))
