@@ -267,7 +267,7 @@ under the License.
     <activeProfile>local_artifactory</activeProfile>
   </activeProfiles>-->
   
-  <activeProfiles>
+   <activeProfiles>
     <activeProfile>env_profile</activeProfile>
   </activeProfiles>
  </settings>
