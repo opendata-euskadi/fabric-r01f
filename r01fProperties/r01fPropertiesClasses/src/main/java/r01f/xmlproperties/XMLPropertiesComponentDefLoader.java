@@ -20,6 +20,7 @@ import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import r01f.guids.CommonOIDs.AppCode;
 import r01f.guids.CommonOIDs.AppComponent;
+import r01f.guids.CommonOIDs.AppComponentBase;
 import r01f.guids.CommonOIDs.Environment;
 import r01f.resources.ResourcesLoader;
 import r01f.resources.ResourcesLoaderBuilder;
@@ -110,6 +111,7 @@ class XMLPropertiesComponentDefLoader {
 	 * @return
 	 * @throws XMLPropertiesException
 	 */
+	@SuppressWarnings("static-access")
 	public static XMLPropertiesComponentDef loadOrDefault(final Environment env,
     											 		  final AppCode appCode,final AppComponent component) throws XMLPropertiesException {
 		// Load the component definition
@@ -158,6 +160,7 @@ class XMLPropertiesComponentDefLoader {
 				  component,compDef.debugInfo());
 		return compDef;
 	}
+	@SuppressWarnings("static-access")
 	static Path componentDefFilePath(final Environment env,
     								 final AppCode appCode,final AppComponent component) {
     	Path filePath = null;
@@ -176,7 +179,7 @@ class XMLPropertiesComponentDefLoader {
 	}
 	static Path componentDefFilePath(final AppCode appCode,final AppComponent component) {
 		String filePath = null;
-		if (component != null && component.isNOT(AppComponent.NO_COMPONENT)) {
+		if (component != null && component.isNOT(AppComponentBase.NO_COMPONENT)) {
 			// ... this is the most common case
 			filePath = Strings.customized("{}/components/{}.{}.xml",		// ie: /components/r01.default.xml
     						  			  appCode,appCode,component);
@@ -223,7 +226,8 @@ class XMLPropertiesComponentDefLoader {
      * @return
      * @throws IOException
      */
-    public static XMLPropertiesComponentDef load(final InputStream defXmlIS) throws IOException {
+    @SuppressWarnings("null")
+	public static XMLPropertiesComponentDef load(final InputStream defXmlIS) throws IOException {
     	XMLPropertiesComponentDef outDef = null;
     	if (defXmlIS != null) {
 			try {
