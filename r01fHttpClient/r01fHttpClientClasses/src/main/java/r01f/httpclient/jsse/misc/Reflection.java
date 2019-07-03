@@ -241,8 +241,7 @@ public class Reflection {
     }
 
     static boolean isSubclassOf(Class queryClass,
-                                Class ofClass)
-    {
+                                Class ofClass) {
         while (queryClass != null) {
             if (queryClass == ofClass) {
                 return true;

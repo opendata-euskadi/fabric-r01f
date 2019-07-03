@@ -49,7 +49,8 @@ public class AuthCacheImpl implements AuthCache {
     // put a value in map according to primary key + secondary key which
     // is the path field of AuthenticationInfo
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @Override
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public synchronized void put (String pkey, AuthCacheValue value) {
         LinkedList list = (LinkedList) hashtable.get (pkey);
         String skey = value.getPath();
@@ -92,7 +93,8 @@ public class AuthCacheImpl implements AuthCache {
         return null;
     }
 
-    @SuppressWarnings("rawtypes")
+    @Override
+	@SuppressWarnings("rawtypes")
 	public synchronized void remove (String pkey, AuthCacheValue entry) {
         LinkedList list = (LinkedList) hashtable.get (pkey);
         if (list == null) {

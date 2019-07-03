@@ -35,14 +35,15 @@ public class HttpRequestPayload
 		return new HttpRequestPayload(bytes,
 									  false);
 	}
-	@SuppressWarnings("resource")
+
 	public static HttpRequestPayload wrap(final File file) throws IOException {
 		@Cleanup InputStream fis = new FileInputStream(file);
 		byte[] fileBytes = IOUtils.toByteArray(fis);
 		return new HttpRequestPayload(fileBytes,
 									  false);
 	}
-	@SuppressWarnings("resource")
+
+	@SuppressWarnings("deprecation")
 	public static HttpRequestPayload wrap(final Reader reader) throws IOException {
 		@Cleanup ReaderInputStream ris = new ReaderInputStream(reader);
 		byte[] readerBytes = IOUtils.toByteArray(ris);
