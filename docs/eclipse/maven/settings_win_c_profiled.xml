@@ -52,7 +52,7 @@ under the License.
    | Default: ${user.home}/.m2/repository
   <localRepository>/path/to/local/repo</localRepository>
   -->
-  <localRepository>d:/develop/maven_libs</localRepository>
+  <localRepository>c:/develop/maven_libs</localRepository>
 
 
   <!-- interactiveMode
@@ -266,6 +266,7 @@ under the License.
   <activeProfiles>
     <activeProfile>local_artifactory</activeProfile>
   </activeProfiles>-->
-  
-
- </settings>
+    <activeProfiles>
+    <activeProfile>env_profile</activeProfile>
+  </activeProfiles>
+</settings>
