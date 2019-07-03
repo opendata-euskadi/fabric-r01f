@@ -96,13 +96,14 @@ public abstract class CharacterEncoder {
      * Encode the suffix for the entire buffer.
      */
     protected void encodeBufferSuffix(OutputStream aStream) throws IOException {
+    	//
     }
 
     /**
      * Encode the prefix that starts every output line.
      */
-    protected void encodeLinePrefix(OutputStream aStream, int aLength)
-    throws IOException {
+    protected void encodeLinePrefix(OutputStream aStream, int aLength) throws IOException {
+    	//
     }
 
     /**
