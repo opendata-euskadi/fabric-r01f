@@ -37,7 +37,6 @@ import r01f.util.types.collections.CollectionUtils;
 public class S3ServiceForFolderFilerImpl
 	 extends S3ServiceBaseImpl
   implements S3ServiceForFolderFiler {
-
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -197,7 +196,7 @@ public class S3ServiceForFolderFilerImpl
 	 * @param path
 	 * @return
 	 */
-	public PutObjectRequest _buildObjectRequestForEmptyFolder(final S3BucketName bucket,
+	private PutObjectRequest _buildObjectRequestForEmptyFolder(final S3BucketName bucket,
 															  final FolderPath path)  {
 	    InputStream stream = new ByteArrayInputStream(new byte[0]);
 	    ObjectMetadata metadata = new ObjectMetadata();
@@ -212,7 +211,7 @@ public class S3ServiceForFolderFilerImpl
 	 * @param folderPath
 	 * @return
 	 */
-	public ListObjectsRequest _buildListObjectsRequest(final S3BucketName bucket,
+	private ListObjectsRequest _buildListObjectsRequest(final S3BucketName bucket,
 													   final FolderPath folderPath) {
 		ListObjectsRequest req =
 				(folderPath.asString()
@@ -236,7 +235,7 @@ public class S3ServiceForFolderFilerImpl
 	 * @param folderPath
 	 * @return
 	 */
-	public Collection<S3ObjectSummaryItem> _listFolderContentsOfTypeFolder(final ObjectListing listing ,
+	private Collection<S3ObjectSummaryItem> _listFolderContentsOfTypeFolder(final ObjectListing listing ,
 																		   final S3BucketName bucket,
                                                                            final FolderPath folderPath) {
 		// First, Filter folder results and its children if requested (recursive)
@@ -264,7 +263,7 @@ public class S3ServiceForFolderFilerImpl
 	 * @param folderPath
 	 * @return
 	 */
-	public Collection<S3ObjectSummaryItem> _listFolderContentsOfTypeFile(final ObjectListing listing ,
+	private Collection<S3ObjectSummaryItem> _listFolderContentsOfTypeFile(final ObjectListing listing ,
 																		 final S3BucketName bucket,
                                                                          final FolderPath folderPath){
 		Collection<S3ObjectSummaryItem> fileResults = null;
