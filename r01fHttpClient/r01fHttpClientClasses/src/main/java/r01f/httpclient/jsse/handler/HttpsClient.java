@@ -155,8 +155,8 @@ final class HttpsClient
 		return _proxyPortUsed;
 	}
 
-	public void afterConnect() throws IOException,
-									  UnknownHostException {
+	@Override
+	public void afterConnect() throws IOException, UnknownHostException {
 		if (!isCachedConnection()) {
 			SSLSocket sslsocket = null;
 			SSLSocketFactory sslsocketfactory = _sslSocketFactory;

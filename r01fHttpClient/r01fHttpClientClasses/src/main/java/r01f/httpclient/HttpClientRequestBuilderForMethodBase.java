@@ -41,8 +41,8 @@ public abstract class HttpClientRequestBuilderForMethodBase<SELF_TYPE extends Ht
 	
 	protected long _conxTimeOut;				// timeout to get a connection with server
 	
-	// proxy settings
-	private HttpClientProxySettings _proxySettings;
+	// proxy settings When is used this ¿?
+	//private HttpClientProxySettings _proxySettings;
 
 	// AuthDigest variables
 	protected UserCode _authUserCode;
