@@ -13,7 +13,7 @@ public class BodyHtmlEl
 	public BodyHtmlEl() {
 		super("body");
 	}
-	public BodyHtmlEl( final String tagText) {
+	public BodyHtmlEl(final String tagText) {
 		super("body",
 			  HtmlElements.parseAttributes(tagText));
 	}
