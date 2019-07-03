@@ -28,12 +28,9 @@ abstract class XMLPropertiesEnv {
         if (Strings.isNullOrEmpty(envProp)) envProp = System.getProperty("env");
 
         if (  Strings.isNOTNullOrEmpty(envProp) ) {
-            log.warn( Strings.customized(" R01Env propertie is SET to {}", envProp));
+            log.warn( Strings.customized(" \n\n R01Env propertie is SET to {}", envProp));
             return Environment.forId(envProp);
         } else {
-        	System.out.println("===============================================");
-        	System.out.println(" ENV IS NULL");
-        	System.getProperties().list(System.out);
             return Environment.DEFAULT;
         }
     }
