@@ -477,6 +477,8 @@ class XMLPropertiesForAppComponentsContainer {
 				merger.merge(envXmlDoc);	// dominant
 						
 				outXml = merger.buildDocument();
+				log.debug("\n XMLProperties has been merged !!! : \n {} ", 
+						                                           XMLUtils.asString(outXml));
 			} catch (ParserConfigurationException cfgEx) {
 				log.error("Error while merging properties xml doc at {} with the env-dependent at {}: {}",
 						  defPropsFileUri,envDepPropsFileUri,
