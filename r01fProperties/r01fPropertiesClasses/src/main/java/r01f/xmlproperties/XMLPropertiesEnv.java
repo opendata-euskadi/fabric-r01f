@@ -1,5 +1,8 @@
 package r01f.xmlproperties;
 
+import java.util.Map;
+import java.util.Properties;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,14 +21,12 @@ abstract class XMLPropertiesEnv {
      * @return
      */
     public static Environment guessEnvironmentFromSystemEnvProp() {
-        String envProp = null;
-                                             envProp = System.getProperty("R01ENV");
-        if (Strings.isNullOrEmpty(envProp)) envProp = System.getProperty("r01Env");
-        if (Strings.isNullOrEmpty(envProp)) envProp = System.getProperty("R01Env");
-        if (Strings.isNullOrEmpty(envProp)) envProp = System.getProperty("R01_ENV");
-        if (Strings.isNullOrEmpty(envProp)) envProp = System.getProperty("r01_env");
-        if (Strings.isNullOrEmpty(envProp)) envProp = System.getProperty("ENV");
-        if (Strings.isNullOrEmpty(envProp)) envProp = System.getProperty("env");
+        String envProp = null;        
+        // Read from web server properties.
+        envProp = _readEnvPropFrom(System.getProperties());
+        // Read from machine environment  
+        //(  	...another option could be to pass , a env name to : System.getenv("env_typ")
+        if (Strings.isNullOrEmpty(envProp)) envProp = _readEnvPropFrom(System.getenv());
 
         if (  Strings.isNOTNullOrEmpty(envProp) ) {
             log.warn( Strings.customized(" \n\n R01Env propertie is SET to {}", envProp));
@@ -50,4 +51,28 @@ abstract class XMLPropertiesEnv {
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
+    private static String _readEnvPropFrom(final Properties properties) {
+    	  String envProp = null;
+          envProp = System.getProperty("R01ENV");
+		  if (Strings.isNullOrEmpty(envProp)) envProp = properties.getProperty("r01Env");
+		  if (Strings.isNullOrEmpty(envProp)) envProp = properties.getProperty("R01Env");
+		  if (Strings.isNullOrEmpty(envProp)) envProp = properties.getProperty("R01_ENV");
+		  if (Strings.isNullOrEmpty(envProp)) envProp = properties.getProperty("r01_env");
+		  if (Strings.isNullOrEmpty(envProp)) envProp = properties.getProperty("ENV");
+		  if (Strings.isNullOrEmpty(envProp)) envProp = properties.getProperty("env");
+		  return envProp;
+    }
+    private static String _readEnvPropFrom(final Map<String,String> propertiesAsMap) {
+  	  String envProp = null;
+      envProp = System.getProperty("R01ENV");
+	  if (Strings.isNullOrEmpty(envProp)) envProp = propertiesAsMap.get("r01Env");
+	  if (Strings.isNullOrEmpty(envProp)) envProp = propertiesAsMap.get("R01Env");
+	  if (Strings.isNullOrEmpty(envProp)) envProp = propertiesAsMap.get("R01_ENV");
+	  if (Strings.isNullOrEmpty(envProp)) envProp = propertiesAsMap.get("r01_env");
+	  if (Strings.isNullOrEmpty(envProp)) envProp = propertiesAsMap.get("ENV");
+	  if (Strings.isNullOrEmpty(envProp)) envProp = propertiesAsMap.get("env");
+	  return envProp;
+    }
+    
+    
 }
