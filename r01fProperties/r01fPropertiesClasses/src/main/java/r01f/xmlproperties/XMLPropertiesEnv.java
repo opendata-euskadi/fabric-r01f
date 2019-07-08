@@ -22,10 +22,10 @@ abstract class XMLPropertiesEnv {
      */
     public static Environment guessEnvironmentFromSystemEnvProp() {
         String envProp = null;        
-        // Read from web server properties.
+        // Read from virtual machine properties.
         envProp = _readEnvPropFrom(System.getProperties());
         // Read from machine environment  
-        //(  	...another option could be to pass , a env name to : System.getenv("env_typ")
+        //(  	...another option could be to pass , a env name to : System.getenv("env_type")..
         if (Strings.isNullOrEmpty(envProp)) envProp = _readEnvPropFrom(System.getenv());
 
         if (  Strings.isNOTNullOrEmpty(envProp) ) {
