@@ -15,8 +15,8 @@ import r01f.guids.CommonOIDs.SecurityToken;
  * is injected with a MASTER SecurityContext that ONLY legitimated providers can generate 
  * In order to ensure that the SecurityContext is a legitimate one:
  * 
- * 		1 - The the MASTER client api is injecte with a MASTER SecurityContext created by legitimate SecurityContext provider
- * 			The MASTER SecurityContext contains a TOKEN signed with a private key that only the provider and the CORE knows
+ * 		1 - The the MASTER client api is injected with a MASTER SecurityContext that can only be created by legitimate SecurityContext provider
+ * 			This MASTER SecurityContext contains a TOKEN signed with a private key that only both the legitimate provider and the CORE knows
  * 
  * 		3 - When a service interface's method call with a MASTER SecurityContext is made, the first layer at the CORE is 
  * 			in charge of ensuring the SecurityContext is legitimate; to do so, it usually checks the signed token 
@@ -82,7 +82,7 @@ import r01f.guids.CommonOIDs.SecurityToken;
  *       		}
  *       </pre>
  * Note that the ClientAPI is usually used at the client-side; at the SERVER / CORE side, 
- * usually only the MASTE SecurityContext is needed instead of the MASTER client api
+ * usually only the MASTER SecurityContext is needed instead of the MASTER client api
  * ... to do so:
  * <pre class='brush:java'>
  * 		public class MyCOREService {
