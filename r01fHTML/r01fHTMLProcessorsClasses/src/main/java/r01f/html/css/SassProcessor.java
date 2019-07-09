@@ -19,7 +19,7 @@ import r01f.util.types.Strings;
  * </ul>
  * Standalone Usage:
  * <pre class='brush:java'>
- * SassProcessor sassProcessor = SassProcessor.create("D:/eclipse/libs/ruby-gems/compass-gems/gems/")	
+ * SassProcessor sassProcessor = SassProcessor.create("D:/develop/libs/ruby-gems/compass-gems/gems/")	
  * 											  .withOptions(SassOptions.create()
  *											  						  .findFrameworkLocalResourcesAt(FRAMEWORK_HOME_DIR)
  *										  							  .webServerDirForStylesheets("/")
@@ -46,7 +46,7 @@ public class SassProcessor
 	 * 		<li>If the gems are stored in a jar: classpath:[path_to_the_jar]/[gems_container_jar].jar![path_within_the_jar_to_the_gems]
 	 * 			ie: classpath:gems.jar!gems</li>
 	 * 		<li>If the gems are stored in the file system: [path_to_the_gems_containing_dir]
-	 * 			ie: D:/eclipse/libs/ruby-gems/compass-gems/gems/</li>
+	 * 			ie: D:/develop/libs/ruby-gems/compass-gems/gems/</li>
 	 * </ul>
 	 */
 	private final String _gemsHome;

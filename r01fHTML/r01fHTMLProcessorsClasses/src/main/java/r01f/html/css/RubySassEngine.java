@@ -71,7 +71,7 @@ import r01f.util.types.collections.CollectionUtils;
  * 
  * Specifically to install compass for the pourpouse of this type:
  * <ol>
- * 		<li>Open a command line, set the java environment and move to the dir where the gems are going to be stored (ie: d:/eclipse/libs/ruby_gems/)</li>
+ * 		<li>Open a command line, set the java environment and move to the dir where the gems are going to be stored (ie: d:/develop/libs/ruby_gems/)</li>
  * 		<li>Download compass gems and ALL it's dependencies:<br />
  * 			<pre>java -jar jruby-complete-1.7.10.jar -S gem install -i ./compass-gems compass --no-rdoc --no-ri</pre>
  * 			This installs compass and also Sass and other dependencies as chunky_png or fssm
@@ -262,7 +262,7 @@ class RubySassEngine {
 	 * 		<li>If the gems are stored in a jar: classpath:[path_to_the_jar]/[gems_container_jar].jar![path_within_the_jar_to_the_gems]
 	 * 			ie: classpath:gems.jar!gems</li>
 	 * 		<li>If the gems are stored in the file system: [path_to_the_gems_containing_dir]
-	 * 			ie: D:/eclipse/libs/ruby-gems/compass-gems/gems/</li>
+	 * 			ie: D:/develop/libs/ruby-gems/compass-gems/gems/</li>
 	 * </ul>
 	 * @param gemsHome the dir 
 	 */
@@ -278,7 +278,7 @@ class RubySassEngine {
 	 * @return
 	 */
 	private static Map<String,String> _initGemsPaths(final String gemsHome) {
-		String gemsRoot = gemsHome;		// classpath:/gems/  -- D:/eclipse/libs/ruby-gems/compass-gems/
+		String gemsRoot = gemsHome;		// classpath:/gems/  -- D:/develop/libs/ruby-gems/compass-gems/
 		
 		// Read the gemsHome dir contents to get the versions of the gems
 		File gemsRootDir = new File(gemsRoot);
