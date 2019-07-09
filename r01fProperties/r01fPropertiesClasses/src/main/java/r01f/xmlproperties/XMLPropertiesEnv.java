@@ -33,8 +33,7 @@ abstract class XMLPropertiesEnv {
         // 3. ... Try Read from files at resoure stream into classloader.
         if (Strings.isNullOrEmpty(envProp)) {
         	envProp = _readEnvPropFrom();
-        	log.warn("\b>> Read OK from file (r01Env.properties | "
-        			 + "                                     R01Env.properties |  R01Env.properties ..........  )  on classloader  !!!!");
+        	log.warn("\n >> Read OK from file (r01Env.properties | R01Env.properties |  R01Env.properties ......... ) on classloader  !!!");
         }    
         if (  Strings.isNOTNullOrEmpty(envProp) ) {
             log.warn( Strings.customized(" \n\n R01Env propertie is SET to {}", envProp));
