@@ -39,7 +39,7 @@ abstract class XMLPropertiesEnv {
             		 envProp);
             return Environment.forId(envProp);
         } else {
-            log.warn("\n\nR01Env property NOT SET defaultint to '{}'\n",
+            log.warn("\n\nR01Env property NOT SET defaulting to '{}'\n",
             		 Environment.DEFAULT);
             return Environment.DEFAULT;
         }
