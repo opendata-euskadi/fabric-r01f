@@ -1,5 +1,6 @@
 package r01f.xmlproperties;
 
+import java.io.InputStream;
 import java.util.Map;
 import java.util.Properties;
 
@@ -21,13 +22,20 @@ abstract class XMLPropertiesEnv {
      * @return
      */
     public static Environment guessEnvironmentFromSystemEnvProp() {
-        String envProp = null;        
-        // Read from virtual machine properties.
-        envProp = _readEnvPropFrom(System.getProperties());
-        // Read from machine environment  
+        String envProp = null;  
+        // 1... Try to Read from virtual machine properties.      
+        envProp = _readEnvPropFrom(System.getProperties());       
+        // 2. ... Try Read from machine environment  
         //(  	...another option could be to pass , a env name to : System.getenv("env_type")..
-        if (Strings.isNullOrEmpty(envProp)) envProp = _readEnvPropFrom(System.getenv());
-
+        if (Strings.isNullOrEmpty(envProp)) {
+        	envProp = _readEnvPropFrom(System.getenv());
+        }
+        // 3. ... Try Read from files at resoure stream into classloader.
+        if (Strings.isNullOrEmpty(envProp)) {
+        	envProp = _readEnvPropFrom();
+        	log.warn("\b>> Read OK from file (r01Env.properties | "
+        			 + "                                     R01Env.properties |  R01Env.properties ..........  )  on classloader  !!!!");
+        }    
         if (  Strings.isNOTNullOrEmpty(envProp) ) {
             log.warn( Strings.customized(" \n\n R01Env propertie is SET to {}", envProp));
             return Environment.forId(envProp);
@@ -63,16 +71,42 @@ abstract class XMLPropertiesEnv {
 		  return envProp;
     }
     private static String _readEnvPropFrom(final Map<String,String> propertiesAsMap) {
-  	  String envProp = null;
-      envProp = System.getProperty("R01ENV");
-	  if (Strings.isNullOrEmpty(envProp)) envProp = propertiesAsMap.get("r01Env");
-	  if (Strings.isNullOrEmpty(envProp)) envProp = propertiesAsMap.get("R01Env");
-	  if (Strings.isNullOrEmpty(envProp)) envProp = propertiesAsMap.get("R01_ENV");
-	  if (Strings.isNullOrEmpty(envProp)) envProp = propertiesAsMap.get("r01_env");
-	  if (Strings.isNullOrEmpty(envProp)) envProp = propertiesAsMap.get("ENV");
-	  if (Strings.isNullOrEmpty(envProp)) envProp = propertiesAsMap.get("env");
-	  return envProp;
+	  	  String envProp = null;
+	      envProp = System.getProperty("R01ENV");
+		  if (Strings.isNullOrEmpty(envProp)) envProp = propertiesAsMap.get("r01Env");
+		  if (Strings.isNullOrEmpty(envProp)) envProp = propertiesAsMap.get("R01Env");
+		  if (Strings.isNullOrEmpty(envProp)) envProp = propertiesAsMap.get("R01_ENV");
+		  if (Strings.isNullOrEmpty(envProp)) envProp = propertiesAsMap.get("r01_env");
+		  if (Strings.isNullOrEmpty(envProp)) envProp = propertiesAsMap.get("ENV");
+		  if (Strings.isNullOrEmpty(envProp)) envProp = propertiesAsMap.get("env");
+		  return envProp;
     }
+    private static String _readEnvPropFrom() {
+	  	  String envProp = null;
+	      envProp = _readEnvPropFrom("R01ENV");
+		  if (Strings.isNullOrEmpty(envProp)) envProp = _readEnvPropFrom("r01Env.properties");
+		  if (Strings.isNullOrEmpty(envProp)) envProp = _readEnvPropFrom("R01Env.properties");
+		  if (Strings.isNullOrEmpty(envProp)) envProp = _readEnvPropFrom("R01_ENV.properties");
+		  if (Strings.isNullOrEmpty(envProp)) envProp = _readEnvPropFrom("r01_env.properties");
+		  if (Strings.isNullOrEmpty(envProp)) envProp = _readEnvPropFrom("ENV.properties");
+		  if (Strings.isNullOrEmpty(envProp)) envProp = _readEnvPropFrom("env.properties");
+		  return envProp;
+    }
+    private static String _readEnvPropFrom(final String fileNameAsResourceStream) {
+    	try {
+        	InputStream is = XMLPropertiesEnv.class.getClassLoader().getResourceAsStream(fileNameAsResourceStream);
+        	if ( is != null ) {
+        		Properties propFromFile = new Properties();
+        		propFromFile.load(is);
+        		propFromFile.list(System.out);
+        		return  _readEnvPropFrom(propFromFile);
+        	}
+    	}catch (final Throwable th) {
+        	//log
+    		log.error(" Unable to read : " + fileNameAsResourceStream  + th.getLocalizedMessage());
+        }
+		return null;	   
+     }
     
     
 }
