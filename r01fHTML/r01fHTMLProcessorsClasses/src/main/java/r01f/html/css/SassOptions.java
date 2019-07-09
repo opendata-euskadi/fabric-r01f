@@ -16,7 +16,7 @@ public class SassOptions
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTANTS
 /////////////////////////////////////////////////////////////////////////////////////////
-	final static String DEFAULT_FRAMEWORKS_LOCAL_HOME_DIR = "d:/temp";
+	final static String DEFAULT_FRAMEWORKS_LOCAL_HOME_DIR = "d:/develop/temp_dev";
 	final static String DEFAULT_REMOTE_RESOURCES_LOCATION = null;
 	final static String DEFAULT_WEB_SERVER_DIR_FOR_STYLESHEETS = "stylesheets";
 	final static String DEFAULT_WEB_SERVER_DIR_FOR_SCRIPTS = "javascripts";
