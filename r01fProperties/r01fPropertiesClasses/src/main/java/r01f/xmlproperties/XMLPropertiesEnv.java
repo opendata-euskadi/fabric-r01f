@@ -33,12 +33,14 @@ abstract class XMLPropertiesEnv {
         // 3. ... Try Read from files at resoure stream into classloader.
         if (Strings.isNullOrEmpty(envProp)) {
         	envProp = _readEnvPropFrom();
-        	log.warn("\n >> Read OK from file (r01Env.properties | R01Env.properties |  R01Env.properties ......... ) on classloader  !!!");
         }    
         if (  Strings.isNOTNullOrEmpty(envProp) ) {
-            log.warn( Strings.customized(" \n\n R01Env propertie is SET to {}", envProp));
+            log.warn("\n\nR01Env property SET to '{}'",
+            		 envProp);
             return Environment.forId(envProp);
         } else {
+            log.warn("\n\nR01Env property NOT SET defaultint to '{}'\n",
+            		 Environment.DEFAULT);
             return Environment.DEFAULT;
         }
     }
@@ -53,7 +55,7 @@ abstract class XMLPropertiesEnv {
         if (Strings.isNullOrEmpty(envProp)) envProp = compProps.getString(Path.from("/*/@r01Env"));
 
         return Strings.isNOTNullOrEmpty(envProp) ? Environment.forId(envProp)
-                                                      : Environment.DEFAULT;
+                                                 : Environment.DEFAULT;
     }
 /////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -89,19 +91,25 @@ abstract class XMLPropertiesEnv {
 		  if (Strings.isNullOrEmpty(envProp)) envProp = _readEnvPropFrom("r01_env.properties");
 		  if (Strings.isNullOrEmpty(envProp)) envProp = _readEnvPropFrom("ENV.properties");
 		  if (Strings.isNullOrEmpty(envProp)) envProp = _readEnvPropFrom("env.properties");
+		  
+		  if (Strings.isNOTNullOrEmpty(envProp)) {
+			  log.warn("... found ENV prop={} at a properties file named [r01Env.properties]",
+					   envProp);
+		  }
 		  return envProp;
     }
     private static String _readEnvPropFrom(final String fileNameAsResourceStream) {
     	try {
-        	InputStream is = XMLPropertiesEnv.class.getClassLoader().getResourceAsStream(fileNameAsResourceStream);
+        	InputStream is = XMLPropertiesEnv.class.getClassLoader()
+        										   .getResourceAsStream(fileNameAsResourceStream);
         	if ( is != null ) {
         		Properties propFromFile = new Properties();
         		propFromFile.load(is);
         		propFromFile.list(System.out);
         		return  _readEnvPropFrom(propFromFile);
         	}
-    	}catch (final Throwable th) {
-        	//log
+    	} catch (final Throwable th) {
+        	// log
     		log.error(" Unable to read : " + fileNameAsResourceStream  + th.getLocalizedMessage());
         }
 		return null;	   
