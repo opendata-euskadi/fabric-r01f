@@ -249,10 +249,10 @@
 				      		</goals>
 				      		<configuration>
 				        		<sources>
+				          			<source>src/main/config</source>
 				        			<source>src/main/aspect</source>
 				          			<source>src/main/resources</source>
 				          			<source>src/test/resources</source>
-				          			<source>src/main/config</source>
 				        		</sources>
 				      		</configuration>
 				    	</execution>
@@ -276,7 +276,7 @@
 			<name>maven-public-releases</name>
 			<layout>default</layout>
 			<url>https://bin1.alm02.itbatera.euskadi.eus/repository/maven-snapshots/</url>
-		</snapshotRepository> 
+		</snapshotRepository>
 	</distributionManagement>
 
 </project>
