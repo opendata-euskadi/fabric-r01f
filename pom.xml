@@ -250,10 +250,14 @@
 				      		<configuration>
 				        		<sources>
 				          			<source>src/main/config</source>
+				          		</sources>
+<!--
+								<sources>
 				        			<source>src/main/aspect</source>
 				          			<source>src/main/resources</source>
 				          			<source>src/test/resources</source>
 				        		</sources>
+-->
 				      		</configuration>
 				    	</execution>
 				  	</executions>
