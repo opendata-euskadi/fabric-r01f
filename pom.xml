@@ -265,7 +265,15 @@
 
 			</plugins>
 		</pluginManagement>
-	</build>
+		<resources>
+		    <resource>
+		        <directory>src/main/config</directory>
+		        <includes>
+		            <include>*.xml</include>
+		        </includes>
+		    </resource>
+		</resources>
+    </build>
 
 	<!-- Maven deploy -->
 	<distributionManagement>
