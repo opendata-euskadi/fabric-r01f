@@ -174,7 +174,7 @@
 				  most common certificate-authorities public root certificates
 	-->
 	<repositories>
-	    <repository>
+		<repository>
 			<id>EJIE</id>
 			<name>EJIE Public Releases</name>
 			<url>https://bin1.alm02.itbatera.euskadi.eus/repository/maven-public-releases/</url>
@@ -191,7 +191,6 @@
 			<layout>default</layout>
 		</repository>
 	</repositories>
-
 
 <!-- ====================================================================== -->
 <!-- PLUGINS                                                                -->
@@ -211,6 +210,7 @@
 					</configuration>
 				</plugin>
 				-->
+
 				<!-- Version plugin -->
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
