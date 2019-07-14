@@ -29,6 +29,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import com.google.common.base.Predicate;
+
 import lombok.NoArgsConstructor;
 
 /**
@@ -37,7 +39,35 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class XMLStringSerializer {
 /////////////////////////////////////////////////////////////////////////////////////////
-//  METODOS
+//	                                                                          
+/////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * Checks if a xml's char is a valid char acording to the xml spec
+     * @see http://seattlesoftware.wordpress.com/2008/09/11/hexadecimal-value-0-is-an-invalid-character/
+     * If invalid chars are found while parsing an xml stream, an error is raised:
+     * 		"Hexadecimal value 0x[---] is an invalid character"
+     * These type of chars are control chars like null, bell, backspace, etc
+     * @param theChar 
+     * @return true 
+     */
+    public static boolean isLegalChar(final char theChar) {
+    	return  (theChar == 0x9) ||/* == '\t' == 9   */
+                (theChar == 0xA) ||/* == '\n' == 10  */
+                (theChar == 0xD) ||/* == '\r' == 13  */
+                ((theChar >= 0x20) && (theChar <= 0xD7FF)) ||
+                ((theChar >= 0xE000) && (theChar <= 0xFFFD)) ||
+                ((theChar >= 0x10000) && (theChar <= 0x10FFFF));
+    }
+    public static Predicate<Character> isLegalCharPredicate() {
+    	return new Predicate<Character>() {
+						@Override
+						public boolean apply(final Character code) {
+							return XMLStringSerializer.isLegalChar(code);
+						}
+    		   };
+    }
+/////////////////////////////////////////////////////////////////////////////////////////
+//  METHODS
 /////////////////////////////////////////////////////////////////////////////////////////
     /**
      * Prints an xml structure
