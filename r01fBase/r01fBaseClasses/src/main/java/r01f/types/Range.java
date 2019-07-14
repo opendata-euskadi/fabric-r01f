@@ -112,6 +112,11 @@ public class Range<T extends Comparable<? super T>>
 		_upperBoundType = range.hasUpperBound() ? range.upperBoundType() : BoundType.OPEN;
 		_lowerBoundType = range.hasLowerBound() ? range.lowerBoundType() : BoundType.OPEN;
 	}
+	public Range(final T lower,
+				 final T upper) {
+		this(lower,BoundType.CLOSED,
+			 upper,BoundType.CLOSED);
+	}
 	public Range(final T lower,final BoundType lowerBoundType,
 				 final T upper,final BoundType upperBoundType) {
 		// store the lower and upper bounds
@@ -707,7 +712,7 @@ public class Range<T extends Comparable<? super T>>
 	public boolean contains(final T value) {
 		return _range.contains(value);
 	}
-	public boolean containsAll(Iterable<? extends T> values) {
+	public boolean containsAll(final Iterable<? extends T> values) {
 		return _range.containsAll(values);
 	}
 	public boolean encloses(final com.google.common.collect.Range<T> otherRange) {
