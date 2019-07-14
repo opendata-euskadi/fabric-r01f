@@ -139,47 +139,48 @@ public abstract class Numbers {
 //  BIT MASKING
 /////////////////////////////////////////////////////////////////////////////////////////
     /**
-     * Obtiene una m�scara para ver el valor de un bit de un entero
-     * @param bitIndex El indice del bit cuya m�scara se quiere obtener
-     * @return la mascara en forma de entero
+     * Returns a mask to see the value of a bit inside an int
+     * @param bitIndex 
+     * @return 
      */
     private static int getMask(final int bitIndex) {
         return (1 << bitIndex);
     }
     /**
-     * Establece un bit de un entero y devuelve este nuevo entero
-     * @param originalInt El entero en el que hay que establecer el bit
-     * @param bitIndex El indice del bit a establecer
-     * @return el entero con el bit establecido
+     * Sets a bit inside an int and returns the new int
+     * @param originalInt 
+     * @param bitIndex 
+     * @return 
      */
     public static int setBit(final int originalInt,final int bitIndex) {
         return originalInt | getMask(bitIndex);
     }
     /**
-     * Borra un bit de un entero y devuelve este nuevo entero
-     * @param originalInt el entero en el que hay que establecer el bit
-     * @param bitIndex El indice del bit a establecer
-     * @return el entero con el bit establecido
+     * Clears (set to 0) a bit inside an int and returns the new int
+     * @param originalInt
+     * @param bitIndex
+     * @return 
      */
     public static int clearBit(final int originalInt,final int bitIndex) {
         return originalInt & ~getMask(bitIndex);
     }
     /**
-     * Devuelve el valor de un bit de un entero
-     * @param integer el entero del cual hay que extraer un bit
-     * @param bitIndex el indice del bit a extraer
-     * @return el valor del bit
+     * Returns an int's bit value
+     * @param integer 
+     * @param bitIndex 
+     * @return 
      */
     public static boolean getBit(final int integer,final int bitIndex) {
         return ((integer & getMask(bitIndex)) != 0);
     }
 /////////////////////////////////////////////////////////////////////////////////////////
-//  METODOS DE CONVERSION
+//  CONVERSION
 /////////////////////////////////////////////////////////////////////////////////////////
     /**
-     * Convierte un entero en un array de bytes NOTA: Devuelve el LSB (LessSignificantByte) en [0]
-     * @param integer El entero a convertir
-     * @return un array de 4 bytes con el LSB(LessSignificantByte) en [0]
+     * Converts an int into an array of bytes
+     * BEWARE: The LSB (LessSignificantByte) is at [0]
+     * @param integer
+     * @return a 4 byte array with LSB(LessSignificantByte) at [0]
      */
     public static byte[] intToBytes(final int integer) {
         byte[] byteArray = new byte[INTEGER_WIDTH];
@@ -189,9 +190,10 @@ public abstract class Numbers {
         return byteArray;
     }
     /**
-     * Convierte un array de bytes en un entero NOTA: Devuelve el LSB (LessSignificantByte) en [0]
-     * @param byteArray El array de bytes que componen el entero con el LSB (LessSignificantByte) en [0]
-     * @return un entero
+     * Converts a byte array into an int
+     * BEWARE: The LSB (LessSignificantByte) is at [0]
+     * @param integer
+     * @return a int built from the byte array with LSB(LessSignificantByte) at [0]
      */
     public static int bytesToInt(final byte[] byteArray) {
         int integer = 0;
@@ -524,23 +526,41 @@ public abstract class Numbers {
     public static <T> boolean isNumber(final T obj) {
     	return obj instanceof Number;
     }
+///////////////////////////////////////////////////////////////////////////////
+// 	ROMAN (LATIN) NUMBERS
+///////////////////////////////////////////////////////////////////////////////
+	public static int intrFromRoman(final String roman) {
+		 // Using roman numbers, a symbol cannot repeat more than 3 times
+		 String modRoman = roman.replace("XL", "XXXX").replace("XC", "LXXXX") 
+		 						.replace("CD", "CCCC").replace("CM", "DCCCC")
+		 						.replace("IV", "IIII").replace("IX", "VIIII"); 
+		int outNumber = 0;
+		for (int n = 0; n < modRoman.length(); n++) {
+			char romanChar = modRoman.charAt(n);
+			if (romanChar == 'M') {
+				outNumber+=1000; 
+			} else if (romanChar == 'D') {
+				outNumber+=500; 
+			} else if (romanChar == 'C') {
+				outNumber+=100; 
+			} else if (romanChar == 'L') {
+				outNumber+=50; 
+			} else if (romanChar == 'X') {
+				outNumber+=10; 
+			} else if (romanChar == 'V') {
+				outNumber+=5; 
+			} else if (romanChar == 'I') {
+				outNumber+=1; 
+			}
+		}
+		return outNumber;
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  FORMAT
 /////////////////////////////////////////////////////////////////////////////////////////
-    /**
-     * Checks if an object is an Integer
-     * @param obj
-     * @return
-     */
     public static <T> boolean isInteger(final T obj) {
     	return obj instanceof Integer;
     }
-    /**
-     * Comprueba si una cadena es un entero
-     * @param strInt La representacion del entero en forma de cadena
-     * @param radix El formato de de la cadena de entrada: 2 binario, 8 octal, 10 decimal, 16 hex
-     * @return true si el la cadena es un entero o false si no lo es.
-     */
     public static boolean isInteger(final String strInt,final int radix) {
         boolean isInteger = false;
         if (strInt != null) {
@@ -551,28 +571,12 @@ public abstract class Numbers {
         }
         return isInteger;
     }
-    /**
-     * Comprueba si una cadena es un entero
-     * @param strInt La representacion DECIMAL del entero en forma de cadena
-     * @return true si el la cadena es un entero o false si no lo es.
-     */
     public static boolean isInteger(final String strInt) {
         return isInteger(strInt,10);
     }
-    /**
-     * Checks if an object is a {@link Byte}
-     * @param obj
-     * @return
-     */
     public static <T> boolean isByte(final T obj) {
     	return obj instanceof Byte;
     }
-    /**
-     * Comprueba si una cadena es un byte
-     * @param strByte La representacion del byte en forma de cadena
-     * @param radix El formato de de la cadena de entrada: 2 binario, 8 octal, 10 decimal, 16 hex
-     * @return true si el la cadena es un byte o false si no lo es.
-     */
     public static boolean isByte(final String strByte,final int radix) {
         boolean isByte = false;
         if (strByte != null) {
@@ -583,27 +587,12 @@ public abstract class Numbers {
         }
         return isByte;
     }
-    /**
-     * Comprueba si una cadena es un byte
-     * @param strByte La representacion DECIMAL del byte en forma de cadena
-     * @return true si el la cadena es un byte o false si no lo es.
-     */
     public static boolean isByte(final String strByte) {
         return isByte(strByte,10);
     }
-    /**
-     * Checks if an object is a {@link Long}
-     * @param obj
-     */
     public static <T> boolean isLong(final T obj) {
     	return obj instanceof Long;
     }
-    /**
-     * Comprueba si una cadena es un Long
-     * @param strLong La representacion del long en forma de cadena
-     * @param radix El formato de de la cadena de entrada: 2 binario, 8 octal, 10 decimal, 16 hex
-     * @return true si el la cadena es un long o false si no lo es.
-     */
     public static boolean isLong(final String strLong,final int radix) {
         boolean isLong = false;
         if (strLong != null) {
@@ -614,27 +603,12 @@ public abstract class Numbers {
         }
         return isLong;
     }
-    /**
-     * Comprueba si una cadena es un Long
-     * @param strLong La representacion DECIMAL del long en forma de cadena
-     * @return true si el la cadena es un long o false si no lo es.
-     */
     public static boolean isLong(final String strLong) {
         return Numbers.isLong(strLong,10);
     }
-    /**
-     * Checks if an object is a {@link Float}
-     * @param obj
-     * @return
-     */
     public static <T> boolean isFloat(final T obj) {
     	return obj instanceof Float;
     }
-    /**
-     * Comprueba si una cadena es un Float
-     * @param strFloat La representacion decimal del float en forma de cadena
-     * @return true si el la cadena es un float o false si no lo es.
-     */
     public static boolean isFloat(final String strFloat) {
         boolean isFloat = false;
         if (strFloat != null) {
@@ -645,19 +619,9 @@ public abstract class Numbers {
         }
         return isFloat;
     }
-    /**
-     * Checks if an object is a {@link Short}
-     * @param obj
-     * @return
-     */
     public static <T> boolean isShort(final T obj) {
     	return obj instanceof Short;
     }
-    /**
-     * Comprueba si una cadena es un Short
-     * @param strShort La representacion decimal del short en forma de cadena
-     * @return true si la cadena es un short o false si no lo es.
-     */
     public static boolean isShort(final String strShort) {
         boolean isShort = false;
         if (strShort != null) {
@@ -668,19 +632,9 @@ public abstract class Numbers {
         }
         return isShort;
     }
-    /**
-     * Checks if an object is a {@link Double}
-     * @param obj
-     * @return
-     */
     public static <T> boolean isDouble(final T obj) {
     	return obj instanceof Double;
     }
-    /**
-     * Comprueba si una cadena es un Double
-     * @param strDouble La representacion del double en forma de cadena
-     * @return true si la cadena es un double o false si no lo es.
-     */
     public static boolean isDouble(final String strDouble) {
         boolean isDouble = false;
         if (strDouble != null) {
