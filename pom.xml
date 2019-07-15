@@ -259,6 +259,9 @@
 
 			</plugins>
 		</pluginManagement>
+		<!-- 
+		The Resources Plugin handles the copying of project resources to the output directory
+		-->
 		<resources>
 			<resource>
 				<directory>src/main/config</directory>
@@ -268,9 +271,6 @@
 			</resource>
 			<resource>
 			    <directory>src/main/resources</directory>
-			</resource>
-			<resource>
-			    <directory>src/main/aspect</directory>
 			</resource>
 		</resources>
 	</build>
