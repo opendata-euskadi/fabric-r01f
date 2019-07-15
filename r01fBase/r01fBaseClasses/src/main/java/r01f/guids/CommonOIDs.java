@@ -2,6 +2,7 @@ package r01f.guids;
 
 import java.io.Serializable;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -15,7 +16,8 @@ import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 import r01f.objectstreamer.annotations.MarshallType;
 import r01f.util.types.Strings;
 
-public class CommonOIDs {
+@NoArgsConstructor(access=AccessLevel.PRIVATE)
+public abstract class CommonOIDs {
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -167,10 +169,11 @@ public class CommonOIDs {
 			return new Role(id);
 		}
 	}
+	
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-	@Immutable
+		@Immutable
 	@MarshallType(as="workPlaceCode")
 	@EqualsAndHashCode(callSuper=true)
 	@NoArgsConstructor
@@ -193,6 +196,35 @@ public class CommonOIDs {
 		public static final WorkPlaceCode ANONYMOUS = WorkPlaceCode.forId("anonymous");
 		public boolean isAnonymous() {
 			return this.is(WorkPlaceCode.ANONYMOUS);
+		}
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////////////////
+	@Immutable
+	@MarshallType(as="buildingCode")
+	@EqualsAndHashCode(callSuper=true)
+	@NoArgsConstructor
+	public static final class BuildingCode
+	     		      extends OIDBaseMutable<String> {
+		
+		private static final long serialVersionUID = -2459745121499121940L;
+		
+		public BuildingCode(final String oid) {
+			super(oid);
+		}
+		public static BuildingCode forId(final String id) {
+			return new BuildingCode(id);
+		}
+		public static BuildingCode valueOf(final String id) {
+			return BuildingCode.forId(id);
+		}
+		public static BuildingCode forAuthenticatedUserId(final AuthenticatedActorID authActorId) {
+			return new BuildingCode(authActorId.asString());
+		}
+		public static final BuildingCode ANONYMOUS = BuildingCode.forId("anonymous");
+		public boolean isAnonymous() {
+			return this.is(BuildingCode.ANONYMOUS);
 		}
 	}
 	@Immutable
@@ -430,7 +462,7 @@ public class CommonOIDs {
 			return Env.from(this);
 		}
 		public boolean isLocal() {
-			return this.asString().startsWith("loc");
+			return this.getId().toLowerCase().startsWith("loc");
 		}
 	}
 	@Immutable
