@@ -3,6 +3,9 @@
  */
 package r01f.util.types;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.CharMatcher;
 
@@ -24,9 +27,10 @@ public abstract class Numbers {
      * @return
      */
     public static boolean isNumberType(final Class<?> type) {
-    	return type.equals(Number.class) || type.equals(Integer.class) || type.equals(Long.class) ||
-    		   type.equals(Double.class) || type.equals(Float.class) || type.equals(Short.class) ||
-    		   type.equals(Byte.class);
+    	return type.equals(Number.class) || type.equals(Integer.class) || type.equals(Long.class)
+    		|| type.equals(Double.class) || type.equals(Float.class) || type.equals(Short.class) 
+    		|| type.equals(Byte.class)
+    		|| type.equals(BigInteger.class) || type.equals(BigDecimal.class);
     }
 /////////////////////////////////////////////////////////////////////////////////////////
 //  EVEN/ODD
