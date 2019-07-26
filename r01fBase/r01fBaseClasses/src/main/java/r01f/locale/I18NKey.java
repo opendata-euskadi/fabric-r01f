@@ -1,5 +1,6 @@
 package r01f.locale;
 
+import r01f.guids.OID;
 import r01f.guids.OIDBaseMutable;
 
 /**
@@ -17,6 +18,9 @@ public class I18NKey
 	}
 	public static I18NKey forId(final String id) {
 		return new I18NKey(id);
+	}
+	public static <O extends OID> I18NKey forId(final O oid) {
+		return new I18NKey(oid.toString());
 	}
 	public static I18NKey valueOf(final String id) {
 		return I18NKey.forId(id);
