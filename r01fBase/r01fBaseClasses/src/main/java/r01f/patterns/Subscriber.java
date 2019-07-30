@@ -2,6 +2,6 @@ package r01f.patterns;
 
 public interface Subscriber<T> 
 	     extends OnSuccessSubscriber<T>,
-				 OnErrorSubscriber<T> {
+				 OnErrorSubscriber {
 	// just a composite interfcace
 }
