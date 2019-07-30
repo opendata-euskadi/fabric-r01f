@@ -2,18 +2,25 @@ package r01f.util.types;
 
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
+import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CharsetEncoder;
+import java.nio.charset.CodingErrorAction;
+import java.text.Normalizer;
+import java.util.regex.Pattern;
 
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.EncoderException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.net.URLCodec;
 
+import com.google.common.base.Predicate;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class StringEncodeUtils {
-
 ///////////////////////////////////////////////////////////////////////////////
 //  CODE
 ///////////////////////////////////////////////////////////////////////////////
@@ -34,6 +41,34 @@ public class StringEncodeUtils {
         CharBuffer outCb = theEncoding.decode(bb);
         return outCb;
     }
+    /**
+     * Transcodes a byte array 
+     * @param bytes
+     * @param srcCharset
+     * @param dstCharset
+     * @return
+     * @throws CharacterCodingException
+     */
+    public static byte[] transcode(final byte[] bytes,
+								   final Charset srcCharset,final Charset dstCharset) throws CharacterCodingException {
+    
+		// Decode from srcCharset
+		CharsetDecoder decoderSrc = srcCharset.newDecoder();
+		decoderSrc.onMalformedInput(CodingErrorAction.IGNORE)
+            	  .onUnmappableCharacter(CodingErrorAction.IGNORE);			
+		ByteBuffer bbufSrc = ByteBuffer.wrap(bytes);
+		CharBuffer cbufSrc = decoderSrc.decode(bbufSrc);		
+
+		// Encode to dstCharset
+		CharsetEncoder encoderDst = dstCharset.newEncoder();	
+		encoderDst.onMalformedInput(CodingErrorAction.IGNORE)
+            	  .onUnmappableCharacter(CodingErrorAction.IGNORE);
+		ByteBuffer bbufDst = encoderDst.encode(cbufSrc);
+		byte[] bytesInDstCharset = bbufDst.array();
+		
+		// Return 
+		return bytesInDstCharset;
+	}
     /**
      * UTF-8 Encodes an {@link String}
      * @param str
@@ -119,7 +154,7 @@ public class StringEncodeUtils {
      * @return
      */
     public static CharSequence filterAndReplaceChars(final CharSequence strToBeFiltered,
-                                                         final char[] charsToFilter,final String[] charsFiltered) {
+                                                     final char[] charsToFilter,final String[] charsFiltered) {
         if (strToBeFiltered == null) return null;
 
         // Copy the input String to a char[]
@@ -140,6 +175,39 @@ public class StringEncodeUtils {
             if (!replaced) result.append(content[i]);
         }
         return (result.toString());
+    }
+    /**
+     * Filters chars
+     * @param strToBeFiltered
+     * @param isLegalCharPred
+     * @return
+     */
+    public static CharSequence filterChars(final CharSequence strToBeFiltered,
+    									   final Predicate<Character> isLegalCharPred) {
+        StringBuffer out = new StringBuffer(strToBeFiltered.length());
+
+        for (int i = 0; i < strToBeFiltered.length(); i++) {
+            char code = strToBeFiltered.charAt(i);
+            if (isLegalCharPred.apply(code)) {  
+            	out.append(code);
+            }
+        }
+        return out;
+    }
+    public static CharSequence removeAccents(final CharSequence str) {
+		if (str == null ) return str;
+		// ver http://www.v3rgu1.com/blog/231/2010/programacion/eliminar-acentos-y-caracteres-especiales-en-java/
+		// canonical decomposition is used:
+		//		A character can be represented in many ways:
+		//			- char c1 = 'á'							usual
+		//			- char c2 = '\u00ed'					unicode
+		//			- char[] c3 = {'\u0069', '\u0301'};		unicode en forma canonica
+		//		Unicode canonical representation is composed by two chars: base letter + the accent
+		//		this way á can be canonically represented as letter (\u0069) and accent (\u0301)
+	    String normalized = Normalizer.normalize(str,Normalizer.Form.NFD);
+	    // get ASCII chars
+	    Pattern pattern = Pattern.compile("[^\\p{ASCII}+]");
+	    return pattern.matcher(normalized).replaceAll("");
     }
 ///////////////////////////////////////////////////////////////////////////////
 //  CODE / DECODE www-form-urlencodec
@@ -216,7 +284,7 @@ public class StringEncodeUtils {
      * @return the Base64 data in byte array format
      * @throws EncoderException if the encoding could not be done
      */
-    public static byte[] encodeBase64(final byte[] bytes, boolean isChunked, boolean urlSafe) {
+    public static byte[] encodeBase64(final byte[] bytes, final boolean isChunked, final boolean urlSafe) {
     	if(bytes == null || bytes.length == 0) return null;
     	return Base64.encodeBase64(bytes, isChunked, urlSafe);
     }

@@ -1,7 +1,6 @@
 package r01f.util.types;
 
 import java.nio.charset.Charset;
-import java.text.Normalizer;
 import java.util.Comparator;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -382,19 +381,9 @@ public class Strings {
 	 */
 	@GwtIncompatible("Normalized and regex is not supported by GWT")
 	public static String removeAccents(final String str) {
-		if (str == null ) return str;
-		// ver http://www.v3rgu1.com/blog/231/2010/programacion/eliminar-acentos-y-caracteres-especiales-en-java/
-		// canonical decomposition is used:
-		//		A character can be represented in many ways:
-		//			- char c1 = 'á'							usual
-		//			- char c2 = '\u00ed'					unicode
-		//			- char[] c3 = {'\u0069', '\u0301'};		unicode en forma canonica
-		//		Unicode canonical representation is composed by two chars: base letter + the accent
-		//		this way á can be canonically represented as letter (\u0069) and accent (\u0301)
-	    String normalized = Normalizer.normalize(str,Normalizer.Form.NFD);
-	    // get ASCII chars
-	    Pattern pattern = Pattern.compile("[^\\p{ASCII}+]");
-	    return pattern.matcher(normalized).replaceAll("");
+		CharSequence cs = StringEncodeUtils.removeAccents(str);
+		return cs != null ? cs.toString()
+						  : null;
 	}
 	/**
 	 * Sets the first letter in upper case

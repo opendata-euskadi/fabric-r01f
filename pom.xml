@@ -257,12 +257,18 @@
 
 			</plugins>
 		</pluginManagement>
+		<!-- 
+		The Resources Plugin handles the copying of project resources to the output directory
+		-->
 		<resources>
 			<resource>
 				<directory>src/main/config</directory>
 				<includes>
 					<include>**/*.xml</include>
 				</includes>
+			</resource>
+			<resource>
+			    <directory>src/main/resources</directory>
 			</resource>
 		</resources>
 	</build>

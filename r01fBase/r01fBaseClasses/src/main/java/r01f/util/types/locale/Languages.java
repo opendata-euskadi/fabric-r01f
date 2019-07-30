@@ -90,7 +90,7 @@ public class Languages {
 		Language outLang = null;
 		for (Language lang : Language.values()) {
 			if (lang == Language.ANY) continue;
-			if (Languages.getLocale(lang).equals(loc)) {
+			if (Languages.getLocale(lang).getLanguage().equals(loc.getLanguage())) {
 				outLang = lang;
 				break;
 			}
