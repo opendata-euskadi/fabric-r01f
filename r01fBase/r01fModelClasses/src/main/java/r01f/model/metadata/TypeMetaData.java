@@ -51,7 +51,7 @@ public class TypeMetaData<M extends MetaDataDescribable>
     private Memoized<Map<Class<?>,Long>> _typeFacetsCodes =
     			new Memoized<Map<Class<?>,Long>>() {
 						@Override
-						protected Map<Class<?>,Long> supply() {
+						public Map<Class<?>,Long> supply() {
 							Map<Class<?>,Long> outFacets = null;
 							// a) add the supertypes & interface facets
 							if (CollectionUtils.hasData(_facets)) {
@@ -75,15 +75,15 @@ public class TypeMetaData<M extends MetaDataDescribable>
 	private Memoized<Set<Class<?>>> _facetTypes =
 				new Memoized<Set<Class<?>>>() {
 						@Override
-						protected Set<Class<?>> supply() {
+						public Set<Class<?>> supply() {
 							return FluentIterable.from(_facets)
-												 .transform(new Function<TypeMetaData<? extends MetaDataDescribable>,Class<?>>() {
-																	@Override
-																	public Class<?> apply(final TypeMetaData<? extends MetaDataDescribable> typeMetaData) {
-																		return typeMetaData.getRawType();
-																	}
-														     })
-												 .toSet();
+										 .transform(new Function<TypeMetaData<? extends MetaDataDescribable>,Class<?>>() {
+															@Override
+															public Class<?> apply(final TypeMetaData<? extends MetaDataDescribable> typeMetaData) {
+																return typeMetaData.getRawType();
+															}
+												     })
+										 .toSet();
 						}
 				};
 	/**

@@ -125,7 +125,7 @@ public class UrlPath
 	}
 	private final Memoized<PathFactory<UrlPath>> _memoizedPathFactory = new Memoized<PathFactory<UrlPath>>() {
 																				@Override
-																				protected PathFactory<UrlPath> supply() {
+																				public PathFactory<UrlPath> supply() {
 																					return _createUrlPathFactory(_preserveTrailingSlash);
 																				}
 																		};

@@ -132,7 +132,7 @@ public class ResourcesLoaderFromBBDD
 	 */
 	Memoized<DBSQLExecutor> _sqlExec = new Memoized<DBSQLExecutor>() {
 													@Override
-													protected DBSQLExecutor supply() {
+													public DBSQLExecutor supply() {
 														DBSQLExecutor sqlExec = ReflectionUtils.createInstanceOf("r01f.persistence.db.sql.DBRawSQLExecutor",
 																												 new Class<?>[] {Properties.class},new Object[] {_dbConnectionProps});
 														return sqlExec;

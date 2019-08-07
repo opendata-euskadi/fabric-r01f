@@ -39,7 +39,7 @@ public class FileNameAndExtension
 /////////////////////////////////////////////////////////////////////////////////////////	
 	@Getter private final transient Memoized<String[]> _fileNameAndExtension = new Memoized<String[]>() {
 																						@Override
-																						protected String[] supply() {
+																						public String[] supply() {
 																							return _fileNameAndExtensionParser.parseFileNameAndExtension(_nameWithExtension);
 																						}
 																			   };

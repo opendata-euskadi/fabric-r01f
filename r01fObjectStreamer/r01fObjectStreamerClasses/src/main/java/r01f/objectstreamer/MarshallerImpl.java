@@ -29,14 +29,14 @@ public class MarshallerImpl
 
 	private final Memoized<MarshallerMapperForXml> _marshallerXmlMapper = new Memoized<MarshallerMapperForXml>() {
 																				@Override
-																				protected MarshallerMapperForXml supply() {
+																				public MarshallerMapperForXml supply() {
 																					return new MarshallerMapperForXml(_appCodes,
 																													  _jacksonModules);
 																				}
 																	   };
 	private final Memoized<MarshallerMapperForJson> _marshallerJsonMapper = new Memoized<MarshallerMapperForJson>() {
 																				@Override
-																				protected MarshallerMapperForJson supply() {
+																				public MarshallerMapperForJson supply() {
 																					return new MarshallerMapperForJson(_appCodes,
 																													   _jacksonModules);
 																				}

@@ -154,7 +154,7 @@ public class UrlQueryString
 	private final transient Memoized<Set<UrlQueryStringParam>> _qryStrParams = 
 									new Memoized<Set<UrlQueryStringParam>>() {
 											@Override
-											protected Set<UrlQueryStringParam> supply() {
+											public Set<UrlQueryStringParam> supply() {
 												Set<UrlQueryStringParam> outParams = null;
 												if (UrlQueryString.this.hasParams()) {
 													outParams = Sets.newHashSetWithExpectedSize(_params.size());
