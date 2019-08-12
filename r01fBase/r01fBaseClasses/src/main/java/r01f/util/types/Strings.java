@@ -34,10 +34,10 @@ import r01f.util.types.locale.Languages;
  */
 public class Strings {
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	public static final String EMPTY = "";
-	
+
 ///////////////////////////////////////////////////////////////////////////////
 // 	STATIC UTIL METHODS
 ///////////////////////////////////////////////////////////////////////////////
@@ -96,15 +96,15 @@ public class Strings {
 	private static String _customize(final CharSequence strToCustomize,final Object... vars) {
 		if (strToCustomize == null) return null;
 		if (vars == null || vars.length == 0) return strToCustomize.toString();
-		
+
 		// reuse MessageFormatter from SL4FJ
 		return MessageFormatter.arrayFormat(strToCustomize.toString(),vars)
 							   .getMessage();
 //		// custom impl
 //		String workStr = strToCustomize.toString();
 //		for (Object var : vars) {
-//			workStr = workStr.replaceFirst("\\{\\}",(var != null ? _matcherQuoteReplacement(var.toString())	// should be _objectToString(var) but it's problematic in GWT 
-//																 : "null"));	
+//			workStr = workStr.replaceFirst("\\{\\}",(var != null ? _matcherQuoteReplacement(var.toString())	// should be _objectToString(var) but it's problematic in GWT
+//																 : "null"));
 //		}
 //		return new StringBuffer(workStr);
 	}
@@ -187,7 +187,7 @@ public class Strings {
 	public interface StringCustomizerVarsProvider {
 		public Object[] provideVars();
 	}
-	public interface StringCustomizerVarsProviderConditioned 
+	public interface StringCustomizerVarsProviderConditioned
 			 extends StringCustomizerVarsProvider {
 		public boolean shouldAdd();
 	}
@@ -207,7 +207,7 @@ public class Strings {
 	 * 															return true;		// any condition could be evaluated to guess if the string should be added or not
 	 * 														}
 	 * 														@Override
-	 * 														public Object[] provideVars() {	
+	 * 														public Object[] provideVars() {
 	 * 															return new Object[] {"the value"};
 	 * 														}
 	 * 												  })
@@ -228,13 +228,13 @@ public class Strings {
 		return str;
 	}
 ///////////////////////////////////////////////////////////////////////////////
-// 	
-///////////////////////////////////////////////////////////////////////////////	
+//
+///////////////////////////////////////////////////////////////////////////////
     /**
      * Validates if a string is null or empty: whitespace is NOT taken into account
      * This method can be used in place of <code>sb.toString().trim().length()</code>,
-     * @param str 
-     * @return 
+     * @param str
+     * @return
      */
     public static boolean isNullOrEmpty(final CharSequence str) {
         if (str == null || str.length() == 0) return true;        // true if null
@@ -255,7 +255,7 @@ public class Strings {
      * Validates if a string is null or empty: whitespace is NOT taken into account
      * This method can be used in place of <code>sb.toString().trim().length()</code>,
      * @param char
-     * @return 
+     * @return
      */
     public static boolean isNullOrEmpty(final char[] chars) {
     	return Strings.isNullOrEmpty(new String(chars));
@@ -278,8 +278,8 @@ public class Strings {
     }
 	/**
 	 * Concatenates a bunch of strings
-	 * @param strs 
-	 * @return 
+	 * @param strs
+	 * @return
 	 */
 	public static String concat(final CharSequence... strs) {
 		if (strs == null || strs.length == 0) return null;
@@ -289,8 +289,8 @@ public class Strings {
 	}
 	/**
 	 * Concatenates a bunch of Strings
-	 * @param strs 
-	 * @return 
+	 * @param strs
+	 * @return
 	 */
 	public static String concat(final String... strs) {
 		if (strs == null || strs.length == 0) return null;
@@ -300,8 +300,8 @@ public class Strings {
 	}
 	/**
 	 * Quotes the string (surrounds it with single quotes)
-	 * @param s 
-	 * @return 
+	 * @param s
+	 * @return
 	 */
 	public static String quote(final String s) {
 		return s != null ? Strings.concat("'",s,"'") : null;
@@ -322,16 +322,16 @@ public class Strings {
 	 */
 	public static String valueOrDefault(final String s,
 										final String defaultValue) {
-		return s != null ? s 
+		return s != null ? s
 						 : defaultValue;
 	}
 ///////////////////////////////////////////////////////////////////////////////
 // 	PAD
 ///////////////////////////////////////////////////////////////////////////////
 	/**
-	 * Removes everything that's not a word (spaces, _, /, etc) 
-	 * @param str la cadena de origen
-	 * @return la cadena modificada
+	 * Removes everything that's not a word (spaces, _, /, etc)
+	 * @param str
+	 * @return
 	 */
 	@GwtIncompatible("regex is NOT supported by GWT")
 	public static String removeWhitespace(final String str) {
@@ -354,8 +354,8 @@ public class Strings {
 	}
 	/**
 	 * Adjust the string size appending chars at the left until the string size is the given one
-	 * @param size 
-	 * @param character 
+	 * @param size
+	 * @param character
 	 * @return
 	 */
 	public static String leftPad(final String str,
@@ -366,8 +366,8 @@ public class Strings {
 	/**
 	 * Adjust the string size appending chars at the right until the string size is the given one
 	 * @param str
-	 * @param size 
-	 * @param character 
+	 * @param size
+	 * @param character
 	 * @return
 	 */
 	public static String rightPad(final String str,
@@ -412,7 +412,7 @@ public class Strings {
 	@RequiredArgsConstructor(access=AccessLevel.PRIVATE)
 	public static class StringIsContainedWrapper {
 		private final String _wrappedStr;
-		
+
 		/**
 		 * Checks if the wrapped {@link String} is in the provided {@link Set} of {@link String}s
 		 * @param otherStrings a {@link Set} of {@link Strings}
@@ -476,25 +476,25 @@ public class Strings {
 		}
 		/**
 		 * Checks if the wrapped string contains any of the given strings
-		 * @param otherStrings 
-		 * @return 
+		 * @param otherStrings
+		 * @return
 		 */
 		public boolean containsAny(final String... otherStrings) {
 			return this.containsAny(false,otherStrings);
 		}
 		/**
 		 * Checks if the wrapped string contains any of the given strings
-		 * @param otherStrings 
-		 * @return 
+		 * @param otherStrings
+		 * @return
 		 */
 		public boolean containsAnyIgnoringCase(final String... otherStrings) {
 			return this.containsAny(true,otherStrings);
 		}
 		/**
-		 * Checks if the string contains any of the given strings 
+		 * Checks if the string contains any of the given strings
 		 * @param ignoreCase
 		 * @param otherStrings
-		 * @return 
+		 * @return
 		 */
 		public boolean containsAny(final boolean ignoreCase,final String... otherStrings) {
 			if (CollectionUtils.isNullOrEmpty(otherStrings)) return false;
