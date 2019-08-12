@@ -1,5 +1,7 @@
 package r01f.types.contact;
 
+import com.google.common.base.Function;
+
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import r01f.annotations.Immutable;
@@ -12,11 +14,11 @@ import r01f.util.types.Strings;
 @Immutable
 @NoArgsConstructor
 @Accessors(prefix="_")
-public class EMail 
+public class EMail
      extends ValidatedContactID {
-	
+
 	private static final long serialVersionUID = -6976066522439926427L;
-	
+
 /////////////////////////////////////////////////////////////////////////////////////////
 //  BUILDERS
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -40,14 +42,14 @@ public class EMail
 		return EMail.of(mail);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
-	@Override 
+	@Override
 	public boolean isValid() {
 		return EMail.validate(this.asString());
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Validates eMail
@@ -56,19 +58,19 @@ public class EMail
 	 */
 	public static boolean validate(final String emailStr) {
 		if (Strings.isNullOrEmpty(emailStr)) return false;
-		
+
 		boolean outValid = true;
-		
+
 		int atIndex = emailStr.indexOf('@');
 		if (atIndex <= 0) {
 			outValid = false;
 		} else {
 			String domain = emailStr.substring(atIndex+1);
 			String local = emailStr.substring(0,atIndex);
-			
+
 			int domainLength = domain.length();
 			int localLength = local.length();
-			
+
 			if (localLength < 1 || localLength > 64) {
 				outValid = false;
 			} else if (domainLength < 1 || domainLength > 255) {
@@ -96,4 +98,19 @@ public class EMail
 		}
 		return outValid;
 	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	TRANSFORM
+/////////////////////////////////////////////////////////////////////////////////////////
+	public static final Function<String,EMail> FROM_STRING_TRANSFORM = new Function<String,EMail>() {
+																			@Override
+																			public EMail apply(final String email) {
+																				return EMail.of(email);
+																			}
+																  	   };
+	public static final Function<EMail,String> TO_STRING_TRANSFORM = new Function<EMail,String>() {
+																			@Override
+																			public String apply(final EMail email) {
+																				return email.asString();
+																			}
+																  	   };
 }

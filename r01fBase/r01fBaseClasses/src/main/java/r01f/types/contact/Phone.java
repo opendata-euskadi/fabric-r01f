@@ -1,6 +1,7 @@
 package r01f.types.contact;
 
 import com.google.common.annotations.GwtIncompatible;
+import com.google.common.base.Function;
 
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -153,7 +154,21 @@ public class Phone
 		return outPhone;
 	}
 
-
+/////////////////////////////////////////////////////////////////////////////////////////
+//	TRANSFORM
+/////////////////////////////////////////////////////////////////////////////////////////
+	public static final Function<String,Phone> FROM_STRING_TRANSFORM = new Function<String,Phone>() {
+																				@Override
+																				public Phone apply(final String phone) {
+																					return Phone.of(phone);
+																				}
+																	   };
+	public static final Function<Phone,String> TO_STRING_TRANSFORM = new Function<Phone,String>() {
+																			@Override
+																			public String apply(final Phone phone) {
+																				return phone.asString();
+																			}
+																  	   };
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // INNER CLASS FOR PHONE VALIDATIONS
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -169,5 +184,7 @@ public class Phone
 //		}
 //
 //	}
+
+
 
 }
