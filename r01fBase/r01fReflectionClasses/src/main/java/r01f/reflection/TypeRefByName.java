@@ -28,7 +28,7 @@ public class TypeRefByName
 		_name = typeName;
 		_type = new Memoized<Class<?>>() {
 						@Override
-						protected Class<?> supply() {
+						public Class<?> supply() {
 							return ReflectionUtils.typeFromClassName(_name);
 						}
 				};

@@ -25,7 +25,7 @@ abstract class UrlParserBase
 	private final transient Memoized<UrlComponents> _urlComponents = 
 									new Memoized<UrlComponents>() {
 											@Override
-											protected UrlComponents supply() {
+											public UrlComponents supply() {
 												if (_url == null) throw new IllegalStateException("The url is null!!");
 												
 												String theUrl = _normalize(_url);												

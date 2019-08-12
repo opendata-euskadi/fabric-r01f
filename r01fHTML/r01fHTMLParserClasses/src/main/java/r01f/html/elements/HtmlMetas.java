@@ -40,7 +40,7 @@ public abstract class HtmlMetas {
 		
 		private Memoized<Map.Entry<String,String>> _metaCont = new Memoized<Map.Entry<String,String>>() {
 																		@Override
-																		protected Entry<String,String> supply() {
+																		public Entry<String,String> supply() {
 																			return CollectionUtils.hasData(_attrs) ? Iterables.getFirst(_attrs.entrySet(),
 																																		null)
 																												   : null;

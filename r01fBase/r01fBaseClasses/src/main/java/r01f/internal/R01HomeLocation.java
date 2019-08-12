@@ -45,7 +45,7 @@ public abstract class R01HomeLocation {
 	}
 	private static Memoized<Path> DEFAULT_HOME_PATH = new Memoized<Path>() {
 																@Override
-																protected Path supply() {
+																public Path supply() {
 																	return _guessDefaultHomeLocation();
 																}
 		

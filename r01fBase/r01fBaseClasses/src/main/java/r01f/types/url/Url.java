@@ -500,7 +500,7 @@ public class Url
 /////////////////////////////////////////////////////////////////////////////////////////
 	private final transient Memoized<String> _asStringEncodingQryStr = new Memoized<String>() {
 																				@Override
-																				protected String supply() {
+																				public String supply() {
 																					UrlComponents comps = Url.this.getComponents();
 																					return _asString(comps,
 																									 true);		// encode param values
@@ -508,7 +508,7 @@ public class Url
 																		};
 	private final transient Memoized<String> _asStringNotEncodingQryStr = new Memoized<String>() {
 																				@Override
-																				protected String supply() {
+																				public String supply() {
 																					UrlComponents comps = Url.this.getComponents();
 																					return _asString(comps,
 																									 false);	// do not encode param values

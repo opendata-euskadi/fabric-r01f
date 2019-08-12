@@ -1,6 +1,7 @@
 package r01f.types.contact;
 
 import com.google.common.annotations.GwtIncompatible;
+import com.google.common.base.Function;
 
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -13,31 +14,31 @@ import r01f.util.types.Strings;
 @Immutable
 @Accessors(prefix="_")
 @NoArgsConstructor
-public class Phone 
+public class Phone
 	 extends ValidatedContactID {
-	
+
 	private static final long serialVersionUID = 2718728842252439399L;
 /////////////////////////////////////////////////////////////////////////////////////////
 //  FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
-	
+
 	@GwtIncompatible("User regex")
 	public static final java.util.regex.Pattern VALID_PHONE_COUNTRY_CODE = java.util.regex.Pattern.compile("\\+[0-9]{2}");
-	
+
 	@GwtIncompatible("User regex")
 	public static final java.util.regex.Pattern VALID_PHONE_FORMAT_PATTERN = java.util.regex.Pattern.compile("(" + VALID_PHONE_COUNTRY_CODE + ")?" +
-																			 "([0-9]{9})");	
-	
+																			 "([0-9]{9})");
+
 	/*
 	 * This is not used because in GWT is not possible to use inner classes.
 	 */
 //	@GwtIncompatible(value = "Atributte not compatible for GWT")
-//	private r01f.patterns.Memoized<Boolean> _valid = new MemoizedPhoneValidator(); 
-									
+//	private r01f.patterns.Memoized<Boolean> _valid = new MemoizedPhoneValidator();
+
 /////////////////////////////////////////////////////////////////////////////////////////
 //  BUILDERS
 /////////////////////////////////////////////////////////////////////////////////////////
-	
+
 	public Phone(final String phone) {
 		super(phone);
 	}
@@ -51,16 +52,21 @@ public class Phone
 	public static Phone create(final String phone) {
 		return Phone.of(phone);
 	}
-	
+
 	@GwtIncompatible("User regex")
 	public static Phone createValidating(final String phone) {
 		if (!Phone.create(phone).isValid()) throw new IllegalArgumentException("Not a valid phone number!!");
 		return Phone.of(phone);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
-///////////////////////////////////////////////////////////////////////////////////////// 
-	@Override	
+//
+/////////////////////////////////////////////////////////////////////////////////////////
+	public static boolean validate(final String phone) {
+		return new PhoneValidator()
+						.validate(new Phone(phone))
+						.isValid();
+	}
+	@Override
 	public boolean isValid() {
 		return new PhoneValidator()
 						.validate(this)
@@ -68,7 +74,8 @@ public class Phone
 	}
 	@Override
 	public String asString() {
-		return _sanitize(this.getId());	// remove all non-numeric or + characters
+		return Strings.isNOTNullOrEmpty(this.getId()) ? _sanitize(this.getId())	// remove all non-numeric or + characters
+													  : null;
 	}
 	@Override
 	public String toString() {
@@ -97,10 +104,10 @@ public class Phone
 								   : null;		// imposible
 		return outPhone;
 	}
-	
+
 	/**
 	 * Returns the phone ensuring that it's prefixed with a provided country code
-	 * it it's NOT already present 
+	 * it it's NOT already present
 	 * @param defaultCountryCode
 	 */
 	@GwtIncompatible("User regex")
@@ -123,45 +130,61 @@ public class Phone
 			 if (countryCode != null && !countryCode.equals(defaultCountryCode)) {
 				 org.slf4j.LoggerFactory.getLogger(this.getClass()).info("The phone {} has a country code={} which does NOT match the provided default country code={}: {} will be returned",
 						 this.asString(),countryCode,defaultCountryCode,countryCode);
-			}		
-			
+			}
+
 			outPhone = countryCode + phoneNumber;
 		} else {
 			throw new IllegalStateException(Throwables.message("The phone number does NOT have a valid format: {}", VALID_PHONE_FORMAT_PATTERN));
 		}
 		return outPhone;
 	}
-	
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // PRIVATE METHODOS
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Sanitizes the phone number removing all non-numeric or +
 	 * characters
-	 * @param phoneAsString 
+	 * @param phoneAsString
 	 * @return
 	 */
-	
+
 	private static String _sanitize(final String phoneAsString) {
 		String outPhone = phoneAsString.replaceAll("[^0-9^\\+]","");
 		return outPhone;
 	}
-	
-	
+
+/////////////////////////////////////////////////////////////////////////////////////////
+//	TRANSFORM
+/////////////////////////////////////////////////////////////////////////////////////////
+	public static final Function<String,Phone> FROM_STRING_TRANSFORM = new Function<String,Phone>() {
+																				@Override
+																				public Phone apply(final String phone) {
+																					return Phone.of(phone);
+																				}
+																	   };
+	public static final Function<Phone,String> TO_STRING_TRANSFORM = new Function<Phone,String>() {
+																			@Override
+																			public String apply(final Phone phone) {
+																				return phone.asString();
+																			}
+																  	   };
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // INNER CLASS FOR PHONE VALIDATIONS
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+
 //	public class MemoizedPhoneValidator extends r01f.patterns.Memoized<Boolean> {
-//		
+//
 //		private static final long serialVersionUID = 7868130344629476045L;
-//		
+//
 //		@Override
 //		@GwtIncompatible(value="METHOD")
 //		protected Boolean supply() {
 //			return VALID_PHONE_FORMAT_PATTERN.matcher(Phone.this.asString()).find();
 //		}
-//		
+//
 //	}
-	
+
+
+
 }

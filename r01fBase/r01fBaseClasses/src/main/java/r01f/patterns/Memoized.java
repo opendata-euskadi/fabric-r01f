@@ -25,14 +25,33 @@ import lombok.experimental.Accessors;
  * @param <T> the type to be memoized
  */
 @Accessors(prefix="_")
-public abstract class Memoized<T> {
+public abstract class Memoized<T> 
+		   implements Supplier<T> {
 /////////////////////////////////////////////////////////////////////////////////////////
 //  FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
+	private final Supplier<T> _supplier;
 	/**
 	 * The memoized instance
 	 */
 	@Setter protected T _instance;
+/////////////////////////////////////////////////////////////////////////////////////////
+//	CONSTRUCTOR                                                                          
+/////////////////////////////////////////////////////////////////////////////////////////
+	public Memoized() {
+		_supplier = this;
+	}
+	public Memoized(final Supplier<T> supplier) {
+		_supplier = supplier;
+	}
+	public static <T> Memoized<T> using(final Supplier<T> supplier) {
+		return new Memoized<T>(supplier) {
+						@Override
+						public T supply() {
+							return supplier.supply();
+						}
+			   };
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  METHODS
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -42,7 +61,7 @@ public abstract class Memoized<T> {
 	 * @return the memoized instance
 	 */
 	public T get() {
-		if (_instance == null) _instance = this.supply();
+		if (_instance == null) _instance = _supplier.supply();
 		return _instance;
 	}
 	/**
@@ -51,9 +70,4 @@ public abstract class Memoized<T> {
 	public void reset() {
 		_instance = null;
 	}
-	/**
-	 * Supplies an instance to be memoized
-	 * @return the memoized instance
-	 */
-	protected abstract T supply();
 }

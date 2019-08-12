@@ -35,7 +35,7 @@ public class MimeTypes {
 /////////////////////////////////////////////////////////////////////////////////////////
 	static Memoized<org.apache.tika.mime.MimeTypes> MIME_TYPES = new Memoized<org.apache.tika.mime.MimeTypes>() {
 																		@Override
-																		protected org.apache.tika.mime.MimeTypes supply() {
+																		public org.apache.tika.mime.MimeTypes supply() {
 																				final ResourcesLoader resLoader = ResourcesLoaderBuilder.createDefaultResourcesLoader();
 																				try {
 																					return MimeTypesFactory.create(resLoader.getInputStream(Path.from("org/apache/tika/mime/tika-mimetypes.xml")),		// tika's core (located at tika-core.jar)

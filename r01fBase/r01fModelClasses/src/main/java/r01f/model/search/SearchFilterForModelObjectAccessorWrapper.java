@@ -95,7 +95,7 @@ public class SearchFilterForModelObjectAccessorWrapper<F extends SearchFilterFor
 /////////////////////////////////////////////////////////////////////////////////////////	
 	private final Memoized<SearchFilterQueryClausesAccessorWrapper> _queryClausesAccessor = new Memoized<SearchFilterQueryClausesAccessorWrapper>() {
 																									@Override
-																									protected SearchFilterQueryClausesAccessorWrapper supply() {
+																									public SearchFilterQueryClausesAccessorWrapper supply() {
 																										return new SearchFilterQueryClausesAccessorWrapper();
 																									}
 																							};

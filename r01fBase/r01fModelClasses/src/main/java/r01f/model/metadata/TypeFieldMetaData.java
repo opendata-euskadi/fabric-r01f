@@ -37,7 +37,7 @@ public class TypeFieldMetaData
 /////////////////////////////////////////////////////////////////////////////////////////
 	private transient Memoized<? extends FieldMetaData> _asFieldMetaData = new Memoized<FieldMetaData>() {
 																					@Override
-																					protected FieldMetaData supply() {
+																					public FieldMetaData supply() {
 																						HasTypesMetaData hasTypesMetaData = TypeMetaDataInspector.singleton();
 																						FieldMetaData outFieldMetaData = FieldMetaDataBuilder.asFieldMetaData(TypeFieldMetaData.this)
 																													   			   .using(hasTypesMetaData);

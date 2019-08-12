@@ -31,7 +31,7 @@ public enum OSType
 	private static String OS_PROP = System.getProperty("os.name").toLowerCase();
 	private static transient Memoized<OSType> OS = new Memoized<OSType>() {
 															@Override
-															protected OSType supply() {
+															public OSType supply() {
 																if (OS_PROP.indexOf("win") >= 0) return OSType.WINDOWS;
 																if (OS_PROP.indexOf("mac") >= 0 || OS_PROP.indexOf("darwin") >= 0) return OSType.MacOS;
 																if (OS_PROP.indexOf("nux") >= 0) return OSType.Linux;
