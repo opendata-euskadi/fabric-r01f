@@ -1218,7 +1218,7 @@ public final class XMLPropertyWrapper {
         if (!Strings.isNullOrEmpty(enumAsStr)) {
             try {
                 outE = Enums.of(enumType)
-                               .fromNameIgnoringCase(enumAsStr);
+                            .fromNameIgnoringCase(enumAsStr);
             } catch (IllegalArgumentException illArgEx) {
                 outE = defaultValue;	// No hay un valor para la propiedad
             }
