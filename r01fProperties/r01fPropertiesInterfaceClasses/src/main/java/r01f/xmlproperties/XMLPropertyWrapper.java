@@ -35,6 +35,7 @@ import r01f.types.JavaTypeName;
 import r01f.types.Path;
 import r01f.types.TimeLapse;
 import r01f.types.contact.EMail;
+import r01f.types.contact.Phone;
 import r01f.types.url.Host;
 import r01f.types.url.Url;
 import r01f.types.url.UrlPath;
@@ -764,6 +765,45 @@ public final class XMLPropertyWrapper {
     public EMail asEMail(final XMLPropertyDefaultValueByEnv<EMail> valByEnv) {
         String email = this.asString();
         return Strings.isNOTNullOrEmpty(email) ? EMail.create(email)
+                                               : valByEnv.getFor(_props.getEnvironment());
+    }
+/////////////////////////////////////////////////////////////////////////////////////////
+//  PHONE
+/////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * The property value as an {@link EMail}
+     * @return
+     */
+    public Phone asPhone() {
+        String email = this.asString();
+        return Strings.isNOTNullOrEmpty(email) ? Phone.create(email) : null;
+    }
+    /**
+     * The property value as an {@link Phone}
+     * @param defaultPhone
+     * @return
+     */
+    public Phone asPhone(final String defaultPhone) {
+        return Phone.create(this.asString(defaultPhone));
+    }
+    /**
+     * The property value as an {@link Phone}
+     * @param defaultPhone
+     * @return the property value or the default value if the property is NOT found
+     */
+    public Phone asPhone(final Phone defaultPhone) {
+        String email = this.asString();
+        return Strings.isNOTNullOrEmpty(email) ? Phone.create(email)
+                                               : defaultPhone;
+    }
+    /**
+     * The property value as an {@link Phone}
+     * @param valByEnv
+     * @return
+     */
+    public Phone asPhone(final XMLPropertyDefaultValueByEnv<Phone> valByEnv) {
+        String email = this.asString();
+        return Strings.isNOTNullOrEmpty(email) ? Phone.create(email)
                                                : valByEnv.getFor(_props.getEnvironment());
     }
 /////////////////////////////////////////////////////////////////////////////////////////
