@@ -129,7 +129,7 @@ public static enum RequestMethod
 //  TEST
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
-	 * Gesses the proxy settings trying to test if a proxy is needed to connect to the internet
+	 * Guesses the proxy settings trying to test if a proxy is needed to connect to the internet
 	 * ... and if so, trying to load the proxy settings from a provided properties file like:
 	 * <pre class='brush:java'>
 	 * 		<propsRootNode>
