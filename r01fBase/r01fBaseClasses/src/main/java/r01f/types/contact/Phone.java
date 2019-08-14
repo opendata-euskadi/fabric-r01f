@@ -15,7 +15,7 @@ import r01f.util.types.Strings;
 @Accessors(prefix="_")
 @NoArgsConstructor
 public class Phone
-	 extends ValidatedContactID {
+	 extends ValidatedContactMeanBase {
 
 	private static final long serialVersionUID = 2718728842252439399L;
 /////////////////////////////////////////////////////////////////////////////////////////

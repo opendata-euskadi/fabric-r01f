@@ -15,7 +15,7 @@ import r01f.util.types.Strings;
 @NoArgsConstructor
 @Accessors(prefix="_")
 public class EMail
-     extends ValidatedContactID {
+     extends ValidatedContactMeanBase {
 
 	private static final long serialVersionUID = -6976066522439926427L;
 
