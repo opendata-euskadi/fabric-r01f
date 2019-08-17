@@ -1,5 +1,7 @@
 package r01f.types.contact;
 
+import java.util.concurrent.CountDownLatch;
+
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Function;
 
@@ -113,8 +115,9 @@ public class Phone
 	@GwtIncompatible("User regex")
 	public String asStringEnsuringCountryCode(final String defaultCountryCode) {
 		String outPhone = null;
-		com.google.common.base.Preconditions.checkArgument(defaultCountryCode.length() == 3 && VALID_PHONE_COUNTRY_CODE.matcher(defaultCountryCode).find(),
-									"The provided default phone country code %s is NOT valid",defaultCountryCode);
+		String theDefaultCountryCode = !defaultCountryCode.startsWith("+") ? "+" + defaultCountryCode : defaultCountryCode;
+		com.google.common.base.Preconditions.checkArgument(theDefaultCountryCode.length() == 3 && VALID_PHONE_COUNTRY_CODE.matcher(theDefaultCountryCode).find(),
+														   "The provided default phone country code %s is NOT valid",defaultCountryCode);
 		java.util.regex.Matcher m = VALID_PHONE_FORMAT_PATTERN.matcher(this.asString());
 		if (m.find()) {
 			String countryCode = null;
@@ -123,18 +126,19 @@ public class Phone
 				countryCode = m.group(1);
 				phoneNumber = m.group(2);
 			} else {
-				countryCode = defaultCountryCode;
+				countryCode = theDefaultCountryCode;
 				phoneNumber = m.group(2);
 			}
 			//Note : Cannot use @Sl4j for GWT.....
-			 if (countryCode != null && !countryCode.equals(defaultCountryCode)) {
+			 if (countryCode != null && !countryCode.equals(theDefaultCountryCode)) {
 				 org.slf4j.LoggerFactory.getLogger(this.getClass()).info("The phone {} has a country code={} which does NOT match the provided default country code={}: {} will be returned",
-						 this.asString(),countryCode,defaultCountryCode,countryCode);
+						 												 this.asString(),countryCode,theDefaultCountryCode,countryCode);
 			}
 
 			outPhone = countryCode + phoneNumber;
 		} else {
-			throw new IllegalStateException(Throwables.message("The phone number does NOT have a valid format: {}", VALID_PHONE_FORMAT_PATTERN));
+			throw new IllegalStateException(Throwables.message("The phone number does NOT have a valid format: {}",
+															   VALID_PHONE_FORMAT_PATTERN));
 		}
 		return outPhone;
 	}
