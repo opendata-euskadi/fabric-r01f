@@ -29,7 +29,7 @@ public class Phone
 
 	@GwtIncompatible("User regex")
 	public static final java.util.regex.Pattern VALID_PHONE_FORMAT_PATTERN = java.util.regex.Pattern.compile("(" + VALID_PHONE_COUNTRY_CODE + ")?" +
-																			 "([0-9]{9})");
+																			 								 "([0-9]{9})");
 
 	/*
 	 * This is not used because in GWT is not possible to use inner classes.
@@ -122,19 +122,15 @@ public class Phone
 		if (m.find()) {
 			String countryCode = null;
 			String phoneNumber = null;
-			if (m.groupCount() == 3) {
-				countryCode = m.group(1);
-				phoneNumber = m.group(2);
-			} else {
-				countryCode = theDefaultCountryCode;
-				phoneNumber = m.group(2);
-			}
+			countryCode = m.group(1);
+			phoneNumber = m.group(2);
+			if (Strings.isNullOrEmpty(countryCode)) countryCode = theDefaultCountryCode;
+
 			//Note : Cannot use @Sl4j for GWT.....
 			 if (countryCode != null && !countryCode.equals(theDefaultCountryCode)) {
 				 org.slf4j.LoggerFactory.getLogger(this.getClass()).info("The phone {} has a country code={} which does NOT match the provided default country code={}: {} will be returned",
 						 												 this.asString(),countryCode,theDefaultCountryCode,countryCode);
 			}
-
 			outPhone = countryCode + phoneNumber;
 		} else {
 			throw new IllegalStateException(Throwables.message("The phone number does NOT have a valid format: {}",
@@ -142,7 +138,6 @@ public class Phone
 		}
 		return outPhone;
 	}
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // PRIVATE METHODOS
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
