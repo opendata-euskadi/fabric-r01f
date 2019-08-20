@@ -47,8 +47,8 @@ import lombok.experimental.Accessors;
  *		- group/code: 	numeric values for error group / code
  *		- severity:		a pre-defined value for the severity at {@link ExceptionSeverity}
  *		- Traceability messages
- *		- Si la excepci�n ha de ser logeada o no
- *		- si ha de ser lanzada "tal cual" (con toda la pila de excepciones) o como una nueva excepci�n en la que la pila de excepciones se sustituye por un mensaje de texto
+ *		- Whether the exception must be logged or not
+ *		- If the exception should be re-thrown "as is" or as a new exception in which the stacktrace is replced
  *</pre>
  * The usual usage is:
  * <ul>
@@ -57,7 +57,7 @@ import lombok.experimental.Accessors;
  *  @Accessors(prefix="_")
  *	@RequiredArgsConstructor
  *		  enum TestExceptionSubTypes 
- *  implements EnrichedThrowableSubType<TestExceptionSubTypes>{
+ *  implements EnrichedThrowableSubType<TestExceptionSubTypes> {
  *			NOT_DELETE(1),
  *			VALIDATION(2);
  *
@@ -311,8 +311,8 @@ public abstract class EnrichedRuntimeException
 	public EnrichedRuntimeException(final Throwable th) {
 		super(th);
 		if (th instanceof EnrichedThrowable) {
-			EnrichedThrowable enrichedTh = (EnrichedThrowable)th;
-			Object subType =  enrichedTh.getSubType();
+			final EnrichedThrowable enrichedTh = (EnrichedThrowable)th;
+			final Object subType =  enrichedTh.getSubType();
 			_subTypeType = (Class<? extends EnrichedThrowableSubType<?>>) subType;
 			_group = enrichedTh.getGroup();
 			_code = enrichedTh.getCode();
@@ -331,8 +331,8 @@ public abstract class EnrichedRuntimeException
 							 	    final Throwable th) {
 		super(msg,th);
 		if (th instanceof EnrichedThrowable) {
-			EnrichedThrowable enrichedTh = (EnrichedThrowable)th;
-			Object subType =  enrichedTh.getSubType();
+			final EnrichedThrowable enrichedTh = (EnrichedThrowable)th;
+			final Object subType =  enrichedTh.getSubType();
 			_subTypeType = (Class<? extends EnrichedThrowableSubType<?>>) subType;
 			_group = enrichedTh.getGroup();
 			_code = enrichedTh.getCode();
@@ -366,7 +366,7 @@ public abstract class EnrichedRuntimeException
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override @SuppressWarnings("unchecked")
 	public <S extends EnrichedThrowableSubType<?>> S getSubType() {
-		S outSubType = (S)Throwables.getSubType(this,
+		final S outSubType = (S)Throwables.getSubType(this,
 												_subTypeType);	
 		return outSubType;
 	}
@@ -395,27 +395,27 @@ public abstract class EnrichedRuntimeException
 	}
 	@Override
 	public List<Throwable> getCausalChainReversed() {
-		List<Throwable> causalChain = this.getCausalChain();
+		final List<Throwable> causalChain = this.getCausalChain();
 		return Lists.reverse(causalChain);
 	}
 	@Override
 	public String getRootTypeName() {
-		StackTraceElement[] tes = this.getStackTrace();
+		final StackTraceElement[] tes = this.getStackTrace();
 		return tes[tes.length-1].getClassName();
 	}
 	@Override
 	public String getRootMethod() {
-		StackTraceElement[] tes = this.getStackTrace();
+		final StackTraceElement[] tes = this.getStackTrace();
 		return tes[tes.length-1].getMethodName();
 	}
 	@Override
 	public String getRootTraceElement() {
-		StackTraceElement[] tes = this.getStackTrace();
+		final StackTraceElement[] tes = this.getStackTrace();
 		return tes[tes.length-1].toString();
 	}
 	@Override
 	public String getStackTraceAsString() {
-		String outStackTraceAsStr = Throwables.getStackTraceAsString(this);
+		final String outStackTraceAsStr = Throwables.getStackTraceAsString(this);
 		return outStackTraceAsStr;
 	}
 }

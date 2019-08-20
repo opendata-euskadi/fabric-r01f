@@ -1,5 +1,7 @@
 package r01f.types.contact;
 
+import java.util.concurrent.CountDownLatch;
+
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Function;
 
@@ -27,7 +29,7 @@ public class Phone
 
 	@GwtIncompatible("User regex")
 	public static final java.util.regex.Pattern VALID_PHONE_FORMAT_PATTERN = java.util.regex.Pattern.compile("(" + VALID_PHONE_COUNTRY_CODE + ")?" +
-																			 "([0-9]{9})");
+																			 								 "([0-9]{9})");
 
 	/*
 	 * This is not used because in GWT is not possible to use inner classes.
@@ -113,32 +115,29 @@ public class Phone
 	@GwtIncompatible("User regex")
 	public String asStringEnsuringCountryCode(final String defaultCountryCode) {
 		String outPhone = null;
-		com.google.common.base.Preconditions.checkArgument(defaultCountryCode.length() == 3 && VALID_PHONE_COUNTRY_CODE.matcher(defaultCountryCode).find(),
-									"The provided default phone country code %s is NOT valid",defaultCountryCode);
+		String theDefaultCountryCode = !defaultCountryCode.startsWith("+") ? "+" + defaultCountryCode : defaultCountryCode;
+		com.google.common.base.Preconditions.checkArgument(theDefaultCountryCode.length() == 3 && VALID_PHONE_COUNTRY_CODE.matcher(theDefaultCountryCode).find(),
+														   "The provided default phone country code %s is NOT valid",defaultCountryCode);
 		java.util.regex.Matcher m = VALID_PHONE_FORMAT_PATTERN.matcher(this.asString());
 		if (m.find()) {
 			String countryCode = null;
 			String phoneNumber = null;
-			if (m.groupCount() == 3) {
-				countryCode = m.group(1);
-				phoneNumber = m.group(2);
-			} else {
-				countryCode = defaultCountryCode;
-				phoneNumber = m.group(2);
-			}
-			//Note : Cannot use @Sl4j for GWT.....
-			 if (countryCode != null && !countryCode.equals(defaultCountryCode)) {
-				 org.slf4j.LoggerFactory.getLogger(this.getClass()).info("The phone {} has a country code={} which does NOT match the provided default country code={}: {} will be returned",
-						 this.asString(),countryCode,defaultCountryCode,countryCode);
-			}
+			countryCode = m.group(1);
+			phoneNumber = m.group(2);
+			if (Strings.isNullOrEmpty(countryCode)) countryCode = theDefaultCountryCode;
 
+			//Note : Cannot use @Sl4j for GWT.....
+			 if (countryCode != null && !countryCode.equals(theDefaultCountryCode)) {
+				 org.slf4j.LoggerFactory.getLogger(this.getClass()).info("The phone {} has a country code={} which does NOT match the provided default country code={}: {} will be returned",
+						 												 this.asString(),countryCode,theDefaultCountryCode,countryCode);
+			}
 			outPhone = countryCode + phoneNumber;
 		} else {
-			throw new IllegalStateException(Throwables.message("The phone number does NOT have a valid format: {}", VALID_PHONE_FORMAT_PATTERN));
+			throw new IllegalStateException(Throwables.message("The phone number does NOT have a valid format: {}",
+															   VALID_PHONE_FORMAT_PATTERN));
 		}
 		return outPhone;
 	}
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // PRIVATE METHODOS
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

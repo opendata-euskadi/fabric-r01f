@@ -138,7 +138,7 @@ public abstract class PathBase<SELF_TYPE extends PathBase<SELF_TYPE>>
 		if (parentPath == null 
 		 || !parentPath.hasPathElements()) return path.asAbsoluteString();
 		
-		Collection<String> pathElements = Lists.newArrayListWithExpectedSize(parentPath.getPathElements().size() + path.getPathElements().size());
+		final Collection<String> pathElements = Lists.newArrayListWithExpectedSize(parentPath.getPathElements().size() + path.getPathElements().size());
 		pathElements.addAll(parentPath.getPathElements());
 		pathElements.addAll(path.getPathElements());
 		return _asAbsoluteString(pathElements);
@@ -148,7 +148,7 @@ public abstract class PathBase<SELF_TYPE extends PathBase<SELF_TYPE>>
 		if (parentPath == null 
 		 || !parentPath.hasPathElements()) return path.asRelativeString();
 		
-		Collection<String> pathElements = Lists.newArrayListWithExpectedSize(parentPath.getPathElements().size() + path.getPathElements().size());
+		final Collection<String> pathElements = Lists.newArrayListWithExpectedSize(parentPath.getPathElements().size() + path.getPathElements().size());
 		pathElements.addAll(parentPath.getPathElements());
 		pathElements.addAll(path.getPathElements());
 		return _asRelativeString(pathElements);
@@ -184,7 +184,7 @@ public abstract class PathBase<SELF_TYPE extends PathBase<SELF_TYPE>>
 	 * @return
 	 */
 	protected static String _asAbsoluteString(final Collection<String> pathElements) {
-		String outStr = _joinPathElements(pathElements);
+		final String outStr = _joinPathElements(pathElements);
 		if (outStr == null) return "";
 		if (outStr.matches("([a-zA-Z]:|http://|https://).*")) return outStr;	// d: or http://
 		return "/" + outStr;
@@ -214,12 +214,12 @@ public abstract class PathBase<SELF_TYPE extends PathBase<SELF_TYPE>>
 	@Override
 	public <P extends PathBase<?>> boolean startsWith(final P other) {
 		boolean outStarts = true;
-		Collection<String> otherTokens = other.getPathElements();
+		final Collection<String> otherTokens = other.getPathElements();
 		if (_pathElements.size() < otherTokens.size()) return false;
 		
 		int i=0;
-		for (String otherToken : otherTokens) {
-			String thisToken = _pathElements.get(i);
+		for (final String otherToken : otherTokens) {
+			final String thisToken = _pathElements.get(i);
 			if (!thisToken.equals(otherToken)) {
 				outStarts = false;
 				break;
@@ -231,12 +231,12 @@ public abstract class PathBase<SELF_TYPE extends PathBase<SELF_TYPE>>
 	@Override
 	public <P extends PathBase<?>> boolean endsWith(final P other) {
 		boolean outEnds = true;
-		List<String> otherTokens = other.getPathElements();
+		final List<String> otherTokens = other.getPathElements();
 		if (_pathElements.size() < otherTokens.size()) return false;
 		
 		int i=_pathElements.size()-1;
-		for (String otherToken : Lists.reverse(otherTokens)) {
-			String thisToken = _pathElements.get(i);
+		for (final String otherToken : Lists.reverse(otherTokens)) {
+			final String thisToken = _pathElements.get(i);
 			if (!thisToken.equals(otherToken)) {
 				outEnds = false;
 				break;
@@ -250,25 +250,25 @@ public abstract class PathBase<SELF_TYPE extends PathBase<SELF_TYPE>>
 /////////////////////////////////////////////////////////////////////////////////////////	
 	@Override
 	public String getLastPathElement() {
-		String outPathElement = this.hasPathElements() ? Iterables.getLast(_pathElements,null)
+		final String outPathElement = this.hasPathElements() ? Iterables.getLast(_pathElements,null)
 													   : null;
 		return outPathElement;
 	}
 	@Override
 	public String getFirstPathElement() {
-		String outPathElement = this.hasPathElements() ? Iterables.getFirst(_pathElements,null)
+		final String outPathElement = this.hasPathElements() ? Iterables.getFirst(_pathElements,null)
 													   : null;
 		return outPathElement;
 	}
 	@Override
 	public String getPathElementAt(final int pos) {
-		String outPathElement = this.hasPathElements() ? Iterables.get(_pathElements,pos,null)
+		final String outPathElement = this.hasPathElements() ? Iterables.get(_pathElements,pos,null)
 													   : null;
 		return outPathElement;
 	}
 	@Override
 	public List<String> getFirstNPathElements(final int num) {
-		List<String> outPathElements = this.hasPathElements() ? _pathElements.subList(0,num)
+		final List<String> outPathElements = this.hasPathElements() ? _pathElements.subList(0,num)
 															  : null;
 		return outPathElements;
 	}
@@ -279,7 +279,7 @@ public abstract class PathBase<SELF_TYPE extends PathBase<SELF_TYPE>>
 	}
 	@Override
 	public List<String> getPathElementsFrom(final int pos) {
-		List<String> outPathElements = this.hasPathElements() ? _pathElements.subList(pos,_pathElements.size())
+		final List<String> outPathElements = this.hasPathElements() ? _pathElements.subList(pos,_pathElements.size())
 															  : null;
 		return outPathElements;
 	}
@@ -291,7 +291,7 @@ public abstract class PathBase<SELF_TYPE extends PathBase<SELF_TYPE>>
 		
 		final List<String> prefixTokens = prefix.getPathElements();
 		// skip the prefix tokens
-		List<String> tokens = FluentIterable.from(_pathElements)
+		final List<String> tokens = FluentIterable.from(_pathElements)
 								  .filter(new Predicate<String>() {
 									  				int i = 0;
 													@Override
@@ -337,8 +337,8 @@ public abstract class PathBase<SELF_TYPE extends PathBase<SELF_TYPE>>
 	}
 	@Override
 	public boolean containsAllPathElements(final String... pathElsToCheck) {
-		Path subPath = Path.from(pathElsToCheck);
-		Path fullPath = Path.from(_pathElements.toArray(new String[_pathElements.size()]));
+		final Path subPath = Path.from(pathElsToCheck);
+		final Path fullPath = Path.from(_pathElements.toArray(new String[_pathElements.size()]));
 		return fullPath.asRelativeString().contains(subPath.asRelativeString());
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -348,9 +348,9 @@ public abstract class PathBase<SELF_TYPE extends PathBase<SELF_TYPE>>
 		Preconditions.checkArgument(obj != null,"Cannot build a path from null");
 		Collection<String> outCol = null;		
 		if (obj.getClass().isArray()) {
-			Object[] array = (Object[])obj;
-			LinkedList<String> els = Lists.newLinkedList();
-			for (Object objEl : array) {
+			final Object[] array = (Object[])obj;
+			final LinkedList<String> els = Lists.newLinkedList();
+			for (final Object objEl : array) {
 				if (objEl == null) continue;
 				if (objEl instanceof IsPath) {
 					els.addAll(((IsPath)objEl).getPathElements());
@@ -363,8 +363,8 @@ public abstract class PathBase<SELF_TYPE extends PathBase<SELF_TYPE>>
 			outCol = Lists.newArrayList(els);			
 		} 
 		else if (obj instanceof Collection) {			
-			Collection<?> col = (Collection<?>)obj;
-			Object[] array = col.toArray(new Object[col.size()]);
+			final Collection<?> col = (Collection<?>)obj;
+			final Object[] array = col.toArray(new Object[col.size()]);
 			outCol = PathBase.pathElementsFrom(array);				// recurse
 		}
 		else {
@@ -381,7 +381,7 @@ public abstract class PathBase<SELF_TYPE extends PathBase<SELF_TYPE>>
 	 * @return true if the last element of the path contains a dot (.)
 	 */
 	public boolean isFilePath() {
-		String lastPathEl = this.getLastPathElement();
+		final String lastPathEl = this.getLastPathElement();
 		return lastPathEl != null ? lastPathEl.contains(".") 
 								  : false;
 	}
@@ -413,7 +413,7 @@ public abstract class PathBase<SELF_TYPE extends PathBase<SELF_TYPE>>
 	 * @return the file name with extension
 	 */
 	public String getFileName() {
-		String lastPathEl = this.getLastPathElement();
+		final String lastPathEl = this.getLastPathElement();
 		return lastPathEl != null && lastPathEl.contains(".") ? lastPathEl
 															  : null;
 	}
@@ -431,7 +431,7 @@ public abstract class PathBase<SELF_TYPE extends PathBase<SELF_TYPE>>
 	 * @return the file name with extension
 	 */
 	public FileNameAndExtension getFileNameWithExtension() {
-		String lastPathEl = this.getLastPathElement();
+		final String lastPathEl = this.getLastPathElement();
 		return new FileNameAndExtension(lastPathEl);
 	}	
 	/**
@@ -440,7 +440,7 @@ public abstract class PathBase<SELF_TYPE extends PathBase<SELF_TYPE>>
 	 * @return the file name with extension
 	 */
 	public String getFileNameWithoutExtension() {
-		String lastPathEl = this.getLastPathElement();
+		final String lastPathEl = this.getLastPathElement();
 		return FileNameAndExtension.of(lastPathEl).getNameWithoutExtension();
 	}
 	/**
@@ -449,7 +449,7 @@ public abstract class PathBase<SELF_TYPE extends PathBase<SELF_TYPE>>
 	 * @return the file extension
 	 */
 	public String getFileExtension() {
-		String fileName = this.getFileName();
+		final String fileName = this.getFileName();
 		return fileName != null ? FileNameAndExtension.of(fileName).getExtension()
 								: null;
 	}
@@ -472,7 +472,7 @@ public abstract class PathBase<SELF_TYPE extends PathBase<SELF_TYPE>>
 	 * @return
 	 */
 	protected static String asAbsoluteString(final LinkedList<String> pathElements) {
-		String outStr = _joinPathElements(pathElements);
+		final String outStr = _joinPathElements(pathElements);
 		if (outStr == null) return "";
 		if (outStr.matches("([a-zA-Z]:|http://|https://).*")) return outStr;	// d: or http://
 		return "/" + outStr;
@@ -501,9 +501,9 @@ public abstract class PathBase<SELF_TYPE extends PathBase<SELF_TYPE>>
 /////////////////////////////////////////////////////////////////////////////////////////	
 	protected static Collection<String> normalize(final Collection<String> els) {
 		if (els == null || els.size() == 0) return Lists.newArrayList();
-		Collection<String> outNormalizedEls = Lists.newLinkedList();
-		for (String el : els) {
-			Collection<String> normalizedEls = _normalizePathElement(el);
+		final Collection<String> outNormalizedEls = Lists.newLinkedList();
+		for (final String el : els) {
+			final Collection<String> normalizedEls = _normalizePathElement(el);
 			outNormalizedEls.addAll(normalizedEls);
 		}
 		return outNormalizedEls;
@@ -515,19 +515,19 @@ public abstract class PathBase<SELF_TYPE extends PathBase<SELF_TYPE>>
 	private static Collection<String> _normalizePathElement(final String path) {
 		Collection<String> normalizedPathEls = null;
 		if (!path.startsWith("http://") && !path.startsWith("https://")) {
-			Collection<String> notNormalizedPathEls = FluentIterable.from(Splitter.on("/")
+			final Collection<String> notNormalizedPathEls = FluentIterable.from(Splitter.on("/")
 																				  .split(path))
 																	.toList();
 			normalizedPathEls = _normalizePathElements(notNormalizedPathEls);
 		} else if (path.startsWith("http://")) {
-			Collection<String> notNormalizedPathEls = FluentIterable.from(Splitter.on("/")
+			final Collection<String> notNormalizedPathEls = FluentIterable.from(Splitter.on("/")
 																				  .split(path.substring("http://".length())))
 																	.toList();		
 			normalizedPathEls = Lists.newArrayList();
 			normalizedPathEls.add("http:/");
 			normalizedPathEls.addAll(_normalizePathElements(notNormalizedPathEls));
 		} else if (path.startsWith("https://")) {
-			Collection<String> notNormalizedPathEls = FluentIterable.from(Splitter.on("/")
+			final Collection<String> notNormalizedPathEls = FluentIterable.from(Splitter.on("/")
 																				  .split(path.substring("https://".length())))
 															 		 .toList();		
 			normalizedPathEls = Lists.newArrayList();
@@ -615,7 +615,7 @@ public abstract class PathBase<SELF_TYPE extends PathBase<SELF_TYPE>>
 									 						     final P path) {
 		if (path.getPathElements().size() == 0) return path;
 		
-		Collection<String> newPathEls = Lists.newArrayList(Iterables.limit(path.getPathElements(),
+		final Collection<String> newPathEls = Lists.newArrayList(Iterables.limit(path.getPathElements(),
 																		   path.getPathElements().size()-1));
 	    return _createPathInstanceFromElements(pathFactory,
 											   newPathEls);
@@ -809,7 +809,7 @@ public abstract class PathBase<SELF_TYPE extends PathBase<SELF_TYPE>>
 											   final Object... elements) {
 		if (elements == null || elements.length == 0) return null;
 		
-		Collection<String> pathElsToAdd = PathBase.pathElementsFrom(elements);		// elements will be normalized at Paths.pathElementsFrom
+		final Collection<String> pathElsToAdd = PathBase.pathElementsFrom(elements);		// elements will be normalized at Paths.pathElementsFrom
 		return _createPathInstanceFromElements(pathFactory,
 											   pathElsToAdd);
 	}
@@ -827,7 +827,7 @@ public abstract class PathBase<SELF_TYPE extends PathBase<SELF_TYPE>>
 		if (path == null) return PathBase.join(pathFactory,
 										       elements);		// elements will be normalized
 		
-		Collection<String> pathElsToAdd = PathBase.pathElementsFrom(elements);		// elements will be normalized at Paths.pathElementsFrom
+		final Collection<String> pathElsToAdd = PathBase.pathElementsFrom(elements);		// elements will be normalized at Paths.pathElementsFrom
 		return PathBase.join(pathFactory,
 						  	 path,
 						  	 pathElsToAdd);
@@ -847,7 +847,7 @@ public abstract class PathBase<SELF_TYPE extends PathBase<SELF_TYPE>>
 		if (path == null) return PathBase.join(pathFactory,
 											   element);		// elements will be normalized
 		
-		Collection<String> pathElsToAdd = PathBase.pathElementsFrom(element);		// elements will be normalized at Paths.pathElementsFrom
+		final Collection<String> pathElsToAdd = PathBase.pathElementsFrom(element);		// elements will be normalized at Paths.pathElementsFrom
 		return PathBase.join(pathFactory,
 						  	 path,
 						  	 pathElsToAdd);
@@ -866,7 +866,7 @@ public abstract class PathBase<SELF_TYPE extends PathBase<SELF_TYPE>>
 		if (path == null) return PathBase.join(pathFactory,
 											   elements);			// elements will be normalized
 		
-		Collection<String> newPathEls = _joinCols12(path.getPathElements(),
+		final Collection<String> newPathEls = _joinCols12(path.getPathElements(),
 											        _normalizePathElements(elements));	// elements NEEDS normalization	
 		return _createPathInstanceFromElements(pathFactory,
 											   newPathEls);
@@ -885,7 +885,7 @@ public abstract class PathBase<SELF_TYPE extends PathBase<SELF_TYPE>>
 		if (path == null) return PathBase.join(pathFactory,
 											   element);		// element will be normalized
 		
-		Collection<String> newPathEls = _joinCols12(path.getPathElements(),
+		final Collection<String> newPathEls = _joinCols12(path.getPathElements(),
 											        _normalizePathElement(element));		// elements NEEDS normalization
 		return _createPathInstanceFromElements(pathFactory,
 											   newPathEls);
@@ -904,7 +904,7 @@ public abstract class PathBase<SELF_TYPE extends PathBase<SELF_TYPE>>
 		if (path == null) return PathBase.join(pathFactory,
 											   otherPath);
 		
-		Collection<String> newPathEls = _joinCols12(path.getPathElements(),
+		final Collection<String> newPathEls = _joinCols12(path.getPathElements(),
 											        otherPath.getPathElements());			// elements DOES NOT NEED normalizations since they come from another (already normalized) path
 		return _createPathInstanceFromElements(pathFactory,
 											   newPathEls);
@@ -953,7 +953,7 @@ public abstract class PathBase<SELF_TYPE extends PathBase<SELF_TYPE>>
 		if (path == null) return PathBase.join(pathFactory,
 										       elements);		// elements will be normalized
 		
-		Collection<String> pathElsToPrepend = PathBase.pathElementsFrom(elements);		// elements will be normalized at Paths.pathElementsFrom
+		final Collection<String> pathElsToPrepend = PathBase.pathElementsFrom(elements);		// elements will be normalized at Paths.pathElementsFrom
 		return PathBase.prepend(pathFactory,
 						     	path,
 						     	pathElsToPrepend);
@@ -973,7 +973,7 @@ public abstract class PathBase<SELF_TYPE extends PathBase<SELF_TYPE>>
 		if (path == null) return PathBase.join(pathFactory,
 											   element);		// elements will be normalized
 		
-		Collection<String> pathElsToPrepend = PathBase.pathElementsFrom(element);		// elements will be normalized at Paths.pathElementsFrom
+		final Collection<String> pathElsToPrepend = PathBase.pathElementsFrom(element);		// elements will be normalized at Paths.pathElementsFrom
 		return PathBase.prepend(pathFactory,
 						  	 	path,
 						  	 	pathElsToPrepend);
@@ -992,7 +992,7 @@ public abstract class PathBase<SELF_TYPE extends PathBase<SELF_TYPE>>
 		if (path == null) return PathBase.join(pathFactory,
 											   elements);			// elements will be normalized
 		
-		Collection<String> newPathEls = _joinCols21(path.getPathElements(),
+		final Collection<String> newPathEls = _joinCols21(path.getPathElements(),
 											        _normalizePathElements(elements));	// elements NEEDS normalization	
 		return _createPathInstanceFromElements(pathFactory,
 											   newPathEls);
@@ -1011,7 +1011,7 @@ public abstract class PathBase<SELF_TYPE extends PathBase<SELF_TYPE>>
 		if (path == null) return  _createPathInstanceFromElements(pathFactory,
 											   					  otherPath.getPathElements());		// elements DOES NOT NEED normalizations since they come from another (already normalized) path
 		
-		Collection<String> newPathEls = _joinCols21(path.getPathElements(),
+		final Collection<String> newPathEls = _joinCols21(path.getPathElements(),
 												    otherPath.getPathElements());		// already normalized
 		return _createPathInstanceFromElements(pathFactory,
 											   newPathEls);
@@ -1030,7 +1030,7 @@ public abstract class PathBase<SELF_TYPE extends PathBase<SELF_TYPE>>
 		if (path == null) return _createPathInstanceFromElements(pathFactory,
 																 _normalizePathElement(element));	// element needs normalization	
 		
-		Collection<String> newPathEls = _joinCols21(path.getPathElements(),
+		final Collection<String> newPathEls = _joinCols21(path.getPathElements(),
 												    _normalizePathElement(element));	// element needs normalization
 		return _createPathInstanceFromElements(pathFactory,
 											   newPathEls);
@@ -1107,7 +1107,7 @@ public abstract class PathBase<SELF_TYPE extends PathBase<SELF_TYPE>>
 	@Override
 	public <O extends OID> boolean isContainedIn(final Iterable<O> oids) {
 		boolean outContained = false;
-		for (O oid : oids) {
+		for (final O oid : oids) {
 			if (this.is(oid)) {
 				outContained = true;
 				break;
@@ -1150,9 +1150,9 @@ public abstract class PathBase<SELF_TYPE extends PathBase<SELF_TYPE>>
 		if (this == obj) return true;
 		if (obj == null) return false;
 		if (this.getClass() != obj.getClass()) return false;
-		PathBase<?> other = (PathBase<?>)obj;
-		String thisPath = this.asAbsoluteString();
-		String otherPath = other.asAbsoluteString();		
+		final PathBase<?> other = (PathBase<?>)obj;
+		final String thisPath = this.asAbsoluteString();
+		final String otherPath = other.asAbsoluteString();		
 		return thisPath.equals(otherPath);
 	}
 }

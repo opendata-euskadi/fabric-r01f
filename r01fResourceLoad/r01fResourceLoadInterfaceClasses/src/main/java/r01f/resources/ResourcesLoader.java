@@ -10,7 +10,7 @@ import r01f.types.IsPath;
  * 
  * To create a {@link ResourcesLoader} some things are needed:
  * <ul>
- * 		<li>The XPath of a {@link XMLProperties} file where the {@link ResourcesLoader} definiti�n can be found.<br />
+ * 		<li>The XPath of a {@link XMLProperties} file where the {@link ResourcesLoader} definition can be found.<br />
  * 			This definition is an object of {@link ResourcesLoaderDef} type</li>
  * 		<li>An instance of a type in charge of creating the {@link ResourcesLoader} instance (a {@link ResourcesLoader} factory)<br />
  * 			This factory object is an object of {@link ResourcesLoaderBuilder} type</li>
