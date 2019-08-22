@@ -10,7 +10,6 @@ import com.fasterxml.jackson.databind.introspect.AnnotatedField;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.google.common.collect.Sets;
 
-import r01f.guids.CommonOIDs.AppCode;
 import r01f.guids.OID;
 import r01f.internal.R01F;
 import r01f.locale.LanguageTexts;
@@ -31,6 +30,7 @@ import r01f.objectstreamer.custom.CustomStreamers.RangeSerializer;
 import r01f.objectstreamer.util.TypeScan;
 import r01f.types.AppVersion;
 import r01f.types.Color;
+import r01f.types.JavaPackage;
 import r01f.types.Range;
 import r01f.types.TimeLapse;
 import r01f.types.contact.Phone;
@@ -57,25 +57,25 @@ abstract class MarshallerModuleBase
 //	FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
-	 * The app codes that contains objects to be marshalled
+	 * The java packages that contains objects to be marshalled
 	 * (it's used to scan for subtypes of abstract types -see TypeScan.java-)
 	 */
-	protected final Set<AppCode> _appCodes;
+	protected final Set<JavaPackage> _javaPackages;
 
 /////////////////////////////////////////////////////////////////////////////////////////
 //	CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
 	@SuppressWarnings({ "unchecked","rawtypes" })
 	public MarshallerModuleBase(final String name,final Version version,
-								final Set<AppCode> appCodes) {
+								final Set<JavaPackage> javaPackages) {
 		super(name,version);
 
-		// app codes that contains objects to be marshalled
+		// java packages that contains objects to be marshalled
 		// ....ensure that r01f is listed
-		Set<AppCode> theAppCodes = CollectionUtils.hasData(appCodes) ? appCodes
-																  	 : Sets.<AppCode>newLinkedHashSet();
-		if (!theAppCodes.contains(R01F.APP_CODE)) theAppCodes.add(R01F.APP_CODE);
-		_appCodes = theAppCodes;
+		Set<JavaPackage> theJavaPackages = CollectionUtils.hasData(javaPackages) ? javaPackages
+																  	 			 : Sets.<JavaPackage>newLinkedHashSet();
+		if (!theJavaPackages.contains(JavaPackage.of(R01F.APP_CODE))) theJavaPackages.add(JavaPackage.of(R01F.APP_CODE));
+		_javaPackages = theJavaPackages;
 
 		// naming strategy
 		// BEWARE!!  problems with lombok's noargs constructors: https://github.com/FasterXML/jackson-databind/issues/1197
@@ -86,8 +86,8 @@ abstract class MarshallerModuleBase
 
 		// Add the OID instances serializer & deserializer
 		// (note that when introspecting annotations the @JsonSubTypes and @JsonTypeResolver info is injected)
-		Collection<Class<? extends OID>> oidImplementingTypes = TypeScan.findSubTypesOf(OID.class,
-																						_appCodes);
+		Collection<Class<? extends OID>> oidImplementingTypes = TypeScan.findSubTypesOfInJavaPackages(OID.class,
+																									  _javaPackages);
 		if (CollectionUtils.hasData(oidImplementingTypes)) {
 			for (Class<? extends OID> oidImplementingType : oidImplementingTypes) {
 				this.addSerializer(oidImplementingType,new OIDSerializer(oidImplementingType));

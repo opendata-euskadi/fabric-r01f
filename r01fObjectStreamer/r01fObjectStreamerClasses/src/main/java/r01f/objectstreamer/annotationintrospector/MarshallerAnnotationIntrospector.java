@@ -44,7 +44,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import lombok.extern.slf4j.Slf4j;
-import r01f.guids.CommonOIDs.AppCode;
 import r01f.objectstreamer.PackageVersion;
 import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallField.DateFormat;
@@ -54,13 +53,14 @@ import r01f.objectstreamer.annotations.MarshallPolymorphicTypeInfo;
 import r01f.objectstreamer.annotations.MarshallType;
 import r01f.objectstreamer.util.TypeScan;
 import r01f.objectstreamer.util.TypeScan.TypeAnnotation;
+import r01f.types.JavaPackage;
 import r01f.util.types.Dates;
 import r01f.util.types.Strings;
 import r01f.util.types.collections.CollectionUtils;
 
 /**
  * Annotation introspector
- * 
+ *
  * The jackson annotation introspector type hierarchy is like:
  * <pre>
  * 		[AnnotationIntrospector]
@@ -68,7 +68,7 @@ import r01f.util.types.collections.CollectionUtils;
  * 			|		|--[JacksonXmlAnnotationIntrospector] 	<-- this is where jackson xml annotations are detected
  * 			|--[XmlJaxbAnnotationIntrospector]	<-- this is where Jaxb annotations are detected
  * </pre>
- * 
+ *
  * Here, delegation is used instead inheritance:
  * <pre>
  * 		[AnnotationIntrospector]
@@ -77,29 +77,29 @@ import r01f.util.types.collections.CollectionUtils;
  * <pre>
  */
 @Slf4j
-public class MarshallerAnnotationIntrospector 
+public class MarshallerAnnotationIntrospector
      extends AnnotationIntrospector {
 
 	private static final long serialVersionUID = -8142099488664415041L;
 /////////////////////////////////////////////////////////////////////////////////////////
 //	FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
-	 // The app codes that contains objects to be marshalled
+	 // The java packages that contains objects to be marshalled
 	 // (it's used to scan for subtypes of abstract types -see TypeScan.java-)
-	protected final Collection<AppCode> _appCodes;
-	
+	protected final Collection<JavaPackage> _javaPackagess;
+
 	// module setup context
 	private final Module.SetupContext _moduleSetupContext;
 
 	// delegated jackson introspector
 	private final JacksonAnnotationIntrospector _delegatedJacksonAnnotationIntrospector;
-	
+
 /////////////////////////////////////////////////////////////////////////////////////////
 //	CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
-	public MarshallerAnnotationIntrospector(final Collection<AppCode> appCodes,
+	public MarshallerAnnotationIntrospector(final Collection<JavaPackage> javaPackages,
 											final Module.SetupContext context) {
-		_appCodes = appCodes;
+		_javaPackagess = javaPackages;
 		_moduleSetupContext = context;
 		_delegatedJacksonAnnotationIntrospector = new JacksonAnnotationIntrospector();
 	}
@@ -115,20 +115,20 @@ public class MarshallerAnnotationIntrospector
 		// [0] - only check fields!
 		if ( !(am instanceof AnnotatedField) ) return false; // _delegatedJacksonAnnotationIntrospector.hasIgnoreMarker(am);
 
-		boolean isIgnorable = false; 
-		
+		boolean isIgnorable = false;
+
 		// [1] - if transient field, ignore
 		AnnotatedField field = (AnnotatedField)am;
 		isIgnorable = Modifier.isTransient(field.getModifiers());
-		
+
 		// [2] - check @FieldMarshallIgnored annotation
 		if (isIgnorable == false) isIgnorable = am.hasAnnotation(MarshallIgnoredField.class);
 		//		 ... or the default Jackson annotations
 		if (isIgnorable == false) isIgnorable = _delegatedJacksonAnnotationIntrospector.hasIgnoreMarker(am);
-		
-		
+
+
         return isIgnorable;
-    } 
+    }
 /////////////////////////////////////////////////////////////////////////////////////////
 //	NAME
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -155,10 +155,10 @@ public class MarshallerAnnotationIntrospector
 	private PropertyName _findName(final Annotated ann,
 								   final NameFor whatFor) {
 		PropertyName propertyName = null;
-		
-		// [0] - Do NOT mind annotated getters 
+
+		// [0] - Do NOT mind annotated getters
 		if (ann instanceof AnnotatedMethod) return null;
-		
+
 		// [1] - @MarshallFrom annotated constructor parameter
 		if (ann instanceof AnnotatedParameter
 		 && ann.hasAnnotation(MarshallFrom.class)) {
@@ -169,7 +169,7 @@ public class MarshallerAnnotationIntrospector
 				propertyName = PropertyName.construct(ann.getName());
 			}
 		}
-		
+
 		// [2] - @TypeMarshall annotated type
 		else if (ann instanceof AnnotatedClass
 			  && ann.hasAnnotation(MarshallType.class)) {
@@ -181,7 +181,7 @@ public class MarshallerAnnotationIntrospector
 			}
 		}
 		// [3] - @FieldMarshall annotated field
-		else if (ann instanceof AnnotatedField 
+		else if (ann instanceof AnnotatedField
 			  && ann.hasAnnotation(MarshallField.class)) {
 			MarshallField m = ann.getAnnotation(MarshallField.class);
 			if (!MarshallField.MARKER_FOR_DEFAULT.equals(m.as())) {
@@ -190,7 +190,7 @@ public class MarshallerAnnotationIntrospector
 				propertyName = PropertyName.construct(_normalizeField(ann.getName()));
 			}
 		}
-		
+
 		// [5] - if name could not be found delegate to native jackson annotations
 		if (propertyName == null
 		 || propertyName == PropertyName.USE_DEFAULT) {
@@ -219,13 +219,13 @@ public class MarshallerAnnotationIntrospector
 	@Override
 	public JsonFormat.Value findFormat(final Annotated ann) {
 		JsonFormat.Value outFormat = null;
-		
-		// [0] - Do NOT mind annotated getters 
+
+		// [0] - Do NOT mind annotated getters
 		if ( !(ann instanceof AnnotatedField) ) return null;
-		
+
 		// [1] - Check MarshallField annotation
 		AnnotatedField annF = (AnnotatedField)ann;
-		
+
 		if (_isDateType(annF.getRawType())) {
 			if (ann.hasAnnotation(MarshallField.class)) {
 				MarshallField mf = ann.getAnnotation(MarshallField.class);
@@ -264,29 +264,29 @@ public class MarshallerAnnotationIntrospector
 						 annF.getName(),annF.getDeclaringClass(),MarshallField.class.getSimpleName());
 			}
 		}
-		
+
 		// [2] - Delegate
 		if (outFormat == null) outFormat = _delegatedJacksonAnnotationIntrospector.findFormat(ann);
-		
-		// [3] - Return 
+
+		// [3] - Return
 		return outFormat;
 	}
 	private static final boolean _isDateType(final Class<?> type) {
-		return type == Date.class 
+		return type == Date.class
 			|| type == java.sql.Date.class;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	TYPE RESOLVING
 /////////////////////////////////////////////////////////////////////////////////////////
     @Override
-	public TypeResolverBuilder<?> findTypeResolver(final MapperConfig<?> config, 
+	public TypeResolverBuilder<?> findTypeResolver(final MapperConfig<?> config,
 												   final AnnotatedClass ac,final JavaType baseType) {
     	TypeResolverBuilder<?> outTypeResolverBuilder = null;
-    	
+
     	// try custom type resolver builders
     	outTypeResolverBuilder = MarshallerTypeResolverBuilderDelegates.findTypeResolver(config,
     																					 ac,baseType);
-    	
+
     	// just delegate
     	if (outTypeResolverBuilder == null) outTypeResolverBuilder = _delegatedJacksonAnnotationIntrospector.findTypeResolver(config,
 																															  ac,baseType);
@@ -294,51 +294,51 @@ public class MarshallerAnnotationIntrospector
 	}
 	@Override
 	public TypeResolverBuilder<?> findPropertyTypeResolver(final MapperConfig<?> config,
-														   final AnnotatedMember am,final JavaType baseType) {		
+														   final AnnotatedMember am,final JavaType baseType) {
 		TypeResolverBuilder<?> outTypeResolverBuilder = null;
-		
-        // As per definition of @JsonTypeInfo, should only apply to contents of container types (collection, map), 
+
+        // As per definition of @JsonTypeInfo, should only apply to contents of container types (collection, map),
 		// not container types themselves:
-        if (baseType.isContainerType() 
+        if (baseType.isContainerType()
          || baseType.isReferenceType()) return null;
-        
+
     	// try custom type resolver builders
     	outTypeResolverBuilder = MarshallerTypeResolverBuilderDelegates.findPropertyTypeResolver(config,
     																							 am,baseType);
-    	
+
     	// just delegate
     	if (outTypeResolverBuilder == null) outTypeResolverBuilder = _delegatedJacksonAnnotationIntrospector.findPropertyTypeResolver(config,
 																															  		  am,baseType);
     	return outTypeResolverBuilder;
 	}
 	@Override
-	public TypeResolverBuilder<?> findPropertyContentTypeResolver(final MapperConfig<?> config, 
+	public TypeResolverBuilder<?> findPropertyContentTypeResolver(final MapperConfig<?> config,
 																  final AnnotatedMember am,final JavaType containerType) {
 		TypeResolverBuilder<?> outTypeResolverBuilder = null;
-		
-        // ensure property is a container type      
+
+        // ensure property is a container type
         if (containerType.getContentType() == null) throw new AnnotationFormatError("Must call method with a container or reference type (got " + containerType + ")");
-        
+
     	// try custom type resolver builders
     	outTypeResolverBuilder = MarshallerTypeResolverBuilderDelegates.findPropertyContentTypeResolver(config,
     																									am,containerType);
-    	
+
     	// just delegate
     	if (outTypeResolverBuilder == null) outTypeResolverBuilder = _delegatedJacksonAnnotationIntrospector.findPropertyContentTypeResolver(config,
 																															  		  		 am,containerType);
     	return outTypeResolverBuilder;
 	}
-    
+
     // A cache of sub-types by abstract type
     private final Map<Class<?>,List<NamedType>> _subTypesByAbstractType = Maps.newHashMap();
-    
+
 	@Override
     public List<NamedType> findSubtypes(final Annotated ann) {
     	List<NamedType> outTypes = null;
-    	
+
     	if ( !(ann instanceof AnnotatedClass) ) return _delegatedJacksonAnnotationIntrospector.findSubtypes(ann);
-    	
-    	// [0] - Find the type to be handled 
+
+    	// [0] - Find the type to be handled
     	//		 (when collections, handle the collection elements type)
 		Class<?> type = null;
 		if (ann.getType() != null) {
@@ -350,45 +350,45 @@ public class MarshallerAnnotationIntrospector
 		} else {
 			type = ann.getRawType();
 		}
-		
+
 		// [1] - Find the type for which the subtypes might have to be found
 		Class<?> keyType = _keyTypeFor(type);
 
 		// [2] - Find subtypes
     	if (keyType != null) {
-    		outTypes = _subTypesByAbstractType.get(keyType);	// check the cache    		
+    		outTypes = _subTypesByAbstractType.get(keyType);	// check the cache
     		if (outTypes == null) {		// BEWARE!! do NOT use CollectionUtils.isNullOrEmpty()!!!!
-    			Set<?> subTypes = TypeScan.findSubTypesOf(keyType,
-    													  _appCodes);    			
+    			Set<?> subTypes = TypeScan.findSubTypesOfInJavaPackages(keyType,
+    													  				_javaPackagess);
     			log.trace("{} has {} subtypes",
     					  keyType,(subTypes != null ? subTypes.size() : 0));
-    			
+
     			if (CollectionUtils.hasData(subTypes)) {
     				outTypes = Lists.newArrayListWithExpectedSize(subTypes.size());
     			} else {
     				outTypes = Lists.newArrayListWithExpectedSize(0);
-    			}	
-    			for (Object subTypeObj : subTypes) { 
+    			}
+    			for (Object subTypeObj : subTypes) {
     				Class<?> subType = (Class<?>)subTypeObj;
-    				
+
     				// find the typeId from the @TypeMarshall annotation or @JsonRootName
     				// ... if none of these annotations is present, use the full class name
     				String typeId = _findTypeIdFor(subType);
-    				
+
     				// register the type with it's id
     				outTypes.add(new NamedType(subType,
     										   typeId));
     			}
 	    		// cache
 	    		_subTypesByAbstractType.put(keyType,outTypes);
-	    		
+
 		    	// debug
 //		    	System.out.println("====>" + " > " + keyType + " > " + outTypes);
 		    	log.trace("SubType Info for {}: {}",
 		    			  keyType,outTypes);
-    		} 
+    		}
     	}
-    	
+
     	// if not found, delegate
     	if (outTypes == null) outTypes = _delegatedJacksonAnnotationIntrospector.findSubtypes(ann);
     	return outTypes;
@@ -399,7 +399,7 @@ public class MarshallerAnnotationIntrospector
 		if (_isNotInstanciable(type)) {
 			outKeyType = type;
 		} else {
-			// find the @MarshallPolymorphicTypeInfo in the hierarchy 
+			// find the @MarshallPolymorphicTypeInfo in the hierarchy
 			TypeAnnotation<MarshallPolymorphicTypeInfo> typeWithPolyAnn = TypeScan.findTypeAnnotaion(MarshallPolymorphicTypeInfo.class,
 													  			 		 							 type);
 			// if found, the type annotated is the key
@@ -430,7 +430,7 @@ public class MarshallerAnnotationIntrospector
 		return typeId;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//	
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	private static boolean _isNotInstanciable(final Class<?> type) {
     	return type.isAnnotation()
@@ -445,7 +445,7 @@ public class MarshallerAnnotationIntrospector
 	private static boolean _isInstanciable(final Class<?> type) {
 		return !_isNotInstanciable(type);
 	}
-	
+
 /////////////////////////////////////////////////////////////////////////////////////////
 //	DELEGATE
 //  =====================================================================================
@@ -481,7 +481,7 @@ public class MarshallerAnnotationIntrospector
 	@Override
 	public Object findFilterId(final Annotated a) {
 		return _delegatedJacksonAnnotationIntrospector.findFilterId(a);
-	}	
+	}
 	@Override
 	public Object findNamingStrategy(final AnnotatedClass ac) {
 		return _delegatedJacksonAnnotationIntrospector.findNamingStrategy(ac);
@@ -504,7 +504,7 @@ public class MarshallerAnnotationIntrospector
 	public String findClassDescription(final AnnotatedClass ac) {
 		return _delegatedJacksonAnnotationIntrospector.findClassDescription(ac);
 	}
-	@Override	
+	@Override
 	public String findImplicitPropertyName(final AnnotatedMember m) {
 		return _delegatedJacksonAnnotationIntrospector.findImplicitPropertyName(m);
 	}
@@ -555,7 +555,7 @@ public class MarshallerAnnotationIntrospector
 	@Override
 	public AnnotatedMethod resolveSetterConflict(final MapperConfig<?> config,
 												 final AnnotatedMethod setter1,final AnnotatedMethod setter2) {
-		return _delegatedJacksonAnnotationIntrospector.resolveSetterConflict(config, 
+		return _delegatedJacksonAnnotationIntrospector.resolveSetterConflict(config,
 																			 setter1,setter2);
 	}
 	@Override
@@ -572,7 +572,7 @@ public class MarshallerAnnotationIntrospector
 	public Object findSerializer(final Annotated a) {
 		return _delegatedJacksonAnnotationIntrospector.findSerializer(a);
 	}
-	@Override	
+	@Override
 	public Object findKeySerializer(final Annotated a) {
 		return _delegatedJacksonAnnotationIntrospector.findKeySerializer(a);
 	}
@@ -601,7 +601,7 @@ public class MarshallerAnnotationIntrospector
 		return _delegatedJacksonAnnotationIntrospector.findSerializationContentConverter(a);
 	}
 	@Override
-	public JavaType refineSerializationType(final MapperConfig<?> config, 
+	public JavaType refineSerializationType(final MapperConfig<?> config,
 											final Annotated a,final JavaType baseType)
 			throws JsonMappingException {
 		return _delegatedJacksonAnnotationIntrospector.refineSerializationType(config,
