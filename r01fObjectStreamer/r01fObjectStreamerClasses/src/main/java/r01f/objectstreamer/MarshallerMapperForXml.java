@@ -13,10 +13,12 @@ import com.ctc.wstx.stax.WstxOutputFactory;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.dataformat.xml.XmlFactory;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import r01f.guids.CommonOIDs.AppCode;
+import r01f.types.JavaPackage;
 import r01f.util.types.collections.CollectionUtils;
 
 public class MarshallerMapperForXml
@@ -26,12 +28,30 @@ public class MarshallerMapperForXml
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-	public MarshallerMapperForXml(final AppCode... appCodes) {
-		this(CollectionUtils.hasData(appCodes) ? Sets.<AppCode>newLinkedHashSet(Lists.newArrayList(appCodes))
-											   : Sets.<AppCode>newLinkedHashSet(),
+	public static MarshallerMapperForXml forApps(final AppCode... appCodes) {
+		return MarshallerMapperForXml.forApps(appCodes != null ? Sets.<AppCode>newLinkedHashSet(Lists.newArrayList(appCodes))
+								  							   : Sets.<AppCode>newLinkedHashSet());
+	}
+	public static MarshallerMapperForXml forApps(final Set<AppCode> appCodes) {
+		return new MarshallerMapperForXml(FluentIterable.from(appCodes)
+												.transform(JavaPackage.APP_CODE_TO_JAVA_PACKAGE)
+												.toSet());
+	}
+	public static MarshallerMapperForXml forJavaPackages(final Set<JavaPackage> javaPackages) {
+		return new MarshallerMapperForXml(javaPackages);
+	}
+	public static MarshallerMapperForXml forJavaPackages(final JavaPackage... javaPackages) {
+		return new MarshallerMapperForXml(javaPackages);
+	}
+	public MarshallerMapperForXml(final JavaPackage... javaPackages) {
+		this(javaPackages != null ? Sets.<JavaPackage>newLinkedHashSet(Lists.newArrayList(javaPackages))
+								  : Sets.<JavaPackage>newLinkedHashSet());
+	}
+	public MarshallerMapperForXml(final Set<JavaPackage> javaPackages) {
+		this(javaPackages,
 			  null);	// no custom modules
 	}
-	public MarshallerMapperForXml(final Set<AppCode> appCodes,
+	public MarshallerMapperForXml(final Set<JavaPackage> javaPackages,
 							      final Set<? extends MarshallerModule> jacksonModules) {
 		// WOODSTOX error in weblogic 10.3.6
 		// =================================
@@ -75,7 +95,7 @@ public class MarshallerMapperForXml
 
 
 		// [1] - register the r01f module
-		this.registerModule(new MarshallerModuleForXml(appCodes));		// BEWARE!!! XML Module!!
+		this.registerModule(new MarshallerModuleForXml(javaPackages));		// BEWARE!!! XML Module!!
 
 		// [2] - register given modules
 		if (CollectionUtils.hasData(jacksonModules)) {

@@ -2,6 +2,10 @@ package r01f.types;
 
 import java.io.Serializable;
 
+import com.google.common.base.Function;
+
+import r01f.guids.CommonOIDs.AppCode;
+
 /**
  * Represents a java package
  */
@@ -13,7 +17,7 @@ public class JavaPackage
 //  FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
 	private final String _package;
-	
+
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -25,6 +29,9 @@ public class JavaPackage
 	}
 	public JavaPackage(final Class<?> type) {
 		this(type.getPackage());
+	}
+	public static JavaPackage of(final AppCode appCode) {
+		return new JavaPackage(appCode.asString());
 	}
 	public static JavaPackage of(final String pckg) {
 		return new JavaPackage(pckg);
@@ -47,7 +54,7 @@ public class JavaPackage
 		return _package;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	public boolean isJavaLang() {
 		return _package.startsWith("java.lang");
@@ -71,6 +78,13 @@ public class JavaPackage
 	public int hashCode() {
 		return _package.hashCode();
 	}
-
-
+/////////////////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////////////////
+	public static final Function<AppCode,JavaPackage> APP_CODE_TO_JAVA_PACKAGE = new Function<AppCode,JavaPackage>() {
+																						@Override
+																						public JavaPackage apply(final AppCode appCode) {
+																							return JavaPackage.of(appCode);
+																						}
+																	 			 };
 }

@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.Set;
 
 import com.fasterxml.jackson.databind.JavaType;
-import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 
@@ -24,7 +23,7 @@ import r01f.types.JavaPackage;
 @NoArgsConstructor(access=AccessLevel.PRIVATE)
 public abstract class TypeScan {
 /////////////////////////////////////////////////////////////////////////////////////////
-//	
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Accessors(prefix="_")
 	@AllArgsConstructor(access=AccessLevel.PRIVATE)
@@ -59,7 +58,7 @@ public abstract class TypeScan {
 	private static <A extends Annotation> TypeAnnotation<A> _recurseFindTypeAnnotationAtSuperTypeOrInterface(final Class<A> annType,
 																		 				 					 final OutlineTreeNode node) {
 		TypeAnnotation<A> outTypeAnnotation = null;
-		
+
 		A annotation = node.getObjectType().getAnnotation(annType);
 		if (annotation == null) {
 			for (OutlineTreeNode parent : node.getParents()) {
@@ -73,8 +72,8 @@ public abstract class TypeScan {
 		return outTypeAnnotation;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//	
-/////////////////////////////////////////////////////////////////////////////////////////	
+//
+/////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Does the type has a given annotation in it's hierarchy?
 	 * @param annType
@@ -100,19 +99,31 @@ public abstract class TypeScan {
 		return outAnnotated;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//	
-/////////////////////////////////////////////////////////////////////////////////////////	
+//
+/////////////////////////////////////////////////////////////////////////////////////////
     /**
      * Finds subtypes of a certain base (abstract / interface class)
      * @param baseClass
      * @return
      */
-	public static <T> Set<Class<? extends T>> findSubTypesOf(final Class<T> baseClass,
-															 final Collection<AppCode> appCodes) {
+	public static <T> Set<Class<? extends T>> findSubTypesOfInApps(final Class<T> baseClass,
+															 	   final Collection<AppCode> appCodes) {
+		return TypeScan.findSubTypesOfInJavaPackages(baseClass,
+									   				 FluentIterable.from(appCodes)
+														 .transform(JavaPackage.APP_CODE_TO_JAVA_PACKAGE)
+														 .toSet());
+    }
+    /**
+     * Finds subtypes of a certain base (abstract / interface class)
+     * @param baseClass
+     * @return
+     */
+	public static <T> Set<Class<? extends T>> findSubTypesOfInJavaPackages(final Class<T> baseClass,
+															 			   final Collection<JavaPackage> javaPackages) {
 		// find the sub-types
-    	Set<Class<? extends T>> outSubTypes = SubTypeOfScanner.findSubTypesAt(baseClass, 
-    																		  _buildJavaPackagesFrom(appCodes));
-    	
+    	Set<Class<? extends T>> outSubTypes = SubTypeOfScanner.findSubTypesAt(baseClass,
+    																		  javaPackages);
+
     	// filter instanciable types
 		return FluentIterable.from(outSubTypes)
 						     .filter(new Predicate<Object>() {
@@ -122,15 +133,5 @@ public abstract class TypeScan {
 										}
 								  })
 						     .toSet();
-    }  
-	private static Collection<JavaPackage> _buildJavaPackagesFrom(final Collection<AppCode> appCodes) {
-		return FluentIterable.from(appCodes)
-							 .transform(new Function<AppCode,JavaPackage>() {
-												@Override
-												public JavaPackage apply(final AppCode appCode) {
-													return new JavaPackage(appCode.asString());
-												}
-							 			})
-							 .toSet();
-	}
+    }
 }

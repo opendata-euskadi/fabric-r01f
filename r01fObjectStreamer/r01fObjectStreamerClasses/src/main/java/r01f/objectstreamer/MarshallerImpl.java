@@ -9,13 +9,16 @@ import java.util.Collection;
 import java.util.Set;
 
 import com.fasterxml.jackson.databind.JavaType;
+import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.google.common.reflect.TypeToken;
 
 import lombok.RequiredArgsConstructor;
 import r01f.guids.CommonOIDs.AppCode;
 import r01f.objectstreamer.annotations.MarshallFormat;
 import r01f.patterns.Memoized;
+import r01f.types.JavaPackage;
 
 @RequiredArgsConstructor
 public class MarshallerImpl
@@ -23,32 +26,44 @@ public class MarshallerImpl
 /////////////////////////////////////////////////////////////////////////////////////////
 //	FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
-	private final Set<AppCode> _appCodes;
+	private final Set<JavaPackage> _javaPackages;
 	private final Set<? extends MarshallerModule> _jacksonModules;
 	private final Charset _defaultCharset;
 
 	private final Memoized<MarshallerMapperForXml> _marshallerXmlMapper = new Memoized<MarshallerMapperForXml>() {
 																				@Override
 																				public MarshallerMapperForXml supply() {
-																					return new MarshallerMapperForXml(_appCodes,
+																					return new MarshallerMapperForXml(_javaPackages,
 																													  _jacksonModules);
 																				}
 																	   };
 	private final Memoized<MarshallerMapperForJson> _marshallerJsonMapper = new Memoized<MarshallerMapperForJson>() {
 																				@Override
 																				public MarshallerMapperForJson supply() {
-																					return new MarshallerMapperForJson(_appCodes,
+																					return new MarshallerMapperForJson(_javaPackages,
 																													   _jacksonModules);
 																				}
 																	   };
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-	public MarshallerImpl findTypesToMarshallAt(final AppCode... appCodes) {
-		return this.findTypesToMarshallAt(Lists.newArrayList(appCodes));
+	public MarshallerImpl findTypesToMarshallAtAppCodes(final AppCode... appCodes) {
+		return this.findTypesToMarshallAt(appCodes != null ? FluentIterable.from(appCodes)
+																		   .transform(JavaPackage.APP_CODE_TO_JAVA_PACKAGE)
+																		   .toSet()
+														   : Sets.<JavaPackage>newLinkedHashSet());
 	}
-	public MarshallerImpl findTypesToMarshallAt(final Collection<AppCode> appCodes) {
-		_appCodes.addAll(appCodes);
+	public MarshallerImpl findTypesToMarshallAtAppCodes(final Collection<AppCode> appCodes) {
+		return this.findTypesToMarshallAt(appCodes != null ? FluentIterable.from(appCodes)
+																		   .transform(JavaPackage.APP_CODE_TO_JAVA_PACKAGE)
+																		   .toSet()
+														   : Sets.<JavaPackage>newLinkedHashSet());
+	}
+	public MarshallerImpl findTypesToMarshallAt(final JavaPackage... javaPackages) {
+		return this.findTypesToMarshallAt(Lists.newArrayList(javaPackages));
+	}
+	public MarshallerImpl findTypesToMarshallAt(final Collection<JavaPackage> javaPackages) {
+		if (javaPackages != null) _javaPackages.addAll(javaPackages);
 		return this;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -107,7 +122,7 @@ public class MarshallerImpl
 							return this.from(xml,_defaultCharset,format,
 											 typeToken);
 						}
-			
+
 						// ================================================================================
 						@Override
 						public <T> T fromXml(final InputStream is,
@@ -149,7 +164,7 @@ public class MarshallerImpl
 							return this.fromXml(xml,_defaultCharset,
 												typeToken);
 						}
-						
+
 						// ================================================================================
 						@Override
 						public <T> T fromJson(final InputStream is,
@@ -235,7 +250,7 @@ public class MarshallerImpl
 							} else if (format == MarshallFormat.JSON) {
 								this.toJson(obj,os);
 							} else {
-								throw new IllegalArgumentException(format + " is NOT a supported marshall format!"); 
+								throw new IllegalArgumentException(format + " is NOT a supported marshall format!");
 							}
 						}
 						@Override
@@ -252,7 +267,7 @@ public class MarshallerImpl
 							return this.to(format,
 										   obj,_defaultCharset);
 						}
-						
+
 						// ================================================================================
 						@Override
 						public <T> void toXml(final T obj,
@@ -278,7 +293,7 @@ public class MarshallerImpl
 						public <T> String toXml(final T obj) {
 							return this.toXml(obj,_defaultCharset);
 						}
-						
+
 						// ================================================================================
 						@Override
 						public <T> void toJson(final T obj,
