@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 
 /**
- * Annotation used to set metadata about a {@link ModelObject} 
+ * Annotation used to set metadata about a {@link ModelObject}
  * The model object type (or one of the types in it's hierarchy) MUST be annotated with @ModelObjectData
  * setting the type that holds the meta-data about the type
  * <pre class='brush:java'>
@@ -18,7 +18,7 @@ import java.lang.annotation.Target;
  * 			@Getter @Setter private MyOID _oid;
  * 			@Getter @Setter private MyOtherModelObject _myOtherField;
  * 		}
- * </pre> 
+ * </pre>
  * The type that holds the metadata is roughly (not mandatory) similar to the model object
  * BUT with meta-data information
  * <pre class='brush:java'>
@@ -32,13 +32,13 @@ import java.lang.annotation.Target;
  * 		  implements HasModelObjectMetaData {
  *				@MetaDataForField(id = "oid",
  *			   				      description = {
- *									@DescInLang(language=Language.SPANISH,value="Identificador único"),
- *									@DescInLang(language=Language.BASQUE,value="[eu] Identificador único"),
+ *									@DescInLang(language=Language.SPANISH,value="Identificador Ãºnico"),
+ *									@DescInLang(language=Language.BASQUE,value="[eu] Identificador Ãºnico"),
  *									@DescInLang(language=Language.ENGLISH,value="Unique identifier")
  *							     },
  *			   				     storage = @Storage(indexed=false))
  * 				private MyOID _oid;
- * 
+ *
  *				@MetaDataForField(id = "otherField",
  *			   				      description = {
  *									@DescInLang(language=Language.SPANISH,value="Other field"),

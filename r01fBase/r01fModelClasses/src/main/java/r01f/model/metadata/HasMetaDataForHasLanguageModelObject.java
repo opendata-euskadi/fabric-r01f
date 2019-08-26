@@ -18,7 +18,7 @@ import r01f.model.metadata.annotations.Storage;
 						@DescInLang(language=Language.ENGLISH, value="A model object that has language")
 			     })
 @GwtIncompatible
-public interface HasMetaDataForHasLanguageModelObject 
+public interface HasMetaDataForHasLanguageModelObject
 		 extends HasFieldsMetaData {
 /////////////////////////////////////////////////////////////////////////////////////////
 // CONSTANTS
@@ -27,7 +27,7 @@ public interface HasMetaDataForHasLanguageModelObject
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Accessors(prefix="_")
 	@RequiredArgsConstructor
-	public static enum SEARCHABLE_METADATA 
+	public static enum SEARCHABLE_METADATA
 			implements FieldIDToken {
 		LANGUAGE ("language"),
 		LANGUAGE_CODE ("languageCode");
@@ -35,7 +35,7 @@ public interface HasMetaDataForHasLanguageModelObject
 		@Getter private final String _token;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	@MetaDataForField(description = {
 							@DescInLang(language=Language.SPANISH, value="Lenguage"),
@@ -45,10 +45,10 @@ public interface HasMetaDataForHasLanguageModelObject
 				   	  storage = @Storage(indexed=false,
 				   					  	 stored=true))
 	public Language getLanguage();
-	
+
 	@MetaDataForField(description = {
-							@DescInLang(language=Language.SPANISH, value="Código del Lenguage"),
-							@DescInLang(language=Language.BASQUE, value="[eu] Código del lenguage"),
+							@DescInLang(language=Language.SPANISH, value="CÃ³digo del Lenguage"),
+							@DescInLang(language=Language.BASQUE, value="[eu] CÃ³digo del lenguage"),
 							@DescInLang(language=Language.ENGLISH, value="Language Code")
 				   	  },
 				   	  storage = @Storage(indexed=true,

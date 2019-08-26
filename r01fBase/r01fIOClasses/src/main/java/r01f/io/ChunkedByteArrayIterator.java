@@ -4,55 +4,58 @@ import java.io.IOException;
 import java.util.Arrays;
 
 /**
- * Abstrae al cliente de la lógica de iterar sobre un array de bytes para trocearlo 
- * en paquetes
- * 
- * Esta clase es de utilidad por ejemplo cuando un churro de bytes hay que enviarlo en paquetes (chunks) 
- * por ejemplo a otro servidor (ej: subir ficheros a iw)
- * De esta forma, el cliente se abstrae de la complejidad de implementar el troceado del churro de entrada
- * Ejemplo de uso:
+ * Abstracts client from iterating over a byte array to chuck it
+ *
+ * This utility type is usefull when a byte array must be chunked in order to be sent somewhere (ie upload a file)
+ * ... this way, the client is abstracted from the complexity of chunking the byte array
+ * Usage_
  * <pre class='brush:java'>
- *		R01MContentDataAPI contentDataAPI = R01MClientFactory.getContentDataAPI(_securityContext,contentOid);
- *		ChunkedStreamIterator bytesIt = new ChunkedByteArrayIterator(bytes);	 
+ *		R01MContentDataAPI contentDataAPI = ClientFactory.getContentDataAPI(securityContext,
+ *																			contentOid);
+ *		ChunkedStreamIterator bytesIt = new ChunkedByteArrayIterator(bytes);
  *		while (bytesIt.hasNext()) {
  *			int offset = bytesIt.getOffset();
  *			byte[] bytes = bytesIt.next();
- *			contentDataAPI.uploadAttachmentFileChunk(documentOid,path,bytes,offset);
+ *			contentDataAPI.uploadAttachmentFileChunk(documentOid,
+ *													 path,bytes,offset);
  *		}
  * </pre>
- * También se puede utilizar de forma similar a un reader:
+ * It also can be used as a reader:
  * <pre class='brush:java'>
- *		R01MContentDataAPI contentDataAPI = R01MClientFactory.getContentDataAPI(_securityContext,contentOid);
- *		@Cleanup ChunkedByteArrayIterator chunkedReader = new ChunkedByteArrayIterator(bytes);	
+ *		ContentDataAPI contentDataAPI = ClientFactory.getContentDataAPI(securityContext,
+ *																	    contentOid);
+ *		@Cleanup ChunkedByteArrayIterator chunkedReader = new ChunkedByteArrayIterator(bytes);
  *		byte[] currChunk = null;
  *		do {
- *			int offset = chunkedIS.offset();						// OJO!! leer siempre el offset ANTES
- *			currChunk = chunkedIS.readChunk();						// se lee un chunk de bytes
- *			if (bytesReaded != null) contentDataAPI.uploadAttachmentFileChunk(documentOid,path,currChunk,offset);	// se pasa el chunk al servidor
+ *			int offset = chunkedIS.offset();						// BEWARE!! read offset BEFOREHAND
+ *			currChunk = chunkedIS.readChunk();						// read a chunk
+ *			if (bytesReaded != null) contentDataAPI.uploadAttachmentFileChunk(documentOid,
+ *																			  path,currChunk,offset);	// upload the chunk
  *		} while (bytesReaded != null);
  * </pre>
  */
-public class ChunkedByteArrayIterator 
+public class ChunkedByteArrayIterator
   implements ChunkedStreamIterator {
 ///////////////////////////////////////////////////////////////////////////////
-// 	STATUS
-///////////////////////////////////////////////////////////////////////////////	
+// 	FIELDS
+///////////////////////////////////////////////////////////////////////////////
 	private byte[] _bytes;
 	private int _initOffset = 0;
 	private int _endOffset = 0;
-	private int _blockSize = 10*1024;	// tamaño de bloque
+	private int _blockSize = 10*1024;	// chunk size
 ///////////////////////////////////////////////////////////////////////////////
 // 	CONSTRUCTOR
-///////////////////////////////////////////////////////////////////////////////	
-	public ChunkedByteArrayIterator() {			
+///////////////////////////////////////////////////////////////////////////////
+	public ChunkedByteArrayIterator() {
+		// default no-args constructor
 	}
 	public ChunkedByteArrayIterator(final byte[] bytes) {
-		this.setBytes(bytes);			
+		this.setBytes(bytes);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  GET / SET
 /////////////////////////////////////////////////////////////////////////////////////////
-	public void setBytes(byte[] bytes) {
+	public void setBytes(final byte[] bytes) {
 		_bytes = bytes;
 		_computeBlockSize();
 	}
@@ -61,36 +64,36 @@ public class ChunkedByteArrayIterator
 		return _endOffset;
 	}
 	private void _computeBlockSize() {
-		// Calcular dinámicamente el tamaño del bloque: 
-		//		- si el tamaño del fichero es mayor de 1Mb, se sube por bloques
+		// Compute the block size
+		//		- if the file size is GREATER than 1Mb: use chunks
 		if (_bytes.length > 999 * 1024) {
-			_blockSize = 100*1024;		// tamaño de bloque 100 Kb
+			_blockSize = 100*1024;		// chunk size = 100 Kb
 		} else {
-			_blockSize = _bytes.length;	// tamaño del bloque igual el fichero, subida unica
-		}			
+			_blockSize = _bytes.length;	// chunk size = file size: just ONE chunk
+		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  METODOS
+//  METHODS
 /////////////////////////////////////////////////////////////////////////////////////////
 	public byte[] readChunk() {
 		byte[] outBytes = _read();
 		return outBytes;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  INTERFAZ Closeable
+//  Closeable
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public void close() throws IOException {
 		// no hace nada ya que no hay nada que cerrar
-	}		
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  INTERFAZ Iterator
+//  Iterator
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public byte[] next() {
 		byte[] outBytes = _read();
 		return outBytes;
-	}		
+	}
 	@Override
 	public boolean hasNext() {
 		return _endOffset < _bytes.length;
@@ -100,20 +103,20 @@ public class ChunkedByteArrayIterator
 		/* nothing to do */
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  METODOS PRIVADOS
+//  PRIVATE
 /////////////////////////////////////////////////////////////////////////////////////////
-	private byte[] _read() {				
-		_initOffset = _endOffset;	// mover el puntero de inicio 
+	private byte[] _read() {
+		_initOffset = _endOffset;	// move pointer to the beginning
 		byte[] outBytes = null;
 		if (this.hasNext()) {
-			outBytes = Arrays.copyOfRange(_bytes,						// array de bytes de donde leer
-										  _initOffset,					// posicion de inicio de lectura
-										  _initOffset + _blockSize); 	// posicion de fin de lectura
-			// Actualizacion del desplazamiento
+			outBytes = Arrays.copyOfRange(_bytes,						// byte array from the where data is readed
+										  _initOffset,					// read position begin
+										  _initOffset + _blockSize); 	// read position end
+			// Update
 			_endOffset += _blockSize;
-			// Hay que tener cuidado para la siguiente lectura si hay menos datos
+			// BEWARE! there could be less data than the chunk size
 			if (_endOffset + _blockSize > _bytes.length) {
-				_blockSize = _bytes.length - _endOffset;	
+				_blockSize = _bytes.length - _endOffset;
 			}
 		}
 		return outBytes;

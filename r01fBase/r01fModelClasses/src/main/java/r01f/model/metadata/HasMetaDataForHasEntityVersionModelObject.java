@@ -27,18 +27,18 @@ public interface HasMetaDataForHasEntityVersionModelObject
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Accessors(prefix="_")
 	@RequiredArgsConstructor
-	public enum SEARCHABLE_METADATA 
+	public enum SEARCHABLE_METADATA
 	 implements FieldIDToken {
 		ENTITY_VERSION ("entityVersion");
-		
+
 		@Getter private final String _token;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-// 	
-/////////////////////////////////////////////////////////////////////////////////////////	
+//
+/////////////////////////////////////////////////////////////////////////////////////////
 	@MetaDataForField(description = {
-							@DescInLang(language=Language.SPANISH, value="Versión persistida (BBDD) del objeto (optimistic locking)"),
-							@DescInLang(language=Language.BASQUE, value="[eu] Versión persistida (BBDD) del objeto (optimistic locking)"),
+							@DescInLang(language=Language.SPANISH, value="VersiÃ³n persistida (BBDD) del objeto (optimistic locking)"),
+							@DescInLang(language=Language.BASQUE, value="[eu] VersiÃ³n persistida (BBDD) del objeto (optimistic locking)"),
 							@DescInLang(language=Language.ENGLISH, value="Model object's persisted version (BBDD) (used for optimistic locking)")
 					  },
 					  storage = @Storage(indexed=false,tokenized=false,

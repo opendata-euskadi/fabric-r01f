@@ -42,7 +42,7 @@ public abstract class TypeMetaDataForModelObjectBase
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Accessors(prefix="_")
 	@RequiredArgsConstructor
-	public enum SEARCHABLE_METADATA 
+	public enum SEARCHABLE_METADATA
 	 implements FieldIDToken {
 		TYPE_CODE ("typeCode"),
 		TYPE ("javaType"),
@@ -62,7 +62,7 @@ public abstract class TypeMetaDataForModelObjectBase
 				      storage = @Storage(indexed=true,
 				      					 stored=true))
 	@Getter private long _typeCode;
-	
+
 	@MetaDataForField(description = {
 							@DescInLang(language=Language.SPANISH, value="Nombre del tipo del objeto"),
 							@DescInLang(language=Language.BASQUE, value="[eu] Nombre del tipo del objeto"),
@@ -82,8 +82,8 @@ public abstract class TypeMetaDataForModelObjectBase
 	@Getter private Collection<Long> _typeFacets;
 
 	@MetaDataForField(description = {
-							@DescInLang(language=Language.SPANISH, value="Identificador numérico del objeto"),
-							@DescInLang(language=Language.BASQUE, value="[eu] Identificador numérico del objeto"),
+							@DescInLang(language=Language.SPANISH, value="Identificador numÃ©rico del objeto"),
+							@DescInLang(language=Language.BASQUE, value="[eu] Identificador numÃ©rico del objeto"),
 							@DescInLang(language=Language.ENGLISH, value="Model Object's numeric identifier")
 					  },
 					  storage = @Storage(indexed=true,

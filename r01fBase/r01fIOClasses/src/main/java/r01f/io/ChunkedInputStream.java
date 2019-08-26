@@ -14,12 +14,12 @@ import java.io.InputStream;
  * </pre>
  * The {@link ChunkedInputStreamChunksProducer} could be as simple as:
  * <pre class='brush:java'>
- * 	private static final String TEST_FILE = "El murcielago hindú comía feliz cardillo y kiwis";
+ * 	private static final String TEST_FILE = "El murcielago hindÃº comÃ­a feliz cardillo y kiwis";
  *	private class TestChunkedInputStreamproducer
  *	   implements ChunkedInputStreamChunksProducer {
- *		
+ *
  *		private boolean _eof = false;
- *		
+ *
  *		@Override
  *		public byte[] get(final long offset) throws IOException {
  *			if (_eof) return null;
@@ -33,9 +33,9 @@ import java.io.InputStream;
  *			return outBytes;
  *		}
  *	}
- * </pre> 
+ * </pre>
  */
-public class ChunkedInputStream 
+public class ChunkedInputStream
      extends InputStream {
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTANTS
@@ -47,10 +47,10 @@ public class ChunkedInputStream
 /////////////////////////////////////////////////////////////////////////////////////////
 	/** The chunks producer */
 	private final ChunkedInputStreamChunksProducer _producer;
-	
+
 	/** Absolute position in the produce where data is readed */
 	private long _absoluteInputStreamReadPosition;
-	
+
 	/** Last-readed chunk buffer */
 	InputStream _chunkBuffer;
 
@@ -59,10 +59,10 @@ public class ChunkedInputStream
 
 	/** The current position within the current chunk */
 	private int _chunkBufferReadPosition;
-	
+
 	/** True if the end of a chunk has been reached */
 	private boolean _chunkEOF = true;
-	
+
 	/** True if we've reached the end of stream */
 	private boolean _eof = false;
 
@@ -83,12 +83,12 @@ public class ChunkedInputStream
 	/**
 	 * Constructor using the chunks producer and the starting offset
 	 * @param producer The chunks producer
-	 * @param readStartPosition the offest where the first chunk is going to be readed 
+	 * @param readStartPosition the offest where the first chunk is going to be readed
 	 */
 	public ChunkedInputStream(final ChunkedInputStreamChunksProducer producer,
 							  final long readStartPosition) {
 		this(producer,
-			 readStartPosition,			
+			 readStartPosition,
 			 null);			// first chunk
 	}
 	/**
@@ -142,12 +142,12 @@ public class ChunkedInputStream
 	public int read() throws IOException {
 		if (_closed) throw new IOException("Attempted read from closed stream.");
 		if (_eof) return -1;
-			
+
 		if (_chunkEOF) _nextChunk();			// if underlying chunk buffer has been consumed... fill the buffer
-		
+
 		int readedByte = _chunkBuffer.read();	// read a byte from the underlying chunk buffer
 		if (readedByte != -1) {
-			_chunkBufferReadPosition++;		
+			_chunkBufferReadPosition++;
 			if (_chunkBufferReadPosition >= _chunkBufferSize) _chunkEOF = true;
 		}
 		return readedByte;
@@ -157,11 +157,11 @@ public class ChunkedInputStream
 	public int read(final byte[] b,final int off,final int len) throws IOException {
 		if (_closed) throw new IOException("Attempted read from closed stream.");
 		if (_eof) return -1;
-		
+
 		if (_chunkEOF) _nextChunk();	// if underlying chunk buffer has been consumed... fill the buffer
-		if (_eof) return -1;			// ... oh! 
-		
-		int bytesToRead = Math.min(len,							// requested bytes num 
+		if (_eof) return -1;			// ... oh!
+
+		int bytesToRead = Math.min(len,							// requested bytes num
 					   			   _chunkBufferSize - _chunkBufferReadPosition);		// remaining bytes in underlying chunk buffer
 		int bytesReaded = _chunkBuffer.read(b,					// byte array where readed bytes will be placed
 								  			off,				// the offeset into the previous byte array where the readed bytes will be started to be placed
@@ -185,7 +185,7 @@ public class ChunkedInputStream
 			try {
 				if (!_eof && CONSUME_ALL_PROVIDED_DATA_BEFORE_CLOSING) {
 					// read and discard the remainder of the message
-					// leaving the underlying socket at a position to start 
+					// leaving the underlying socket at a position to start
 					// reading the next response without scanning.
 					byte buffer[] = new byte[BUFFER_SIZE];
 					while (this.read(buffer) >= 0) { /* nothing to do with data */ }
@@ -209,8 +209,8 @@ public class ChunkedInputStream
 		if (nextChunkBytes != null && nextChunkBytes.length > 0) {
 			_chunkBuffer = new ByteArrayInputStream(nextChunkBytes);
 			_chunkBufferSize = nextChunkBytes.length;
-			_chunkBufferReadPosition = 0;				
-			_chunkEOF = false;	
+			_chunkBufferReadPosition = 0;
+			_chunkEOF = false;
 			_absoluteInputStreamReadPosition += _chunkBufferSize;
 		} else {
 			_eof = true;

@@ -11,7 +11,7 @@ extends HtmlTokenizerStateHandlerBase<HtmlTokenizer> {
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTANTS
 /////////////////////////////////////////////////////////////////////////////////////////
-	private static final String ALLOWED_CHARS = " .!-abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789 :/\"";
+	private static final String ALLOWED_CHARS = " .!-abcdefghijklmnÃ±opqrstuvwxyzABCDEFGHIJKLMNÃ‘OPQRSTUVWXYZ0123456789 :/\"";
 
 /////////////////////////////////////////////////////////////////////////////////////////
 //  METHODS
@@ -20,7 +20,7 @@ extends HtmlTokenizerStateHandlerBase<HtmlTokenizer> {
 	public boolean read(final HtmlTokenizer tokenizer,final CharacterStreamSource charReader) throws HtmlParseError {
 		boolean tokenFinished = false;
 		char c = charReader.read();
-		
+
 		if (tokenizer.getCurrentTokenText().length() == 0 && c == '<') {
 			tokenizer.addTextToCurrentToken(c);
 		}
@@ -30,24 +30,24 @@ extends HtmlTokenizerStateHandlerBase<HtmlTokenizer> {
     		tokenFinished = true;
         }
         else if (!_isAllowedChar(c)) {
-        	charReader.unread(1);					// unread... it's another token	
+        	charReader.unread(1);					// unread... it's another token
     		tokenizer.nextState(HtmlParserTokenizerState.Text);
     		tokenFinished = false;
         }
-        else if (c == CharacterStreamSource.NULL_CHAR) {                
+        else if (c == CharacterStreamSource.NULL_CHAR) {
             throw new HtmlParseError(charReader.currentPosition()-1,"Null char detected");
-        } 
+        }
         else if (c == CharacterStreamSource.EOF) {
         	tokenizer.nextState(HtmlParserTokenizerState.EOF);	// we've done!
         	tokenFinished = true;
         }
         else {
-        	tokenizer.addTextToCurrentToken(c);	
+        	tokenizer.addTextToCurrentToken(c);
         }
         return tokenFinished;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	protected static boolean _isAllowedChar(final char c) {
 		return _isAllowedChar(ALLOWED_CHARS,c);
