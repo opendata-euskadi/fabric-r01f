@@ -14,7 +14,7 @@ import r01f.model.metadata.annotations.Storage;
 
 @MetaDataForType(modelObjTypeCode = HasFieldsMetaData.HAS_OID_MODEL_OBJECT_TYPE_CODE,
 			     description = {
-						@DescInLang(language=Language.SPANISH, value="Un objeto de modelo que tiene un identificador único"),
+						@DescInLang(language=Language.SPANISH, value="Un objeto de modelo que tiene un identificador ï¿½nico"),
 						@DescInLang(language=Language.BASQUE, value="[eu] A model object that has an unique identifier"),
 						@DescInLang(language=Language.ENGLISH, value="sA model object that has an unique identifier")
 			     })
@@ -28,18 +28,18 @@ public interface HasMetaDataForHasOIDModelObject<O extends OID>
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Accessors(prefix="_")
 	@RequiredArgsConstructor
-	public enum SEARCHABLE_METADATA 
+	public enum SEARCHABLE_METADATA
 	 implements FieldIDToken {
 		OID ("oid");
-		
+
 		@Getter private final String _token;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-// 	
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	@MetaDataForField(description = {
-							@DescInLang(language=Language.SPANISH, value="Identificador único del objeto"),
-							@DescInLang(language=Language.BASQUE, value="[eu] Identificador único del objeto"),
+							@DescInLang(language=Language.SPANISH, value="Identificador Ãºnico del objeto"),
+							@DescInLang(language=Language.BASQUE, value="[eu] Identificador Ãºnico del objeto"),
 							@DescInLang(language=Language.ENGLISH, value="Model Object's unique identifier")
 					  },
 					  storage = @Storage(indexed=true,tokenized=false,

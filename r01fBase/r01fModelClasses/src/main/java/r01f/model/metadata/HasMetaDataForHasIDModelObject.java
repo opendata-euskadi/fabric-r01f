@@ -28,17 +28,17 @@ public interface HasMetaDataForHasIDModelObject<ID extends OID>
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Accessors(prefix="_")
 	@RequiredArgsConstructor
-	public enum SEARCHABLE_METADATA 
+	public enum SEARCHABLE_METADATA
 	 implements FieldIDToken {
 		ID ("id");
-		
+
 		@Getter private final String _token;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-// 	
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	@MetaDataForField(description = {
-							@DescInLang(language=Language.SPANISH, value="Identificador único de negocio del objeto"),
+							@DescInLang(language=Language.SPANISH, value="Identificador Ãºnico de negocio del objeto"),
 							@DescInLang(language=Language.BASQUE, value="[eu] Model Object's unique business identifier"),
 							@DescInLang(language=Language.ENGLISH, value="Model Object's unique business identifier")
 					  },

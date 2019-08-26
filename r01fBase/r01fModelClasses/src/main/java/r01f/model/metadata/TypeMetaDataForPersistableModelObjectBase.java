@@ -39,18 +39,18 @@ public abstract class TypeMetaDataForPersistableModelObjectBase<O extends OID>
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Accessors(prefix="_")
 	@RequiredArgsConstructor
-	public enum SEARCHABLE_METADATA 
+	public enum SEARCHABLE_METADATA
 	 implements FieldIDToken {
 		DOCID ("DOCID");
 
 		@Getter private final String _token;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-// 	
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	@MetaDataForField(description = {
-							@DescInLang(language=Language.SPANISH, value="Identificador único del documento indexado"),
-							@DescInLang(language=Language.BASQUE, value="[eu] Identificador Único del documento indexado"),
+							@DescInLang(language=Language.SPANISH, value="Identificador Ãºnico del documento indexado"),
+							@DescInLang(language=Language.BASQUE, value="[eu] Identificador Ãºnico del documento indexado"),
 							@DescInLang(language=Language.ENGLISH, value="Document unique identifier")
 					  },
 					  storage = @Storage(indexed=true, stored=true, tokenized=false))

@@ -28,17 +28,17 @@ public interface HasMetaDataForHasFullTextSummaryModelObject<S extends Summary>
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Accessors(prefix="_")
 	@RequiredArgsConstructor
-	public enum SEARCHABLE_METADATA 
+	public enum SEARCHABLE_METADATA
 	 implements FieldIDToken {
 		FULL_TEXT ("fullTextSummary");
-		
+
 		@Getter private final String _token;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-// 	
-/////////////////////////////////////////////////////////////////////////////////////////	
+//
+/////////////////////////////////////////////////////////////////////////////////////////
 	@MetaDataForField(description = {
-							@DescInLang(language=Language.SPANISH, value="Resumen para indexación / búsqueda en texto libre"),
+							@DescInLang(language=Language.SPANISH, value="Resumen para indexaciÃ³n / bÃºsqueda en texto libre"),
 							@DescInLang(language=Language.BASQUE, value="[eu] Full-text index / search summary"),
 							@DescInLang(language=Language.ENGLISH, value="Full-text index / search summary")
 					  },

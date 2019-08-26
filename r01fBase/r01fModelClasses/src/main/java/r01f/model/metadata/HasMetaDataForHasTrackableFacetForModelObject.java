@@ -16,7 +16,7 @@ import r01f.model.metadata.annotations.Storage;
 
 @MetaDataForType(modelObjTypeCode = HasFieldsMetaData.HAS_TRACKING_INFO_MODEL_OBJECT_TYPE_CODE,
 			     description = {
-						@DescInLang(language=Language.SPANISH, value="Un objeto de modelo que tiene informaci髇 de tracking"),
+						@DescInLang(language=Language.SPANISH, value="Un objeto de modelo que tiene informaci贸n de tracking"),
 						@DescInLang(language=Language.BASQUE, value="[eu] A model object that has tracking info"),
 						@DescInLang(language=Language.ENGLISH, value="A model object that has tracking info")
 			     })
@@ -30,36 +30,36 @@ public interface HasMetaDataForHasTrackableFacetForModelObject
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Accessors(prefix="_")
 	@RequiredArgsConstructor
-	public enum SEARCHABLE_METADATA 
+	public enum SEARCHABLE_METADATA
 	 implements FieldIDToken {
 		CREATE_DATE ("createDate"),
 		LAST_UPDATE_DATE ("lastUpdateDate"),
 		CREATOR ("creator"),
 		LAST_UPDATOR ("lastUpdator");
-		
+
 		@Getter private final String _token;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-// 	
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	@MetaDataForField(description = {
-							@DescInLang(language=Language.SPANISH, value="Fecha de creaci髇"),
-							@DescInLang(language=Language.BASQUE, value="[eu] Fecha de creaci髇"),
+							@DescInLang(language=Language.SPANISH, value="Fecha de creaci贸n"),
+							@DescInLang(language=Language.BASQUE, value="[eu] Fecha de creaci贸n"),
 							@DescInLang(language=Language.ENGLISH, value="Create date")
 					  },
 					  storage = @Storage(indexed=true,tokenized=false,
 					  					 stored=true))
 	public Date getCreateDate();
-	
+
 	@MetaDataForField(description = {
-							@DescInLang(language=Language.SPANISH, value="Fecha de 鷏tima actualizaci髇"),
-							@DescInLang(language=Language.BASQUE, value="[eu] Fecha de 鷏tima actualizaci髇"),
+							@DescInLang(language=Language.SPANISH, value="Fecha de 煤ltima actualizaci贸n"),
+							@DescInLang(language=Language.BASQUE, value="[eu] Fecha de 煤ltima actualizaci贸n"),
 							@DescInLang(language=Language.ENGLISH, value="Last update date")
 					  },
 					  storage = @Storage(indexed=true,tokenized=false,
 					  					 stored=true))
 	public Date getLastUpdateDate();
-	
+
 	@MetaDataForField(description = {
 							@DescInLang(language=Language.SPANISH, value="Usuario/a que ha creado el objeto"),
 							@DescInLang(language=Language.BASQUE, value="[eu] Usuario/a que ha creado el objeto"),
@@ -68,10 +68,10 @@ public interface HasMetaDataForHasTrackableFacetForModelObject
 					  storage = @Storage(indexed=true,tokenized=false,
 							  			 stored=true))
 	public UserCode getCreator();
-	
+
 	@MetaDataForField(description = {
-							@DescInLang(language=Language.SPANISH, value="Usuario/a que ha actualizado el objeto por 鷏tima vez"),
-							@DescInLang(language=Language.BASQUE, value="[eu] Usuario/a que ha actualizado el objeto por 鷏tima vez"),
+							@DescInLang(language=Language.SPANISH, value="Usuario/a que ha actualizado el objeto por 煤ltima vez"),
+							@DescInLang(language=Language.BASQUE, value="[eu] Usuario/a que ha actualizado el objeto por 煤ltima vez"),
 							@DescInLang(language=Language.ENGLISH, value="The user who last updated the model object")
 					  },
 					  storage = @Storage(indexed=true,tokenized=false,
