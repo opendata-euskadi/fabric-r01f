@@ -53,7 +53,7 @@ public class TypeOutline
      */
     public Collection<Class<?>> getNodesFromGeneralToSpezialized() {
         Collection<Class<?>> typesList = this.getNodesFromSpezializedToGeneralization();
-        
+
         // Reverse the list so that the top class in the hierarchy comes first
         return Lists.reverse((List<Class<?>>)typesList);
     }
@@ -64,16 +64,16 @@ public class TypeOutline
      * @return a list ordered as above
      */
     public Collection<Class<?>> getNodesFromSpezializedToGeneralization() {
-//    	System.out.print(">>>>>>>>>>>>>>>>>>"); System.out.println(_bottomType);    	
+//    	System.out.print(">>>>>>>>>>>>>>>>>>"); System.out.println(_bottomType);
 //    	System.out.println(this.debugInfo());
-    	
+
         Collection<OutlineTreeNode> treeNodes = Lists.newArrayList();
         treeNodes.add(_bottomType);
         _recurseBuildList(_bottomType,
         		   		  treeNodes);
 
         // order the tree nodes
-		// bug: error “Comparison method violates its general contract!”
+		// bug: error Comparison method violates its general contract!
 		// see: https://stackoverflow.com/questions/8327514/comparison-method-violates-its-general-contract
         Collection<OutlineTreeNode> orderedTreeNodes = Ordering.from(new Comparator<OutlineTreeNode>() {
 																				@Override
@@ -97,13 +97,13 @@ public class TypeOutline
         return typesList;
     }
     /**
-     * Build breadth first in order to maintain sudo ordering as per class declarations 
-     * (i.e. if A implements B, C... B is closer in the chain to A than C is, 
+     * Build breadth first in order to maintain sudo ordering as per class declarations
+     * (i.e. if A implements B, C... B is closer in the chain to A than C is,
      *  because B comes first in the implements clause).
      *
      * Note that the list coming out here is preordered, but not natural ordered.
      * (i.e. some classes are out of order in relation to classes they have direct relationships with=
-     * This is later fixed by a sort on the list by natural ordering. 
+     * This is later fixed by a sort on the list by natural ordering.
      * Collecitons.sort, does preserve the preordering for nodes that have no relationship.
      *
      * @param node the node to be browsed.

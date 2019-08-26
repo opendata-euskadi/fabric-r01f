@@ -11,8 +11,8 @@ import r01f.io.CharacterStreamSource;
 extends HtmlTokenizerStateHandlerBase<HtmlStartTagTokenizer> {
 /////////////////////////////////////////////////////////////////////////////////////////
 //	CONSTANTS
-/////////////////////////////////////////////////////////////////////////////////////////	
-	static final String ALLOWED_CHARS = ":_-abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789";
+/////////////////////////////////////////////////////////////////////////////////////////
+	static final String ALLOWED_CHARS = ":_-abcdefghijklmnÃ±opqrstuvwxyzABCDEFGHIJKLMNÃ‘OPQRSTUVWXYZ0123456789";
 /////////////////////////////////////////////////////////////////////////////////////////
 //  METHODS
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -20,7 +20,7 @@ extends HtmlTokenizerStateHandlerBase<HtmlStartTagTokenizer> {
 	public boolean read(final HtmlStartTagTokenizer tokenizer,final CharacterStreamSource charReader) throws HtmlParseError {
 		boolean tokenFinished = false;
 		char c = charReader.read();
-		
+
 		if (_isAllowedChar(c)) {
 			// still reading the attr name
 			tokenizer.addTextToCurrentToken(c);
@@ -37,14 +37,14 @@ extends HtmlTokenizerStateHandlerBase<HtmlStartTagTokenizer> {
 			tokenizer.nextState(HtmlStartTagParserTokenizerState.EqualsSign);
 			tokenFinished = true;
 		}
-		else if (c == '>' || (c == '/' && charReader.nextEquals(">"))) {		
+		else if (c == '>' || (c == '/' && charReader.nextEquals(">"))) {
 			// end tag: > or />
 			tokenizer.nextState(HtmlStartTagParserTokenizerState.EOF);	// we've done!
 			tokenFinished = true;
 		}
-        else if (c == CharacterStreamSource.NULL_CHAR) {                
+        else if (c == CharacterStreamSource.NULL_CHAR) {
             throw new HtmlParseError(charReader.currentPosition()-1,"Null char detected");
-        } 
+        }
         else if (c == CharacterStreamSource.EOF) {
         	tokenizer.nextState(HtmlStartTagParserTokenizerState.EOF);	// we've done!
         	tokenFinished = true;
@@ -55,7 +55,7 @@ extends HtmlTokenizerStateHandlerBase<HtmlStartTagTokenizer> {
         return tokenFinished;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	protected static boolean _isAllowedChar(final char c) {
 		return _isAllowedChar(ALLOWED_CHARS,c);
