@@ -1,4 +1,4 @@
-package r01f.xmlproperties;
+package r01f.xmlproperties.annotations;
 
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
@@ -8,6 +8,7 @@ import javax.inject.Provider;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import r01f.util.types.Strings;
+import r01f.xmlproperties.XMLPropertiesForAppComponent;
 
 /**
  * @XmlPropertiesComponent annotation implementation needed to use the binder to set a binding 

@@ -7,6 +7,7 @@ import com.google.inject.assistedinject.AssistedInject;
 
 import r01f.guids.CommonOIDs.AppCode;
 import r01f.guids.CommonOIDs.Environment;
+import r01f.xmlproperties.annotations.XMLPropertiesEnvironment;
 
 public class GuiceManagedXMLPropertiesForAppCache 
 	 extends XMLPropertiesForAppCache {

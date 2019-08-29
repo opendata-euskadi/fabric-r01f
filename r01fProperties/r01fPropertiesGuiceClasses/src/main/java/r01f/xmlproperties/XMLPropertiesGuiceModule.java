@@ -8,6 +8,7 @@ import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 import r01f.guids.CommonOIDs.Environment;
 import r01f.xmlproperties.XMLPropertiesForAppCache.XMLPropertiesForAppCacheFactory;
+import r01f.xmlproperties.annotations.XMLPropertiesEnvironment;
 
 public class XMLPropertiesGuiceModule 
   implements Module {

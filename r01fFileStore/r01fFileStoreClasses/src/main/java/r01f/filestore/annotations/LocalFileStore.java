@@ -5,11 +5,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.google.inject.BindingAnnotation;
+import javax.inject.Qualifier;
 
-@BindingAnnotation 
+@Qualifier // @BindingAnnotation 
 @Target({ ElementType.FIELD,ElementType.PARAMETER }) 
 @Retention(RetentionPolicy.RUNTIME)
-public @interface TeamSiteFileStore {
+public @interface LocalFileStore {
 	/* empty */
 }

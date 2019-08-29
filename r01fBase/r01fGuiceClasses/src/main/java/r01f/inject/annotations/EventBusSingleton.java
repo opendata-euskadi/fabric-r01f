@@ -5,12 +5,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.google.inject.BindingAnnotation;
+import javax.inject.Qualifier;
 
 /**
  * Annotation that tells guice to inject a cached instance of anything
  */
-@BindingAnnotation 
+@Qualifier //@BindingAnnotation 
 @Target({ ElementType.FIELD,ElementType.PARAMETER}) 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface EventBusSingleton {

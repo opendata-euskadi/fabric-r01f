@@ -14,8 +14,8 @@ import r01f.xmlproperties.XMLPropertiesForAppCache.XMLPropertiesForAppCacheFacto
  * see {@link XMLProperties}
  */
 @Slf4j
-     class XMLPropertiesImpl 
-implements XMLProperties {
+public class XMLPropertiesImpl 
+  implements XMLProperties {
 ///////////////////////////////////////////////////////////////////////////////
 // 	CONSTANTS
 ///////////////////////////////////////////////////////////////////////////////
