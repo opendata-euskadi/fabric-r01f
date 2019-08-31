@@ -271,6 +271,14 @@ public abstract class CommonOIDs {
 		public boolean isAnonymous() {
 			return this.is(ANONYMOUS);
 		}
+		public static final UserCode MASTER = UserCode.forId("master");
+		public boolean isMaster() {
+			return this.is(MASTER);
+		}
+		public static final UserCode ADMIN = UserCode.forId("admin");
+		public boolean isAdmin() {
+			return this.is(ADMIN);
+		}
 	}
 	@Immutable
 	@MarshallType(as="userRole")
@@ -307,6 +315,9 @@ public abstract class CommonOIDs {
 		}
 		public static Password valueOf(final String id) {
 			return Password.forId(id);
+		}
+		public boolean matches(final Password other) {
+			return this.is(other);
 		}
 	}
 	@Immutable
