@@ -31,7 +31,7 @@ import r01f.guids.CommonOIDs.SecurityToken;
  * 				public MyMasterSecurityContextProvider() {	// beware!! no-args constructor
  * 					super(new MySecurityContext());
  * 				}	
- * 		 }
+ * 		 	}
  * 		 </pre>
  * 
  * [1] - At the CLIENT bootstrap guice module:

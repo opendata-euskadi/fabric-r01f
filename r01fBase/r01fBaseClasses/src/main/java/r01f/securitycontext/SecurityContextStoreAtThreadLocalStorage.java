@@ -21,10 +21,11 @@ public abstract class SecurityContextStoreAtThreadLocalStorage {
 		SECURITY_CONTEXT.remove();
 	}
 	// set
-	public static void set(final SecurityContext ctx) {
+	public static <S extends SecurityContext> void set(final S ctx) {
 		SECURITY_CONTEXT.set(ctx);
 	}
-	public static SecurityContext get() {
-	  return SECURITY_CONTEXT.get();
+	@SuppressWarnings("unchecked")
+	public static <S extends SecurityContext> S get() {
+	  return (S)SECURITY_CONTEXT.get();
 	}
 }
