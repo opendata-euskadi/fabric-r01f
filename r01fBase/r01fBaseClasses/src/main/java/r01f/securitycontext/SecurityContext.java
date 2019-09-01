@@ -6,17 +6,17 @@ import java.util.Date;
 import r01f.guids.CommonOIDs.AppCode;
 import r01f.guids.CommonOIDs.SecurityToken;
 import r01f.guids.CommonOIDs.UserCode;
+import r01f.types.url.Url;
 
 /**
  * Marker interface for every user context data
  */
 public interface SecurityContext 
 		 extends Serializable {
-	
 	/**
 	 * @return this object casted to a {@link SecurityContext} impl
 	 */
-	public <CTX extends SecurityContext> CTX cast();
+	public <CTX extends SecurityContext> CTX as(final Class<CTX> type);
 	/**
 	 * If this user context is for a physical user, it returns his/her user code
 	 * if it's an app user context it throws an {@link IllegalStateException}
@@ -53,4 +53,8 @@ public interface SecurityContext
 	 * @return a {@link SecurityToken} associated with this context
 	 */
 	public SecurityToken getSecurityToken();
+	/**
+	 * @return the login url
+	 */
+	public Url getLoginUrl();
 }
