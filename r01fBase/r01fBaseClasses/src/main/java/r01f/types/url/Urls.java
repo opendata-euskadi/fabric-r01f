@@ -174,23 +174,25 @@ public class Urls {
 	 * @param url
 	 * @param path
 	 * @param qryString
-	 * @param anchor
+	 * @param urlPathFragment
 	 * @return
 	 */
 	public static Url join(final Url url,
 						   final UrlPath path,
-						   final UrlQueryString qryString,final String anchor) {
+						   final UrlQueryString qryString,final String urlPathFragment) {
 		UrlComponents urlComps = url != null ? url.getComponents()
 											 : null;
 		return Url.from(urlComps != null ? urlComps.getProtocol() : null,
 						urlComps != null ? urlComps.getHost() : null,
 						urlComps != null ? urlComps.getPort() : -1,
+						// path & path fragmnet
 						Urls.join(urlComps != null ? urlComps.getUrlPath() : null,
 								  path),
+					    Strings.isNOTNullOrEmpty(urlPathFragment) ? urlPathFragment 
+					    								 		  : urlComps != null ? urlComps.getUrlPathFragment() : null,
+						// query string
 					    Urls.join(urlComps != null ? urlComps.getQueryString() : null,
-					    		  qryString),
-					    Strings.isNOTNullOrEmpty(anchor) ? anchor 
-					    								 : urlComps != null ? urlComps.getAnchor() : null);
+					    		  qryString));
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  

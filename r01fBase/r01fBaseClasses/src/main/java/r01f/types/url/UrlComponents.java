@@ -16,7 +16,7 @@ public class UrlComponents
 	@Getter private final int _port;
 	@Getter private final UrlPath _urlPath;
 	@Getter private final UrlQueryString _queryString;
-	@Getter private final String _anchor;
+	@Getter private final String _urlPathFragment;
 /////////////////////////////////////////////////////////////////////////////////////////
 //  
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -36,10 +36,14 @@ public class UrlComponents
 		return _queryString != null ? _queryString : def;
 	}
 	public String getAnchorOrDefault(final String def) {
-		return Strings.isNOTNullOrEmpty(_anchor) ? _anchor : def;
+		return Strings.isNOTNullOrEmpty(_urlPathFragment) ? _urlPathFragment : def;
 	}
 	public boolean hasPort() {
 		return _port > 0;
+	}
+	@Deprecated
+	public String getAnchor() {
+		return _urlPathFragment;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  DEBUG
@@ -52,7 +56,7 @@ public class UrlComponents
 		  .append("-       Port: ").append(this.getPort()).append("\r\n")
 		  .append("-       Path: ").append(this.getUrlPath()).append("\r\n")
 		  .append("Query String: ").append(this.getQueryString() != null ? this.getQueryString().asStringNotEncodingParamValues() : "").append("\r\n")
-		  .append("-     Anchor: ").append(this.getAnchor());
+		  .append("-     Anchor: ").append(this.getUrlPathFragment());
 		return sb.toString();
 	}
 }
