@@ -59,175 +59,181 @@ import r01f.util.types.collections.CollectionUtils;
  */
 @Slf4j
 public abstract class SecurityContextServletFilterBase
-             implements Filter {
+		 implements Filter {
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTANTS
 /////////////////////////////////////////////////////////////////////////////////////////
-    public static final String AUTH_CONTEXT_SESSION_PARAM_NAME = "autxContext";
+	public static final String AUTH_CONTEXT_SESSION_PARAM_NAME = "autxContext";
 /////////////////////////////////////////////////////////////////////////////////////////
 //  FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
-    private final String _loginUrlPath;
-    private final Collection<Pattern> _notFilteredResourcesPatterns;
+	private final String _loginUrlPath;
+	private final Collection<Pattern> _notFilteredResourcesPatterns;
 
-    private FilterConfig _servletFilterConfig = null;
+	private FilterConfig _servletFilterConfig = null;
 /////////////////////////////////////////////////////////////////////////////////////////
 //	CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
-    public SecurityContextServletFilterBase(final String loginUrlPath,
-    										final Collection<Pattern> notFilteredResourcesPatterns) {
-    	_loginUrlPath = loginUrlPath;
-        _notFilteredResourcesPatterns = notFilteredResourcesPatterns;
-    }
+	public SecurityContextServletFilterBase(final String loginUrlPath,
+											final Collection<Pattern> notFilteredResourcesPatterns) {
+		_loginUrlPath = loginUrlPath;
+	   _notFilteredResourcesPatterns = notFilteredResourcesPatterns;
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  METHODS
 /////////////////////////////////////////////////////////////////////////////////////////
-    @Override
-    public void init(final FilterConfig servletFilterConfig) throws ServletException {
-        _servletFilterConfig = servletFilterConfig;
-    }
-    @Override
-    public void destroy() {
-        _servletFilterConfig = null;
+	@Override
+	public void init(final FilterConfig servletFilterConfig) throws ServletException {
+	   _servletFilterConfig = servletFilterConfig;
+	}
+	@Override
+	public void destroy() {
+	   _servletFilterConfig = null;
 
-    }
-    @Override
-    public void doFilter(final ServletRequest request,final ServletResponse response,
-                         final FilterChain chain) throws IOException,
-                                                         ServletException {
-        try {
-            HttpServletRequest req = (HttpServletRequest)request;
-            HttpServletResponse res = (HttpServletResponse)response;
+	}
+	@Override
+	public void doFilter(final ServletRequest request,final ServletResponse response,
+					final FilterChain chain) throws IOException,
+											  ServletException {
+		try {
+		
+			HttpServletRequest req = (HttpServletRequest)request;
+			HttpServletResponse res = (HttpServletResponse)response;
 
-            // [0] Get the requested url and see if it matches one of the patterns defined at the auth config
+			// [0] Get the requested url and see if it matches one of the patterns defined at the auth config
 //			Url url = _fullURI(req);
-//	        UrlPath urlPath = url.getUrlPath();
+//			UrlPath urlPath = url.getUrlPath();
 
-            if (CollectionUtils.hasData(_notFilteredResourcesPatterns)) {
-                String reqUri = req.getRequestURI();
-                for (Pattern notFilteredPattern : _notFilteredResourcesPatterns) {
-                	if (notFilteredPattern.matcher(reqUri).matches()) {
-                		log.debug("[SecurityContextServletFilter] uri {} is NOT filtered",
-                				  reqUri);
-                		chain.doFilter(request,response);
-                		return;
-                	}
-                	else {
-                		log.trace("[SecurityContextServletFilter] uri {} is filtered",
-                				  reqUri);
-                	}
-                }
-            }
+			// [1] - Get the [securityContext] from the web session (set at the login page)
+			//		 ... the user MUST have pass through the login page and authenticate
+			HttpSession webSession = req.getSession(false);	// false = do not create session
+			SecurityContext securityContext = webSession != null
+												  ? (SecurityContext)webSession.getAttribute(AUTH_CONTEXT_SESSION_PARAM_NAME)
+												  : null;
+			// [2] - Attach the security context to the local thread
+			// 		 (the security context provider will look after the [user context] at the local thread)
+			if (securityContext != null) {
+				// attath the security context to the thread local storage
+				// (the security context provider will look after that [security context] at the thread local storage)
+				SecurityContextStoreAtThreadLocalStorage.set(securityContext);
+				log.debug("[SecurityContextServletFilter] security context available at [web session] for uri={}: store at thread-local storage",
+						  req.getRequestURI());
+			} 
+			// [3] - not filtered resources
+			//		 beware!! do NOT move... always filter AFTER setting the security context at thread local
+			if (CollectionUtils.hasData(_notFilteredResourcesPatterns)) {
+				String reqUri = req.getRequestURI();
+				for (Pattern notFilteredPattern : _notFilteredResourcesPatterns) {
+					if (notFilteredPattern.matcher(reqUri).matches()) {
+						log.debug("[SecurityContextServletFilter] uri {} is NOT filtered",
+							   	  reqUri);
+						chain.doFilter(request,response);
+						return;
+					}
+					else {
+						log.trace("[SecurityContextServletFilter] uri {} is filtered",
+								  reqUri);
+					}
+				}
+			}
+			
+			// [4] - redir to login page if security context is not present
+			if (securityContext == null) {
+				log.info("[SecurityContextServletFilter] NO securiy context avaialble at web session when requesting {}: redir to login page {}",
+						 req.getRequestURI(),_loginUrlPath);
+				res.sendRedirect(_loginUrlPath);
+				return;
+			}
 
-            // [1] - Get the [securityContext] from the web session (set at the login page)
-            //		 ... the user MUST have pass through the login page and authenticate
-            HttpSession webSession = req.getSession(false);	// false = do not create session
-            SecurityContext securityContext = webSession != null
-                                                    ? (SecurityContext)webSession.getAttribute(AUTH_CONTEXT_SESSION_PARAM_NAME)
-                                                    : null;
+			// [5] - Create a cookie with a secret value that anyone can use to check if the
+			//		 user was authenticated by a legitimate party
+			if (webSession != null
+			 && securityContext != null
+			 && !_hasSecurityTokenCookie(req)) {
+				// create a cookie that contains the security token
+				// ... this security token can only be generated by a legitimate part owning a secret PRIVATE key
+				//	   any other part can rest assured that the user has been loged in just by ensuring
+				//	   that the cookie exists and that it's value was generated by a legitimate part using
+				// 	   a PUBLIC key (or even the same PRIVATE key as the cookie generator)
+				Cookie cookieContainingSecurityToken = _createSecurityTokenCookie(Url.from(req.getRequestURL().toString()));
+				res.addCookie(cookieContainingSecurityToken);
+			}
 
-            // [2] - Attach the security context to the local thread
-            // 		 (the security context provider will look after the [user context] at the local thread)
-            if (securityContext != null) {
-                // attath the security context to the thread local storage
-                // (the security context provider will look after that [security context] at the thread local storage)
-                SecurityContextStoreAtThreadLocalStorage.set(securityContext);
-            } else {
-                log.info("[SecurityContextServletFilter] NO securiy context avaialble at web session: redir to login page {}",
-                		 _loginUrlPath);
-                res.sendRedirect(_loginUrlPath);
-                return;
-            }
+			// [4] - Do what ever ...
+			chain.doFilter(request,response);
 
-            // [3] - Create a cookie with a secret value that anyone can use to check if the
-            //		 user was authenticated by a legitimate party
-            if (webSession != null
-             && securityContext != null
-             && !_hasSecurityTokenCookie(req)) {
-                // create a cookie that contains the security token
-                // ... this security token can only be generated by a legitimate part owning a secret PRIVATE key
-                //	   any other part can rest assured that the user has been loged in just by ensuring
-                //	   that the cookie exists and that it's value was generated by a legitimate part using
-                // 	   a PUBLIC key (or even the same PRIVATE key as the cookie generator)
-                Cookie cookieContainingSecurityToken = _createSecurityTokenCookie(Url.from(req.getRequestURL().toString()));
-                res.addCookie(cookieContainingSecurityToken);
-            }
-
-            // [4] - Do what ever ...
-            chain.doFilter(request,response);
-
-        } finally {
-            // [99] - Remove the security context from the local thread
-            SecurityContextStoreAtThreadLocalStorage.remove();
-        }
-    }
+		} finally {
+			// [99] - Remove the security context from the local thread
+			SecurityContextStoreAtThreadLocalStorage.remove();
+		}
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-    private Url _fullURI(final HttpServletRequest request) {
-        StringBuffer requestURL = request.getRequestURL();	//getRequestURI only returns URL BEFORE query string -- UrlPath.from(req.getRequestURI());
-        String queryString = request.getQueryString();
+	private Url _fullURI(final HttpServletRequest request) {
+	   StringBuffer requestURL = request.getRequestURL();	//getRequestURI only returns URL BEFORE query string -- UrlPath.from(req.getRequestURI());
+	   String queryString = request.getQueryString();
 
-        if (queryString == null) {
-            return Url.from(requestURL.toString());
-        } else {
-            return Url.from(requestURL.toString())
-                      .joinWith(UrlQueryString.fromUrlEncodedParamsString(queryString));
-        }
-    }
+	   if (queryString == null) {
+		  return Url.from(requestURL.toString());
+	   } else {
+		  return Url.from(requestURL.toString())
+				  .joinWith(UrlQueryString.fromUrlEncodedParamsString(queryString));
+	   }
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  SECURITY TOKEN COOKIE
 /////////////////////////////////////////////////////////////////////////////////////////
-    private boolean _hasSecurityTokenCookie(final HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
-        boolean outHasCookie = false;
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("r01SecurityToken")) {
-                outHasCookie = true;
-                break;
-            }
-        }
-        log.info("> Legitimate security token cookie named {} {}",
-                 "r01SecurityToken",outHasCookie ? "EXISTS" : "DOES NOT EXISTS");
-        if (!outHasCookie) { // debug cookies
-            for (Cookie cookie : cookies) {
-                log.info("\t -Cookie {}: {}",
-                         cookie.getName(),cookie.getValue());
-            }
-        }
-        return outHasCookie;
-    }
-    private Cookie _createSecurityTokenCookie(final Url url) {
-        // [1] - Guess the cookie domain (should be cms.euskadi.xxx)
-        Host host = url.getHost();
-        String cookieDomain = null;
-        if (host.is(Host.localhost())) {
-            cookieDomain = Host.localhost().asString();
-        } else {
-            Pattern p = Pattern.compile("([^.]+)\\.(cms\\..+)");	// ie: (XXXX).(cms.euskadi.eus)
-            Matcher m = p.matcher(host.asString());
-            if (m.find()) {
-                log.info("Creating legitimate security cookie for {}.{} > domain: {}",
-                          m.group(1),m.group(2),
-                          m.group(2));
-                cookieDomain = m.group(2);
-            } else {
-                throw new IllegalStateException(host.asString() + " is not a supported host for DEMO");
-            }
-        }
+	private boolean _hasSecurityTokenCookie(final HttpServletRequest request) {
+	   Cookie[] cookies = request.getCookies();
+	   boolean outHasCookie = false;
+	   for (Cookie cookie : cookies) {
+		  if (cookie.getName().equals("r01SecurityToken")) {
+			 outHasCookie = true;
+			 break;
+		  }
+	   }
+	   log.info("> Legitimate security token cookie named {} {}",
+			  "r01SecurityToken",outHasCookie ? "EXISTS" : "DOES NOT EXISTS");
+	   if (!outHasCookie) { // debug cookies
+		  for (Cookie cookie : cookies) {
+			 log.info("\t -Cookie {}: {}",
+					cookie.getName(),cookie.getValue());
+		  }
+	   }
+	   return outHasCookie;
+	}
+	private Cookie _createSecurityTokenCookie(final Url url) {
+	   // [1] - Guess the cookie domain (should be cms.euskadi.xxx)
+	   Host host = url.getHost();
+	   String cookieDomain = null;
+	   if (host.is(Host.localhost())) {
+		  cookieDomain = Host.localhost().asString();
+	   } else {
+		  Pattern p = Pattern.compile("([^.]+)\\.(cms\\..+)");	// ie: (XXXX).(cms.euskadi.eus)
+		  Matcher m = p.matcher(host.asString());
+		  if (m.find()) {
+			 log.info("Creating legitimate security cookie for {}.{} > domain: {}",
+					 m.group(1),m.group(2),
+					 m.group(2));
+			 cookieDomain = m.group(2);
+		  } else {
+			 throw new IllegalStateException(host.asString() + " is not a supported host for DEMO");
+		  }
+	   }
 
-        // [2] - Create the cookie
-        // ... this security token can only be generated by a legitimate part owning a secret PRIVATE key
-        //	   any other part can rest assured that the user has been loged in just by ensuring
-        //	   that the cookie exists and that it's value was generated by a legitimate part using
-        // 	   a PUBLIC key (or even the same PRIVATE key as the cookie generator)
-        Cookie outSecurityCookie = new Cookie("r01SecurityToken",
-                                              _createAuthCookieSecretToken());
-        outSecurityCookie.setDomain(cookieDomain);
-        outSecurityCookie.setPath("/");
+	   // [2] - Create the cookie
+	   // ... this security token can only be generated by a legitimate part owning a secret PRIVATE key
+	   //	   any other part can rest assured that the user has been loged in just by ensuring
+	   //	   that the cookie exists and that it's value was generated by a legitimate part using
+	   // 	   a PUBLIC key (or even the same PRIVATE key as the cookie generator)
+	   Cookie outSecurityCookie = new Cookie("r01SecurityToken",
+									 _createAuthCookieSecretToken());
+	   outSecurityCookie.setDomain(cookieDomain);
+	   outSecurityCookie.setPath("/");
 
-        // session cookies are removed when the browser is closed
-        return outSecurityCookie;
-    }
-    protected abstract String _createAuthCookieSecretToken();
+	   // session cookies are removed when the browser is closed
+	   return outSecurityCookie;
+	}
+	protected abstract String _createAuthCookieSecretToken();
 }
