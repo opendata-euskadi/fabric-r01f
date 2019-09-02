@@ -85,15 +85,24 @@ public class Url
 			 queryString);
 	}
 	public Url(final Host host,
+			   final UrlPath urlPath,final String urlPathFragment,
+			   final UrlQueryString queryString) {
+		this(host.getUrlComponents().getProtocolOrDefault(UrlProtocol.HTTP),
+			 host.getUrlComponents().getHost(),
+			 host.getUrlComponents().getPortOrDefault(StandardUrlProtocol.HTTP.getDefaultPort()),
+			 urlPath,urlPathFragment,
+			 queryString);
+	}
+	@Deprecated
+	public Url(final Host host,
 			   final UrlPath urlPath,
 			   final UrlQueryString queryString,
 			   final String anchor) {
 		this(host.getUrlComponents().getProtocolOrDefault(UrlProtocol.HTTP),
 			 host.getUrlComponents().getHost(),
 			 host.getUrlComponents().getPortOrDefault(StandardUrlProtocol.HTTP.getDefaultPort()),
-			 urlPath,
-			 queryString,
-			 anchor);
+			 urlPath,anchor,
+			 queryString);
 	}
 	public Url(final Host host,final int port) {
 		this(host.getUrlComponents().getProtocolOrDefault(UrlProtocol.HTTP),
@@ -116,55 +125,76 @@ public class Url
 			 queryString);
 	}
 	public Url(final Host host,final int port,
-			   final UrlPath urlPath,
-			   final UrlQueryString queryString,
-			   final String anchor) {
+			   final UrlPath urlPath,final String urlPathFragment,
+			   final UrlQueryString queryString) {
 		this(host.getUrlComponents().getProtocolOrDefault(UrlProtocol.HTTP),
 			 host.getUrlComponents().getHost(),
 			 port,
-			 urlPath,
-			 queryString,
-			 anchor);
+			 urlPath,urlPathFragment,
+			 queryString);
+	}
+	@Deprecated
+	public Url(final Host host,final int port,
+			   final UrlPath urlPath,
+			   final UrlQueryString queryString,
+			   final String anchor) {
+		this(host,port,
+			 urlPath,anchor,
+			 queryString);
 	}
 	public Url(final UrlProtocol protocol,final Host host,final int port) {
 		this(protocol != null ? protocol : host.getUrlComponents().getProtocolOrDefault(UrlProtocol.HTTP),
 			 host.getUrlComponents().getHost(),
 			 port,
-			 null,			// url path
-			 null,null);	// query string & anchor
+			 null,(String)null,	// url path & fagmet
+			 null);				// query string 
 	}
 	public Url(final UrlProtocol protocol,final Host host,final int port,
 			   final UrlPath urlPath) {
 		this(protocol != null ? protocol : host.getUrlComponents().getProtocolOrDefault(UrlProtocol.HTTP),
 			 host.getUrlComponents().getHost(),
 			 port,
-			 urlPath,
-			 null,null);	// query string & anchor
+			 urlPath,(String)null,	// null url path fragment
+			 null);					// query string
 	}
 	public Url(final UrlProtocol protocol,final Host host,final int port,
 			   final UrlPath urlPath,
 			   final UrlQueryString queryString) {
-		this(protocol != null ? protocol 
+		this(// protocol
+			 protocol != null ? protocol 
 							  : host.getUrlComponents().getProtocolOrDefault(UrlProtocol.HTTP),
+			 // host
 			 host != null && host.getUrlComponents() != null 
 			 			? host.getUrlComponents().getHost()
 			 			: host,
+			 // port
 			 port <= 0 && host != null && host.getUrlComponents() != null && host.getUrlComponents().getPort() >= 0
 			 			? host.getUrlComponents().getPort()
 			 			: port,
+			 // urlPath
 			 host != null && host.getUrlComponents() != null && host.getUrlComponents().getUrlPath() != null 
 			 			? host.getUrlComponents().getUrlPath().joinedWith(urlPath)
 					 	: urlPath,
+			 // urlPath fragment
+			 host != null && host.getUrlComponents() != null && host.getUrlComponents().getUrlPathFragment() != null
+						? host.getUrlComponents().getUrlPathFragment()
+						: null,
+			 // query string
 			 host != null && host.getUrlComponents() != null && host.getUrlComponents().getQueryString() != null 
 			 			? host.getUrlComponents().getQueryString().joinWith(queryString)
-					 	: queryString,
-			 host != null && host.getUrlComponents() != null && host.getUrlComponents().getAnchor() != null
-						? host.getUrlComponents().getAnchor()
-						: null);		
+					 	: queryString);		
 	}
+	@Deprecated
 	public Url(final UrlProtocol protocol,final Host host,final int port,
 			   final UrlPath urlPath,
 			   final UrlQueryString queryString,final String anchor) {
+		this(protocol,host,port,
+			 urlPath,anchor,
+			 queryString);
+	}
+	public Url(final UrlProtocol protocol,final Host host,final int port,
+			   final UrlPath urlPath,final String urlPathFragment,
+			   final UrlQueryString queryString) {
 		// the host can be a complete url (it should NOT but...)
 		// ... so we have to 'mix' some components
 		UrlProtocol theProto = protocol != null 
@@ -177,52 +207,59 @@ public class Url
 									? host.getUrlComponents().getUrlPath()
 															 .joinedWith(urlPath)
 					 				: urlPath;
+		String theUrlPathFragment = Strings.isNOTNullOrEmpty(urlPathFragment)
+										? urlPathFragment
+										: host != null ? host.getUrlComponents() != null ? host.getUrlComponents().getUrlPathFragment()
+																						 : null
+													   : null;
 		UrlQueryString theUrlQueryString = host != null
 									    && host.getUrlComponents() != null
 									    && host.getUrlComponents().getQueryString() != null 
 									    		? host.getUrlComponents().getQueryString()
 					 										   			 .joinWith(queryString)
 					 					   		: queryString;
-		String theAnchor = Strings.isNOTNullOrEmpty(anchor)
-										? anchor
-										: host != null ? host.getUrlComponents() != null ? host.getUrlComponents().getAnchor()
-																						 : null
-													   : null;
 		
 		String theHostStr = host != null ? host.getUrlComponents().getHost().asString() : null;
 		String theUrlPathStr = theUrlPath != null ? theUrlPath.asAbsoluteString() : "" ;
+		String theUrlPathFragmentStr = theUrlPathFragment != null ? "#" + theUrlPathFragment : "";
 		String theUrlQryStr = theUrlQueryString != null ? "?" + theUrlQueryString.asString() : "";
-		String theAnchorStr = theAnchor != null ? "#" + theAnchor : "";
 		if (theHostStr == null) {
-			_url = Strings.customized("{}{}{}",theUrlPathStr,theUrlQryStr,theAnchorStr);
-//			_url = String.format("%s%s%s",theUrlPathStr,theUrlQryStr,theAnchorStr);
+			_url = Strings.customized("{}{}{}",theUrlPathStr,theUrlPathFragmentStr,theUrlQryStr);
+//			_url = String.format("%s%s%s",theUrlPathStr,theUrlPathFragmentStr,theUrlQryStr);
 		} else {	
 			_url = Strings.customized("{}://{}:{}{}{}{}",
 									  theProto != null ? theProto.asString() : StandardUrlProtocol.HTTP.getCode(),theHostStr,port,
-									  theUrlPathStr,
-									  theUrlQryStr,theAnchorStr);
+									  theUrlPathStr,theUrlPathFragmentStr,
+									  theUrlQryStr);
 //			_url = String.format("%s://%s:%s%s%s%s",
 //							     theProto != null ? theProto.asString() : StandardUrlProtocol.HTTP.getCode(),theHostStr,port,
-//						         theUrlPathStr,
-//						         theUrlQryStr,theAnchorStr);
+//						         theUrlPathStr,theUrlPathFragmentStr,
+//						         theUrlQryStr);
 		}
 		// do not forget to set the parser
 		_urlParser = _createUrlParserFor(_url);
 	}
 	public Url(final UrlPath path,final UrlQueryString queryString) {
 		this(null,null,0,
-			 path,
-			 queryString,null);
+			 path,null,		// no url path fragment
+			 queryString);
 	}
-	public Url(final UrlPath path,final String anchor) {
+	public Url(final UrlPath path,final String urlPathFragment) {
 		this(null,null,0,
-			 path,
-			 null,anchor);
+			 path,urlPathFragment,
+			 null);
 	}
+	public Url(final UrlPath path,final String urlPathFragment,
+			   final UrlQueryString queryString) {
+		this(null,null,0,
+			 path,urlPathFragment,
+			 queryString);
+	}
+	@Deprecated
 	public Url(final UrlPath path,final UrlQueryString queryString,final String anchor) {
 		this(null,null,0,
-			 path,
-			 queryString,anchor);
+			 path,anchor,
+			 queryString);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  BUILDERS
@@ -246,14 +283,20 @@ public class Url
 					   queryString);
 	}
 	public static Url from(final Host host,
-						   final UrlPath urlPath,
-						   final UrlQueryString queryString,
-						   final String anchor) {
+						   final UrlPath urlPath,final String urlPathFragment,
+						   final UrlQueryString queryString) {
 		return new Url(host,
-					   urlPath,
-					   queryString,
-					   anchor);
+					   urlPath,urlPathFragment,
+					   queryString);
 	}
+//	@Deprecated
+//	public static Url from(final Host host,
+//						   final UrlPath urlPath,
+//						   final UrlQueryString queryString,final String anchor) {
+//		return new Url(host,
+//					   urlPath,anchor,
+//					   queryString);
+//	}
 	public static Url from(final UrlComponents components) {
 		String urlAsStr = _asString(components,
 									false);
@@ -272,10 +315,20 @@ public class Url
 		return new Url(protocol,host,port,
 					   urlPath,queryString);
 	}
+	@Deprecated
 	public static Url from(final UrlProtocol protocol,final Host host,final int port,
-						   final UrlPath urlPath,final UrlQueryString queryString,final String anchor) {
+						   final UrlPath urlPath,
+						   final UrlQueryString queryString,final String urlPathFragment) {
 		return new Url(protocol,host,port,
-					   urlPath,queryString,anchor);
+					   urlPath,urlPathFragment,
+					   queryString);
+	}
+	public static Url from(final UrlProtocol protocol,final Host host,final int port,
+						   final UrlPath urlPath,final String urlPathFragment,
+						   final UrlQueryString queryString) {
+		return new Url(protocol,host,port,
+					   urlPath,urlPathFragment,
+					   queryString);
 	}
 	public static Url from(final Host host,final int port) {
 		return Url.from(UrlProtocol.HTTP,host,port);
@@ -290,10 +343,20 @@ public class Url
 		return Url.from(UrlProtocol.HTTP,host,port,
 						urlPath,queryString);
 	}
+	@Deprecated
 	public static Url from(final Host host,final int port,
-						   final UrlPath urlPath,final UrlQueryString queryString,final String anchor) {
+						   final UrlPath urlPath,
+						   final UrlQueryString queryString,final String urlPathFragment) {
 		return Url.from(UrlProtocol.HTTP,host,port,
-					    urlPath,queryString,anchor);
+					    urlPath,urlPathFragment,
+					    queryString);
+	}
+	public static Url from(final Host host,final int port,
+						   final UrlPath urlPath,final String urlPathFragment,
+						   final UrlQueryString queryString) {
+		return Url.from(UrlProtocol.HTTP,host,port,
+					    urlPath,urlPathFragment,
+					    queryString);
 	}
 	public static Url from(final UrlPath path) {
 		return Url.from(path.asAbsoluteString());
@@ -305,10 +368,17 @@ public class Url
 	public static Url from(final UrlPath path,
 						   final String anchor) {
 		return new Url(path,anchor);
-	}	
+	}
+	@Deprecated
 	public static Url from(final UrlPath path,
-						   final UrlQueryString queryString,final String anchor) {
-		return new Url(path,queryString,anchor);
+						   final UrlQueryString queryString,final String urlPathFragment) {
+		return new Url(path,urlPathFragment,
+				       queryString);
+	}
+	public static Url from(final UrlPath path,final String urlPathFragment,
+						   final UrlQueryString queryString) {
+		return new Url(path,urlPathFragment,
+				       queryString);
 	}
 	public static Url from(final Url other) {
 		if (other == null) return null;
@@ -325,9 +395,8 @@ public class Url
 																			 : 0
 													: 0;
 		return Url.from(urlProtocol,otherComps.getHost(),port,
-					    otherComps.getUrlPath(),
-					    otherComps.getQueryString(),
-					    otherComps.getAnchor());
+					    otherComps.getUrlPath(),otherComps.getUrlPathFragment(),
+					    otherComps.getQueryString());
 	}
 	public static Url from(final UrlProtocol urlProtocol,
 						   final String otherUrlStr) {
@@ -339,9 +408,8 @@ public class Url
 						   final UrlPath path) {
 		UrlComponents otherComps = other.getComponents();
 		return Url.from(otherComps.getProtocol(),otherComps.getHost(),otherComps.getPort(),
-					    otherComps.getUrlPath() != null ? otherComps.getUrlPath().joinedWith(path) : path,
-					    otherComps.getQueryString(),
-					    otherComps.getAnchor());
+					    otherComps.getUrlPath() != null ? otherComps.getUrlPath().joinedWith(path) : path,otherComps.getUrlPathFragment(),
+					    otherComps.getQueryString());
 	}
 	public static Url from(final String url) {
 		if (url == null) return null;
@@ -481,7 +549,10 @@ public class Url
 								: new StringConverterWrapper(null);
 	}
 	public String getAnchor() {
-		return this.getComponents().getAnchor();
+		return this.getUrlPathFragment();
+	}
+	public String getUrlPathFragment() {
+		return this.getComponents().getUrlPathFragment();
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  
@@ -574,7 +645,7 @@ public class Url
 			if (urlComps.getQueryString() != null) {
 				sb.append("?").append(urlComps.getQueryString().asString(encodeQueryStringParams));
 			}
-			if (Strings.isNOTNullOrEmpty(urlComps.getAnchor())) sb.append("#").append(urlComps.getAnchor());
+			if (Strings.isNOTNullOrEmpty(urlComps.getUrlPathFragment())) sb.append("#").append(urlComps.getUrlPathFragment());
 		}
 		return sb.toString();
 	}

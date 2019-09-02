@@ -13,6 +13,7 @@ import r01f.guids.CommonOIDs.TenantID;
 import r01f.guids.CommonOIDs.UserCode;
 import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
+import r01f.types.url.Url;
 
 /**
  * R01M API {@link SecurityContext} implementation
@@ -60,6 +61,11 @@ public abstract class SecurityContextBase
 	@MarshallField(as="masterUser",
 				   whenXml=@MarshallFieldAsXml(attr=true))	
 	@Getter @Setter protected boolean _masterUser;
+	/**
+	 * The login page url
+	 */
+	@MarshallField(as="loginUrl")
+	@Getter @Setter protected Url _loginUrl;
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -177,7 +183,7 @@ public abstract class SecurityContextBase
 //  
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override @SuppressWarnings("unchecked")
-	public <CTX extends SecurityContext> CTX cast() {
+	public <CTX extends SecurityContext> CTX as(final Class<CTX> type) {
 		return (CTX)this;
 	}
 }

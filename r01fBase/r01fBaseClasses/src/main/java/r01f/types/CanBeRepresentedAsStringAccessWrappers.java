@@ -84,8 +84,8 @@ public abstract class CanBeRepresentedAsStringAccessWrappers {
 	 * 		public class MyType {
 	 * 			@Getter private MyOID _oid;		// OIDs are CanBeRepresentedAsString instances
 	 * 
-	 * 			private transient final CanBeRepresentedAsStringWrapper<MyOID> _wrapper = new CanBeRepresentedAsStringWrapper(MyType::getOid,MyType::setOid,	// provider & consumer
-	 * 																														  MyOID::forId);					// factory
+	 * 			private transient final CanBeRepresentedAsStringWrapper<MyOID> _wrapper = new CanBeRepresentedAsStringWrapper<MyOID>(this::getOid,this::setOid,	// provider & consumer
+	 * 																														  		 MyOID::forId);				// factory
 	 * 			...
 	 * 			public String getOidAsString() {
 	 * 				// instead of:

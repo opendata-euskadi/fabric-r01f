@@ -29,9 +29,9 @@ import r01f.guids.CommonOIDs.SecurityToken;
  * 				 extends SecurityContextProviderForMasterUserBase {
  * 				
  * 				public MyMasterSecurityContextProvider() {	// beware!! no-args constructor
- * 					super(new MySecurityContext());
+ * 					super(new MySecurityContext());		// <-- this is a security context with all the privileges
  * 				}	
- * 		 }
+ * 		 	}
  * 		 </pre>
  * 
  * [1] - At the CLIENT bootstrap guice module:
@@ -63,16 +63,7 @@ import r01f.guids.CommonOIDs.SecurityToken;
  * 				MyClientApi masterApi = injector.getInstance(Key.get(MyClientApi.class,
  * 															 		 ClientAPIForMasterUser.class));
  * 		 </pre>
- *       or inject the client api like:
- *       <pre class='brush:java'>
- *       		public class MyInjectedType {
- *       			@Inject
- *       			public MyInjectedType(@ClientAPIForMasterUser MyClientAPI masterApi) {
- *       				...
- *       			}
- *       		}
- *       </pre>
- *       or just request the client api as:
+ *       or just inject the client api as:
  *       <pre class='brush:java'>
  *       		public class MyClientAPIInjectedType {
  *       			@Inject 
