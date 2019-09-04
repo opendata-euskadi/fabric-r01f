@@ -98,6 +98,17 @@ public class PersistenceOperationExecError<T>
 		_errorDebug = null;
 		_errorType = errorCode;
 	}
+	public <E extends PersistenceOperationExecError<?>> PersistenceOperationExecError(final PersistenceRequestedOperation reqOp,
+																	 				  final E otherError) {
+		this(reqOp);
+		this.setError(otherError.getError());
+		this.setErrorDebug(otherError.getErrorDebug());
+		this.setErrorMessage(otherError.getErrorMessage());
+		this.setErrorType(otherError.getErrorType());
+		this.setExtendedErrorCode(otherError.getExtendedErrorCode());
+		this.setRequestedOperation(otherError.getRequestedOperation());
+		this.setRequestedOperationName(otherError.getRequestedOperationName());
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  
 /////////////////////////////////////////////////////////////////////////////////////////

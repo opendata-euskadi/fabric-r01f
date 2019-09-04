@@ -47,17 +47,12 @@ public class CRUDError<T>
 			  entityType,
 			  errMsg,errCode);
 	}
-	public CRUDError(final Class<T> entityType,
-					 final CRUDError<?> otherCRUDError) {
-		super(PersistenceRequestedOperation.OTHER,
-			  entityType);
-		this.setError(otherCRUDError.getError());
-		this.setErrorDebug(otherCRUDError.getErrorDebug());
-		this.setErrorMessage(otherCRUDError.getErrorMessage());
-		this.setErrorType(otherCRUDError.getErrorType());
-		this.setExtendedErrorCode(otherCRUDError.getExtendedErrorCode());
-		this.setRequestedOperation(otherCRUDError.getRequestedOperation());
-		this.setRequestedOperationName(otherCRUDError.getRequestedOperationName());
+	public CRUDError(final PersistenceRequestedOperation reqOp,
+					 final Class<T> entityType,
+					 final PersistenceOperationExecError<?> otherError) {
+		super(reqOp,
+			  entityType,
+			  otherError);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CAST

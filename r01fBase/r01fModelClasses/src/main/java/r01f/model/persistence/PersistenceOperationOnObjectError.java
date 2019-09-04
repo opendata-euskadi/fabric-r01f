@@ -85,6 +85,14 @@ abstract class PersistenceOperationOnObjectError<T>
 		_errorDebug = null;
 		_errorType = errCode;
 	}
+	@SuppressWarnings("unchecked")
+	public <E extends PersistenceOperationExecError<?>> PersistenceOperationOnObjectError(final PersistenceRequestedOperation reqOp,
+																						  final Class<?> entityType,
+																	 					  final E otherError) {
+		super(reqOp,
+			  otherError);
+		_objectType = (Class<T>)entityType;
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -92,14 +100,14 @@ abstract class PersistenceOperationOnObjectError<T>
 	public PersistencePerformedOperation getPerformedOperation() {
 		return null;	// no performed operation
 	}
-	protected void addTargetEntityIdInfo(final String field,final String value) {
+	public void addTargetEntityIdInfo(final String field,final String value) {
 		if (_requestedOperationTargetEntityIdInfo == null) _requestedOperationTargetEntityIdInfo = Maps.newHashMap();
 		_requestedOperationTargetEntityIdInfo.put(field,value);
 	}
 	/**
 	 * @return any info about the target entity such as it's oid 
 	 */
-	protected String getTargetEntityIdInfo() {
+	public String getTargetEntityIdInfo() {
 		String outIdInfo = null;
 		if (CollectionUtils.hasData(_requestedOperationTargetEntityIdInfo)) {
 			StringBuilder sb = new StringBuilder();
