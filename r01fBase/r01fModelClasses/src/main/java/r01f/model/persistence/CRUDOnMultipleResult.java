@@ -62,8 +62,8 @@ public class CRUDOnMultipleResult<M>
 	 * @param opOK
 	 */
 	public void addOperationResult(final CRUDResult<M> opResult) {
-		if (_requestedOperation != opResult.getRequestedOperation()) throw new IllegalArgumentException("Unexpected requested operation: received " + opResult.getRequestedOperation() + " - " + 
-						 																	            "expected " + _requestedOperationName);
+//		if (_requestedOperation != opResult.getRequestedOperation()) throw new IllegalArgumentException("Unexpected requested operation: received " + opResult.getRequestedOperation() + " - " + 
+//						 																	            "expected " + _requestedOperationName);
 		_operationExecResult.add(opResult);
 	}
 	/**

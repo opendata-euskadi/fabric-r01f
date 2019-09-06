@@ -51,6 +51,12 @@ public class FindError<T>
 		this(errMsg,errorCode);
 		_findedObjectType = entityType;
 	}
+	public FindError(final Class<T> entityType,
+					 final PersistenceOperationExecError<?> otherError) {
+		super(PersistenceRequestedOperation.FIND,
+			  Collection.class,
+			  otherError);
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  
 /////////////////////////////////////////////////////////////////////////////////////////
