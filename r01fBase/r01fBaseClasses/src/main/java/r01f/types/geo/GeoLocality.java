@@ -45,7 +45,7 @@ public class GeoLocality
 /////////////////////////////////////////////////////////////////////////////////////////
 	public GeoLocality(final GeoLocalityID oid,
 					   final String officialName,final LanguageTexts nameByLang,
-					  final GeoPosition2D position2D) {
+					   final GeoPosition2D position2D) {
 		super(oid,
 			  officialName,nameByLang,
 			  position2D);
