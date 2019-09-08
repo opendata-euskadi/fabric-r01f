@@ -2,6 +2,7 @@ package r01f.types;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -544,32 +545,32 @@ public class Range<T extends Comparable<? super T>>
 
 
 	private static RangeDef _toDateBoundStrings(final Range<? extends Comparable> range) {
-		Date l = (java.util.Date)((Object)range.getLowerBound());
-		Date u = (java.util.Date)((Object)range.getUpperBound());
+		Date l = (java.util.Date)(range.getLowerBound());
+		Date u = (java.util.Date)(range.getUpperBound());
 		String lower = range.getLowerBound() != null ? Long.toString(Dates.asMillis(l)) : null;
 		String upper = range.getUpperBound() != null ? Long.toString(Dates.asMillis(u)) : null;
 		return new RangeDef(lower,range.getLowerBoundType(),
 							upper,range.getUpperBoundType());
 	}
 	private static RangeDef _toLocalDateBoundStrings(final Range<? extends Comparable> range) {
-		LocalDate l = (LocalDate)((Object)range.getLowerBound());
-		LocalDate u = (LocalDate)((Object)range.getUpperBound());
+		LocalDate l = (LocalDate)(range.getLowerBound());
+		LocalDate u = (LocalDate)(range.getUpperBound());
 		String lower = range.getLowerBound() != null ? Long.toString(Dates.asMillis(l.toDate())) : null;
 		String upper = range.getUpperBound() != null ? Long.toString(Dates.asMillis(u.toDate())) : null;
 		return new RangeDef(lower,range.getLowerBoundType(),
 							upper,range.getUpperBoundType());
 	}
 	private static RangeDef _toLocalDateTimeBoundStrings(final Range<? extends Comparable> range) {
-		LocalDateTime l = (LocalDateTime)((Object)range.getLowerBound());
-		LocalDateTime u = (LocalDateTime)((Object)range.getUpperBound());
+		LocalDateTime l = (LocalDateTime)(range.getLowerBound());
+		LocalDateTime u = (LocalDateTime)(range.getUpperBound());
 		String lower = range.getLowerBound() != null ? Long.toString(Dates.asMillis(l.toDate())) : null;
 		String upper = range.getUpperBound() != null ? Long.toString(Dates.asMillis(u.toDate())) : null;
 		return new RangeDef(lower,range.getLowerBoundType(),
 							upper,range.getUpperBoundType());
 	}
 	private static RangeDef _toLocalTimeBoundStrings(final Range<? extends Comparable> range) {
-		LocalTime l = (LocalTime)((Object)range.getLowerBound());
-		LocalTime u = (LocalTime)((Object)range.getUpperBound());
+		LocalTime l = (LocalTime)(range.getLowerBound());
+		LocalTime u = (LocalTime)(range.getUpperBound());
 		String lower = l != null ? Strings.customized("{}:{}:{}:{}",
 								   Strings.leftPad(Integer.toString(l.getHourOfDay()),2,'0'),
 								   Strings.leftPad(Integer.toString(l.getMinuteOfHour()),2,'0'),
@@ -586,48 +587,48 @@ public class Range<T extends Comparable<? super T>>
 							upper,range.getUpperBoundType());
 	}
 	private static RangeDef _toByteBoundStrings(final Range<? extends Comparable> range) {
-		Byte l = (Byte)((Object)range.getLowerBound());
-		Byte u = (Byte)((Object)range.getUpperBound());
+		Byte l = (Byte)(range.getLowerBound());
+		Byte u = (Byte)(range.getUpperBound());
 		String lower = range.getLowerBound() != null ? Byte.toString(l) : null;
 		String upper = range.getUpperBound() != null ? Byte.toString(u) : null;
 		return new RangeDef(lower,range.getLowerBoundType(),
 							upper,range.getUpperBoundType());
 	}
 	private static RangeDef _toIntegerBoundStrings(final Range<? extends Comparable> range) {
-		Integer l = (Integer)((Object)range.getLowerBound());
-		Integer u = (Integer)((Object)range.getUpperBound());
+		Integer l = (Integer)(range.getLowerBound());
+		Integer u = (Integer)(range.getUpperBound());
 		String lower = range.getLowerBound() != null ? Integer.toString(l) : null;
 		String upper = range.getUpperBound() != null ? Integer.toString(u) : null;
 		return new RangeDef(lower,range.getLowerBoundType(),
 							upper,range.getUpperBoundType());
 	}
 	private static RangeDef _toShortBoundStrings(final Range<? extends Comparable> range) {
-		Short l = (Short)((Object)range.getLowerBound());
-		Short u = (Short)((Object)range.getUpperBound());
+		Short l = (Short)(range.getLowerBound());
+		Short u = (Short)(range.getUpperBound());
 		String lower = range.getLowerBound() != null ? Short.toString(l) : null;
 		String upper = range.getUpperBound() != null ? Short.toString(u) : null;
 		return new RangeDef(lower,range.getLowerBoundType(),
 							upper,range.getUpperBoundType());
 	}
 	private static RangeDef _toLongBoundStrings(final Range<? extends Comparable> range) {
-		Long l = (Long)((Object)range.getLowerBound());
-		Long u = (Long)((Object)range.getUpperBound());
+		Long l = (Long)(range.getLowerBound());
+		Long u = (Long)(range.getUpperBound());
 		String lower = range.getLowerBound() != null ? Long.toString(l) : null;
 		String upper = range.getUpperBound() != null ? Long.toString(u) : null;
 		return new RangeDef(lower,range.getLowerBoundType(),
 							upper,range.getUpperBoundType());
 	}
 	private static RangeDef _toDoubleBoundStrings(final Range<? extends Comparable> range) {
-		Double l = (Double)((Object)range.getLowerBound());
-		Double u = (Double)((Object)range.getUpperBound());
+		Double l = (Double)(range.getLowerBound());
+		Double u = (Double)(range.getUpperBound());
 		String lower = range.getLowerBound() != null ? Double.toString(l) : null;
 		String upper = range.getUpperBound() != null ? Double.toString(u) : null;
 		return new RangeDef(lower,range.getLowerBoundType(),
 							upper,range.getUpperBoundType());
 	}
 	private static RangeDef _toFloatBoundStrings(final Range<? extends Comparable> range) {
-		Float l = (Float)((Object)range.getLowerBound());
-		Float u = (Float)((Object)range.getUpperBound());
+		Float l = (Float)(range.getLowerBound());
+		Float u = (Float)(range.getUpperBound());
 		String lower = range.getLowerBound() != null ? Float.toString(l) : null;
 		String upper = range.getUpperBound() != null ? Float.toString(u) : null;
 		return new RangeDef(lower,range.getLowerBoundType(),
@@ -745,4 +746,30 @@ public class Range<T extends Comparable<? super T>>
 //	public Predicate<T> or(final Predicate<? super T> otherPred) {
 //		return _range.or(otherPred);
 //	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	                                                                          
+/////////////////////////////////////////////////////////////////////////////////////////
+	public static final <T extends Comparable<? super T>> Comparator<Range<T>> createComparatorByLowerBound() {
+		return new Comparator<Range<T>>() {
+						@Override
+						public int compare(final Range<T> r1,final Range<T> r2) {
+							if (r1 == null && r2 == null) return 0;
+							if (r1 != null && r2 == null) return -1;	
+							if (r1 == null && r2 != null) return 1;		
+							T l1 = r1.getLowerBound();
+							T l2 = r2.getLowerBound();
+							T u1 = r1.getUpperBound();
+							T u2 = r2.getUpperBound();
+							if (l1 == null && l2 == null) {
+								if (u1 == null && u2 == null) return 0;
+								if (u1 != null && u2 == null) return -1;// 2 do not have upper bound
+								if (u1 == null && u2 != null) return 1;	// 1 do not have upper bound
+								return u1.compareTo(u2);
+							}
+							if (l1 != null && l2 == null) return -1;	// 2 do not have lower bound
+							if (l1 == null && l2 != null) return 1;		// 1 do not have lower bound
+							return l1.compareTo(l2);
+						}
+			    };
+	}
 }
