@@ -102,7 +102,7 @@ public class LanguageTextsI18NBundleBackedImpl
 										  .usingDefaultClassLoader();
 		}
 		String outMessage = _service.forLanguage(lang)
-									.message(_messageKey);
+									.getMessage(_messageKey);
 		return outMessage;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
