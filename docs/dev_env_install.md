@@ -184,7 +184,7 @@
 
 [E] - INSTALL TOMCAT
 ==================================================================================
-[1] - Download tomcat win-64 portable zip from:  http://apache.rediris.es/tomcat/tomcat-9/v9.0.22/bin/apache-tomcat-9.0.22-windows-x64.zip
+[1] - Download tomcat win-64 portable (https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.22/bin/apache-tomcat-9.0.22-windows-x64.zip)
 
 [2] - Extract to {develop}\app-server\
 
