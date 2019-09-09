@@ -1,5 +1,8 @@
 # RO1F: Fabric
 
+## development environment (no IDE)
+[Installation guide (no ide)](docs/dev_env_install.md)
+
 ## eclipse
 
 [Installation guide (maven)](docs/eclipse/install/eclipse_maven_install.md)
