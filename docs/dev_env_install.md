@@ -179,6 +179,7 @@
 
 			c:\>cd {develop}
 			{develop}>pci-env.cmd
+			{develop}>mvn -v  (should print version info)
 			{develop}>mvn --help  (should print some help info)
 
 
