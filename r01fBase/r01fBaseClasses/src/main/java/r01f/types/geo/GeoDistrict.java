@@ -45,7 +45,7 @@ public class GeoDistrict
 /////////////////////////////////////////////////////////////////////////////////////////
 	public GeoDistrict(final GeoDistrictID oid,
 					   final String officialName,final LanguageTexts nameByLang,
-					  final GeoPosition2D position2D) {
+					   final GeoPosition2D position2D) {
 		super(oid,
 			  officialName,nameByLang,
 			  position2D);
@@ -58,13 +58,13 @@ public class GeoDistrict
 			  position2D);
 	}
 	public GeoDistrict(final GeoDistrictID oid,
-					  final String officialName,final LanguageTexts nameByLang) {
+					   final String officialName,final LanguageTexts nameByLang) {
 		super(oid,
 			  officialName,nameByLang,
 			  null);	// no position
 	}
 	public GeoDistrict(final GeoDistrictID oid,
-					  final LanguageTexts nameByLang) {
+					   final LanguageTexts nameByLang) {
 		super(oid,
 			  null,nameByLang,	// no official name
 			  null);			// no position
