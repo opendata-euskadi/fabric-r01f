@@ -68,7 +68,7 @@ public abstract class R01HomeLocation {
 				}
 			}
 		}
-		if (outPath == null) outPath = Path.from("/development");
+		if (outPath == null) outPath = Path.from("/develop");
 		log.info("R01_HOME jvm envrionment var was NOT set: the default value for {} is {}",
 				 os);
 		return outPath;
