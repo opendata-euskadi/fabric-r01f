@@ -291,14 +291,14 @@ public class UrlPath
 	@Override @SuppressWarnings("unchecked")
 	public UrlPath joinedWith(final Object... elements) {
 		if (CollectionUtils.isNullOrEmpty(elements)) return this;
-		UrlPath outUrlPath = PathBase.join(this.getPathFactory(),
+		UrlPath outUrlPath = PathBase.join(this.<UrlPath>getPathFactory(),
 								  	  	   this,_sanitize(elements));
 		return outUrlPath;
 	}
 	@Override @SuppressWarnings("unchecked")
 	public UrlPath prependedWith(final Object... elements) {
 		if (CollectionUtils.isNullOrEmpty(elements)) return this;
-		UrlPath outUrlPath = PathBase.prepend(this.getPathFactory(),
+		UrlPath outUrlPath = PathBase.prepend(this.<UrlPath>getPathFactory(),
 								   	  	 	  this,_sanitize(elements));
 		return outUrlPath;
 	}
