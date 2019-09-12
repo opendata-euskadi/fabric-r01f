@@ -191,6 +191,100 @@
 		</repository>
 	</repositories>
 
+
+<!-- ====================================================================== -->
+<!-- PROFILES                                                               -->
+<!-- ====================================================================== -->
+	<profiles>
+		<profile>
+			<id>1.6</id>
+<!--
+			<activation>
+				<jdk>1.6</jdk>
+			</activation>
+ -->
+			<build>
+				<!-- Mav4en deploy: https://maven.apache.org/plugins/maven-jar-plugin/usage.html -->
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-jar-plugin</artifactId>
+						<version>3.1.2</version>
+<!--
+						<executions>
+							<execution>
+								<id>default-jar</id>
+								<phase>package</phase>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+ -->
+								<configuration>
+									<classifier>jdk6</classifier>
+								</configuration>
+<!--
+							</execution>
+						</executions>
+ -->
+					</plugin>
+				</plugins>
+			</build>
+			<properties>
+				<artifact.classifier>jdk6</artifact.classifier>
+			</properties>
+		</profile>
+		<profile>
+			<id>1.7</id>
+<!--
+			<activation>
+				<jdk>1.7</jdk>
+			</activation>
+ -->
+			<build>
+				<!-- Mav4en deploy: https://maven.apache.org/plugins/maven-jar-plugin/usage.html -->
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-jar-plugin</artifactId>
+						<version>3.1.2</version>
+<!--
+						<executions>
+							<execution>
+								<id>default-jar</id>
+								<phase>package</phase>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+ -->
+								<configuration>
+									<classifier>jdk7</classifier>
+								</configuration>
+<!--
+							</execution>
+						</executions>
+ -->
+					</plugin>
+				</plugins>
+			</build>
+			<properties>
+				<artifact.classifier>jdk7</artifact.classifier>
+			</properties>
+		</profile>
+		<profile>
+			<id>1.8</id>
+			<activation>
+<!--
+				<jdk>1.8</jdk>
+ -->
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<artifact.classifier></artifact.classifier>
+			</properties>
+		</profile>
+	</profiles>
+
+
 <!-- ====================================================================== -->
 <!-- PLUGINS                                                                -->
 <!-- ====================================================================== -->
@@ -198,6 +292,7 @@
 		<pluginManagement>
 			<plugins>
 				<!-- Java compile -->
+				<!-- Mav4en deploy: https://maven.apache.org/plugins/maven-compiler-plugin/usage.html -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
@@ -217,6 +312,7 @@
 
 				<!-- Mav4en deploy: https://maven.apache.org/plugins/maven-deploy-plugin/usage.html -->
 				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-deploy-plugin</artifactId>
 					<version>3.0.0-M1</version>
 					<executions>
@@ -272,7 +368,9 @@
 
 	</build>
 
-	<!-- Maven deploy -->
+<!-- ====================================================================== -->
+<!-- DISTRIBUTION ARTIFACTS                                                 -->
+<!-- ====================================================================== -->
 	<distributionManagement>
 		<repository>
 			<id>maven-public-releases</id>

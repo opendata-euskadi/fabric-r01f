@@ -31,7 +31,8 @@
 			<groupId>r01.r01f.web</groupId>
 			<artifactId>r01fWebProfileClasses</artifactId>
 			<version>${r01f.version}</version>
-			
+			<classifier>${artifact.classifier}</classifier>
+
 			<!-- exclude httpclient & fileupload usded by servlet proxy -->
 			<exclusions>
 				<exclusion>
@@ -44,11 +45,11 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
 		<!-- ///////////////////////////////////////// -->
 		<!-- ServletAPI                                -->
 		<!-- ///////////////////////////////////////// -->
-		<!-- [r01fWebProfileClasses] has SevletAPI as a dependency, 
+		<!-- [r01fWebProfileClasses] has SevletAPI as a dependency,
 			 ... BUT it's SCOPE is PROVIDED so it has to be defined
 			     here again -->
 		<dependency>
@@ -57,24 +58,24 @@
 		    <version>3.1.0</version>
 		    <scope>provided</scope>		<!-- BEWARE!!! -->
 		</dependency>
-		
+
 		<!-- ///////////////////////////////////////// -->
-		<!-- REST Service   :  
-		         Notes: 
-		            1. [ JSR311 ]     JSR 2.0 cannot be used with Jersey 1   
-		            2. [ Jersey 2 ]   Jersey 2  implements JSR 2.0 ...BUT, important!  has no integration with Guice ...] 
-		            3.  ... Also [ check it ] , maybe,  another issues could be be caused by using   javax.servlet 3... --> 
+		<!-- REST Service   :
+		         Notes:
+		            1. [ JSR311 ]     JSR 2.0 cannot be used with Jersey 1
+		            2. [ Jersey 2 ]   Jersey 2  implements JSR 2.0 ...BUT, important!  has no integration with Guice ...]
+		            3.  ... Also [ check it ] , maybe,  another issues could be be caused by using   javax.servlet 3... -->
 		<!-- /////////////////////////////////////////  -->
 		<!--
 		 <dependency>
 		    <groupId>javax.ws.rs</groupId>
 		    <artifactId>javax.ws.rs-api</artifactId>
 		    <version>2.0.1</version>
-		</dependency> -->			
+		</dependency> -->
 		<dependency>
 		    <groupId>javax.ws.rs</groupId>
 		    <artifactId>jsr311-api</artifactId>
 		    <version>1.1.1</version>
-		</dependency>		
+		</dependency>
 	</dependencies>
 </project>

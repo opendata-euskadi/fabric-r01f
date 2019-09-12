@@ -31,6 +31,7 @@
 			<groupId>r01.r01f.properties</groupId>
 			<artifactId>r01fPropertiesClasses</artifactId>
 			<version>${r01f.version}</version>
+			<classifier>${artifact.classifier}</classifier>
 		</dependency>
 		<!-- ///////////////////////////////////////// -->
 		<!-- Guice                                     -->
@@ -39,6 +40,7 @@
 			<groupId>r01.r01f.base</groupId>
 			<artifactId>r01fGuiceClasses</artifactId>
 			<version>${r01f.version}</version>
+			<classifier>${artifact.classifier}</classifier>
 		</dependency>
 		<dependency>
 			<groupId>com.google.inject.extensions</groupId>

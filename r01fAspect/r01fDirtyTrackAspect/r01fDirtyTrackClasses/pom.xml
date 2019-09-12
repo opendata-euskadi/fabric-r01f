@@ -31,6 +31,7 @@
 			<groupId>r01.r01f.aspect</groupId>
 			<artifactId>r01fAspectUtilClasses</artifactId>
 			<version>${r01f.version}</version>
+			<classifier>${artifact.classifier}</classifier>
 		</dependency>
 		<!-- ///////////////////////////////////////// -->
 		<!-- R01: DirtyTrack interfaces                -->
@@ -39,6 +40,7 @@
 			<groupId>r01.r01f.aspect.dirtytrack</groupId>
 			<artifactId>r01fDirtyTrackInterfaceClasses</artifactId>
 			<version>${r01f.version}</version>
+			<classifier>${artifact.classifier}</classifier>
 		</dependency>
 	</dependencies>
 </project>

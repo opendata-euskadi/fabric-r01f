@@ -54,6 +54,7 @@
 			<groupId>r01.r01f.web</groupId>
 			<artifactId>r01fWebProfileClasses</artifactId>
 			<version>${r01f.version}</version>
+			<classifier>${artifact.classifier}</classifier>
 		</dependency>
 		<!-- ///////////////////////////////////////// -->
 		<!-- R01: REST :
@@ -66,6 +67,7 @@
 			<groupId>r01.r01f.web</groupId>
 			<artifactId>r01fRESTServicesClasses</artifactId>
 			<version>${r01f.version}</version>
+			<classifier>${artifact.classifier}</classifier>
 		</dependency>		
 		<!-- ///////////////////////////////////////// -->
 		<!--  Spring Web MVC			               -->
