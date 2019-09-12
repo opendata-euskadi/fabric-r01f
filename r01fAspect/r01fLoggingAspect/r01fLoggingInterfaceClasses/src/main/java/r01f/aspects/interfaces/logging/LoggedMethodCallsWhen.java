@@ -6,5 +6,5 @@ package r01f.aspects.interfaces.logging;
 public enum LoggedMethodCallsWhen {
 	BEGIN,		// begin of method invocation
 	END,		// end of method invocation
-	AROUND;		// arround method invocation
+	AROUND;		// around method invocation
 }
