@@ -12,7 +12,11 @@ import r01f.aspects.interfaces.logging.LoggedMethodCalls;
 
 /**
 <<<<<<< HEAD
+<<<<<<< HEAD
  * Aspect that is responsible for injecting traces just BEFORE calling a method and just AFTER finishing the execution of it.
+=======
+ * Aspecto que se encarga de inyectar trazas justo ANTES de llamar a un metodo y justo DESPUES de terminar la ejecucion del mismo
+>>>>>>> refs/remotes/origin/master
 =======
  * Aspecto que se encarga de inyectar trazas justo ANTES de llamar a un metodo y justo DESPUES de terminar la ejecucion del mismo
 >>>>>>> refs/remotes/origin/master
