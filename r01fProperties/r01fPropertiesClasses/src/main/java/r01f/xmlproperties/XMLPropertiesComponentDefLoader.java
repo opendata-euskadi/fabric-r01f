@@ -43,24 +43,24 @@ class XMLPropertiesComponentDefLoader {
     /**
      * Loads a component definition xml
      * @param env environment
-     * @param appCode 
-     * @param component 
-     * @return 
+     * @param appCode
+     * @param component
+     * @return
      * @throws XMLPropertiesException if the file cannot be loaded or it's malformed
      */
 	public static XMLPropertiesComponentDef load(final Environment env,
     											 final AppCode appCode,final AppComponent component) throws XMLPropertiesException {
-		log.warn("Loading xml properties component definition for appCode/compoennt={}/{} (env={})",
+		log.warn("Loading xml properties component definition for appCode/component={}/{} (env={})",
 				 appCode,component,
 				 env);
-    	XMLPropertiesComponentDef outDef = null;    	
+    	XMLPropertiesComponentDef outDef = null;
 		// Load the component definition from /config/appCode/components/appCode.component.xml
         ResourcesLoader resourcesLoader = ResourcesLoaderBuilder.DEFAULT_RESOURCES_LOADER;
 
     	// Get an IS to the xml definition
     	// This file is ALWAYS loaded from the CLASSPATH at components/[appCode].[component].xml
     	// BEWARE!! It's a RELATIVE path since the classloader is used (see ClassPathResourcesLoader)
-        
+
         // Load the component definition file
         InputStream defXmlIS = null;
         try {
@@ -84,7 +84,7 @@ class XMLPropertiesComponentDefLoader {
         }
         // c) - If not found throw
         if (defXmlIS == null)  throw XMLPropertiesException.componentDefLoadError(env,appCode,component);
-        
+
         // d) - Return
         try {
 			outDef = XMLPropertiesComponentDefLoader.load(defXmlIS);
@@ -132,7 +132,7 @@ class XMLPropertiesComponentDefLoader {
 				} else {
 					log.warn("\t... Could NOT find the xml properties component definition for appCode/component={}/{} for env={} at {}",
 							 appCode,component,env,
-							 XMLPropertiesComponentDefLoader.componentDefFilePath(appCode,component));					
+							 XMLPropertiesComponentDefLoader.componentDefFilePath(appCode,component));
 				}
 				// build a default component definition
 				compDef = new XMLPropertiesComponentDef();
@@ -173,7 +173,7 @@ class XMLPropertiesComponentDefLoader {
     	} else {
     		// no component
     		filePath = Path.from(Strings.customized("{}/{}/components/{}.xml",			// ie: /components/loc/r01.xml
-    						   			  			env,appCode,appCode));    		
+    						   			  			env,appCode,appCode));
     	}
     	return filePath;
 	}
@@ -191,8 +191,8 @@ class XMLPropertiesComponentDefLoader {
     	return Path.from(filePath);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//	
-/////////////////////////////////////////////////////////////////////////////////////////    
+//
+/////////////////////////////////////////////////////////////////////////////////////////
     public static XMLPropertiesComponentDef load(final String defXml) throws IOException {
     	XMLPropertiesComponentDef outDef = null;
     	if (Strings.isNOTNullOrEmpty(defXml)) {
@@ -205,21 +205,21 @@ class XMLPropertiesComponentDefLoader {
     /**
      * Loads the xml properties component definition
      * <pre class="brush:java">
-	 *		String defXml = "<componentDef name='myName'>" + 
-	 *								"<propertiesFileURI>/config/r01fb.properties.xml</propertiesFileURI>" + 
+	 *		String defXml = "<componentDef name='myName'>" +
+	 *								"<propertiesFileURI>/config/r01fb.properties.xml</propertiesFileURI>" +
 	 *								"<numberOfPropertiesEstimation>10</numberOfPropertiesEstimation>" +
-	 *								"<resourcesLoader id='myResLoader' type='CLASSPATH'>" + 
+	 *								"<resourcesLoader id='myResLoader' type='CLASSPATH'>" +
 	 *									"<reloadControl impl='PERIODIC' enabled='true' checkInterval='2s'>" +
 	 *										"<props>" +
-	 *											"<a>a_value</a>" + 
+	 *											"<a>a_value</a>" +
 	 *											"<b>b_value</b>" +
 	 *										"</props>" +
-	 *									"</reloadControl>" + 
+	 *									"</reloadControl>" +
 	 *									"<props>" +
-	 *										"<a>a_value</a>" + 
+	 *										"<a>a_value</a>" +
 	 *										"<b>b_value</b>" +
 	 *									"</props>" +
-	 *								"</resourcesLoader>" + 
+	 *								"</resourcesLoader>" +
 	 *					    "</componentDef>";
 	 * </pre>
      * @param defXmlIS
@@ -239,11 +239,11 @@ class XMLPropertiesComponentDefLoader {
 				// 		</resourcesLoader>
 				//	</componentDef>
 				Document xmlDoc = XMLUtils.parse(defXmlIS);
-				
+
 				String name = XMLUtils.stringByXPath(xmlDoc,"/componentDef/@name");
 				String propsFileURI = XMLUtils.stringByXPath(xmlDoc,"/componentDef/propertiesFileURI");
 				Number numberOfPropsEstimation = XMLUtils.numberByXPath(xmlDoc,"/componentDef/numberOfPropertiesEstimation");
-								
+
 				outDef = new XMLPropertiesComponentDef();
 				if (Strings.isNOTNullOrEmpty(name)) 		outDef.setName(AppComponent.forId(name));
 				if (Strings.isNOTNullOrEmpty(propsFileURI))	outDef.setPropertiesFileURI(Path.from(propsFileURI));
@@ -251,7 +251,7 @@ class XMLPropertiesComponentDefLoader {
 
 				// ---> resources loader def
 				ResourcesLoaderDef resLoaderDef = new ResourcesLoaderDef();
-				
+
 				String resLoaderId = XMLUtils.stringByXPath(xmlDoc,"/componentDef/resourcesLoader/@id");
 				String resLoaderType = XMLUtils.stringByXPath(xmlDoc,"/componentDef/resourcesLoader/@type");
 				String charSet = XMLUtils.stringByXPath(xmlDoc,"/componentDef/resourcesLoader/charset");
@@ -261,7 +261,7 @@ class XMLPropertiesComponentDefLoader {
 				if (Strings.isNOTNullOrEmpty(resLoaderType)) 	resLoaderDef.setLoader(ResourcesLoaderType.valueOf(resLoaderType));
 				if (Strings.isNOTNullOrEmpty(charSet))			resLoaderDef.setCharsetName(charSet);
 				if (resLoaderPropNodes != null && resLoaderPropNodes.getLength() > 0) 	resLoaderDef.setLoaderProps(_propertiesFrom(resLoaderPropNodes));
-				
+
 				// ---> resources loader control def
 				ResourcesReloadControlDef resLoaderControlDef = new ResourcesReloadControlDef();
 				String resLoaderCtrlPolicy = XMLUtils.stringByXPath(xmlDoc,"/componentDef/resourcesLoader/reloadControl/@impl");
@@ -273,9 +273,9 @@ class XMLPropertiesComponentDefLoader {
 				if (Strings.isNOTNullOrEmpty(resLoaderCtrlCheckInterval))	resLoaderControlDef.setCheckInterval(TimeLapse.createFor(resLoaderCtrlCheckInterval));
 				if (resLoaderCtrlPropNodes != null && resLoaderCtrlPropNodes.getLength() > 0)	resLoaderControlDef.setControlProps(_propertiesFrom(resLoaderCtrlPropNodes));
 				resLoaderDef.setReloadControlDef(resLoaderControlDef);
-				
+
 				outDef.setLoaderDef(resLoaderDef);
-				
+
 			} catch (SAXException saxEx) {
 				throw new IOException(saxEx);
 			} catch (XPathExpressionException xpathEx) {
