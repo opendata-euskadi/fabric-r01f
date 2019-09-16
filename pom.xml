@@ -9,9 +9,9 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<!-- Java version -->
+		<!-- Java compiler source version -->
 		<maven.compiler.source>1.8</maven.compiler.source>
-
+		<!-- Java compiler target version -->
 		<maven.compiler.target>1.8</maven.compiler.target>
 
 		<!-- R01F version -->
