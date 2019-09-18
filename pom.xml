@@ -16,8 +16,9 @@
 <!--
 		<compiler.fork>false</compiler.fork>
 		<javac.executable.file></javac.executable.file>
-		<artifact.classifier></artifact.classifier>
  -->
+		<artifact.classifier></artifact.classifier>
+
 		<!-- R01F version -->
 		<!-- BEWARE! use this property on [dependencies] ONLY
 		     		 for [artifact] versioning use maven versions plugin:
