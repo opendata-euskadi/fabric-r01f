@@ -214,16 +214,12 @@
 						<executions>
 							<execution>
 								<id>default-jar</id>
-								<phase>package</phase>
+								<phase>compile</phase>
 								<goals>
 									<goal>jar</goal>
 								</goals>
 								<configuration>
 									<classifier>jdk6</classifier>
-									<!-- <forceCreation>true</forceCreation> -->
-									<excludes>
-										<exclude>**/*.xml</exclude>
-									</excludes>
 								</configuration>
 							</execution>
 						</executions>
