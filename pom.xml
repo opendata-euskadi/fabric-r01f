@@ -215,8 +215,10 @@
 							<execution>
 								<id>default-jar</id>
 								<phase>package</phase>
+								<forceCreation>true</forceCreation>
+								<useDefaultManifestFile>true</useDefaultManifestFile>
 								<goals>
-									<goal>jar</goal>
+									<goal>jar:jar</goal>
 								</goals>
 								<configuration>
 									<classifier>jdk6</classifier>
@@ -311,7 +313,7 @@
 							<id>default-deploy</id>
 							<phase>deploy</phase>
 							<goals>
-								<goal>deploy</goal>
+								<goal>deploy:deploy</goal>
 							</goals>
 						</execution>
 					</executions>
