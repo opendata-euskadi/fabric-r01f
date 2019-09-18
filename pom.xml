@@ -313,7 +313,7 @@
 							<id>default-deploy</id>
 							<phase>deploy</phase>
 							<goals>
-								<goal>deploy:deploy</goal>
+								<goal>deploy</goal>
 							</goals>
 						</execution>
 					</executions>
