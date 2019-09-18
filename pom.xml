@@ -215,13 +215,13 @@
 							<execution>
 								<id>default-jar</id>
 								<phase>package</phase>
-								<forceCreation>true</forceCreation>
-								<useDefaultManifestFile>true</useDefaultManifestFile>
 								<goals>
-									<goal>jar:jar</goal>
+									<goal>jar</goal>
 								</goals>
 								<configuration>
 									<classifier>jdk6</classifier>
+									<forceCreation>true</forceCreation>
+									<useDefaultManifestFile>true</useDefaultManifestFile>
 								</configuration>
 							</execution>
 						</executions>
