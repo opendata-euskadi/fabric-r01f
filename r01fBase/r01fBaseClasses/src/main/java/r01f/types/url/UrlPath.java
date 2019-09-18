@@ -22,8 +22,10 @@ import r01f.util.types.Strings;
 import r01f.util.types.collections.CollectionUtils;
 
 /**
- * Represents a {@link Path} in a {@link URL}
- * ie: http://site:port/urlPath
+ * Represents a {@link Path} in a {@link URL}.
+ * A URL consists of five parts: the scheme, subdomain, top-level domain, second-level domain, and subdirectory.
+ * UrlPath represents the subdirectory part.
+ * ie: for url http://www.euskadi.eus/gobierno-vasco/tramites-servicios/ urlPath is gobierno-vasco/tramites-servicios/
  */
 @Immutable
 @MarshallType(as="urlPath")
