@@ -221,7 +221,9 @@
 								<configuration>
 									<classifier>jdk6</classifier>
 									<forceCreation>true</forceCreation>
-									<useDefaultManifestFile>true</useDefaultManifestFile>
+									<archive>
+										<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+									</archive>
 								</configuration>
 							</execution>
 						</executions>
