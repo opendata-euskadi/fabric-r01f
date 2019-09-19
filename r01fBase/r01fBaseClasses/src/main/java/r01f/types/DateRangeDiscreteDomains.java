@@ -13,7 +13,7 @@ import r01f.enums.EnumExtended;
 
 @Accessors(prefix="_")
 public enum DateRangeDiscreteDomains
-      implements  EnumExtended<DateRangeDiscreteDomains>{
+ implements EnumExtended<DateRangeDiscreteDomains>{
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // SOME DATE RANGE DAYLY DOMAIN DEFAULT IMPLS.
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -32,23 +32,22 @@ public enum DateRangeDiscreteDomains
 												}
 											});
 
-	;
 	@Getter final DiscreteDomain<Date> _discreteDomain;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // CONSTRUCTOR
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-	DateRangeDiscreteDomains(final DiscreteDomain<Date> discreteDomain){
+	DateRangeDiscreteDomains(final DiscreteDomain<Date> discreteDomain) {
 		_discreteDomain = discreteDomain;
 	}
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // SOME METHODS
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 	@Override
-	public boolean isIn(DateRangeDiscreteDomains... els){
+	public boolean isIn(final DateRangeDiscreteDomains... els) {
 		return false;
 	}
 	@Override
-	public boolean is(DateRangeDiscreteDomains el) {
+	public boolean is(final DateRangeDiscreteDomains el) {
 		return false;
 	}
 }

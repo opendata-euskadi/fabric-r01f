@@ -30,12 +30,12 @@ import java.lang.annotation.Target;
  * 		}
  * </pre>
  * it injects logs before and after each method call
- * 
+ *
  * Many formatters can be used
- * 		LoggedMethodCallsParamsDefaultFormatter --> Returns info about params
- * 		LoggedMethodCallsParamsVoidFormatter	--> Doew not log anything
+ * 		LoggedMethodCallsParamsDefaultFormatter --> Returns info about parameters
+ * 		LoggedMethodCallsParamsVoidFormatter	--> Does not log anything
  * 		custom --> just implement {@link LoggedMethodCallsParamsFormatter}
- * 
+ *
  * If invocations to a method should NOT be logged, just annotate it with @DoNotLog
  * <pre class='brush:java'>
  * 		@LoggedMethodCalls(level=LogLevel.DEBUG,when=LoggedMethodCallsWhen.AROUND,
@@ -80,7 +80,7 @@ public @interface LoggedMethodCalls {
 	 */
 	String end() default "[END]";
 	/**
-	 * Param formatter
+	 * Parameter formatter
 	 */
 	Class<? extends LoggedMethodCallsParamsFormatter> paramsFormatter() default LoggedMethodCallsParamsVoidFormatter.class;
 }
