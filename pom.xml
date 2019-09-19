@@ -201,11 +201,12 @@
 <!-- ====================================================================== -->
 <!-- PROFILES                                                               -->
 <!-- ====================================================================== -->
+				<!-- Mav4en deploy: https://maven.apache.org/plugins/maven-jar-plugin/usage.html -->
 	<profiles>
 		<profile>
 			<id>1.6</id>
+<!--
 			<build>
-				<!-- Mav4en deploy: https://maven.apache.org/plugins/maven-jar-plugin/usage.html -->
 				<plugins>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
@@ -226,6 +227,7 @@
 					</plugin>
 				</plugins>
 			</build>
+ -->
 			<properties>
 				<artifact.classifier>jdk6</artifact.classifier>
 				<compiler.fork>true</compiler.fork>
@@ -313,6 +315,9 @@
 							<goals>
 								<goal>deploy</goal>
 							</goals>
+							<configuration>
+								<classifier>${artifact.classifier}</classifier>
+							</configuration>
 						</execution>
 					</executions>
 				</plugin>
