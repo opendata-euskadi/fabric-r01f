@@ -93,8 +93,8 @@ public abstract class SecurityContextServletFilterBase
 	}
 	@Override
 	public void doFilter(final ServletRequest request,final ServletResponse response,
-					final FilterChain chain) throws IOException,
-											  ServletException {
+						 final FilterChain chain) throws IOException,
+											  			 ServletException {
 		try {
 		
 			HttpServletRequest req = (HttpServletRequest)request;
