@@ -223,7 +223,7 @@ public class ReflectionUtils {
 	}
 	@SuppressWarnings({ "cast","unchecked" })
 	public static <T> T cast(final String typeName,final Object obj) {
-		return (T)ReflectionUtils.cast((Class<T>)ReflectionUtils.typeFromClassName(typeName),obj);
+		return ReflectionUtils.cast((Class<T>)ReflectionUtils.typeFromClassName(typeName),obj);
 	}
 	/**
 	 * Returns true if the provided type is within the other provided ones
@@ -1093,22 +1093,22 @@ public class ReflectionUtils {
 //  FIELD-ACCESS METHODS
 /////////////////////////////////////////////////////////////////////////////////////////
     /**
-     * Obtiene un mapa con la DEFINICION de todos los miembros de un objeto, recorriendo toda
-     * la jerarquia de herencia
-     * IMPORTANTE!!	El mapa que se devuelve est� ordenado de forma que los �ltimos fields son 
-     * 				los de la clase base
-     * @param type   La definicion de la clase
-     * @return un mapa con objetos {@link Field} indexados por su nombre
-     * @throws ReflectionException si hay alg�n error al obtener el mapa de campos
+     * Returns a {@link Map} with the DEFINITION of all object's fields going through
+     * all object's hierarchy
+     * BEWARE!!	The returned {@link Map} is ORDERED in a way that last fields are  
+     * 			the ones at the base type
+     * @param type 
+     * @return a map of {@link Field} objects indexed by name
+     * @throws ReflectionException 
      */
     public static Map<String,Field> allFieldsMap(final Class<?> type) {
-        // OJO!!!   Tener cuidado con la herencia... ir recorriendo los miembros por la jerarqu�a de herencia
-        //          hasta llegar a Object (raiz de todos los objetos en Java)
-    	// PROBLEMA:    class.getFields()         devuelve solo miembros PUBLICOS
-    	//              class.getDeclaredFields() devuelve miembros publicos y privados declarados
-        //                                        en la propia clase (ignora la herencia)
+        // BEWARE with the hierarcy: crawls over all hierarchy's type¡s fields to the Object type
+        // (the root of all Java objects)
+    	// PROBLEM:    class.getFields()         returns only PUBLIC fields
+    	//             class.getDeclaredFields() returns public and private fields declared 
+        //                                       at the type (ignoring inheritance hierarchy)
     	if (ReflectionUtils.isInterface(type)) return null;
-        Map<String,Field> fields = Maps.newLinkedHashMap();		// Linked HashMap para conservar el orden
+        Map<String,Field> fields = Maps.newLinkedHashMap();		// order!!!
         for (Class<?> c = type; c != Object.class; c = c.getSuperclass()) {
             Field[] declaredFields = c.getDeclaredFields();
             if (declaredFields != null && declaredFields.length > 0) {
@@ -1120,12 +1120,14 @@ public class ReflectionUtils {
         return fields;
     }
     /**
-     * Obtiene un mapa con la DEFINICION de todos los miembros de un objeto, recorriendo toda
-     * la jerarquia de herencia
-     * @param type   La definicion de la clase
-     * @param forceAccesible fuerza a hacer accesible el field antes de devolverlo
-     * @return un mapa con objetos {@link Field} indexados por su nombre
-     * @throws ReflectionException si hay alg�n error al obtener el mapa de campos
+     * Returns a {@link Map} with the DEFINITION of all object's fields going through
+     * all object's hierarchy
+     * BEWARE!!	The returned {@link Map} is ORDERED in a way that last fields are  
+     * 			the ones at the base type
+     * @param type 
+     * @param forceAccesible forces the field to be accessible 
+     * @return a map of {@link Field} objects indexed by name
+     * @throws ReflectionException
      */
     public static Map<String,Field> allFieldsMap(final Class<?> type,final boolean forceAccesible) {
     	Map<String,Field> outFields = ReflectionUtils.allFieldsMap(type);
@@ -1135,14 +1137,12 @@ public class ReflectionUtils {
     	return outFields;
     }
     /**
-     * Obtiene un array con la DEFINICION de todos los miembros de un objeto, recorriendo
-     * toda la jerarquia de herencia
-     * PROBLEMA:    class.getFields()         devuelve solo miembros PUBLICOS
-     *              class.getDeclaredFields() devuelve miembros publicos y privados declarados
-     *                                        en la propia clase (ignora la herencia)
-     * @param type   La definicion de la clase
-     * @return un array de objetos {@link Field}
-     * @throws ReflectionException si hay alg�n error al obtener el array de campos
+     * Returns collection with the DEFINITION of all object's fields going through
+     * all object's hierarchy
+     * BEWARE!!	The returned array is ORDERED in a way that last fields are  
+     * 			the ones at the base type
+     * @param type 
+     * @throws ReflectionException 
      */
     public static Field[] allFields(final Class<?> type) {
         Map<String,Field> fields = ReflectionUtils.allFieldsMap(type);
@@ -1151,26 +1151,31 @@ public class ReflectionUtils {
         						 : new Field[] {};
     }
     /**
-     * Devuelve un array con la DEFINICI�N de todos los miembros finales de un objeto, recorriendo
-     * toda la jerarqu�a de herencia
-     * @param type la definici�n de la clase
-     * @return un array de objetos {@link Field} pero SOLO finales
+     * Returns collection with the DEFINITION of all object's FINAL fields going through
+     * all object's hierarchy
+     * BEWARE!!	The returned array is ORDERED in a way that last fields are  
+     * 			the ones at the base type
+     * @param type 
+     * @throws ReflectionException 
      */
     public static Field[] allFinalFields(final Class<?> type) {
     	Map<String,Field> finalFields = ReflectionUtils.allFinalFieldsMap(type);
     	return CollectionUtils.toArray(finalFields.values());
     }
     /**
-     * Devuelve un mapa con la DEFINICI�N de todos los miembros finales de un objeto indexados por su nombre
-     * recorriendo toda la jerarqu�a de herencia
-     * @param type la definici�n de la clase
-     * @return un mapa de objetos {@link Field} pero SOLO finales indexados por su nombre
+     * Returns a {@link Map} with the DEFINITION of all object's FINAL fields going through
+     * all object's hierarchy
+     * BEWARE!!	The returned {@link Map} is ORDERED in a way that last fields are  
+     * 			the ones at the base type
+     * @param type 
+     * @return a map of {@link Field} objects indexed by name
+     * @throws ReflectionException
      */
     public static Map<String,Field> allFinalFieldsMap(final Class<?> type) {
     	Map<String,Field> allFields = ReflectionUtils.allFieldsMap(type);
     	Predicate<Field> filter = new Predicate<Field>() {
 									@Override
-									public boolean apply(Field f) {
+									public boolean apply(final Field f) {
 										return Modifier.isFinal(f.getModifiers());
 									}
 								  }; 
@@ -1240,20 +1245,20 @@ public class ReflectionUtils {
         return f;
     }
     /**
-     * Obtiene todos los campos de un determinado tipo
-     * @param type la definici�n de la clase
-     * @param fieldType la definici�n del campo 
-     * @return el objeto {@link Field} que define el campo
+     * Returns all type's {@link Field}s
+     * @param type 
+     * @param fieldType  
+     * @return 
      */
     public static Field[] fieldsOfType(final Class<?> type,final Class<?> fieldType) {
     	return ReflectionUtils.fieldsOfAnyType(type,fieldType);
     }
     /**
-     * Obtiene todos los campos de un determinado tipo
-     * @param type la definici�n de la clase
-     * @param fieldType la definici�n del campo
-     * @param forceAccesible fuerza a hacer accesible el field antes de devolverlo 
-     * @return el objeto {@link Field} que define el campo
+     * Returns all type's {@link Field}s
+     * @param type 
+     * @param fieldType 
+     * @param forceAccesible 
+     * @return 
      */
     public static Field[] fieldsOfType(final Class<?> type,final Class<?> fieldType,
     								   final boolean forceAccesible) {
@@ -1264,10 +1269,10 @@ public class ReflectionUtils {
     	return fields;
     }
     /**
-     * Obtiene todos los campos de alguno de los tipos que se pasan
-     * @param type la definici�n de la clase
-     * @param fieldTypes los tipos
-     * @return el objeto {@link Field} que define el campo
+     * Returns all type's {@link Field}s with any of the given types
+     * @param type 
+     * @param fieldTypes 
+     * @return 
      */
     public static Field[] fieldsOfAnyType(final Class<?> type,final Class<?>... fieldTypes) {
     	return ReflectionUtils.fieldsMatching(type,
@@ -1286,11 +1291,10 @@ public class ReflectionUtils {
     										  });
     }
     /**
-     * Devuelve el tipo de un campo
-     * @param type definici�n del objeto
-     * @param fieldName nombre del campo
-     * @return el tipo del campo
-     * @throws ReflectionException si se produce alg�n error al acceder al campo
+     * Returns a type's {@link Field}s
+     * @param type 
+     * @param fieldName  
+     * @return 
      */
     public static Class<?> fieldType(final Class<?> type,final String fieldName) {
     	Field f = ReflectionUtils.field(type,fieldName,false);
@@ -1317,10 +1321,10 @@ public class ReflectionUtils {
         												 : new Field[] {};
     }
     /**
-     * Busca el campo que corresponde al objeto que se pasa
-     * @param containerObject el objeto que contiene un campo que contiene un miembro con el objeto que se pasa
-     * @param memberInstance la instancia del miembro
-     * @return el campo que contiene la instancia del miembro
+     * Finds a {@link Field} suitable for the given object
+     * @param containerObject 
+     * @param memberInstance 
+     * @return 
      */
     public static Field fieldFor(final Object containerObject,final Object memberInstance) {
     	if (containerObject == null || memberInstance == null) return null;
@@ -1329,8 +1333,8 @@ public class ReflectionUtils {
 		Field[] mapFields = ReflectionUtils.fieldsOfType(containerObject.getClass(),memberInstance.getClass(),true);		// fields del tipo del miembro 
 		for (Field f : mapFields) {
 			Object fValue = ReflectionUtils.fieldValue(containerObject,f,false);		
-			if (fValue == memberInstance) {		// <-- clave!!
-				// wow!! aqui ya se sabe el miembro crear el wrapper y colocarlo en la lista de wrappers
+			if (fValue == memberInstance) {		// <-- key!!
+				// wow!! now the Field is knows
 				outField = f;
 			}
 		}
@@ -1340,43 +1344,44 @@ public class ReflectionUtils {
 //  FIELD SETTERS
 /////////////////////////////////////////////////////////////////////////////////////////    
     /**
-     * Obtiene el nombre del metodo setter de un miembro en una clase
-     * @param type la clase que contiene el miembro
-     * @param fieldName nombre del miembro
-     * @param memberType la clase del miembro
-     * @return el nombre del metodo setter
+     * Returns the setter method for a field
+     * @param type 
+     * @param fieldName 
+     * @param memberType 
+     * @return 
      */
     private static Method _fieldSetterMethod(final Class<?> type,
     									     final String fieldName,final Class<?> memberType) {
         String setter = null;
         Method outMethod = null;
         if (memberType == Boolean.class || memberType == boolean.class) {
-            // �apa para arreglar las posibles formas de nombrar los accessors de un boolean....
-            // La especificaci�n java dice:
-            //      miembro: a      accessor: setA
-            //      miembro: isA    accessor: setA
-            // Encontrar el metodo accessor
-            // Ver si el desarrollador ha nombrado correctamente el accessor
-            // Casos:
+            // FIX for all possible ways to name a boolean accessor
+            // JavaDoc says:
+            //      field: a      accessor: setA
+            //      field: isA    accessor: setA
+        	
+            // Find the accessor method
+            // The developer might have not name the field correctly
+            // For example
             //      [OK] 	fieldName = myBoolean     -->    writeMethod = setMyBoolean     --> prop.getName = myBoolean 
             //      [OK]	fieldName = isMyBoolean   -->    writeMethod = setIsMyBoolean   --> prop.getName = isMyBoolean
             //      [ERROR] fieldName = isMyBoolean   -->    writeMethod = setMyBoolean     --> prop.getName = myBoolean        	
             try {
-            	// Caso "normal"... el accessor est� bien nombrado
+            	// Usual case: correctly named accessor
                 setter = "set" + StringUtils.capitalize(fieldName);            	
                 outMethod = ReflectionUtils.method(type,setter,memberType);
             } catch(ReflectionException nsmEx) {
-                // Error, el desarrollador NO ha nombrado el metodo de la forma
-                // estandar y ha utilizado get[fieldName] (ej setMyBoolean cuando deber�a ser setIsMyBoolean)	
+                // Error: the developer has NOT named the setter method
+            	//			ie: get[fieldName] (ie setMyBoolean when it should have been setIsMyBoolean)	
             	if (nsmEx.isNoMethodException()) {
-		            setter = "set" + (fieldName.startsWith("is") ? StringUtils.capitalize(fieldName.substring(2))	// quitar "is" del campo
+		            setter = "set" + (fieldName.startsWith("is") ? StringUtils.capitalize(fieldName.substring(2))	// remove "is"
 		                                                         : StringUtils.capitalize(fieldName));	
             	}
             }
         } else {
              setter = "set" + StringUtils.capitalize(fieldName);
         }
-        // Devolver el metodo (puede ser que ya se haya obtenido antes)
+        // Return the method (it might have been obtained before)
         try {
         	if (outMethod == null && setter != null) outMethod = ReflectionUtils.method(type,setter,memberType);        	
         } catch(ReflectionException nsmEx) {
@@ -1413,11 +1418,11 @@ public class ReflectionUtils {
         return outSetted;
     }    
     /**
-     * Establece el valor de un miembro estatico
-     * @param type definici�n de la clase
-     * @param fieldName nombre del campo estatico
-     * @param value el nuevo valor del campo
-     * @throws ReflectionException si se produce alg�n error al establecer el valor del miembro
+     * Sets a static {@link Field}'s value
+     * @param type
+     * @param fieldName
+     * @param value 
+     * @throws ReflectionException
      */
     public static void setStaticFieldValue(final Class<?> type,final String fieldName,
     									   final Object value) {
@@ -1425,12 +1430,12 @@ public class ReflectionUtils {
     	if (!setted) throw ReflectionException.noFieldException(type,fieldName);
     }
     /**
-     * Establece el valor de un miembro
-     * @param obj el objeto en el que establecer el valor del miembro
-     * @param field el miembro cuyo valor se establece
-     * @param value el valor a establecer
-     * @param useAccessors true si se utilizan los m�todos get/set
-     * @throws ReflectionException si no se puede establecer el valor del miembro
+     * Sets a static {@link Field}'s value
+     * @param obj 
+     * @param field 
+     * @param value 
+     * @param useAccessors true if using get/set accessor methods
+     * @throws ReflectionException 
      */
     public static void setFieldValue(final Object obj,
     								 final Field field,final Object value,
@@ -1438,12 +1443,11 @@ public class ReflectionUtils {
     	ReflectionUtils.setFieldValue(obj,field.getName(),value,useAccessors);
     }   
     /**
-     * Establece el valor de un miembro (field) en un objeto bien accediendo directamente a la variable miembro
-     * bien utilizando un accessor set[fieldName]
-     * @param obj El objeto
-     * @param fieldName El nombre del field
-     * @param value El valor del miembro
-     * @throws ReflectionException si se produce alguna excepci�n en el proceso
+     * Sets a {@link Field}s value either using accessor methods or directly accessing the {@link Field} 
+     * @param obj 
+     * @param fieldName 
+     * @param value
+     * @throws ReflectionException 
      */
     public static void setFieldValue(final Object obj,
     							     final String fieldName,final Object value) {
@@ -1455,7 +1459,7 @@ public class ReflectionUtils {
      * @param fieldName the field name
      * @param value the field value
      * @param useAccessor if accessors should be used
-     * @throws ReflectionException si se produce alguna excepci�n en el proceso
+     * @throws ReflectionException 
      */
     public static void setFieldValue(final Object obj,
     								 final String fieldName,final Object value,
@@ -1473,7 +1477,7 @@ public class ReflectionUtils {
 	            } catch (Throwable th) {
 	            	_warnFieldAccessException(th,
 	            							  obj,fieldName);
-	                // ERROR!!! The field's setter method does NOT exists. Anothe non-ortodox way is attempted               
+	                // ERROR!!! The field's setter method does NOT exists. Another non-ortodox way is attempted               
 	                // Be careful when invoked on Maps or Lists... ALWAYS USE THE INTERFACE!!	                
 	                Class<?> valueType = CollectionUtils.getCollectionType(value.getClass());
 	                if (valueType == null) valueType = value.getClass();	// if this is NOT a collection is a "normal" type		                	
@@ -1482,7 +1486,7 @@ public class ReflectionUtils {
 	                	ReflectionUtils.invokeMethod(obj,accessorMethod,value);
 	                } else {
 	                	// direct-field access...no accessors
-                		ReflectionUtils.setFieldValue(obj,fieldName,value,false);	// intentarlo accediendo directamente al field		                	
+                		ReflectionUtils.setFieldValue(obj,fieldName,value,false);	// try field direct access		                	
 	                }
 	            }
 	        } else {
@@ -1506,15 +1510,15 @@ public class ReflectionUtils {
 //  FIELD GETTERS
 /////////////////////////////////////////////////////////////////////////////////////////     
     /**
-     * Gets a field's getter name form  de un miembro en una clase
-     * @param type la clase que contiene el miembro
-     * @param fieldName nombre del miembro
-     * @param memberType la clase del miembro
-     * @return el nombre del metodo getter
+     * Gets a field's getter name
+     * @param type 
+     * @param fieldName 
+     * @param memberType 
+     * @return 
      */
     public static Method _fieldGetterMethod(final Class<?> type,
     									    final String fieldName,final Class<?> fieldType) {
-    	// Si el field comienza por _ eliminar el _
+    	// If the field name starts with "_" remove this char
     	String theFieldName = fieldName.startsWith("_") ? fieldName.substring(1) 
     													: fieldName;
     	
@@ -1522,18 +1526,19 @@ public class ReflectionUtils {
         String getter = null;
         if (fieldType != null 
         && (fieldType == Boolean.class || fieldType == boolean.class)) {
-            // �apa para arreglar las posibles formas de nombrar los accessors de un boolean....
-            // La especificaci�n java dice:
-            //      miembro: a      accessor: isA
-            //      miembro: isA    accessor: isA
-            // Encontrar el metodo accessor
-            // Ver si el desarrollador ha nombrado correctamente el accessor
-            // Casos:
-            //      [OK]	fieldName = myBoolean     -->    readMethod = getMyBoolean     				--> prop.getName = myBoolean
-            //      [OK]	fieldName = isMyBoolean   -->    readMethod = isIsMyBolean/getIsMyBoolean   --> prop.getName = isMyBoolean        	
-            //      [ERROR]	fieldName = isMyBoolean   -->    readMethod = isMyBoolean  					--> prop.getName = myBoolean
+            // FIX for all possible ways to name a boolean accessor
+            // JavaDoc says:
+            //      field: a      accessor: getA
+            //      field: isA    accessor: getA
+        	
+            // Find the accessor method
+            // The developer might have not name the field correctly
+            // For example
+            //      [OK] 	fieldName = myBoolean     -->    readMethod = isMyBoolean      --> prop.getName = myBoolean 
+            //      [OK]	fieldName = isMyBoolean   -->    writeMethod = isIsMyBoolean   --> prop.getName = isMyBoolean
+            //      [ERROR] fieldName = isMyBoolean   -->    writeMethod = esMyBoolean    --> prop.getName = myBoolean
             try {
-            	// Caso "normal"
+            	// Usual case
                 getter = "is" + StringUtils.capitalize(theFieldName); 
                 outMethod = ReflectionUtils.method(type,getter,fieldType);
             } catch(ReflectionException nsmEx) {
@@ -1955,7 +1960,7 @@ public class ReflectionUtils {
      * @throws NoSuchFieldException Si el miembro solicitado en el path no existe
      */
     public static void setFieldValueUsingPath(final Object obj,final String memberPath,final Object memberValue,
-    									      boolean useAccesors) {
+    									      final boolean useAccesors) {
         if (obj == null || memberPath == null) throw new IllegalArgumentException("Either the object or the path are null");
 
         // Tokenizar el path e ir escarbando...
