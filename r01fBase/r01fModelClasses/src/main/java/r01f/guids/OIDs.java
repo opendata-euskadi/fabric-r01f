@@ -35,6 +35,11 @@ public class OIDs {
 /////////////////////////////////////////////////////////////////////////////////////////
 //  
 /////////////////////////////////////////////////////////////////////////////////////////
+	@SuppressWarnings("unchecked") 
+	public static <O extends OID> Collection<String> toStringCollection(final O... oids) {
+		if (CollectionUtils.isNullOrEmpty(oids)) return Lists.newArrayList();
+		return OIDs.toStringCollection(Lists.newArrayList(oids));
+	}
 	public static <O extends OID> Collection<String> toStringCollection(final Collection<O> oids) {
 		if (CollectionUtils.isNullOrEmpty(oids)) return Lists.newArrayList();
 		return FluentIterable.from(oids)
