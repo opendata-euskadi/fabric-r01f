@@ -4,10 +4,12 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import r01f.debug.Debuggable;
+import r01f.guids.PersistableObjectOID;
 import r01f.model.HasModelObjectTypeCode;
 import r01f.model.HasModelObjectTypeInfo;
 import r01f.model.IndexableModelObject;
 import r01f.model.ModelObjectTracking;
+import r01f.model.PersistableModelObject;
 import r01f.model.TrackableModelObject;
 import r01f.model.facets.HasEntityVersion;
 import r01f.model.facets.HasNumericID;
@@ -89,6 +91,17 @@ public abstract class SearchResultItemForModelObjectBase<M extends IndexableMode
 /////////////////////////////////////////////////////////////////////////////////////////
 	public SearchResultItemForModelObjectBase() {
 		// nothing
+	}
+	public SearchResultItemForModelObjectBase(final Class<M> objType) {
+		_modelObjectType = objType;
+	}
+	@SuppressWarnings("unchecked")
+	public <O extends PersistableObjectOID,
+			P extends PersistableModelObject<O>> SearchResultItemForModelObjectBase(final P obj) {
+		_modelObjectType = (Class<M>)obj.getClass();
+		_numericId = obj.getNumericId();
+		_entityVersion = obj.getEntityVersion();
+		_trackingInfo = obj.getTrackingInfo();
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  TRACKABLE
