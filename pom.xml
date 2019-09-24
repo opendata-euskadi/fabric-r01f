@@ -182,7 +182,7 @@
 		<repository>
 			<id>EJIE</id>
 			<name>EJIE Public Releases</name>
-			<url>https://bin1.alm02.itbatera.euskadi.eus/repository/maven-public-releases/</url>
+			<url>https://bin1.alm02.itbatera.euskadi.eus/repository/maven-releases/</url>
 			<releases>
 				<enabled>true</enabled>
 				<updatePolicy>always</updatePolicy>
@@ -205,7 +205,6 @@
 	<profiles>
 		<profile>
 			<id>1.6</id>
-<!--
 			<build>
 				<plugins>
 					<plugin>
@@ -221,13 +220,15 @@
 								</goals>
 								<configuration>
 									<classifier>jdk6</classifier>
+									<excludes>
+										<exclude>**/*.xml</exclude>
+									</excludes>
 								</configuration>
 							</execution>
 						</executions>
 					</plugin>
 				</plugins>
 			</build>
- -->
 			<properties>
 				<artifact.classifier>jdk6</artifact.classifier>
 				<compiler.fork>true</compiler.fork>
@@ -369,10 +370,10 @@
 <!-- ====================================================================== -->
 	<distributionManagement>
 		<repository>
-			<id>maven-public-releases</id>
-			<name>maven-public-releases</name>
+			<id>maven-releases</id>
+			<name>maven-releases</name>
 			<layout>default</layout>
-			<url>https://bin1.alm02.itbatera.euskadi.eus/repository/maven-public-releases/</url>
+			<url>https://bin1.alm02.itbatera.euskadi.eus/repository/maven-releases/</url>
 		</repository>
 		<snapshotRepository>
 			<id>maven-snapshots</id>
