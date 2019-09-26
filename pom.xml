@@ -177,7 +177,7 @@
 		<repository>
 			<id>EJIE</id>
 			<name>EJIE Public Releases</name>
-			<url>https://bin1.alm02.itbatera.euskadi.eus/repository/maven-releases/</url>
+			<url>https://bin1.alm02.itbatera.euskadi.eus/repository/maven-public-releases/</url>
 			<releases>
 				<enabled>true</enabled>
 				<updatePolicy>always</updatePolicy>
@@ -281,14 +281,14 @@
 <!-- ====================================================================== -->
 	<distributionManagement>
 		<repository>
-			<id>maven-releases</id>
-			<name>maven-releases</name>
+			<id>maven-public-releases</id>
+			<name>maven-public-releases</name>
 			<layout>default</layout>
-			<url>https://bin1.alm02.itbatera.euskadi.eus/repository/maven-releases/</url>
+			<url>https://bin1.alm02.itbatera.euskadi.eus/repository/maven-public-releases/</url>
 		</repository>
 		<snapshotRepository>
 			<id>maven-snapshots</id>
-			<name>maven-public-releases</name>
+			<name>maven-snapshots</name>
 			<layout>default</layout>
 			<url>https://bin1.alm02.itbatera.euskadi.eus/repository/maven-snapshots/</url>
 		</snapshotRepository>
