@@ -31,14 +31,12 @@
 			<groupId>r01.r01f.base</groupId>
 			<artifactId>r01fIOClasses</artifactId>
 			<version>${r01f.version}</version>
-			<classifier>${artifact.classifier}</classifier>
 		</dependency>
 		
 		<dependency>
 		    <groupId>r01.r01f.base</groupId>
 		    <artifactId>r01fRXJavaClasses</artifactId>
 		    <version>${r01f.version}</version>
-		    <classifier>${artifact.classifier}</classifier>
 		</dependency>
 	</dependencies>
 </project>

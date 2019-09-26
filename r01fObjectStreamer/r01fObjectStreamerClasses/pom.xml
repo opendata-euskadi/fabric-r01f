@@ -31,13 +31,11 @@
 			<groupId>r01.r01f.base</groupId>
 			<artifactId>r01fBaseClasses</artifactId>
 			<version>${r01f.version}</version>
-			<classifier>${artifact.classifier}</classifier>
 		</dependency>
 		<dependency>
 			<groupId>r01.r01f.base</groupId>
 			<artifactId>r01fReflectionClasses</artifactId>
 			<version>${r01f.version}</version>
-			<classifier>${artifact.classifier}</classifier>
 		</dependency>
 		<!-- ///////////////////////////////////////// -->
 		<!-- Object Streamer                           -->
@@ -46,7 +44,6 @@
 			<groupId>r01.r01f.objectstreamer</groupId>
 			<artifactId>r01fObjectStreamerInterfaceClasses</artifactId>
 			<version>${r01f.version}</version>
-			<classifier>${artifact.classifier}</classifier>
 		</dependency>
 		<!-- ///////////////////////////////////////// -->
 		<!-- Inject                                    -->

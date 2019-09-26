@@ -31,7 +31,6 @@
 			<groupId>r01.r01f.properties</groupId>
 			<artifactId>r01fPropertiesInterfaceClasses</artifactId>
 			<version>${r01f.version}</version>
-			<classifier>${artifact.classifier}</classifier>
 		</dependency>
 		<!-- ///////////////////////////////////////// -->
 		<!-- Resource load                             -->
@@ -40,7 +39,6 @@
 			<groupId>r01.r01f.resourceload</groupId>
 			<artifactId>r01fResourceLoadClasses</artifactId>
 			<version>${r01f.version}</version>
-			<classifier>${artifact.classifier}</classifier>
 		</dependency>
 		<!-- ///////////////////////////////////////// -->
 		<!-- XML                                       -->
@@ -49,7 +47,6 @@
 			<groupId>r01.r01f.base</groupId>
 			<artifactId>r01fXMLClasses</artifactId>
 			<version>${r01f.version}</version>
-			<classifier>${artifact.classifier}</classifier>
 		</dependency>
 		<!-- ///////////////////////////////////////// -->
 		<!-- Inject                                    -->

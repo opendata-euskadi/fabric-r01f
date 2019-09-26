@@ -31,7 +31,6 @@
 			<groupId>r01.r01f.web</groupId>
 			<artifactId>r01fRESTServicesClasses</artifactId>
 			<version>${r01f.version}</version>
-			<classifier>${artifact.classifier}</classifier>
 		</dependency>
 		
 		<!-- ///////////////////////////////////////// -->

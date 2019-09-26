@@ -31,13 +31,11 @@
 			<groupId>r01.r01f.base</groupId>
 			<artifactId>r01fBaseClasses</artifactId>
 			<version>${r01f.version}</version>
-			<classifier>${artifact.classifier}</classifier>
 		</dependency>
 		<dependency>
 			<groupId>r01.r01f.base</groupId>
 			<artifactId>r01fReflectionClasses</artifactId>
 			<version>${r01f.version}</version>
-			<classifier>${artifact.classifier}</classifier>
 		</dependency>
 		<!-- ///////////////////////////////////////// -->
 		<!-- Resource load                             -->
@@ -46,7 +44,6 @@
 			<groupId>r01.r01f.resourceload</groupId>
 			<artifactId>r01fResourceLoadInterfaceClasses</artifactId>
 			<version>${r01f.version}</version>
-			<classifier>${artifact.classifier}</classifier>
 		</dependency>
 	</dependencies>
 </project>

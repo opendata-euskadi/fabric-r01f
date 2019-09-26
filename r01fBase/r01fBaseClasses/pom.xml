@@ -30,25 +30,21 @@
 			<groupId>r01.r01f.aspect.dirtytrack</groupId>
 			<artifactId>r01fDirtyTrackInterfaceClasses</artifactId>
 			<version>${r01f.version}</version>
-			<classifier>${artifact.classifier}</classifier>
 		</dependency>
 		<dependency>
 			<groupId>r01.r01f.aspect.freezable</groupId>
 			<artifactId>r01fFreezableInterfaceClasses</artifactId>
 			<version>${r01f.version}</version>
-			<classifier>${artifact.classifier}</classifier>
 		</dependency>
 		<dependency>
 			<groupId>r01.r01f.aspect.lazyload</groupId>
 			<artifactId>r01fLazyLoadInterfaceClasses</artifactId>
 			<version>${r01f.version}</version>
-			<classifier>${artifact.classifier}</classifier>
 		</dependency>
 		<dependency>
 			<groupId>r01.r01f.aspect.logging</groupId>
 			<artifactId>r01fLoggingInterfaceClasses</artifactId>
 			<version>${r01f.version}</version>
-			<classifier>${artifact.classifier}</classifier>
 		</dependency>
 
 		<!-- ///////////////////////////////////////// -->
@@ -58,7 +54,6 @@
 			<groupId>r01.r01f.objectstreamer</groupId>
 			<artifactId>r01fObjectStreamerInterfaceClasses</artifactId>
 			<version>${r01f.version}</version>
-			<classifier>${artifact.classifier}</classifier>
 		</dependency>
 
 		<!-- ///////////////////////////////////////// -->

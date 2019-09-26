@@ -31,7 +31,6 @@
 			<groupId>r01.r01f.aspect.lazyload</groupId>
 			<artifactId>r01fLazyLoadClasses</artifactId>
 			<version>${r01f.version}</version>
-			<classifier>${artifact.classifier}</classifier>
 		</dependency>
 	</dependencies>
 </project>

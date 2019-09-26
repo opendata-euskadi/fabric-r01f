@@ -13,11 +13,6 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<!-- Java compiler target version -->
 		<maven.compiler.target>1.8</maven.compiler.target>
-<!--
-		<compiler.fork>false</compiler.fork>
-		<javac.executable.file></javac.executable.file>
- -->
-		<artifact.classifier></artifact.classifier>
 
 		<!-- R01F version -->
 		<!-- BEWARE! use this property on [dependencies] ONLY
@@ -199,82 +194,6 @@
 
 
 <!-- ====================================================================== -->
-<!-- PROFILES                                                               -->
-<!-- ====================================================================== -->
-				<!-- Mav4en deploy: https://maven.apache.org/plugins/maven-jar-plugin/usage.html -->
-	<profiles>
-		<profile>
-			<id>1.6</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-jar-plugin</artifactId>
-						<version>3.1.2</version>
-						<executions>
-							<execution>
-								<id>default-jar</id>
-								<phase>compile</phase>
-								<goals>
-									<goal>jar</goal>
-								</goals>
-								<configuration>
-									<classifier>jdk6</classifier>
-									<includes>
-										<include>**/*.java</include>
-									</includes>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-			<properties>
-				<artifact.classifier>jdk6</artifact.classifier>
-				<compiler.fork>true</compiler.fork>
-				<javac.executable.file></javac.executable.file>
-			</properties>
-		</profile>
-		<profile>
-			<id>1.7</id>
-			<build>
-				<!-- Mav4en deploy: https://maven.apache.org/plugins/maven-jar-plugin/usage.html -->
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-jar-plugin</artifactId>
-						<version>3.1.2</version>
-						<executions>
-							<execution>
-								<id>default-jar</id>
-								<phase>package</phase>
-								<goals>
-									<goal>jar</goal>
-								</goals>
-								<configuration>
-									<classifier>jdk7</classifier>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-			<properties>
-				<artifact.classifier>jdk7</artifact.classifier>
-				<compiler.fork>true</compiler.fork>
-				<javac.executable.file></javac.executable.file>
-			</properties>
-		</profile>
-		<profile>
-			<id>1.8</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-		</profile>
-	</profiles>
-
-
-<!-- ====================================================================== -->
 <!-- PLUGINS                                                                -->
 <!-- ====================================================================== -->
 	<build>
@@ -289,11 +208,6 @@
 					<configuration>
 						<source>${maven.compiler.source}</source>
 						<target>${maven.compiler.target}</target>
-<!--
-						<compilerVersion>${maven.compiler.source}</compilerVersion>
-						<fork>${compiler.fork}</fork>
-						<executable>${javac.executable.file}</executable>
- -->
 					</configuration>
 				</plugin>
 
@@ -316,9 +230,6 @@
 							<goals>
 								<goal>deploy</goal>
 							</goals>
-							<configuration>
-								<classifier>${artifact.classifier}</classifier>
-							</configuration>
 						</execution>
 					</executions>
 				</plugin>

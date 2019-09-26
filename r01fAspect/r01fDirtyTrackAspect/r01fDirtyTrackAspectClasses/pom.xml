@@ -31,7 +31,6 @@
 			<groupId>r01.r01f.aspect.dirtytrack</groupId>
 			<artifactId>r01fDirtyTrackClasses</artifactId>
 			<version>${r01f.version}</version>
-			<classifier>${artifact.classifier}</classifier>
 		</dependency>
 	</dependencies>
 </project>

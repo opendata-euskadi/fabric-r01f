@@ -30,7 +30,6 @@
 			<groupId>r01.r01f.filestore</groupId>
 			<artifactId>r01fFileStoreClasses</artifactId>
 			<version>${r01f.version}</version>
-			<classifier>${artifact.classifier}</classifier>
 		</dependency>
 		<!-- ///////////////////////////////////////// -->
 		<!-- Hadoop                                    -->

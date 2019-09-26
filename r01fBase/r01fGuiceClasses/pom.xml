@@ -30,7 +30,6 @@
 			<groupId>r01.r01f.properties</groupId>
 			<artifactId>r01fPropertiesClasses</artifactId>
 			<version>${r01f.version}</version>
-			<classifier>${artifact.classifier}</classifier>
 		</dependency>
 		<!-- ///////////////////////////////////////// -->
 		<!-- Guice                                     -->
