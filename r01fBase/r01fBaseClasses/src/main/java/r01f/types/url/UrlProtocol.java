@@ -197,7 +197,10 @@ public class UrlProtocol
 					 : strNormalized;
 	}
 	private static String _normalize(final String str) {
-		return str.trim();
+		// ServletRequest's getProtocol() method returns HTTP/1.1 
+		int slashPos = str.indexOf("/");
+		return slashPos > 0 ? str.substring(0,slashPos).trim()
+							: str.trim();
 	}
 	public static boolean is(final String str,final StandardUrlProtocol proto) {
 		UrlProtocol p = UrlProtocol.of(str);

@@ -410,11 +410,17 @@ public abstract class CommonOIDs {
 		public SecurityToken(final String oid) {
 			super(oid);
 		}
+		public static SecurityToken from(final String id) {
+			return new SecurityToken(id);
+		}
 		public static SecurityToken forId(final String id) {
 			return new SecurityToken(id);
 		}
 		public static SecurityToken valueOf(final String id) {
 			return new SecurityToken(id);
+		}
+		public byte[] getBytes() {
+			return this.asString().getBytes();
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -490,6 +496,26 @@ public abstract class CommonOIDs {
 		}
 		public static ExecContextId forId(final String id) {
 			return new ExecContextId(id);
+		}
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////////////////
+	@Immutable
+	@MarshallType(as="webSessionOid")
+	@EqualsAndHashCode(callSuper=true)
+	@NoArgsConstructor
+	public static final class WebSessionOID
+	     		      extends OIDBaseMutable<String> {
+		private static final long serialVersionUID = 1860937925564750174L;
+		public WebSessionOID(final String oid) {
+			super(oid);
+		}
+		public static WebSessionOID forId(final String id) {
+			return new WebSessionOID(id);
+		}
+		public static WebSessionOID valueOf(final String id) {
+			return WebSessionOID.forId(id);
 		}
 	}
 }
