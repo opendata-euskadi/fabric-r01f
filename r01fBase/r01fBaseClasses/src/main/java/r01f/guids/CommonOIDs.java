@@ -14,6 +14,7 @@ import r01f.internal.Env;
 import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 import r01f.objectstreamer.annotations.MarshallType;
+import r01f.patterns.Memoized;
 import r01f.util.types.Passwords;
 import r01f.util.types.Strings;
 
@@ -310,16 +311,15 @@ public abstract class CommonOIDs {
 		private static final long serialVersionUID = -4110070527400569196L;
 
 		private static final String PASSWORD_NOT_AVAILABLE = "_password_not_available_";
-		
-		// BEWARE!!! it's transient: NOT serialized
-		private transient PasswordHash _hash;
+		private final transient Memoized<PasswordHash> _hash = new Memoized<PasswordHash>() {
+																		@Override
+																		public PasswordHash supply() {
+																			return PasswordHash.fromPassword(Password.this);
+																		}
+															   };
 		
 		public Password(final String pwd) {
 			super(pwd);	
-		}
-		public Password(final String pwd,final PasswordHash hash) {
-			super(pwd);
-			_hash = hash;
 		}
 		public static Password forId(final String id) {
 			return new Password(id);
@@ -327,34 +327,8 @@ public abstract class CommonOIDs {
 		public static Password valueOf(final String id) {
 			return Password.forId(id);
 		}
-		public static Password fromHash(final String hash) {
-			return Password.fromHash(new PasswordHash(hash));
-		}
-		public static Password fromHash(final PasswordHash hash) {
-			return new Password(PASSWORD_NOT_AVAILABLE,
-								hash);
-		}
-		public PasswordHash getHash() {
-			return _hash != null ? _hash 
-								 : PasswordHash.of(this.getId());
-		}
-		public Password hashed() {
-			// remove the password and hash
-			return new Password(PASSWORD_NOT_AVAILABLE,
-								this.getHash());
-		}
-		public boolean matches(final Password other) {
-			if (other.getId().equals(PASSWORD_NOT_AVAILABLE)
-			 && !this.getId().equals(PASSWORD_NOT_AVAILABLE)) {
-				return other.getHash()
-							.matches(this);
-			} else if (!other.getId().equals(PASSWORD_NOT_AVAILABLE)
-					&& this.getId().equals(PASSWORD_NOT_AVAILABLE)) {
-				return this.getHash()
-						   .matches(other);
-			} else {	// only hashes are available
-				throw new UnsupportedOperationException("Cannot match two passwords if any of them is available!");
-			}
+		public PasswordHash hash() {
+			return _hash.get();
 		}
 		public char[] toCharArray() {
 			return this.asString().toCharArray();
@@ -382,10 +356,13 @@ public abstract class CommonOIDs {
 		public static PasswordHash valueOf(final String id) {
 			return PasswordHash.forId(id);
 		}
-		public static PasswordHash of(final String password) {
-			return PasswordHash.of(new Password(password));
+		public static PasswordHash fromHash(final String hash) {
+			return PasswordHash.forId(hash);
 		}
-		public static PasswordHash of(final Password password) {
+		public static PasswordHash fromPassword(final String password) {
+			return PasswordHash.fromPassword(new Password(password));
+		}
+		public static PasswordHash fromPassword(final Password password) {
 			return Passwords.createWithDefaultCost()
 							.hash(password);
 		}
