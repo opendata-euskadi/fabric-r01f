@@ -14,6 +14,7 @@ import r01f.internal.Env;
 import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 import r01f.objectstreamer.annotations.MarshallType;
+import r01f.util.types.Passwords;
 import r01f.util.types.Strings;
 
 @NoArgsConstructor(access=AccessLevel.PRIVATE)
@@ -297,18 +298,28 @@ public abstract class CommonOIDs {
 		public static UserRole valueOf(final String id) {
 			return new UserRole(id);
 		}
-	}
+	}			
 	@Immutable
 	@MarshallType(as="password")
 	@EqualsAndHashCode(callSuper=true)
+	@Accessors(prefix="_")
 	@NoArgsConstructor
 	public static final class Password
-	     		      extends OIDBaseMutable<String> {
+	     			  extends OIDBaseMutable<String> {
 
 		private static final long serialVersionUID = -4110070527400569196L;
 
-		public Password(final String oid) {
-			super(oid);
+		private static final String PASSWORD_NOT_AVAILABLE = "_password_not_available_";
+		
+		// BEWARE!!! it's transient: NOT serialized
+		private transient PasswordHash _hash;
+		
+		public Password(final String pwd) {
+			super(pwd);	
+		}
+		public Password(final String pwd,final PasswordHash hash) {
+			super(pwd);
+			_hash = hash;
 		}
 		public static Password forId(final String id) {
 			return new Password(id);
@@ -316,8 +327,72 @@ public abstract class CommonOIDs {
 		public static Password valueOf(final String id) {
 			return Password.forId(id);
 		}
+		public static Password fromHash(final String hash) {
+			return Password.fromHash(new PasswordHash(hash));
+		}
+		public static Password fromHash(final PasswordHash hash) {
+			return new Password(PASSWORD_NOT_AVAILABLE,
+								hash);
+		}
+		public PasswordHash getHash() {
+			return _hash != null ? _hash 
+								 : PasswordHash.of(this.getId());
+		}
+		public Password hashed() {
+			// remove the password and hash
+			return new Password(PASSWORD_NOT_AVAILABLE,
+								this.getHash());
+		}
 		public boolean matches(final Password other) {
-			return this.is(other);
+			if (other.getId().equals(PASSWORD_NOT_AVAILABLE)
+			 && !this.getId().equals(PASSWORD_NOT_AVAILABLE)) {
+				return other.getHash()
+							.matches(this);
+			} else if (!other.getId().equals(PASSWORD_NOT_AVAILABLE)
+					&& this.getId().equals(PASSWORD_NOT_AVAILABLE)) {
+				return this.getHash()
+						   .matches(other);
+			} else {	// only hashes are available
+				throw new UnsupportedOperationException("Cannot match two passwords if any of them is available!");
+			}
+		}
+		public char[] toCharArray() {
+			return this.asString().toCharArray();
+		}
+		public boolean matchesHash(final PasswordHash hash) {
+			return Passwords.createWithDefaultCost()
+							.authenticate(this,			// the password
+										  hash);		// the hash
+		}
+	}
+	@Immutable
+	@MarshallType(as="passwordHash")
+	@EqualsAndHashCode(callSuper=true)
+	@NoArgsConstructor
+	public static final class PasswordHash
+	     		      extends OIDBaseMutable<String> {
+		private static final long serialVersionUID = -4102923783713904433L;
+		
+		public PasswordHash(final String oid) {
+			super(oid);
+		}
+		public static PasswordHash forId(final String id) {
+			return new PasswordHash(id);
+		}
+		public static PasswordHash valueOf(final String id) {
+			return PasswordHash.forId(id);
+		}
+		public static PasswordHash of(final String password) {
+			return PasswordHash.of(new Password(password));
+		}
+		public static PasswordHash of(final Password password) {
+			return Passwords.createWithDefaultCost()
+							.hash(password);
+		}
+		public boolean matches(final Password password) {
+			return Passwords.createWithDefaultCost()
+							.authenticate(password,		// the received password
+										  this);		// the stored hash
 		}
 	}
 	@Immutable
