@@ -310,14 +310,12 @@ public abstract class CommonOIDs {
 
 		private static final long serialVersionUID = -4110070527400569196L;
 
-		private static final String PASSWORD_NOT_AVAILABLE = "_password_not_available_";
 		private final transient Memoized<PasswordHash> _hash = new Memoized<PasswordHash>() {
 																		@Override
 																		public PasswordHash supply() {
 																			return PasswordHash.fromPassword(Password.this);
 																		}
 															   };
-		
 		public Password(final String pwd) {
 			super(pwd);	
 		}
@@ -370,6 +368,12 @@ public abstract class CommonOIDs {
 			return Passwords.createWithDefaultCost()
 							.authenticate(password,		// the received password
 										  this);		// the stored hash
+		}
+		public char[] toCharArray() {
+			return this.asString().toCharArray();
+		}
+		public byte[] getBytes() {
+			return this.asString().getBytes();
 		}
 	}
 	@Immutable
