@@ -38,7 +38,6 @@
 <!-- MODULES                                                                -->
 <!-- ====================================================================== -->
 	<modules>
-		<module>r01fAspect</module>
 		<module>r01fObjectStreamer</module>
 		<module>r01fBase</module>
 		<module>r01fProperties</module>
@@ -196,28 +195,74 @@
 <!-- ====================================================================== -->
 	<build>
 		<pluginManagement>
-			<plugins>
-				<!-- Java compile -->
-				<!--
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.8.0</version>
-					<configuration>
-						<source>${maven.compiler.source}</source>
-						<target>${maven.compiler.target}</target>
-					</configuration>
-				</plugin>
+	      	<plugins>
+	      		<!--
+	      			[0] - Clean
+	      			https://maven.apache.org/plugins/maven-clean-plugin/
+	      			The Clean Plugin is used when you want to remove files generated at build-time in a project's ServiceCatalog. 
+	      		-->
+		        <plugin>
+		        	<artifactId>maven-clean-plugin</artifactId>
+		          	<version>3.1.0</version>
+		        </plugin>
+		        <!-- 
+		        	PHASES: see http://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_war_packaging
+		        		[1] - process-resources
+		        			  process-test-resources
+		        		[2] - test-compile
+		        		[3] - test
+		        		[4] - package
+		        		[5] - install
+		        		[6] - deploy
+		        -->
+	      		<!--
+	      			[1] - RESOURCES: https://maven.apache.org/plugins/maven-resources-plugin/
+	      				  The Resources Plugin handles the copying of project resources to the output directory
+	      			There are two different kinds of resources: main resources and test resources 
+	      		-->
+		        <plugin>
+		          	<artifactId>maven-resources-plugin</artifactId>
+		          	<version>3.1.0</version>
+		        </plugin>
+	      		<!--
+	      			[2] - COMPILE: https://maven.apache.org/plugins/maven-compiler-plugin/
+	      				  The Compiler Plugin is used to compile the sources of your project.
+	      		-->
+		        <plugin>
+		          	<artifactId>maven-compiler-plugin</artifactId>
+		          	<version>3.8.1</version>
+		        </plugin>
+	      		<!--
+	      			[3] - TEST: https://maven.apache.org/surefire/maven-surefire-plugin/
+	      				  The Surefire Plugin is used during the test phase of the build lifecycle to execute the unit tests of an application
+	      		-->
+		        <plugin>
+		          	<artifactId>maven-surefire-plugin</artifactId>
+		          	<version>3.0.0-M3</version>
+		        </plugin>
+	      		<!--
+	      			[4] - PACKAGE: https://maven.apache.org/plugins/maven-war-plugin/
+	      				  The WAR Plugin is responsible for collecting all artifact dependencies, classes and resources of the web application and packaging them into a web application archive
+	      		-->
+		        <plugin>
+		          	<artifactId>maven-jar-plugin</artifactId>
+		          	<version>3.1.2</version>
+		        </plugin>
+		        <plugin>
+		          	<artifactId>maven-war-plugin</artifactId>
+		          	<version>3.2.3</version>
+		        </plugin>
+	      		<!--
+	      			[5] - INSTALL: https://maven.apache.org/plugins/maven-war-plugin/
+	      				  The Install Plugin is used during the install phase to add artifact(s) to the local repository
+	      		-->
+		        <plugin>
+		          	<artifactId>maven-install-plugin</artifactId>
+		          	<version>3.0.0-M1</version>
+		        </plugin>
+				<!-- 
+					[6] - DEPLOY:: https://maven.apache.org/plugins/maven-deploy-plugin/usage.html 
 				-->
-
-				<!-- Version plugin -->
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>versions-maven-plugin</artifactId>
-					<version>2.7</version>
-				</plugin>
-
-				<!-- Mav4en deploy: https://maven.apache.org/plugins/maven-deploy-plugin/usage.html -->
 				<plugin>
 					<artifactId>maven-deploy-plugin</artifactId>
 					<version>3.0.0-M1</version>
@@ -231,6 +276,8 @@
 						</execution>
 					</executions>
 				</plugin>
+				
+
 
 				<!-- Add the [resources] dir to the compile & package phase -->
 				<!-- https://www.mojohaus.org/build-helper-maven-plugin/usage.html -->
@@ -247,7 +294,6 @@
 							</goals>
 							<configuration>
 								<sources>
-									<source>src/main/aspect</source>
 									<source>src/main/resources</source>
 									<source>src/test/resources</source>
 								</sources>
@@ -255,9 +301,17 @@
 						</execution>
 					</executions>
 				</plugin>
+				
+				<!-- Version plugin -->
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>versions-maven-plugin</artifactId>
+					<version>2.7</version>
+				</plugin>
 
 			</plugins>
 		</pluginManagement>
+		
 		<!-- 
 		The Resources Plugin handles the copying of project resources to the output directory
 		-->
