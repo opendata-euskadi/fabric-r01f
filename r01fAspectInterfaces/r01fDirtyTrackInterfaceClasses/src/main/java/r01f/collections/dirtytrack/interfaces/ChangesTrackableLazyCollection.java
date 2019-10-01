@@ -1,6 +1,5 @@
 package r01f.collections.dirtytrack.interfaces;
 
-import java.util.Collection;
 import java.util.Set;
 
 public interface ChangesTrackableLazyCollection<V> 
@@ -11,9 +10,4 @@ public interface ChangesTrackableLazyCollection<V>
 	 * @return 
 	 */
 	public Set<V> notNewOrRemovedEntries(boolean onlyLoaded);
-	/**
-	 * @return the loaded values
-	 */
-	public Collection<V> loadedValues();
-
 }

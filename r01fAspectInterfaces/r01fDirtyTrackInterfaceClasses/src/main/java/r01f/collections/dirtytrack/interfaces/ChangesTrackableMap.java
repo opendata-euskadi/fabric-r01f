@@ -10,7 +10,7 @@ import r01f.types.dirtytrack.internal.CollectionChangesTracker;
 /**
  * An interface for a {@link Map} that keeps tracks of the changes (the insertions and deletions)
  * <pre>
- * BEWARE!!		This type DOES NOT implements the {@link Map} inteface because it it did, it could NOT be used at the
+ * BEWARE!!		This type DOES NOT implements the {@link Map} interface because it it did, it could NOT be used at the
  * 				aspect ConvertToDirtyStateTrackableAspect to add the {@link ChangesTrackableMap} to any type extending
  * 				Map<K,V>; the weave does NOT allow adding an interface to a type that already implements it.
  * 					Cannot declare parent ChangesTrackableMap onto type XXX since it already has java.util.Map<K,V> in its hierarchy

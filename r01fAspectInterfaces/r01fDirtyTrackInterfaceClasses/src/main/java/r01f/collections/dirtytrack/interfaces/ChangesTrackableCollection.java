@@ -9,7 +9,7 @@ import r01f.types.dirtytrack.internal.CollectionChangesTracker;
 /**
  * An interface for a {@link Collection} that keeps tracks of the changes (the insertions and deletions)
  * <pre>
- * BEWARE!!		This type DOES NOT implements the {@link Collection} inteface because it it did, it could NOT be used at the
+ * BEWARE!!		This type DOES NOT implements the {@link Collection} interface because it it did, it could NOT be used at the
  * 				aspect ConvertToDirtyStateTrackableAspect to add the {@link ChangesTrackableCollection} to any type extending
  * 				Collection<V>; the weave does NOT allow adding an interface to a type that already implements it.
  * 					Cannot declare parent ChangesTrackableCollection onto type XXX since it already has java.util.Collection<V> in its hierarchy
