@@ -25,6 +25,7 @@ public class R01F {
 	
 	public static int CORE_GROUP = 0;
 	
+	public static AppCode R01_APP_CODE = AppCode.forId("r01");
 	public static AppCode APP_CODE = AppCode.forId("r01f");
 	public static AppCode LEGACY_APP_CODE = AppCode.forId("r01ft");
 /////////////////////////////////////////////////////////////////////////////////////////
