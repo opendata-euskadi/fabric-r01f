@@ -48,7 +48,7 @@ In order to set environment-dependent values, the included r01fEnvironment file 
 		</then>
 	</if>
 	-->
-	<property name="logPath" value="${R01_HOME:-/log}/log/${appName}/" />
+	<property name="logPath" value="${R01_Home:-/datos}/${appName}/log/" />
 
 	<!-- 1 por día. Nivel DEBUG. 10 días de historia
 		 logger{10} líneas de stacktrace para las excepciones
@@ -61,9 +61,10 @@ In order to set environment-dependent values, the included r01fEnvironment file 
 			 for each cluster node (like the server's name), N JVMs will be writing at the same file; this is a performance botlenect.
 			 To avoid this problem, the log file name includes an environmental variable that each weblogic server sets with it's own name: weblogic.Name
 			 When in a NOT-weblogic environmente (ie Tomcat), the default value is used $(weblogic.Name:-[defaultValue])
-			 see http://logback.qos.ch/manual/configuration.html#variableSubstitution 	 
+			 see http://logback.qos.ch/manual/configuration.html#variableSubstitution
+			 <file>${logPath}/${appName}_${weblogic.Name:-default}.log</file> 	 
 		-->
-		<file>${logPath}/${appName}_${weblogic.Name:-default}.log</file>	
+		<file>${logPath}/${appName}.log</file>	
 		<encoder>
 			<pattern>%date %-5level %logger{0} [%method - %line] - %message%n %exception{30}</pattern>
 		</encoder>
