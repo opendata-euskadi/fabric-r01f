@@ -32,6 +32,7 @@ import r01f.types.AppVersion;
 import r01f.types.Color;
 import r01f.types.JavaPackage;
 import r01f.types.Range;
+import r01f.types.StringBase64;
 import r01f.types.TimeLapse;
 import r01f.types.contact.Phone;
 import r01f.types.datetime.DayOfMonth;
@@ -109,6 +110,10 @@ abstract class MarshallerModuleBase
 		// Add the Url serializer & deserializer
 		this.addSerializer(Url.class,new CanBeRepresentedAsStringSerializer(Url.class));
 		this.addDeserializer(Url.class,new CanBeRepresentedAsStringDeserializer(Url.class));
+		
+		// Add the StringBase64 serializer & deserializer
+		this.addSerializer(StringBase64.class,new CanBeRepresentedAsStringSerializer(StringBase64.class));
+		this.addDeserializer(StringBase64.class,new CanBeRepresentedAsStringDeserializer(StringBase64.class));		
 
 		// Add the MimeType serializer & deserializer
 		this.addSerializer(MimeType.class,new PolymorphicCanBeRepresentedAsStringSerializer(MimeType.class,"mimeType"));
