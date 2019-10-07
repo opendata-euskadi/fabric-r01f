@@ -265,7 +265,7 @@
 					<version>3.0.0-M1</version>
 				</plugin>
 				<!--
-					[6] - DEPLOY:: https://maven.apache.org/plugins/maven-deploy-plugin/usage.html
+					[6] - DEPLOY: https://maven.apache.org/plugins/maven-deploy-plugin/usage.html
 				-->
 				<!-- Add the [resources] dir to the compile & package phase -->
 				<!-- https://www.mojohaus.org/build-helper-maven-plugin/usage.html -->
