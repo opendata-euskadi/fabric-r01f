@@ -202,9 +202,8 @@
 			<!-- Mav4en deploy: https://maven.apache.org/plugins/maven-deploy-plugin/usage.html -->
 			<plugins>
 				<!--
-					[0] - Clean
-					https://maven.apache.org/plugins/maven-clean-plugin/
-					The Clean Plugin is used when you want to remove files generated at build-time in a project's ServiceCatalog.
+					[0] - CLEAN: https://maven.apache.org/plugins/maven-clean-plugin/
+						  The Clean Plugin is used when you want to remove files generated at build-time in a project's ServiceCatalog.
 				-->
 				<plugin>
 					<artifactId>maven-clean-plugin</artifactId>
