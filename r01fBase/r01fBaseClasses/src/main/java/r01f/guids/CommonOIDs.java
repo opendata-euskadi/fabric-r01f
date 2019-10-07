@@ -14,6 +14,8 @@ import r01f.internal.Env;
 import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 import r01f.objectstreamer.annotations.MarshallType;
+import r01f.patterns.Memoized;
+import r01f.util.types.Passwords;
 import r01f.util.types.Strings;
 
 @NoArgsConstructor(access=AccessLevel.PRIVATE)
@@ -297,18 +299,25 @@ public abstract class CommonOIDs {
 		public static UserRole valueOf(final String id) {
 			return new UserRole(id);
 		}
-	}
+	}			
 	@Immutable
 	@MarshallType(as="password")
 	@EqualsAndHashCode(callSuper=true)
+	@Accessors(prefix="_")
 	@NoArgsConstructor
 	public static final class Password
-	     		      extends OIDBaseMutable<String> {
+	     			  extends OIDBaseMutable<String> {
 
 		private static final long serialVersionUID = -4110070527400569196L;
 
-		public Password(final String oid) {
-			super(oid);
+		private final transient Memoized<PasswordHash> _hash = new Memoized<PasswordHash>() {
+																		@Override
+																		public PasswordHash supply() {
+																			return PasswordHash.fromPassword(Password.this);
+																		}
+															   };
+		public Password(final String pwd) {
+			super(pwd);	
 		}
 		public static Password forId(final String id) {
 			return new Password(id);
@@ -316,8 +325,55 @@ public abstract class CommonOIDs {
 		public static Password valueOf(final String id) {
 			return Password.forId(id);
 		}
-		public boolean matches(final Password other) {
-			return this.is(other);
+		public PasswordHash hash() {
+			return _hash.get();
+		}
+		public char[] toCharArray() {
+			return this.asString().toCharArray();
+		}
+		public boolean matchesHash(final PasswordHash hash) {
+			return Passwords.createWithDefaultCost()
+							.authenticate(this,			// the password
+										  hash);		// the hash
+		}
+	}
+	@Immutable
+	@MarshallType(as="passwordHash")
+	@EqualsAndHashCode(callSuper=true)
+	@NoArgsConstructor
+	public static final class PasswordHash
+	     		      extends OIDBaseMutable<String> {
+		private static final long serialVersionUID = -4102923783713904433L;
+		
+		public PasswordHash(final String oid) {
+			super(oid);
+		}
+		public static PasswordHash forId(final String id) {
+			return new PasswordHash(id);
+		}
+		public static PasswordHash valueOf(final String id) {
+			return PasswordHash.forId(id);
+		}
+		public static PasswordHash fromHash(final String hash) {
+			return PasswordHash.forId(hash);
+		}
+		public static PasswordHash fromPassword(final String password) {
+			return PasswordHash.fromPassword(new Password(password));
+		}
+		public static PasswordHash fromPassword(final Password password) {
+			return Passwords.createWithDefaultCost()
+							.hash(password);
+		}
+		public boolean matches(final Password password) {
+			return Passwords.createWithDefaultCost()
+							.authenticate(password,		// the received password
+										  this);		// the stored hash
+		}
+		public char[] toCharArray() {
+			return this.asString().toCharArray();
+		}
+		public byte[] getBytes() {
+			return this.asString().getBytes();
 		}
 	}
 	@Immutable
@@ -410,11 +466,17 @@ public abstract class CommonOIDs {
 		public SecurityToken(final String oid) {
 			super(oid);
 		}
+		public static SecurityToken from(final String id) {
+			return new SecurityToken(id);
+		}
 		public static SecurityToken forId(final String id) {
 			return new SecurityToken(id);
 		}
 		public static SecurityToken valueOf(final String id) {
 			return new SecurityToken(id);
+		}
+		public byte[] getBytes() {
+			return this.asString().getBytes();
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -490,6 +552,26 @@ public abstract class CommonOIDs {
 		}
 		public static ExecContextId forId(final String id) {
 			return new ExecContextId(id);
+		}
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////////////////
+	@Immutable
+	@MarshallType(as="webSessionOid")
+	@EqualsAndHashCode(callSuper=true)
+	@NoArgsConstructor
+	public static final class WebSessionOID
+	     		      extends OIDBaseMutable<String> {
+		private static final long serialVersionUID = 1860937925564750174L;
+		public WebSessionOID(final String oid) {
+			super(oid);
+		}
+		public static WebSessionOID forId(final String id) {
+			return new WebSessionOID(id);
+		}
+		public static WebSessionOID valueOf(final String id) {
+			return WebSessionOID.forId(id);
 		}
 	}
 }

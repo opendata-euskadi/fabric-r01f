@@ -60,7 +60,7 @@ public class ContactPhone
 		return r01f.types.Range.parse(_availableRangeForCallingStr,Integer.class);
 	}
 	@GwtIncompatible("uses Range")
-	public void setAvailableRangeForCalling(r01f.types.Range<Integer> _availableRangeForCalling) {
+	public void setAvailableRangeForCalling(final r01f.types.Range<Integer> _availableRangeForCalling) {
 		_availableRangeForCallingStr = _availableRangeForCalling.asString();
 	}
 	
@@ -91,6 +91,10 @@ public class ContactPhone
 	@GwtIncompatible("uses Range")
 	public ContactPhone availableRangeForCalling(final r01f.types.Range<Integer> range) {
 		_availableRangeForCallingStr = range.asString();
+		return this;
+	}
+	public ContactPhone allwaysAvailableForCalling() {
+		_availableRangeForCallingStr = null;
 		return this;
 	}
 	

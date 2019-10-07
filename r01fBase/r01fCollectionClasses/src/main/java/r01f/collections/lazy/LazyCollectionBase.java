@@ -11,6 +11,7 @@ import com.google.common.collect.Sets;
 import lombok.experimental.Accessors;
 import r01f.aspects.interfaces.dirtytrack.DirtyStateTrackable;
 import r01f.aspects.interfaces.dirtytrack.NotDirtyStateTrackable;
+import r01f.collections.dirtytrack.interfaces.ChangesTrackableLazyCollection;
 import r01f.collections.lazy.LazyCollectionsInterfaces.CollectionValuesSupplier;
 
 /**
@@ -21,6 +22,7 @@ import r01f.collections.lazy.LazyCollectionsInterfaces.CollectionValuesSupplier;
 abstract class LazyCollectionBase<V> 
        extends LazyChangesTrackerBase<V>
     implements Collection<V>,
+    		   ChangesTrackableLazyCollection<V>,
     		   LazyCollection<V> {
 	
 ////////////////////////////////////////////////////////////////////////////////////////////

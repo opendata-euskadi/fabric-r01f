@@ -150,7 +150,7 @@ public abstract class SecurityContextBase
 	public UserCode getUserCode() {
 		UserCode outUserCode = null;
 		if (_authenticatedActorId != null) {
-			if (this.isForApp()) throw new IllegalArgumentException("The user context is NOT for a user (it's an app)");
+//			if (this.isForApp()) throw new IllegalArgumentException("The user context is NOT for a user (it's an app)");
 			outUserCode = UserCode.forAuthenticatedUserId(_authenticatedActorId);
 		} 
 		return outUserCode;
