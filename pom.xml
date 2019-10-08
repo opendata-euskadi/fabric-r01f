@@ -234,6 +234,10 @@
 				<plugin>
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>3.8.1</version>
+					<configuration>
+						<source>${maven.compiler.source}</source>
+						<target>${maven.compiler.target}</target>
+					</configuration>
 				</plugin>
 				<!--
 					[3] - TEST: https://maven.apache.org/surefire/maven-surefire-plugin/
@@ -256,7 +260,7 @@
 					<version>3.2.3</version>
 				</plugin>
 				<!--
-					[5] - INSTALL: https://maven.apache.org/plugins/maven-war-plugin/
+					[5] - INSTALL: https://maven.apache.org/plugins/maven-install-plugin/
 						The Install Plugin is used during the install phase to add artifact(s) to the local repository
 				-->
 				<plugin>
@@ -266,6 +270,20 @@
 				<!--
 					[6] - DEPLOY: https://maven.apache.org/plugins/maven-deploy-plugin/usage.html
 				-->
+				<plugin>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>3.0.0-M1</version>
+					<executions>
+						<execution>
+							<id>default-deploy</id>
+							<phase>deploy</phase>
+							<goals>
+								<goal>deploy</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+
 				<!-- Add the [resources] dir to the compile & package phase -->
 				<!-- https://www.mojohaus.org/build-helper-maven-plugin/usage.html -->
 				<plugin>
@@ -281,7 +299,6 @@
 							</goals>
 							<configuration>
 								<sources>
-
 									<source>src/main/resources</source>
 									<source>src/test/resources</source>
 								</sources>
