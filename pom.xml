@@ -31,7 +31,7 @@
 	<groupId>r01.r01f</groupId>
 	<name>r01f</name>
 	<artifactId>r01f</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>${r01f.version}</version>
 	<packaging>pom</packaging>				<!-- it's a parent project -->
 
 <!-- ====================================================================== -->
@@ -303,6 +303,35 @@
 									<source>src/test/resources</source>
 								</sources>
 							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+
+				<!-- When we have a multi module build. We have a parent pom and one or more children -->
+				<!-- With this plugin automatic replace parent variable version -->
+				<!-- https://www.mojohaus.org/flatten-maven-plugin/usage.html -->
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>flatten-maven-plugin</artifactId>
+					<version>1.1.0</version>
+					<configuration>
+						<updatePomFile>true</updatePomFile>
+						<flattenMode>resolveCiFriendliesOnly</flattenMode>
+					</configuration>
+					<executions>
+						<execution>
+							<id>flatten</id>
+							<phase>process-resources</phase>
+							<goals>
+								<goal>flatten</goal>
+							</goals>
+						</execution>
+						<execution>
+							<id>flatten.clean</id>
+							<phase>clean</phase>
+							<goals>
+								<goal>clean</goal>
+							</goals>
 						</execution>
 					</executions>
 				</plugin>

@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>r01.r01f.html</groupId>
 		<artifactId>r01fHTML</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>${r01f.version}</version>
 	</parent>
 
 <!-- ====================================================================== -->
