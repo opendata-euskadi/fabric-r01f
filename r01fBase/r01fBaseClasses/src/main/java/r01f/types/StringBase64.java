@@ -40,7 +40,11 @@ public class StringBase64
 							  		  final Function<String,String> encoder) {
 		if (rawString == null || encoder == null) throw new IllegalArgumentException();
 		return new StringBase64(encoder.apply(rawString));
-	}	
+	}
+	public static StringBase64 encode(final byte[] bytes) {
+		if (bytes.length == 0) throw new IllegalArgumentException();
+		return new StringBase64(StringEncodeUtils.encodeBase64String(bytes));
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	
 /////////////////////////////////////////////////////////////////////////////////////////
