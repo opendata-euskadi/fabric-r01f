@@ -2,6 +2,8 @@ package r01f.model.persistence;
 
 import java.util.Collection;
 
+import com.google.common.reflect.TypeToken;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -12,10 +14,10 @@ import r01f.objectstreamer.annotations.MarshallType;
 import r01f.util.types.Strings;
 import r01f.util.types.collections.CollectionUtils;
 
-@MarshallType(as="findResult",typeId="FINDOK")
+@MarshallType(as="findResult",typeId="ok")
 @Accessors(prefix="_")
 public class FindOK<T>
-	 extends PersistenceOperationOnObjectOK<Collection<T>>
+	 extends PersistenceOperationExecOK<Collection<T>>
   implements FindResult<T> {
 /////////////////////////////////////////////////////////////////////////////////////////
 //  FIELDS
@@ -32,12 +34,20 @@ public class FindOK<T>
 //  CONSTRUCTOR & BUILDER
 /////////////////////////////////////////////////////////////////////////////////////////
 	public FindOK() {
-		super(PersistenceRequestedOperation.FIND,PersistencePerformedOperation.FOUND,
-			  Collection.class);
+		super(PersistenceRequestedOperation.FIND,PersistencePerformedOperation.FOUND);
 	}
 	protected FindOK(final Class<T> entityType) {
 		this();
 		_foundObjectType = entityType;
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	                                                                          
+/////////////////////////////////////////////////////////////////////////////////////////
+	@Override @SuppressWarnings({ "serial","unchecked" })
+	public Class<Collection<T>> getObjectType() {
+		return (Class<Collection<T>>)new TypeToken<Class<Collection<T>>>() { /* nothing */ }
+											.getComponentType()
+											.getRawType();
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  
@@ -50,9 +60,11 @@ public class FindOK<T>
 		T outEntity = null;
 		Collection<T> entities = this.getOrThrow();
 		if (CollectionUtils.hasData(entities)) {
-			outEntity = CollectionUtils.of(entities).pickOneAndOnlyElement("A single instance of {} was expected to be found BUT {} were found",_foundObjectType,entities.size());
+			outEntity = CollectionUtils.of(entities).pickOneAndOnlyElement("A single instance of {} was expected to be found BUT {} were found",
+																		   _foundObjectType,entities.size());
 		} else {
-			throw new IllegalStateException(Throwables.message("A single instance of {} was expected to be found BUT NONE were found",_foundObjectType));
+			throw new IllegalStateException(Throwables.message("A single instance of {} was expected to be found BUT NONE were found",
+															   _foundObjectType));
 		}
 		return outEntity;
 	}
@@ -73,6 +85,6 @@ public class FindOK<T>
 	@Override
 	public CharSequence debugInfo() {
 		return Strings.customized("{} persistence operation requested on entity of type {} and found {} results",
-								  _requestedOperation,_objectType,CollectionUtils.safeSize(_operationExecResult));
+								  _calledMethod,_foundObjectType,CollectionUtils.safeSize(_methodExecResult));
 	}
 }

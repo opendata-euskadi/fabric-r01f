@@ -1,17 +1,15 @@
 package r01f.model.persistence;
 
-import r01f.debug.Debuggable;
+import r01f.objectstreamer.annotations.MarshallPolymorphicTypeInfo;
+import r01f.objectstreamer.annotations.MarshallPolymorphicTypeInfo.MarshalTypeInfoIncludeCase;
+import r01f.objectstreamer.annotations.MarshallPolymorphicTypeInfo.MarshallTypeInfoInclude;
 
+@MarshallPolymorphicTypeInfo(includeTypeInfo=@MarshallTypeInfoInclude(type=MarshalTypeInfoIncludeCase.ALWAYS))
 public interface CRUDResult<T>
-		 extends PersistenceOperationResult,
-		 		 Debuggable {
-	/**
-	 * Returns the CRUD operation's target object or throws a {@link PersistenceException}
-	 * if the operation resulted on an error
-	 * @return
-	 * @throws PersistenceException
-	 */
-	public T getOrThrow() throws PersistenceException;
+		 extends PersistenceOperationOnObjectResult<T> {
+/////////////////////////////////////////////////////////////////////////////////////////
+//	                                                                          
+/////////////////////////////////////////////////////////////////////////////////////////	
 	/**
 	 * @return a {@link CRUDOK} instance
 	 */

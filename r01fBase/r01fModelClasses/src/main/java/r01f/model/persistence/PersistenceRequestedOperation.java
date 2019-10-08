@@ -2,6 +2,7 @@ package r01f.model.persistence;
 
 import r01f.enums.EnumExtended;
 import r01f.enums.EnumExtendedWrapper;
+import r01f.model.services.COREServiceMethod;
 
 /**
  * Persistence-related operations
@@ -16,9 +17,11 @@ public enum PersistenceRequestedOperation
 	SAVE,		// create or update
 	DELETE,
 	FIND,
-	COUNT,
-	OTHER;
+	COUNT;
 	
+	public COREServiceMethod getCOREServiceMethod() {
+		return COREServiceMethod.named(this.name());
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -27,7 +30,9 @@ public enum PersistenceRequestedOperation
 	public static PersistenceRequestedOperation fromName(final String name) {
 		return WRAPPER.fromName(name);
 	}
-
+	public static PersistenceRequestedOperation from(final COREServiceMethod method) {
+		return PersistenceRequestedOperation.fromName(method.asString());
+	}
 	@Override
 	public boolean isIn(final PersistenceRequestedOperation... els) {
 		return WRAPPER.isIn(this,els);

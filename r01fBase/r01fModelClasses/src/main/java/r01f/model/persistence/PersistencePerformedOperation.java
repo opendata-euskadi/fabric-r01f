@@ -5,6 +5,7 @@ import com.google.common.annotations.GwtIncompatible;
 import r01f.enums.EnumExtended;
 import r01f.enums.EnumExtendedWrapper;
 import r01f.httpclient.HttpResponseCode;
+import r01f.model.services.COREServiceMethod;
 
 /**
  * A performed persistence-related operation
@@ -18,10 +19,13 @@ public enum PersistencePerformedOperation
 	UPDATED,
 	SAVED,		// created or updated
 	DELETED,
-	COUNTED,
 	NOT_MODIFIED,
-	FOUND,
-	OTHER;
+	COUNTED,
+	FOUND;
+	
+	public COREServiceMethod getCOREServiceMethod() {
+		return COREServiceMethod.named(this.name());
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	ENUM EXTENDED 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -37,6 +41,12 @@ public enum PersistencePerformedOperation
 /////////////////////////////////////////////////////////////////////////////////////////
 //  
 /////////////////////////////////////////////////////////////////////////////////////////
+	public static PersistencePerformedOperation fromName(final String name) {
+		return WRAPPER.fromName(name);
+	}
+	public static PersistencePerformedOperation from(final COREServiceMethod method) {
+		return PersistencePerformedOperation.fromName(method.asString());
+	}
 	/**
 	 * Guess the supposed performed operation based on the requested one
 	 * Usually the performed operation depends on the requested one, BUT some times, it 
@@ -66,9 +76,6 @@ public enum PersistencePerformedOperation
 		else if (requestedOp == PersistenceRequestedOperation.COUNT) {
 			outPerformedOp = COUNTED;
 		} 
-		else if (requestedOp == PersistenceRequestedOperation.OTHER) {
-			outPerformedOp = OTHER;
-		}
 		else {
 			throw new IllegalArgumentException("Illegal combination of PersistenceRequestedOperation and HttpResponseCode. This is a DEVELOPER mistake!");
 		}
@@ -107,9 +114,6 @@ public enum PersistencePerformedOperation
 		} 
 		else if (requestedOp == PersistenceRequestedOperation.COUNT) {
 			outPerformedOp = COUNTED;
-		}
-		else if (requestedOp == PersistenceRequestedOperation.OTHER) {
-			outPerformedOp = OTHER;
 		}
 		else {
 			throw new IllegalArgumentException("Illegal combination of PersistenceRequestedOperation and HttpResponseCode. This is a DEVELOPER mistake!");

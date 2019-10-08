@@ -8,16 +8,17 @@ import com.google.common.collect.Maps;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import r01f.exceptions.Throwables;
+import r01f.model.services.COREServiceErrorType;
+import r01f.model.services.COREServiceMethod;
 import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 import r01f.util.types.collections.CollectionUtils;
 
 
 @Accessors(prefix="_")
-abstract class PersistenceOperationOnObjectError<T>
-       extends PersistenceOperationExecError<T>
-    implements PersistenceOperationOnObjectResult<T> {
+public abstract class PersistenceOperationOnObjectError<T>
+       		  extends PersistenceOperationExecError<T>
+    	   implements PersistenceOperationOnObjectResult<T> {
 /////////////////////////////////////////////////////////////////////////////////////////
 //  SERIALIZABLE DATA
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -36,58 +37,57 @@ abstract class PersistenceOperationOnObjectError<T>
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR & BUILDER
 /////////////////////////////////////////////////////////////////////////////////////////
+	public PersistenceOperationOnObjectError(final COREServiceMethod reqOp) {
+		super(reqOp);
+	}
 	public PersistenceOperationOnObjectError(final PersistenceRequestedOperation reqOp) {
 		super(reqOp);
 	}
-	public PersistenceOperationOnObjectError(final PersistenceRequestedOperation reqOp,final String reqOpName) {
-		super(reqOp,reqOpName);
-	}
 	@SuppressWarnings("unchecked")
-	public PersistenceOperationOnObjectError(final PersistenceRequestedOperation reqOp,
-											 final Class<?> entityType) {
+	public PersistenceOperationOnObjectError(final Class<?> entityType,
+											 final PersistenceRequestedOperation reqOp) {
 		super(reqOp);
 		_objectType = (Class<T>)entityType;
 	}
-	PersistenceOperationOnObjectError(final PersistenceRequestedOperation reqOp,
-									  final Class<?> entityType,
+	@SuppressWarnings("unchecked")
+	PersistenceOperationOnObjectError(final Class<?> entityType,
+									  final PersistenceRequestedOperation reqOp,
 		 				 			  final Throwable th) {
-		this(reqOp,
-			 entityType);
-		_error = th;		
-		if (th != null) {
-			_errorMessage = th.getMessage();
-			_errorDebug = Throwables.getStackTraceAsString(th);
-			if (th instanceof PersistenceException) {
-				PersistenceException persistEx = (PersistenceException)th; 
-				_errorType = persistEx.getPersistenceErrorType();
-			} else {
-				_errorType = PersistenceErrorType.SERVER_ERROR;		// a server error by default
-				
-			}
-		}
-	}
-	PersistenceOperationOnObjectError(final PersistenceRequestedOperation reqOp,
-									  final Class<?> entityType,
-						 			  final PersistenceErrorType errCode) {
-		this(reqOp,
-			 entityType,
-			 (Throwable)null);		// no exception
-		_errorDebug = null;
-		_errorType = errCode;
-	}
-	PersistenceOperationOnObjectError(final PersistenceRequestedOperation reqOp,
-									  final Class<?> entityType,
-						 			  final String errMsg,final PersistenceErrorType errCode) {
-		this(reqOp,
-			 entityType,
-			 (Throwable)null);		// no exception
-		_errorMessage = errMsg;
-		_errorDebug = null;
-		_errorType = errCode;
+		super(reqOp,
+			  th);
+		_objectType = (Class<T>)entityType;
 	}
 	@SuppressWarnings("unchecked")
-	public <E extends PersistenceOperationExecError<?>> PersistenceOperationOnObjectError(final PersistenceRequestedOperation reqOp,
-																						  final Class<?> entityType,
+	PersistenceOperationOnObjectError(final Class<?> entityType,
+									  final PersistenceRequestedOperation reqOp,
+						 			  final COREServiceErrorType errorType,
+						 			  final Throwable th) {
+		super(reqOp,
+			  errorType,
+			  th);		// no exception
+		_objectType = (Class<T>)entityType;
+	}
+	@SuppressWarnings("unchecked")
+	PersistenceOperationOnObjectError(final Class<?> entityType,
+									  final PersistenceRequestedOperation reqOp,
+						 			  final String errMsg) {
+		super(reqOp,
+			  errMsg);
+		_objectType = (Class<T>)entityType;
+	}
+	@SuppressWarnings("unchecked")
+	PersistenceOperationOnObjectError(final Class<?> entityType,
+									  final PersistenceRequestedOperation reqOp,
+									  final COREServiceErrorType errType,
+						 			  final String errMsg) {
+		super(reqOp,
+			  errType,
+			  errMsg);
+		_objectType = (Class<T>)entityType;
+	}
+	@SuppressWarnings("unchecked")
+	public <E extends PersistenceOperationExecError<?>> PersistenceOperationOnObjectError(final Class<?> entityType,
+																						  final PersistenceRequestedOperation reqOp,
 																	 					  final E otherError) {
 		super(reqOp,
 			  otherError);
@@ -96,10 +96,6 @@ abstract class PersistenceOperationOnObjectError<T>
 /////////////////////////////////////////////////////////////////////////////////////////
 //  
 /////////////////////////////////////////////////////////////////////////////////////////
-	@Override
-	public PersistencePerformedOperation getPerformedOperation() {
-		return null;	// no performed operation
-	}
 	public void addTargetEntityIdInfo(final String field,final String value) {
 		if (_requestedOperationTargetEntityIdInfo == null) _requestedOperationTargetEntityIdInfo = Maps.newHashMap();
 		_requestedOperationTargetEntityIdInfo.put(field,value);
@@ -129,36 +125,36 @@ abstract class PersistenceOperationOnObjectError<T>
 	 * @return true if it was an error due to the client sending a version number that does NOT match the db-stored one (see Optimistic Locking)
 	 */
 	public boolean wasBecauseAnOptimisticLockingError() {
-		return _errorType == PersistenceErrorType.OPTIMISTIC_LOCKING_ERROR;
+		return _errorType.is(PersistenceServiceErrorTypes.OPTIMISTIC_LOCKING_ERROR);
 	}
 	/**
 	 * @return true if it was a client bad request due to the requested entity was NOT found
 	 */
 	public boolean wasBecauseClientRequestedEntityWasNOTFound() {
-		return _errorType == PersistenceErrorType.ENTITY_NOT_FOUND;
+		return _errorType.is(PersistenceServiceErrorTypes.ENTITY_NOT_FOUND);
 	}
 	/**
 	 * @return true if it was a client bad request due to the requested entity already exists and a create operation was issued
 	 */
 	public boolean wasBecauseClientRequestedEntityAlreadyExists() {
-		return _errorType == PersistenceErrorType.ENTITY_ALREADY_EXISTS;
+		return _errorType.is(PersistenceServiceErrorTypes.ENTITY_ALREADY_EXISTS);
 	}
 	/**
 	 * @return true if it was a client bad request due to a required related entity was NOT found
 	 */
 	public boolean wasBecauseClientRequestedEntityRequiredRelatedEntityNOTFound() {
-		return _errorType == PersistenceErrorType.RELATED_REQUIRED_ENTITY_NOT_FOUND;
+		return _errorType.is(PersistenceServiceErrorTypes.RELATED_REQUIRED_ENTITY_NOT_FOUND);
 	}
 	/**
 	 * @return true if it was a client bad request due to some validation error in the entity
 	 */
 	public boolean wasBecauseClientRequestedEntityValidationErrors() {
-		return _errorType == PersistenceErrorType.ENTITY_NOT_VALID;
+		return _errorType.is(PersistenceServiceErrorTypes.ENTITY_NOT_VALID);
 	}
 	/**
 	 * @return true if it was because the entity's persisted status is NOT valid 
 	 */
 	public boolean wasBecauseClientRequestedEntityWasInAnIllegalStatus() {
-		return _errorType == PersistenceErrorType.ILLEGAL_STATUS;
+		return _errorType.is(PersistenceServiceErrorTypes.ILLEGAL_STATUS);
 	}
 }

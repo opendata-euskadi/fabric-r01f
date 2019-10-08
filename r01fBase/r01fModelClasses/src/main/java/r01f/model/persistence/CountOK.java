@@ -26,8 +26,7 @@ public class CountOK<T>
 //  CONSTRUCTOR & BUILDER
 /////////////////////////////////////////////////////////////////////////////////////////
 	public CountOK() {
-		_requestedOperation = PersistenceRequestedOperation.COUNT;
-		_performedOperation = PersistencePerformedOperation.COUNTED;
+		super(PersistenceRequestedOperation.COUNT,PersistencePerformedOperation.COUNTED);
 	}
 	CountOK(final Class<T> entityType) {
 		this();
@@ -35,15 +34,9 @@ public class CountOK<T>
 	}
 	CountOK(final Class<T> entityType,
 		    final Long countResult) {
-		this(entityType);
-		_operationExecResult = countResult;
-	}
-	CountOK(final String reqOp,
-			final Class<T> entityType,
-		    final Long countResult) {
-		this(entityType,
-			 countResult);
-		_requestedOperationName = reqOp;
+		super(PersistenceRequestedOperation.COUNT,PersistencePerformedOperation.COUNTED,
+			  countResult);
+		_objectType = entityType;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  
@@ -62,6 +55,6 @@ public class CountOK<T>
 	@Override
 	public CharSequence debugInfo() {
 		return Strings.customized("{} count operation requested on entity of type {}: count={}",
-								  _requestedOperationName,_objectType,_operationExecResult);
+								  _calledMethod,_objectType,_methodExecResult);
 	}
 }

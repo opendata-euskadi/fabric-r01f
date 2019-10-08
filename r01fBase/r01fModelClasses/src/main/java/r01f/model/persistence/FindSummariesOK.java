@@ -5,6 +5,7 @@ import java.util.Collection;
 import com.google.common.base.Function;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Lists;
+import com.google.common.reflect.TypeToken;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -19,11 +20,11 @@ import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 import r01f.objectstreamer.annotations.MarshallType;
 import r01f.util.types.collections.CollectionUtils;
 
-@MarshallType(as="findResult",typeId="FINDSummariesOK")
+@MarshallType(as="findResult",typeId="findSummariesOK")
 @Accessors(prefix="_")
 @SuppressWarnings("unchecked")
 public class FindSummariesOK<M extends PersistableModelObject<? extends OID>>
-	 extends PersistenceOperationOnObjectOK<Collection<? extends SummarizedModelObject<M>>>
+	 extends PersistenceOperationExecOK<Collection<? extends SummarizedModelObject<M>>>
   implements FindSummariesResult<M> {
 /////////////////////////////////////////////////////////////////////////////////////////
 //  
@@ -40,23 +41,32 @@ public class FindSummariesOK<M extends PersistableModelObject<? extends OID>>
 //  CONSTRUCTOR & BUILDER
 /////////////////////////////////////////////////////////////////////////////////////////
 	public FindSummariesOK() {
-		super(PersistenceRequestedOperation.FIND,PersistencePerformedOperation.FOUND,
-			  Collection.class);
+		super(PersistenceRequestedOperation.FIND,PersistencePerformedOperation.FOUND);
 	}
 	protected FindSummariesOK(final Class<M> entityType) {
 		this();
 		_modelObjectType = entityType;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
+//	                                                                          
+/////////////////////////////////////////////////////////////////////////////////////////
+	@Override @SuppressWarnings({ "serial" })
+	public Class<Collection<? extends SummarizedModelObject<M>>> getObjectType() {
+		return (Class<Collection<? extends SummarizedModelObject<M>>>)new TypeToken<Class<Collection<? extends SummarizedModelObject<M>>>>() { /* nothing */ }
+																			.getComponentType()
+																			.getRawType();
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
 //  
 /////////////////////////////////////////////////////////////////////////////////////////
-	/**
-	 * @return the found entities' oids if the persistence find operation was successful or a PersistenteException if not
-	 * @throws PersistenceException
-	 */
-	public <O extends OID> Collection<O> getOidsOrThrow() throws PersistenceException {
-		if (CollectionUtils.isNullOrEmpty(_operationExecResult)) return Lists.newArrayList();
-		return FluentIterable.from(_operationExecResult)
+	@Override
+	public <S extends SummarizedModelObject<M>> Collection<S> getSummariesOrThrow() {
+		return (Collection<S>)this.getOrThrow();
+	}
+	@Override
+	public <O extends OID> Collection<O> getOidsOrThrow() {
+		if (CollectionUtils.isNullOrEmpty(_methodExecResult)) return Lists.newArrayList();
+		return FluentIterable.from(_methodExecResult)
 							 .transform(new Function<SummarizedModelObject<M>,O>() {
 												@Override 
 												public O apply(final SummarizedModelObject<M> entitySummary) {
@@ -68,10 +78,7 @@ public class FindSummariesOK<M extends PersistableModelObject<? extends OID>>
 							 			})
 							 .toList();
 	}
-	/**
-	 * When a single result is expected, this method returns this entity's oid
-	 * @return
-	 */
+	@Override
 	public <O extends OID> O getSingleExpectedOidOrThrow() {
 		SummarizedModelObject<M> outEntitySummary = this.getSingleExpectedOrThrow();
 		if (outEntitySummary != null) {
@@ -81,10 +88,7 @@ public class FindSummariesOK<M extends PersistableModelObject<? extends OID>>
 		}
 		return null;
 	}
-	/**
-	 * When a single result is expected, this method returns this entity
-	 * @return
-	 */
+	@Override
 	public <S extends SummarizedModelObject<M>> S getSingleExpectedOrThrow() {
 		S outEntitySummary = null;
 		Collection<S> entities = (Collection<S>)super.getOrThrow();
@@ -97,20 +101,11 @@ public class FindSummariesOK<M extends PersistableModelObject<? extends OID>>
 //  
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
-	public FindSummariesOK<M> asCRUDOK() {
+	public FindSummariesOK<M> asFindSummariesOK() {
 		return this;
 	}
 	@Override
-	public FindSummariesError<M> asCRUDError() {
+	public FindSummariesError<M> asFindSummariesError() {
 		throw new ClassCastException();
 	}
-	
-	@Override
-	public Collection<? extends SummarizedModelObject<M>> getOrThrow() throws PersistenceException {
-		if (this.hasFailed()) this.asOperationExecError()		
-								  .throwAsPersistenceException();
-		return _operationExecResult;
-	}	
-	
-	
 }

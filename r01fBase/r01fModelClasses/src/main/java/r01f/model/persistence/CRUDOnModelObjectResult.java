@@ -7,6 +7,9 @@ import r01f.model.PersistableModelObject;
 public interface CRUDOnModelObjectResult<M extends PersistableModelObject<? extends OID>>
 		 extends CRUDResult<M>,
 		 		 HasModelObjectTypeInfo<M> {
+/////////////////////////////////////////////////////////////////////////////////////////
+//	                                                                          
+/////////////////////////////////////////////////////////////////////////////////////////	
 	/**
 	 * @return a {@link CRUDOnModelObjectOK} instance
 	 */

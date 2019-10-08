@@ -52,67 +52,59 @@ import lombok.experimental.Accessors;
  *</pre>
  * The usual usage is:
  * <ul>
- * <li>1.- Create an enum with the sub-types (if there are any)
+ * <li>1.- Create an id type (if there are any)
  * <pre class='brush:java'>
- *  @Accessors(prefix="_")
- *	@RequiredArgsConstructor
- *		  enum TestExceptionSubTypes 
- *  implements EnrichedThrowableSubType<TestExceptionSubTypes> {
- *			NOT_DELETE(1),
- *			VALIDATION(2);
- *
- *			@Getter private final int _group = 1;
- *			@Getter private final int _code;
- *
- *			private static EnrichedThrowableSubTypeWrapper<TestExceptionSubTypes> WRAPPER = EnrichedThrowableSubTypeWrapper.create(TestExceptionSubTypes.class);
- *
- *	 		public static TestExceptionSubTypes from(final int errorCode) {
- *				return WRAPPER.from(0,errorCode);
- *			}
- *			@Override
- *			public ExceptionSeverity getSeverity() {
- *				return ExceptionSeverity.FATAL;		
- *			}
- *			@Override
- *			public boolean is(final int group,final int code) {
- *				return WRAPPER.is(this,
- *								  group,code);
- *			}
- *			public boolean is(final int code) {
- *				return this.is(R01F.CORE_GROUP,code);
- *			}
- *			@Override
- *			public boolean isIn(final TestExceptionSubTypes... els) {
- *				return WRAPPER.isIn(this,els);
- *			}
- *			@Override
- *			public boolean is(final TestExceptionSubTypes el) {
- *				return WRAPPER.is(this,el);
- *			}
- *		}
+ *      @Accessors(prefix="_")
+ *      public final class MyExceptionErrorType 
+ *                 extends EnrichedThrowableTypeBase {	
+ *      	private MyExceptionErrorType(final String name,
+ *      								   final int group,final int code,								
+ *      								   final ExceptionSeverity severity) {
+ *      		super(name,
+ *      			  group,code,
+ *      			  severity);
+ *      	}
+ *      	private static EnrichedThrowableTypeBuilder<MyExceptionErrorType>.EnrichedThrowableTypeBuilderCodesStep<MyExceptionErrorType> withName(final String name) {		
+ *      		return new EnrichedThrowableTypeBuilder<MyExceptionErrorType>() {
+ *      						@Override
+ *      						protected MyExceptionErrorType _build(final String name, 
+ *      															  final int group,final int code,
+ *      															  final ExceptionSeverity severity) {
+ *      							return new MyExceptionErrorType(name,
+ *      														    group,code,
+ *      														    severity);
+ *      						}
+ *      			   }.withName(name);
+ *      	}
+ *      	public static final MyExceptionErrorType SOME_ERROR = MyExceptionErrorType.withName("SOME_ERROR")
+ *      																					 .coded(2,1)
+ *      																					 .severity(ExceptionSeverity.FATAL)
+ *      																					 .build();
+ *      	public static final MyExceptionErrorType OTHER_ERROR = XMLPropertiesErrorType.withName("OTHER_ERROR")
+ *      																					 .coded(2,2)
+ *      																					 .severity(ExceptionSeverity.FATAL)
+ *      																					 .build();
+ *      	...
  * </pre>
  * </li>
  * <li>2.- Create a type extending {@link EnrichedRuntimeException}
  * <pre class='brush:java'>
  *		public class TestException 
  *           extends EnrichedRuntimeException {
- *			public TestException(final String msg,
- *								 final TestExceptionSubTypes type) {
- *				super(TestExceptionSubTypes.class,
- *					  msg,
- *					  type);
+ *			public TestException(final MyExceptionErrorType type,
+ *								 final String msg) {
+ *				super(type,
+ *					  msg);
  *			}	
- *			public TestException(final Throwable otherEx,
- *								 final TestExceptionSubTypes type) {
- *				super(TestExceptionSubTypes.class,
- *					  otherEx,
- *					  type);
+ *			public TestException(final MyExceptionErrorType type,
+ *								 final Throwable otherEx) {
+ *				super(type,
+ *					  otherEx);
  *			}
- *			public TestException(final String msg,final Throwable otherEx,
- *								 final TestExceptionSubTypes type) {
- *				super(TestExceptionSubTypes.class,
- *					  msg,otherEx,
- *					  type);
+ *			public TestException(final MyExceptionErrorType type,
+ *								 final String msg,final Throwable otherEx) {
+ *				super(type,
+ *					  msg,otherEx);
  *			}
  *		}
  *</pre>
@@ -144,206 +136,90 @@ public abstract class EnrichedRuntimeException
 	
 	private static final long serialVersionUID = -2026592397288534675L;
 ///////////////////////////////////////////////////////////////////////////////
-//	final FIELDS
+//	FIELDS
 ///////////////////////////////////////////////////////////////////////////////
 	/**
 	 * The subType java type 
-	 * (necessary to create the EnrichedThrowableSubType from group and code)
+	 * (necessary to create the EnrichedThrowableType from group and code)
 	 */
-	private final Class<? extends EnrichedThrowableSubType<?>> _subTypeType;
-	/**
-	 * The group
-	 */
-	@Getter protected final int _group;
-	/**
-	 * The code
-	 */
-	@Getter protected final int _code;
+	private final EnrichedThrowableType _type;
 	/**
 	 * Extended code (used for application-specific codes)
 	 */
 	@Getter protected final int _extendedCode;
-	/**
-	 * Severity
-	 */
-	@Getter protected final ExceptionSeverity _severity;
 	
 ///////////////////////////////////////////////////////////////////////////////
 //	CONSTRUCTOR
 ///////////////////////////////////////////////////////////////////////////////
-	public EnrichedRuntimeException(final Class<? extends EnrichedThrowableSubType<?>> subTypeType,
-							 		final EnrichedThrowableSubType<?> type) {
-		this(subTypeType,
-			 type,-1);	// no extended code
+	public EnrichedRuntimeException(final EnrichedThrowableType type) {
+		this(type,-1);	// no extended code
 	}
-	public EnrichedRuntimeException(final Class<? extends EnrichedThrowableSubType<?>> subTypeType,
-							 		final EnrichedThrowableSubType<?> type,final int extendedCode) {
-		_subTypeType = subTypeType;
-		_group = type.getGroup();
-		_code = type.getCode();
+	public EnrichedRuntimeException(final EnrichedThrowableType type,final int extendedCode) {
+		_type = type;
 		_extendedCode = extendedCode;
-		_severity = type.getSeverity();
 	}
-	public EnrichedRuntimeException(final Class<? extends EnrichedThrowableSubType<?>> subTypeType,
-							 		final String msg,
-							 		final EnrichedThrowableSubType<?> type) {
-		this(subTypeType,
-			 msg,
-			 type,-1);	// no extended code
-		
+	public EnrichedRuntimeException(final EnrichedThrowableType type,
+									final String msg) {
+		this(type,-1,
+			 msg);
 	}
-	public EnrichedRuntimeException(final Class<? extends EnrichedThrowableSubType<?>> subTypeType,
-							 		final String msg,
-							 		final EnrichedThrowableSubType<?> type,final int extendedCode) {
+	public EnrichedRuntimeException(final EnrichedThrowableType type,final int extendedCode,
+									final String msg) {
 		super(msg);
-		_subTypeType = subTypeType;
-		_group = type.getGroup();
-		_code = type.getCode();
+		_type = type;
 		_extendedCode = extendedCode;
-		_severity = type.getSeverity();		
 	}
-	public EnrichedRuntimeException(final Class<? extends EnrichedThrowableSubType<?>> subTypeType,
-							 		final String msg,
-							 		final int group,final int code) {
-		this(subTypeType,
-			 msg,
-			 group,code,-1);	// no extended code
+	public EnrichedRuntimeException(final EnrichedThrowableType type,
+									final Throwable th) {
+		this(type,-1,	// no extended code
+			 th);	
 	}
-	public EnrichedRuntimeException(final Class<? extends EnrichedThrowableSubType<?>> subTypeType,
-							 		final String msg,
-							 		final int group,final int code,final int extendedCode) {
-		super(msg);
-		_subTypeType = subTypeType;
-		_group = group;
-		_code = code;	
-		_extendedCode = extendedCode;
-		_severity = Throwables.getSubType(subTypeType,
-										  group,code)
-							  .getSeverity();
-	}
-	public EnrichedRuntimeException(final Class<? extends EnrichedThrowableSubType<?>> subTypeType,
-							 	    final Throwable th,
-							 	    final EnrichedThrowableSubType<?> type) {
-		this(subTypeType,
-			 th,
-			 type,-1);	// no extended code
-	}
-	public EnrichedRuntimeException(final Class<? extends EnrichedThrowableSubType<?>> subTypeType,
-							 	    final Throwable th,
-							 	    final EnrichedThrowableSubType<?> type,final int extendedCode) {
+	public EnrichedRuntimeException(final EnrichedThrowableType type,final int extendedCode,
+							 	    final Throwable th) {
 		super(th);
-		_subTypeType = subTypeType;
-		_group = type.getGroup();
-		_code = type.getCode();
+		_type = type;
 		_extendedCode = extendedCode;
-		_severity = type.getSeverity();
 	}
-	public EnrichedRuntimeException(final Class<? extends EnrichedThrowableSubType<?>> subTypeType,
-							 		final Throwable th,
-							 		final int group,final int code) {
-		this(subTypeType,
-			 th,
-			 group,code,-1);	// no extended code
-	}
-	public EnrichedRuntimeException(final Class<? extends EnrichedThrowableSubType<?>> subTypeType,
-							 		final Throwable th,
-							 		final int group,final int code,final int extendedCode) {
-		super(th);
-		_subTypeType = subTypeType;
-		_group = group;
-		_code = code;	
-		_extendedCode = extendedCode;
-		_severity = Throwables.getSubType(subTypeType,
-										  group,code)
-							  .getSeverity();
-	}
-	public EnrichedRuntimeException(final Class<? extends EnrichedThrowableSubType<?>> subTypeType,
+	public EnrichedRuntimeException(final EnrichedThrowableType type,
 							 	    final String msg,
-							 	    final Throwable th,
-							 	    final EnrichedThrowableSubType<?> type) {
-		this(subTypeType,
+							 	    final Throwable th) {
+		this(type,-1,	// no extended code
 			 msg,
-			 th,
-			 type,-1);	// no extended code
+			 th);	
 	}
-	public EnrichedRuntimeException(final Class<? extends EnrichedThrowableSubType<?>> subTypeType,
+	public EnrichedRuntimeException(final EnrichedThrowableType type,final int extendedCode,
 							 	    final String msg,
-							 	    final Throwable th,
-							 	    final EnrichedThrowableSubType<?> type,final int extendedCode) {
+							 	    final Throwable th) {
 		super(msg,th);
-		_subTypeType = subTypeType;
-		_group = type.getGroup();
-		_code = type.getCode();
+		_type = type;
 		_extendedCode = extendedCode;
-		_severity = type.getSeverity();
-	}
-	public EnrichedRuntimeException(final Class<? extends EnrichedThrowableSubType<?>> subTypeType,
-							 		final String msg,
-							 		final Throwable th,
-							 		final int group,final int code) {
-		this(subTypeType,
-			 msg,
-			 th,
-			 group,code,-1);	// no extended code
-	}
-	public EnrichedRuntimeException(final Class<? extends EnrichedThrowableSubType<?>> subTypeType,
-							 		final String msg,
-							 		final Throwable th,
-							 		final int group,final int code,final int extendedCode) {
-		super(msg,th);
-		_subTypeType = subTypeType;
-		_group = group;
-		_code = code;	
-		_extendedCode = extendedCode;
-		_severity = Throwables.getSubType(subTypeType,
-										  group,code)
-							  .getSeverity();
 	}
 	public EnrichedRuntimeException(final String msg) {
 		super(msg);
-		_subTypeType = VoidExceptionType.class;
-		_group = -1;
-		_code = -1;
+		_type = new VoidExceptionType();
 		_extendedCode = -1;
-		_severity = null;
 	}
-	@SuppressWarnings("unchecked")
 	public EnrichedRuntimeException(final Throwable th) {
 		super(th);
 		if (th instanceof EnrichedThrowable) {
 			final EnrichedThrowable enrichedTh = (EnrichedThrowable)th;
-			final Object subType =  enrichedTh.getSubType();
-			_subTypeType = (Class<? extends EnrichedThrowableSubType<?>>) subType;
-			_group = enrichedTh.getGroup();
-			_code = enrichedTh.getCode();
+			_type = enrichedTh.getType();
 			_extendedCode = enrichedTh.getExtendedCode();
-			_severity = enrichedTh.getSeverity();
 		} else {
-			_subTypeType = VoidExceptionType.class;
-			_group = -1;
-			_code = -1;
+			_type = new VoidExceptionType();
 			_extendedCode = -1;
-			_severity = null;
 		}
 	}
-	@SuppressWarnings("unchecked")
 	public EnrichedRuntimeException(final String msg,
 							 	    final Throwable th) {
 		super(msg,th);
 		if (th instanceof EnrichedThrowable) {
 			final EnrichedThrowable enrichedTh = (EnrichedThrowable)th;
-			final Object subType =  enrichedTh.getSubType();
-			_subTypeType = (Class<? extends EnrichedThrowableSubType<?>>) subType;
-			_group = enrichedTh.getGroup();
-			_code = enrichedTh.getCode();
+			_type = enrichedTh.getType();
 			_extendedCode = enrichedTh.getExtendedCode();
-			_severity = enrichedTh.getSeverity();
 		} else {
-			_subTypeType = VoidExceptionType.class;
-			_group = -1;
-			_code = -1;
+			_type = new VoidExceptionType();
 			_extendedCode = -1;
-			_severity = null;
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -365,22 +241,33 @@ public abstract class EnrichedRuntimeException
 //  SUB-CLASSING
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override @SuppressWarnings("unchecked")
-	public <S extends EnrichedThrowableSubType<?>> S getSubType() {
-		final S outSubType = (S)Throwables.getSubType(this,
-												_subTypeType);	
+	public <T extends EnrichedThrowableType> T getType() {
+		final T outSubType = (T)_type;
 		return outSubType;
+	}
+	@Override
+	public int getGroup() {
+		return _type != null ? _type.getGroup() : -1;
+	}
+	@Override
+	public int getCode() {
+		return _type != null ? _type.getCode() : -1;
+	}
+	@Override
+	public ExceptionSeverity getSeverity() {
+		return _type != null ? _type.getSeverity() : null;
 	}
 	@Override
 	public boolean isMoreSeriousThan(final EnrichedThrowable otherEx) {
 		return Throwables.isMoreSerious(this,otherEx);
 	}
 	@Override
-	public <S extends EnrichedThrowableSubType<?>> boolean is(final S subType) {		
-		return Throwables.is(this,subType);
+	public <T extends EnrichedThrowableType> boolean is(final T type) {		
+		return Throwables.is(this,type);
 	}
-	@Override
-	public <S extends EnrichedThrowableSubType<?>> boolean isAny(final S... subClasses) {
-		return Throwables.isAny(this,subClasses);
+	@Override @SuppressWarnings("unchecked") 
+	public <T extends EnrichedThrowableType> boolean isAny(final T... types) {
+		return Throwables.isAny(this,types);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  UTILITY

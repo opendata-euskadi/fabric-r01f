@@ -6,11 +6,12 @@ import lombok.experimental.Accessors;
 import r01f.guids.OID;
 import r01f.guids.PersistableObjectOID;
 import r01f.model.PersistableModelObject;
+import r01f.model.services.COREServiceErrorType;
 import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 import r01f.objectstreamer.annotations.MarshallType;
 
-@MarshallType(as="findResult",typeId="FINDOIDsError")
+@MarshallType(as="findResult",typeId="error")
 @Accessors(prefix="_")
 public class FindOIDsError<O extends PersistableObjectOID>
 	 extends FindError<O>
@@ -26,7 +27,6 @@ public class FindOIDsError<O extends PersistableObjectOID>
 	@MarshallField(as="modelObjType",
 				   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter @Setter private Class<? extends PersistableModelObject<? extends OID>> _modelObjectType;
-
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR & BUILDER
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -39,21 +39,37 @@ public class FindOIDsError<O extends PersistableObjectOID>
 			  th);
 		_modelObjectType = modelObjType;
 	}
-	<M extends PersistableModelObject<O>> FindOIDsError(final Class<M> entityType,final Class<O> oidType,
-			  	  										final String errMsg,final PersistenceErrorType errorCode) {
+	<M extends PersistableModelObject<O>> FindOIDsError(final Class<M> modelObjType,final Class<O> oidType,
+														final COREServiceErrorType errorType,
+			  	  										final Throwable th) {
 		super(oidType,
-			  errMsg,errorCode);
+			  errorType,
+			  th);
+		_modelObjectType = modelObjType;
+	}
+	<M extends PersistableModelObject<O>> FindOIDsError(final Class<M> entityType,final Class<O> oidType,
+			  	  										final String errMsg) {
+		super(oidType,
+			  errMsg);
+		_modelObjectType = entityType;
+	}
+	<M extends PersistableModelObject<O>> FindOIDsError(final Class<M> entityType,final Class<O> oidType,
+														final COREServiceErrorType errorType,
+			  	  										final String errMsg) {
+		super(oidType,
+			  errorType,
+			  errMsg);
 		_modelObjectType = entityType;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
-	public FindOIDsError<O> asCRUDError() {
+	public FindOIDsError<O> asFindOIDsError() {
 		return this;
 	}
 	@Override
-	public FindOIDsOK<O> asCRUDOK() {
+	public FindOIDsOK<O> asFindOIDsOK() {
 		throw new ClassCastException();
 	}
 }

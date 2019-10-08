@@ -71,6 +71,11 @@
 			<artifactId>jackson-dataformat-xml</artifactId>
 			<version>2.9.0</version>
 		</dependency>
+		<dependency>
+			  <groupId>com.fasterxml.jackson.datatype</groupId>
+			  <artifactId>jackson-datatype-joda</artifactId>
+			  <version>2.9.0</version>
+		</dependency>
 		<!-- Woodstox xml parser -->
 		<dependency>
 			<groupId>org.codehaus.woodstox</groupId>

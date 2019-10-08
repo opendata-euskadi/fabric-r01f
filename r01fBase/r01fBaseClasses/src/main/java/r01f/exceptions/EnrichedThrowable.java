@@ -12,7 +12,7 @@ import com.google.common.annotations.GwtIncompatible;
 public interface EnrichedThrowable 
 		 extends Serializable {
 	
-	public <S extends EnrichedThrowableSubType<?>> S getSubType();
+	public <T extends EnrichedThrowableType> T getType();
 	public int getGroup();
 	public int getCode();
 	public int getExtendedCode();
@@ -22,8 +22,8 @@ public interface EnrichedThrowable
 	
 	public boolean isMoreSeriousThan(final EnrichedThrowable otherEx);
 	
-	public <S extends EnrichedThrowableSubType<?>> boolean is(final S subClass);
-	public <S extends EnrichedThrowableSubType<?>> boolean isAny(final S... subClasses); 
+	public <T extends EnrichedThrowableType> boolean is(final T subClass);
+	public <T extends EnrichedThrowableType> boolean isAny(final T... subClasses); 
 	
 	public Throwable getRootCause();
 	public List<Throwable> getCausalChain();

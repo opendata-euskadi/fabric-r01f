@@ -1,16 +1,16 @@
-package r01f.model.persistence;
+package r01f.model.services;
 
 /**
- * An object that contains a {@link PersistenceOperationResult}
+ * An object that contains a {@link PersistenceOperationOK}
  */
-public interface HasPersistenceOperationResult {
+public interface HasCOREServiceMethodExecResult {
 /////////////////////////////////////////////////////////////////////////////////////////
 // 	ACCESSOR METHODS
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * @return the persistence operation result
 	 */
-	public PersistenceOperationResult getPersistenceOperationResult();
+	public <T> COREServiceMethodExecResult<T> getCOREServiceMethodExecResult();
 	/**
 	 * @return true if the persistence operation has succeeded
 	 */

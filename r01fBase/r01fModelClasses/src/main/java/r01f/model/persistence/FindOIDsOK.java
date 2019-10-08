@@ -10,7 +10,7 @@ import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 import r01f.objectstreamer.annotations.MarshallType;
 
-@MarshallType(as="findResult",typeId="FINDOIDsOK")
+@MarshallType(as="findResult",typeId="ok")
 @Accessors(prefix="_")
 public class FindOIDsOK<O extends PersistableObjectOID>
 	 extends FindOK<O>
@@ -26,7 +26,6 @@ public class FindOIDsOK<O extends PersistableObjectOID>
 	@MarshallField(as="modelObjType",
 				   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter @Setter private Class<? extends PersistableModelObject<? extends OID>> _modelObjectType;
-	
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR & BUILDER
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -41,11 +40,11 @@ public class FindOIDsOK<O extends PersistableObjectOID>
 //  
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
-	public FindOIDsError<O> asCRUDError() {
+	public FindOIDsError<O> asFindOIDsError() {
 		throw new ClassCastException();
 	}
 	@Override
-	public FindOIDsOK<O> asCRUDOK() {
+	public FindOIDsOK<O> asFindOIDsOK() {
 		return this;
 	}
 }

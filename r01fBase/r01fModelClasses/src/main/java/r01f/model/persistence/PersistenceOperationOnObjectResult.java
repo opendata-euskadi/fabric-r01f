@@ -1,7 +1,7 @@
 package r01f.model.persistence;
 
-public interface PersistenceOperationOnObjectResult<T>
-		 extends PersistenceOperationResult {
+public interface PersistenceOperationOnObjectResult<T> 
+		 extends PersistenceOperationResult<T> {
 /////////////////////////////////////////////////////////////////////////////////////////
 //  
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -9,11 +9,4 @@ public interface PersistenceOperationOnObjectResult<T>
 	 * @return the model object type 
 	 */
 	public Class<T> getObjectType();
-/////////////////////////////////////////////////////////////////////////////////////////
-//  
-/////////////////////////////////////////////////////////////////////////////////////////
-	/**
-	 * @return the performed operation
-	 */
-	public PersistencePerformedOperation getPerformedOperation();
 }

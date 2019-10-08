@@ -1,21 +1,20 @@
 package r01f.model.persistence;
 
-import java.util.Collection;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import r01f.model.services.COREServiceException;
+import r01f.model.services.COREServiceMethod;
+import r01f.model.services.COREServiceMethodExecOK;
 import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 import r01f.objectstreamer.annotations.MarshallType;
-import r01f.util.types.Strings;
-import r01f.util.types.collections.CollectionUtils;
 
 @MarshallType(as="persistenceOperationResult",typeId="ok")
 @Accessors(prefix="_")
 public class PersistenceOperationExecOK<T>
-	 extends PersistenceOperationExecResult<T>
-  implements PersistenceOperationOK {
+	 extends COREServiceMethodExecOK<T> 
+  implements PersistenceOperationResult<T> {
 /////////////////////////////////////////////////////////////////////////////////////////
 //	FIELDS  
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -25,87 +24,66 @@ public class PersistenceOperationExecOK<T>
 	 * for example, the client requests a create operation BUT an update operation is really 
 	 * performed because the record already exists at the persistence store
 	 */
-	@MarshallField(as="performedOperation",
+	@MarshallField(as="executedMethod",
 				   whenXml=@MarshallFieldAsXml(attr=true))
-	@Getter @Setter protected PersistencePerformedOperation _performedOperation;
-	/**
-	 * The result 
-	 */
-	@MarshallField(as="operationExecResult",
-				   whenXml=@MarshallFieldAsXml(collectionElementName="resultItem"))		// only when the result is a Collection (ie: find ops)
-	@Getter @Setter protected T _operationExecResult;
+	@Getter @Setter protected COREServiceMethod _executedMethod;
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
 	public PersistenceOperationExecOK() {
-		// by default
-		this(PersistenceRequestedOperation.OTHER,PersistencePerformedOperation.OTHER);
+		// default no-args constructor
+	}
+	public PersistenceOperationExecOK(final COREServiceMethod reqOp) {
+		super(reqOp);
+	}
+	public PersistenceOperationExecOK(final COREServiceMethod reqOp,final COREServiceMethod perfOp) {
+		super(reqOp);
+		_executedMethod = perfOp;
+	}
+	public PersistenceOperationExecOK(final PersistenceRequestedOperation reqOp) {
+		super(reqOp.getCOREServiceMethod());
 	}
 	public PersistenceOperationExecOK(final PersistenceRequestedOperation reqOp,final PersistencePerformedOperation perfOp) {
-		super(reqOp);
-		_performedOperation = perfOp;
+		this(reqOp.getCOREServiceMethod(),perfOp.getCOREServiceMethod());
+	}
+	public PersistenceOperationExecOK(final PersistenceRequestedOperation reqOp,final PersistencePerformedOperation perfOp,
+									  final T result) {
+		super(reqOp.getCOREServiceMethod(),
+			  result);
+		_executedMethod = perfOp.getCOREServiceMethod();
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//	                                                                          
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
-	public T getOrThrow() throws PersistenceException {
-		return _operationExecResult;
+	public PersistenceRequestedOperation getRequestedOperation() {
+		return PersistenceRequestedOperation.from(_calledMethod);
+	}
+	public void setRequestedOperation(final PersistenceRequestedOperation calledOp) {
+		_calledMethod = calledOp != null ? calledOp.getCOREServiceMethod() : null;
+	}
+	public PersistencePerformedOperation getPerformedOperation() {
+		return PersistencePerformedOperation.from(_executedMethod);
+	}
+	public void setPerformedOperation(final PersistencePerformedOperation perfOp) {
+		_executedMethod = perfOp != null ? perfOp.getCOREServiceMethod() : null;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//	                                                                          
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
-	public PersistenceOperationExecError<T> asOperationExecError() {
-		throw new ClassCastException();
+	public T getOrThrow() throws COREServiceException {
+		return _methodExecResult;
 	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	                                                                          
+/////////////////////////////////////////////////////////////////////////////////////////
 	@Override
-	public PersistenceOperationExecOK<T> asOperationExecOK() {
+	public PersistenceOperationExecOK<T> asPersistenceOperationOK() {
 		return this;
 	}
-/////////////////////////////////////////////////////////////////////////////////////////
-//  
-/////////////////////////////////////////////////////////////////////////////////////////
 	@Override
-	public boolean isCRUDOK() {
-		return this instanceof CRUDOK;
-	}
-	@Override
-	public boolean isFindOK() {
-		return this instanceof FindOK;
-	}
-	@Override
-	public boolean isFindSummariesOK() {
-		return this instanceof FindSummariesOK;
-	}
-/////////////////////////////////////////////////////////////////////////////////////////
-//  
-/////////////////////////////////////////////////////////////////////////////////////////
-	@Override
-	public String getDetailedMessage() {
-		// info about the returned object
-		String resultInfo = null;
-		if (_operationExecResult != null) {
-			if (CollectionUtils.isCollection(_operationExecResult.getClass())) {
-				resultInfo = Strings.customized("Collection of {} objects",
-												CollectionUtils.safeSize((Collection<?>)_operationExecResult));
-			} else {
-				resultInfo = Strings.customized("an object of type {}",
-												_operationExecResult.getClass());
-			}
-		} else {
-			resultInfo = "null";
-		}
-		// the debug info
-		return Strings.customized("The execution of '{}' operation was SUCCESSFUL returning {}",
-						  		  _requestedOperationName,
-						  		  resultInfo);	
-	}
-/////////////////////////////////////////////////////////////////////////////////////////
-//  DEBUG
-/////////////////////////////////////////////////////////////////////////////////////////
-	@Override
-	public CharSequence debugInfo() {
-		return this.getDetailedMessage();
+	public PersistenceOperationExecError<T> asPersistenceOperationError() {
+		throw new ClassCastException();
 	}
 }
