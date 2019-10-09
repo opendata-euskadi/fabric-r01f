@@ -40,11 +40,27 @@ public class PersistenceOperationExecOK<T>
 		super(reqOp);
 		_executedMethod = perfOp;
 	}
+	public PersistenceOperationExecOK(final COREServiceMethod reqOp,
+									  final T instance) {
+		super(reqOp,
+			  instance);
+	}
+	public PersistenceOperationExecOK(final COREServiceMethod reqOp,final COREServiceMethod perfOp,
+									  final T instance) {
+		super(reqOp,
+			  instance);
+		_executedMethod = perfOp;
+	}
 	public PersistenceOperationExecOK(final PersistenceRequestedOperation reqOp) {
 		super(reqOp.getCOREServiceMethod());
 	}
 	public PersistenceOperationExecOK(final PersistenceRequestedOperation reqOp,final PersistencePerformedOperation perfOp) {
 		this(reqOp.getCOREServiceMethod(),perfOp.getCOREServiceMethod());
+	}
+	public PersistenceOperationExecOK(final PersistenceRequestedOperation reqOp,
+									  final T instance) {
+		super(reqOp.getCOREServiceMethod(),
+			  instance);
 	}
 	public PersistenceOperationExecOK(final PersistenceRequestedOperation reqOp,final PersistencePerformedOperation perfOp,
 									  final T result) {

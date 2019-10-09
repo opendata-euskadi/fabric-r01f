@@ -27,50 +27,50 @@ public class PersistenceOperationExecError<T>
 	public PersistenceOperationExecError(final PersistenceRequestedOperation reqOp) {
 		this(reqOp.getCOREServiceMethod());
 	}
-	PersistenceOperationExecError(final COREServiceMethod reqOp,
-								  final Throwable th) {
+	public PersistenceOperationExecError(final COREServiceMethod reqOp,
+								  		 final Throwable th) {
 		super(reqOp,
 			  th);
 	}
-	PersistenceOperationExecError(final PersistenceRequestedOperation reqOp,
-								  final Throwable th) {
+	public PersistenceOperationExecError(final PersistenceRequestedOperation reqOp,
+								  		 final Throwable th) {
 		super(reqOp.getCOREServiceMethod(),
 			  th);
 	}
-	PersistenceOperationExecError(final COREServiceMethod reqOp,
-								  final COREServiceErrorType errType,
-								  final Throwable th) {
+	public PersistenceOperationExecError(final COREServiceMethod reqOp,
+								  		 final COREServiceErrorType errType,
+								  		 final Throwable th) {
 		super(reqOp,
 			  errType,
 			  th);
 	}
-	PersistenceOperationExecError(final PersistenceRequestedOperation reqOp,
-								  final COREServiceErrorType errType,
-								  final Throwable th) {
+	public PersistenceOperationExecError(final PersistenceRequestedOperation reqOp,
+								  		 final COREServiceErrorType errType,
+								  		 final Throwable th) {
 		super(reqOp.getCOREServiceMethod(),
 			  errType,
 			  th);
 	}
-	PersistenceOperationExecError(final COREServiceMethod reqOp,
-								  final String msg) {
+	public PersistenceOperationExecError(final COREServiceMethod reqOp,
+								  	     final String msg) {
 		super(reqOp,
 			  msg);
 	}
-	PersistenceOperationExecError(final PersistenceRequestedOperation reqOp,
-								  final String msg) {
+	public PersistenceOperationExecError(final PersistenceRequestedOperation reqOp,
+								  		 final String msg) {
 		super(reqOp.getCOREServiceMethod(),
 			  msg);
 	}
-	PersistenceOperationExecError(final COREServiceMethod reqOp,
-								  final COREServiceErrorType errType,
-								  final String errMsg) {
+	public PersistenceOperationExecError(final COREServiceMethod reqOp,
+								  		 final COREServiceErrorType errType,
+								  		 final String errMsg) {
 		super(reqOp,
 			  errType,
 			  errMsg);
 	}
-	PersistenceOperationExecError(final PersistenceRequestedOperation reqOp,
-								  final COREServiceErrorType errType,
-								  final String errMsg) {
+	public PersistenceOperationExecError(final PersistenceRequestedOperation reqOp,
+								  		 final COREServiceErrorType errType,
+								  		 final String errMsg) {
 		super(reqOp.getCOREServiceMethod(),
 			  errType,
 			  errMsg);

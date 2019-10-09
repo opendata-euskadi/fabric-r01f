@@ -17,41 +17,60 @@ public class PersistenceException
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
-	protected PersistenceException(final PersistenceRequestedOperation requestedOp,
-								   final COREServiceErrorType errorType,final int errorCode,
-						 		   final Throwable th) {
+	public PersistenceException(final PersistenceRequestedOperation requestedOp,
+								final COREServiceErrorType errorType,final int errorCode,
+						 		final Throwable th) {
 		super(requestedOp.getCOREServiceMethod(),
 			  errorType,errorCode,
 			  th);
 	}
-	protected PersistenceException(final PersistenceRequestedOperation requestedOp,
-								   final COREServiceErrorType errorType,
-						 		   final Throwable th) {
+	public PersistenceException(final PersistenceRequestedOperation requestedOp,
+								final COREServiceErrorType errorType,
+						 		final Throwable th) {
 		super(requestedOp.getCOREServiceMethod(),
 			  errorType,-1,
 			  th);
 	}
-	protected PersistenceException(final PersistenceRequestedOperation requestedOp,
-						 		   final Throwable th) {
+	public PersistenceException(final PersistenceRequestedOperation requestedOp,
+						 		final Throwable th) {
 		super(requestedOp.getCOREServiceMethod(),
 			  th);
 	}
-	protected PersistenceException(final PersistenceRequestedOperation requestedOp,
-								   final COREServiceErrorType errorType,final int errorCode,
-						 		   final String msg) {
+	public PersistenceException(final PersistenceRequestedOperation requestedOp,
+								final COREServiceErrorType errorType,final int errorCode,
+						 		final String msg,final Throwable th) {
+		super(requestedOp.getCOREServiceMethod(),
+			  errorType,errorCode,
+			  msg,th);
+	}
+	public PersistenceException(final PersistenceRequestedOperation requestedOp,
+								final COREServiceErrorType errorType,
+						 		final String msg,final Throwable th) {
+		super(requestedOp.getCOREServiceMethod(),
+			  errorType,-1,
+			  msg,th);
+	}
+	public PersistenceException(final PersistenceRequestedOperation requestedOp,
+						 		final String msg,final Throwable th) {
+		super(requestedOp.getCOREServiceMethod(),
+			  msg,th);
+	}
+	public PersistenceException(final PersistenceRequestedOperation requestedOp,
+								final COREServiceErrorType errorType,final int errorCode,
+						 		final String msg) {
 		super(requestedOp.getCOREServiceMethod(),
 		      errorType,errorCode,
 		      msg);
 	}
-	protected PersistenceException(final PersistenceRequestedOperation requestedOp,
-								   final COREServiceErrorType errorType,
-						 		   final String msg) {
+	public PersistenceException(final PersistenceRequestedOperation requestedOp,
+								final COREServiceErrorType errorType,
+						 		final String msg) {
 		super(requestedOp.getCOREServiceMethod(),
 			  errorType,-1,
 			  msg);
 	}
-	protected PersistenceException(final PersistenceRequestedOperation requestedOp,
-						 		   final String msg) {
+	public PersistenceException(final PersistenceRequestedOperation requestedOp,
+						 		final String msg) {
 		super(requestedOp.getCOREServiceMethod(),
 			  msg);
 	}
