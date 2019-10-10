@@ -8,7 +8,7 @@ import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 
 @Accessors(prefix="_")
-public abstract class COREServiceMethodExecResultBase<T> 
+public abstract class COREServiceMethodExecResultBase<T>
            implements COREServiceMethodExecResult<T>,
     		   		  Debuggable {
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -25,9 +25,9 @@ public abstract class COREServiceMethodExecResultBase<T>
 /////////////////////////////////////////////////////////////////////////////////////////
 	public COREServiceMethodExecResultBase(final COREServiceMethod reqOp) {
 		_calledMethod = reqOp;
-	} 
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public boolean hasFailed() {
@@ -41,7 +41,7 @@ public abstract class COREServiceMethodExecResultBase<T>
 //  CAST
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override @SuppressWarnings("unchecked")
-	public <R extends COREServiceMethodExecResult<?>> R as(final Class<R> type) {
+	public <R extends COREServiceMethodExecResult<T>> R as(final Class<R> type) {
 		return (R)this;
 	}
 }

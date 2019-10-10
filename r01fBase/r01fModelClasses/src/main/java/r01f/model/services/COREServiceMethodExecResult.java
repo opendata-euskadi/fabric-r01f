@@ -6,10 +6,10 @@ import r01f.objectstreamer.annotations.MarshallPolymorphicTypeInfo.MarshalTypeIn
 import r01f.objectstreamer.annotations.MarshallPolymorphicTypeInfo.MarshallTypeInfoInclude;
 
 @MarshallPolymorphicTypeInfo(includeTypeInfo=@MarshallTypeInfoInclude(type=MarshalTypeInfoIncludeCase.ALWAYS))
-public interface COREServiceMethodExecResult<T> 
+public interface COREServiceMethodExecResult<T>
 		 extends Debuggable {
 /////////////////////////////////////////////////////////////////////////////////////////
-//	                                                                          
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Returns the method execution result or throw an exception if it failed
@@ -35,17 +35,17 @@ public interface COREServiceMethodExecResult<T>
 	 */
 	public boolean hasSucceeded();
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
-	 * @return the operation result message, normally if the operation has failed, it contains an error description and if the 
+	 * @return the operation result message, normally if the operation has failed, it contains an error description and if the
 	 * 		   operation has succeed it contains some logging info
 	 */
 	public String getDetailedMessage();
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	public COREServiceMethodExecError<T> asCOREServiceMethodExecError();
 	public COREServiceMethodExecOK<T> asCOREServiceMethodExecOK();
-	public <R extends COREServiceMethodExecResult<?>> R as(final Class<R> type);
+	public <R extends COREServiceMethodExecResult<T>> R as(final Class<R> type);
 }
