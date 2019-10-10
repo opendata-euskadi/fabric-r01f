@@ -34,29 +34,29 @@ public class FindError<T>
 	public FindError() {
 		super(PersistenceRequestedOperation.FIND);
 	}
-	FindError(final Class<T> entityType,
+	public FindError(final Class<T> entityType,
 			  final Throwable th) {
 		super(PersistenceRequestedOperation.FIND,
 			  th);
 		_findedObjectType = entityType;
 	}
-	FindError(final Class<T> entityType,
-			  final String msg) {
+	public FindError(final Class<T> entityType,
+			  		 final String msg) {
 		super(PersistenceRequestedOperation.FIND,
 			  msg);
 		_findedObjectType = entityType;
 	}
-	FindError(final Class<T> entityType,
-			  final COREServiceErrorType errorType,
-			  final Throwable th) {
+	public FindError(final Class<T> entityType,
+			  		 final COREServiceErrorType errorType,
+			  		 final Throwable th) {
 		super(PersistenceRequestedOperation.FIND,
 			  errorType,
 			  th);
 		_findedObjectType = entityType;
 	}
-	FindError(final Class<T> entityType,
-			  final COREServiceErrorType errorType,
-			  final String errMsg) {
+	public FindError(final Class<T> entityType,
+			  		 final COREServiceErrorType errorType,
+			  		 final String errMsg) {
 		super(PersistenceRequestedOperation.FIND,
 			  errorType,
 			  errMsg);

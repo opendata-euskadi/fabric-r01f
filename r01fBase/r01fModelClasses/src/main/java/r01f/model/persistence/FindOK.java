@@ -36,9 +36,15 @@ public class FindOK<T>
 	public FindOK() {
 		super(PersistenceRequestedOperation.FIND,PersistencePerformedOperation.FOUND);
 	}
-	protected FindOK(final Class<T> entityType) {
+	public FindOK(final Class<T> entityType) {
 		this();
 		_foundObjectType = entityType;
+	}
+	public FindOK(final Class<T> entityType,
+				  final Collection<T> results) {
+		this();
+		_foundObjectType = entityType;
+		_methodExecResult = results;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	                                                                          

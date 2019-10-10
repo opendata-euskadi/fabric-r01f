@@ -28,33 +28,33 @@ public class CRUDError<T>
 	public CRUDError() {
 		super(COREServiceMethod.UNKNOWN);
 	}
-	CRUDError(final Class<T> entityType,
-			  final PersistenceRequestedOperation reqOp,
-	  		  final Throwable th) {
+	public CRUDError(final Class<T> entityType,
+			  		 final PersistenceRequestedOperation reqOp,
+			  		 final Throwable th) {
 		super(entityType,
 			  reqOp,
 			  th);	
 	}
-	CRUDError(final Class<T> entityType,
-			  final PersistenceRequestedOperation reqOp,
-	  		  final COREServiceErrorType errType,
-	  		  final Throwable th) {
+	public CRUDError(final Class<T> entityType,
+			  		 final PersistenceRequestedOperation reqOp,
+			  		 final COREServiceErrorType errType,
+			  		 final Throwable th) {
 		super(entityType,
 			  reqOp,
 			  errType,
 			  th);
 	}
-	CRUDError(final Class<T> entityType,
-			  final PersistenceRequestedOperation reqOp,
-	  		  final String errMsg) {
+	public CRUDError(final Class<T> entityType,
+			  		 final PersistenceRequestedOperation reqOp,
+			  		 final String errMsg) {
 		super(entityType,
 			  reqOp,
 			  errMsg);
 	}
-	CRUDError(final Class<T> entityType,
-			  final PersistenceRequestedOperation reqOp,
-			  final COREServiceErrorType errType,
-	  		  final String errMsg) {
+	public CRUDError(final Class<T> entityType,
+			  		 final PersistenceRequestedOperation reqOp,
+			  		 final COREServiceErrorType errType,
+			  		 final String errMsg) {
 		super(entityType,
 			  reqOp,
 			  errType,

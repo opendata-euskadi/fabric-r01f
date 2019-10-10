@@ -16,14 +16,14 @@ public class CRUDOK<T>
 	public CRUDOK() {
 		super(COREServiceMethod.UNKNOWN,COREServiceMethod.UNKNOWN);
 	}
-	CRUDOK(final Class<T> entityType,
-		   final PersistenceRequestedOperation reqOp,final PersistencePerformedOperation perfOp) {
+	public CRUDOK(final Class<T> entityType,
+				  final PersistenceRequestedOperation reqOp,final PersistencePerformedOperation perfOp) {
 		super(entityType,
 			  reqOp,perfOp);
 	}
-	CRUDOK(final Class<T> entityType,
-		   final PersistenceRequestedOperation reqOp,final PersistencePerformedOperation perfOp,
-		   final T result) {
+	public CRUDOK(final Class<T> entityType,
+				  final PersistenceRequestedOperation reqOp,final PersistencePerformedOperation perfOp,
+				  final T result) {
 		super(entityType,
 			  reqOp,perfOp,
 			  result);
