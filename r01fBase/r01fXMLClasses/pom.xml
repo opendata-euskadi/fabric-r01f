@@ -39,15 +39,5 @@
 			<artifactId>r01fResourceLoadInterfaceClasses</artifactId>
 			<version>${r01f.version}</version>
 		</dependency>
-
-		<!-- ///////////////////////////////////////// -->
-		<!-- Test: XmlUnit                             -->
-		<!-- ///////////////////////////////////////// -->		
-		<dependency>
-		    <groupId>xmlunit</groupId>
-		    <artifactId>xmlunit</artifactId>
-		    <version>1.6</version>
-		    <scope>test</scope>
-		</dependency>
 	</dependencies>
 </project>
