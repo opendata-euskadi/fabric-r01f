@@ -367,6 +367,10 @@ public abstract class PathBase<SELF_TYPE extends PathBase<SELF_TYPE>>
 			final Object[] array = col.toArray(new Object[col.size()]);
 			outCol = PathBase.pathElementsFrom(array);				// recurse
 		}
+		else if (obj instanceof CanBeRepresentedAsString) {
+			String str = ((CanBeRepresentedAsString)obj).asString();
+			outCol = _normalizePathElement(str);
+		}
 		else {
 			outCol = _normalizePathElement(obj.toString());
 		}

@@ -2,20 +2,13 @@ package r01f.model.persistence;
 
 import java.util.Collection;
 
-import r01f.debug.Debuggable;
+import r01f.objectstreamer.annotations.MarshallPolymorphicTypeInfo;
+import r01f.objectstreamer.annotations.MarshallPolymorphicTypeInfo.MarshalTypeInfoIncludeCase;
+import r01f.objectstreamer.annotations.MarshallPolymorphicTypeInfo.MarshallTypeInfoInclude;
 
+@MarshallPolymorphicTypeInfo(includeTypeInfo=@MarshallTypeInfoInclude(type=MarshalTypeInfoIncludeCase.ALWAYS))
 public interface FindResult<T> 
-   		 extends PersistenceOperationResult,
-   		  		 Debuggable {
-/////////////////////////////////////////////////////////////////////////////////////////
-//  
-/////////////////////////////////////////////////////////////////////////////////////////
-	/**
-	 * Returns the found entities or throws a {@link PersistenceException} 
-	 * if the find operation resulted on an error
-	 * @return
-	 */
-	public Collection<T> getOrThrow() throws PersistenceException;
+   		 extends PersistenceOperationOnObjectResult<Collection<T>> {
 /////////////////////////////////////////////////////////////////////////////////////////
 //  
 /////////////////////////////////////////////////////////////////////////////////////////

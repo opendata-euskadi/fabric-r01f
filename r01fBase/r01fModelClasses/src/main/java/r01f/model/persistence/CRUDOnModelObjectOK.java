@@ -5,7 +5,7 @@ import r01f.guids.OID;
 import r01f.model.PersistableModelObject;
 import r01f.objectstreamer.annotations.MarshallType;
 
-@MarshallType(as="crudResult",typeId="CRUDOKOnModelObject")
+@MarshallType(as="crudResult",typeId="crudOnModelObjectOK")
 @Accessors(prefix="_")
 public class CRUDOnModelObjectOK<M extends PersistableModelObject<? extends OID>>
 	 extends CRUDOK<M> 
@@ -17,24 +17,24 @@ public class CRUDOnModelObjectOK<M extends PersistableModelObject<? extends OID>
 	public CRUDOnModelObjectOK() {
 		/* nothing */
 	}
-	CRUDOnModelObjectOK(final PersistenceRequestedOperation reqOp,final PersistencePerformedOperation performedOp,
-						final Class<M> entityType) {
-		super(reqOp,performedOp,
-			  entityType);
+	CRUDOnModelObjectOK(final Class<M> entityType,
+						final PersistenceRequestedOperation reqOp,final PersistencePerformedOperation performedOp) {
+		super(entityType,
+			  reqOp,performedOp);
 	}
-	CRUDOnModelObjectOK(final PersistenceRequestedOperation reqOp,final PersistencePerformedOperation performedOp,
-						final Class<M> entityType,
-						final M entity) {
-		super(reqOp,performedOp,
-			  entityType);
-		_operationExecResult = entity;
+	CRUDOnModelObjectOK(final Class<M> entityType,
+						final PersistenceRequestedOperation reqOp,final PersistencePerformedOperation performedOp,
+						final M result) {
+		super(entityType,
+			  reqOp,performedOp,
+			  result);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override @SuppressWarnings("cast")
 	public Class<M> getModelObjectType() {
-		return (Class<M>)_objectType;
+		return _objectType;
 	}
 	@Override
 	public void setModelObjectType(final Class<M> type) {

@@ -1,7 +1,9 @@
 package r01f.util.types;
 
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.Set;
 
 import r01f.util.types.collections.CollectionUtils;
 
@@ -185,5 +187,22 @@ public class StringCustomizeUtils {
         }
         return (result.toString());
     }
-	
+/////////////////////////////////////////////////////////////////////////////////////////
+//	
+/////////////////////////////////////////////////////////////////////////////////////////
+	public static String replaceDollarDelimitedVariableValues(final String inStr,
+								   							  final Properties props) {		
+		if (CollectionUtils.isNullOrEmpty(props)) {		
+			return inStr;
+		}	
+		String theUrlAsString = inStr;
+		Set<Entry<Object,Object>> entrySet = props.entrySet();
+		for (Entry<Object,Object> entry : entrySet) {
+			String key = entry.getKey().toString();
+			String val = entry.getValue().toString();
+			
+			theUrlAsString = theUrlAsString.replaceAll("\\$" + key + "\\$",val);
+		}
+		return theUrlAsString;
+	}
 }

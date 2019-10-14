@@ -1,8 +1,9 @@
 package r01f.model.persistence;
 
-import lombok.Getter;
 import lombok.experimental.Accessors;
-import r01f.exceptions.EnrichedRuntimeException;
+import r01f.model.services.COREServiceErrorType;
+import r01f.model.services.COREServiceErrorTypes;
+import r01f.model.services.COREServiceException;
 import r01f.util.types.Strings;
 
 /**
@@ -10,168 +11,172 @@ import r01f.util.types.Strings;
  */
 @Accessors(prefix="_")
 public class PersistenceException
-	 extends EnrichedRuntimeException {
+	 extends COREServiceException {
 
 	private static final long serialVersionUID = -1161648233290893856L;
 /////////////////////////////////////////////////////////////////////////////////////////
-//  FIELDS
-/////////////////////////////////////////////////////////////////////////////////////////
-	/**
-	 * The client's requested operation
-	 */
-	@Getter private final PersistenceRequestedOperation _requestedOperation;
-
-/////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
-	protected PersistenceException(final PersistenceRequestedOperation requestedOp,
-						 		   final Throwable th) {
-		super(PersistenceErrorType.class,
-			  Strings.customized("Persistence error when executing a {} operation: {}",
-					  			 requestedOp,th.getMessage()),
-			  th,
-			  PersistenceErrorType.SERVER_ERROR);
-		_requestedOperation = requestedOp;
+	public PersistenceException(final PersistenceRequestedOperation requestedOp,
+								final COREServiceErrorType errorType,final int errorCode,
+						 		final Throwable th) {
+		super(requestedOp.getCOREServiceMethod(),
+			  errorType,errorCode,
+			  th);
 	}
-//	protected PersistenceException(final PersistenceRequestedOperation requestedOp,
-//						 		   final String msg,
-//						 		   final PersistenceErrorType errorType,final int extendedCode) {
-//		super(PersistenceErrorType.class,
-//		      Strings.customized("Persistence error when executing a {} operation: {}",
-//		    		  			 requestedOp,msg),
-//		      errorType,extendedCode);
-//		_requestedOperation = requestedOp;
-//	}
-	protected PersistenceException(final PersistenceRequestedOperation requestedOp,String requestedOpName,
-						 		   final String msg,
-						 		   final PersistenceErrorType errorType,final int extendedCode) {
-		super(PersistenceErrorType.class,
-		      Strings.customized("Persistence error when executing a {} ({}: {})",
-		    		  			 requestedOp,requestedOpName != null ? requestedOpName 
-		    		  					 							 : requestedOp != null ? requestedOp.name() : "",
-		    		  			 msg),
-		      errorType,extendedCode);
-		_requestedOperation = requestedOp;
+	public PersistenceException(final PersistenceRequestedOperation requestedOp,
+								final COREServiceErrorType errorType,
+						 		final Throwable th) {
+		super(requestedOp.getCOREServiceMethod(),
+			  errorType,-1,
+			  th);
 	}
-	protected PersistenceException(final PersistenceRequestedOperation requestedOp,
-						 		   final String msg,
-						 		   final PersistenceErrorType errorType) {
-		this(requestedOp,null,
-			 msg,
-			 errorType,-1);
+	public PersistenceException(final PersistenceRequestedOperation requestedOp,
+						 		final Throwable th) {
+		super(requestedOp.getCOREServiceMethod(),
+			  th);
+	}
+	public PersistenceException(final PersistenceRequestedOperation requestedOp,
+								final COREServiceErrorType errorType,final int errorCode,
+						 		final String msg,final Throwable th) {
+		super(requestedOp.getCOREServiceMethod(),
+			  errorType,errorCode,
+			  msg,th);
+	}
+	public PersistenceException(final PersistenceRequestedOperation requestedOp,
+								final COREServiceErrorType errorType,
+						 		final String msg,final Throwable th) {
+		super(requestedOp.getCOREServiceMethod(),
+			  errorType,-1,
+			  msg,th);
+	}
+	public PersistenceException(final PersistenceRequestedOperation requestedOp,
+						 		final String msg,final Throwable th) {
+		super(requestedOp.getCOREServiceMethod(),
+			  msg,th);
+	}
+	public PersistenceException(final PersistenceRequestedOperation requestedOp,
+								final COREServiceErrorType errorType,final int errorCode,
+						 		final String msg) {
+		super(requestedOp.getCOREServiceMethod(),
+		      errorType,errorCode,
+		      msg);
+	}
+	public PersistenceException(final PersistenceRequestedOperation requestedOp,
+								final COREServiceErrorType errorType,
+						 		final String msg) {
+		super(requestedOp.getCOREServiceMethod(),
+			  errorType,-1,
+			  msg);
+	}
+	public PersistenceException(final PersistenceRequestedOperation requestedOp,
+						 		final String msg) {
+		super(requestedOp.getCOREServiceMethod(),
+			  msg);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  METHODS
 /////////////////////////////////////////////////////////////////////////////////////////
-	public PersistenceErrorType getPersistenceErrorType() {
-		return PersistenceErrorType.from(_code);
-	}
 	public boolean isEntityNotFound() {
-		return this.is(PersistenceErrorType.ENTITY_NOT_FOUND);
+		return this.is(PersistenceServiceErrorTypes.ENTITY_NOT_FOUND);
 	}
 	public boolean isRelatedEntityNotFound() {
-		return this.is(PersistenceErrorType.RELATED_REQUIRED_ENTITY_NOT_FOUND);
+		return this.is(PersistenceServiceErrorTypes.RELATED_REQUIRED_ENTITY_NOT_FOUND);
 	}
-	public boolean isServerError() {
-		return this.is(PersistenceErrorType.SERVER_ERROR);
-	}
+	@Override
 	public boolean isClientError() {
 		return !this.isServerError();
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  BUILDERS
 /////////////////////////////////////////////////////////////////////////////////////////
-	public static PersistenceException serverError(final PersistenceRequestedOperation requestedOp) {
+	public static PersistenceException serverError(final PersistenceRequestedOperation requestedOp,
+												   final Throwable th) {
 		return new PersistenceException(requestedOp,
-										null,		// no message
-										PersistenceErrorType.SERVER_ERROR);
+										COREServiceErrorTypes.SERVER_ERROR,
+										th);
 	}
 	public static PersistenceException serverError(final PersistenceRequestedOperation requestedOp,
 												   final String msg,final Object... vars) {
 		return new PersistenceException(requestedOp,
-										Strings.customized(msg,vars),
-										PersistenceErrorType.SERVER_ERROR);
-	}
-	public static PersistenceException serverError(final PersistenceRequestedOperation requestedOp,
-												   final Throwable th) {
-		return new PersistenceException(requestedOp,
-										th);
+										COREServiceErrorTypes.SERVER_ERROR,
+										Strings.customized(msg,vars));
 	}
 	public static PersistenceException badClientRequest(final PersistenceRequestedOperation requestedOp) {
 		return new PersistenceException(requestedOp,
-										PersistenceErrorType.BAD_REQUEST_DATA.name(),		// no message
-										PersistenceErrorType.BAD_REQUEST_DATA);
+										COREServiceErrorTypes.BAD_CLIENT_REQUEST,
+										(Throwable)null);
 	}
 	public static PersistenceException badClientRequest(final PersistenceRequestedOperation requestedOp,
 												 		final String msg,final Object... vars) {
 		return new PersistenceException(requestedOp,
-										Strings.customized(msg,vars),
-										PersistenceErrorType.BAD_REQUEST_DATA);
+										COREServiceErrorTypes.BAD_CLIENT_REQUEST,
+										Strings.customized(msg,vars));
 	}
 	public static PersistenceException entityNotFound(final PersistenceRequestedOperation requestedOp) {
 		return new PersistenceException(requestedOp,
-										PersistenceErrorType.ENTITY_NOT_FOUND.name(),
-										PersistenceErrorType.ENTITY_NOT_FOUND);
+										PersistenceServiceErrorTypes.ENTITY_NOT_FOUND,		
+										(Throwable)null);
 	}
 	public static PersistenceException entityNotFound(final PersistenceRequestedOperation requestedOp,
 													  final String msg,final Object... vars) {
 		return new PersistenceException(requestedOp,
-										Strings.customized(msg,vars),
-										PersistenceErrorType.ENTITY_NOT_FOUND);
+										PersistenceServiceErrorTypes.ENTITY_NOT_FOUND,
+										Strings.customized(msg,vars));
 	}
 	public static PersistenceException entityAlreadyExists(final PersistenceRequestedOperation requestedOp) {
 		return new PersistenceException(requestedOp,
-										PersistenceErrorType.ENTITY_ALREADY_EXISTS.name(),
-										PersistenceErrorType.ENTITY_ALREADY_EXISTS);
+										PersistenceServiceErrorTypes.ENTITY_ALREADY_EXISTS,
+										(Throwable)null);
 	}
 	public static PersistenceException entityAlreadyExists(final PersistenceRequestedOperation requestedOp,
 														   final String msg,final Object... vars) {
 		return new PersistenceException(requestedOp,
-										Strings.customized(msg,vars),
-										PersistenceErrorType.ENTITY_ALREADY_EXISTS);
+										PersistenceServiceErrorTypes.ENTITY_ALREADY_EXISTS,
+										Strings.customized(msg,vars));
 	}
 	public static PersistenceException requiredRelatedEntityNotFound(final PersistenceRequestedOperation requestedOp) {
 		return new PersistenceException(requestedOp,
-										PersistenceErrorType.RELATED_REQUIRED_ENTITY_NOT_FOUND.name(),
-										PersistenceErrorType.RELATED_REQUIRED_ENTITY_NOT_FOUND);
+										PersistenceServiceErrorTypes.RELATED_REQUIRED_ENTITY_NOT_FOUND,
+										(Throwable)null);
 	}
 	public static PersistenceException requiredRelatedEntityNotFound(final PersistenceRequestedOperation requestedOp,
 															  		 final String msg,final Object... vars) {
 		return new PersistenceException(requestedOp,
-										Strings.customized(msg,vars),
-										PersistenceErrorType.RELATED_REQUIRED_ENTITY_NOT_FOUND);
+										PersistenceServiceErrorTypes.RELATED_REQUIRED_ENTITY_NOT_FOUND,
+										Strings.customized(msg,vars));
 	}
 	public static PersistenceException notValidEntity(final PersistenceRequestedOperation requestedOp) {
 		return new PersistenceException(requestedOp,
-										PersistenceErrorType.ENTITY_NOT_VALID.name(),
-										PersistenceErrorType.ENTITY_NOT_VALID);
+										PersistenceServiceErrorTypes.ENTITY_NOT_VALID,
+										(Throwable)null);
 	}
 	public static PersistenceException notValidEntity(final PersistenceRequestedOperation requestedOp,
 											   		  final String msg,final Object... vars) {
 		return new PersistenceException(requestedOp,
-										Strings.customized(msg,vars),
-										PersistenceErrorType.ENTITY_NOT_VALID);
+										PersistenceServiceErrorTypes.ENTITY_NOT_VALID,
+										Strings.customized(msg,vars));
 	}
 	public static PersistenceException illegalStatus(final PersistenceRequestedOperation requestedOp) {
 		return new PersistenceException(requestedOp,
-										PersistenceErrorType.ILLEGAL_STATUS.name(),
-										PersistenceErrorType.ILLEGAL_STATUS);
+										PersistenceServiceErrorTypes.ILLEGAL_STATUS,
+										(Throwable)null);
 	}
 	public static PersistenceException illegalStatus(final PersistenceRequestedOperation requestedOp,
 											  		 final String msg,final Object... vars) {
 		return new PersistenceException(requestedOp,
-										Strings.customized(msg,vars),
-										PersistenceErrorType.ILLEGAL_STATUS);
+										PersistenceServiceErrorTypes.ILLEGAL_STATUS,
+										Strings.customized(msg,vars));
 	}
 	public static PersistenceException optimisticLockingError(final PersistenceRequestedOperation requestedOp) {
 		return new PersistenceException(requestedOp,
-										PersistenceErrorType.OPTIMISTIC_LOCKING_ERROR.name(),
-										PersistenceErrorType.OPTIMISTIC_LOCKING_ERROR);
+										PersistenceServiceErrorTypes.OPTIMISTIC_LOCKING_ERROR,
+										(Throwable)null);
 	}
 	public static PersistenceException optimisticLockingError(final PersistenceRequestedOperation requestedOp,
 											  		   		  final String msg,final Object... vars) {
 		return new PersistenceException(requestedOp,
-										Strings.customized(msg,vars),
-										PersistenceErrorType.OPTIMISTIC_LOCKING_ERROR);
+										PersistenceServiceErrorTypes.OPTIMISTIC_LOCKING_ERROR,
+										Strings.customized(msg,vars));
 	}
 }

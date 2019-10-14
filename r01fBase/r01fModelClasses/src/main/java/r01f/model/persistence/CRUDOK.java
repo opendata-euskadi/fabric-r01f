@@ -1,10 +1,11 @@
 package r01f.model.persistence;
 
 import lombok.experimental.Accessors;
+import r01f.model.services.COREServiceMethod;
 import r01f.objectstreamer.annotations.MarshallType;
 import r01f.util.types.Strings;
 
-@MarshallType(as="crudResult",typeId="CRUDOK")
+@MarshallType(as="crudResult",typeId="ok")
 @Accessors(prefix="_")
 public class CRUDOK<T>
 	 extends PersistenceOperationOnObjectOK<T>
@@ -13,34 +14,34 @@ public class CRUDOK<T>
 //  CONSTRUCTOR & BUILDER
 /////////////////////////////////////////////////////////////////////////////////////////
 	public CRUDOK() {
-		super(PersistenceRequestedOperation.OTHER,PersistencePerformedOperation.OTHER);
+		super(COREServiceMethod.UNKNOWN,COREServiceMethod.UNKNOWN);
 	}
-	CRUDOK(final PersistenceRequestedOperation reqOp,final PersistencePerformedOperation perfOp,
-		   final Class<T> entityType) {
-		super(reqOp,perfOp,
-			  entityType);
+	public CRUDOK(final Class<T> entityType,
+				  final PersistenceRequestedOperation reqOp,final PersistencePerformedOperation perfOp) {
+		super(entityType,
+			  reqOp,perfOp);
 	}
-	CRUDOK(final PersistenceRequestedOperation reqOp,final PersistencePerformedOperation perfOp,
-		   final Class<T> entityType,
-		   final T entity) {
-		this(reqOp,perfOp,
-			 entityType);
-		_operationExecResult = entity;
+	public CRUDOK(final Class<T> entityType,
+				  final PersistenceRequestedOperation reqOp,final PersistencePerformedOperation perfOp,
+				  final T result) {
+		super(entityType,
+			  reqOp,perfOp,
+			  result);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  METHODS
 /////////////////////////////////////////////////////////////////////////////////////////
 	public boolean hasBeenLoaded() {
-		return _performedOperation == PersistencePerformedOperation.LOADED;
+		return this.getPerformedOperation() == PersistencePerformedOperation.LOADED;
 	}
 	public boolean hasBeenCreated() {
-		return _performedOperation == PersistencePerformedOperation.CREATED;
+		return this.getPerformedOperation() == PersistencePerformedOperation.CREATED;
 	}
 	public boolean hasBeenUpdated() {
-		return _performedOperation == PersistencePerformedOperation.UPDATED;
+		return this.getPerformedOperation() == PersistencePerformedOperation.UPDATED;
 	}
 	public boolean hasBeenDeleted() {
-		return _performedOperation == PersistencePerformedOperation.DELETED;
+		return this.getPerformedOperation() == PersistencePerformedOperation.DELETED;
 	}
 	public boolean hasBeenModified() {
 		return this.hasBeenCreated() || this.hasBeenUpdated();
@@ -49,7 +50,7 @@ public class CRUDOK<T>
 		return !this.hasBeenModified();
 	}
 	public boolean hasBeenFound() {
-		return _performedOperation == PersistencePerformedOperation.FOUND;
+		return this.getPerformedOperation() == PersistencePerformedOperation.FOUND;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  
@@ -67,10 +68,10 @@ public class CRUDOK<T>
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public CharSequence debugInfo() {
-		PersistencePerformedOperation supposedPerformed = PersistencePerformedOperation.from(_requestedOperation);
+		PersistencePerformedOperation supposedPerformed = PersistencePerformedOperation.from(this.getRequestedOperation());
 		return Strings.customized("{} persistence operation requested on entity of type {} {}",
-								  _requestedOperation,_objectType,_performedOperation,
-								  supposedPerformed != _performedOperation ? ("and performed " + _performedOperation + " persistence operation")
-										  								   : "");
+								  _calledMethod,_objectType,
+								  supposedPerformed != this.getPerformedOperation() ? ("and performed " + _executedMethod + " persistence operation")
+										  								   			: "");
 	}
 }

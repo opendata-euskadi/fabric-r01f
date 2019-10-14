@@ -4,13 +4,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-import lombok.Getter;
 import lombok.experimental.Accessors;
 import r01f.exceptions.EnrichedRuntimeException;
-import r01f.exceptions.EnrichedThrowableSubType;
-import r01f.exceptions.EnrichedThrowableSubTypeWrapper;
+import r01f.exceptions.EnrichedThrowableTypeBase;
+import r01f.exceptions.EnrichedThrowableTypeBuilder;
 import r01f.exceptions.ExceptionSeverity;
-import r01f.exceptions.Throwables;
 
 /**
  * Exception thrown at {@link ReflectionUtils} utility type
@@ -25,21 +23,17 @@ public class ReflectionException
 ///////////////////////////////////////////////////////////////////////////////
 	private ReflectionException(final String msg,
 							    final ReflectionExceptionType errorType) {
-		super(ReflectionExceptionType.class,
-			  msg,
-			  errorType);	// all reflection exceptions are fatal
+		super(errorType,	// all reflection exceptions are fatal
+			  msg);	
 	}
 	private ReflectionException(final Throwable th) {
-		super(ReflectionExceptionType.class,
-			  th,
-			  ReflectionExceptionType.from(th));	// all reflection exceptions are fatal
+		super(ReflectionExceptionType.from(th),	// all reflection exceptions are fatal
+			  th);	
 	}
 	private ReflectionException(final String msg,
 								final Throwable th) {
-		super(ReflectionExceptionType.class,
-			  msg,
-			  th,
-			  ReflectionExceptionType.from(th));	// all reflection exceptions are fatal
+		super(ReflectionExceptionType.from(th),	// all reflection exceptions are fatal
+			  msg,th);
 	}
 ///////////////////////////////////////////////////////////////////////////////
 //	METHODS
@@ -60,34 +54,63 @@ public class ReflectionException
 //	SUB_TYPE
 ///////////////////////////////////////////////////////////////////////////////
 	@Accessors(prefix="_")
-	      enum ReflectionExceptionType
-	implements EnrichedThrowableSubType<ReflectionExceptionType> {
-		UNKNOWN(-1),
-		CLASS_NOT_FOUND(1),
-		NO_CONSTRUCTOR(2),
-		NO_METHOD(3),
-		NO_FIELD(4),
-		SECURITY(5),
-		ILLEGAL_ARGUMENT(6),
-		INSTANTIATION(7),
-		INVOCATION_TARGET(8);
-		
-		@Getter private final int _group = 0;
-		@Getter private int _code;
-		
-		private ReflectionExceptionType(final int code) {
-			_code = code;
+	static final class ReflectionExceptionType
+	           extends EnrichedThrowableTypeBase {
+		private ReflectionExceptionType(final String name,
+										final int group,final int code,								
+										final ExceptionSeverity severity) {
+			super(name,
+				  group,code,
+				  severity);
 		}
-		private static EnrichedThrowableSubTypeWrapper<ReflectionExceptionType> WRAPPER = EnrichedThrowableSubTypeWrapper.create(ReflectionExceptionType.class); 
-		
-		public static ReflectionExceptionType from(final int errorCode) {
-			return WRAPPER.from(0,errorCode);
+		private static EnrichedThrowableTypeBuilder<ReflectionExceptionType>.EnrichedThrowableTypeBuilderCodesStep<ReflectionExceptionType> withName(final String name) {		
+			return new EnrichedThrowableTypeBuilder<ReflectionExceptionType>() {
+							@Override
+							protected ReflectionExceptionType _build(final String name, 
+																  	 final int group,final int code,
+																  	 final ExceptionSeverity severity) {
+								return new ReflectionExceptionType(name,
+															       group,code,
+															       severity);
+							}
+				   }.withName(name);
 		}
-		public static ReflectionExceptionType from(final int groupCode,final int errorCode) {
-			if (groupCode != 0) throw new IllegalArgumentException(Throwables.message("The group code for a {} MUST be {}",
-																									ReflectionExceptionType.class,0));
-			return WRAPPER.from(0,errorCode);
-		}
+		public static final ReflectionExceptionType UNKNOWN = ReflectionExceptionType.withName("UNKNOWN")
+																					 .coded(1,-1)
+																					 .severity(ExceptionSeverity.FATAL)
+																					 .build();
+		public static final ReflectionExceptionType CLASS_NOT_FOUND = ReflectionExceptionType.withName("CLASS_NOT_FOUND")
+																					 .coded(1,1)
+																					 .severity(ExceptionSeverity.FATAL)
+																					 .build();
+		public static final ReflectionExceptionType NO_CONSTRUCTOR = ReflectionExceptionType.withName("NO_CONSTRUCTOR")
+																					 .coded(1,2)
+																					 .severity(ExceptionSeverity.FATAL)
+																					 .build();
+		public static final ReflectionExceptionType NO_METHOD = ReflectionExceptionType.withName("NO_METHOD")
+																					 .coded(1,3)
+																					 .severity(ExceptionSeverity.FATAL)
+																					 .build();
+		public static final ReflectionExceptionType NO_FIELD = ReflectionExceptionType.withName("NO_FIELD")
+																					 .coded(1,4)
+																					 .severity(ExceptionSeverity.FATAL)
+																					 .build();
+		public static final ReflectionExceptionType SECURITY = ReflectionExceptionType.withName("SECURITY")
+																					 .coded(1,5)
+																					 .severity(ExceptionSeverity.FATAL)
+																					 .build();
+		public static final ReflectionExceptionType ILLEGAL_ARGUMENT = ReflectionExceptionType.withName("ILLEGAL_ARGUMENT")
+																					 .coded(1,6)
+																					 .severity(ExceptionSeverity.FATAL)
+																					 .build();
+		public static final ReflectionExceptionType INSTANTIATION = ReflectionExceptionType.withName("INSTANTIATION")
+																					 .coded(1,7)
+																					 .severity(ExceptionSeverity.FATAL)
+																					 .build();
+		public static final ReflectionExceptionType INVOCATION_TARGET = ReflectionExceptionType.withName("INVOCATION_TARGET")
+																					 .coded(1,8)
+																					 .severity(ExceptionSeverity.FATAL)
+																					 .build();
 		/**
 		 * Gets the sub type of the exception
 		 * @param th the exception
@@ -114,26 +137,6 @@ public class ReflectionException
 				outType = ReflectionExceptionType.UNKNOWN;
 			}
 			return outType;
-		}
-		@Override
-		public ExceptionSeverity getSeverity() {
-			return ExceptionSeverity.FATAL;		// All reflection exceptions are fatal
-		}
-		@Override
-		public boolean is(final int group,final int code) {
-			return WRAPPER.is(this,
-							  group,code);
-		}
-		public boolean is(final int code) {
-			return this.is(0,code);
-		}
-		@Override
-		public boolean isIn(final ReflectionExceptionType... els) {
-			return WRAPPER.isIn(this,els);
-		}
-		@Override
-		public boolean is(final ReflectionExceptionType el) {
-			return WRAPPER.is(this,el);
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////

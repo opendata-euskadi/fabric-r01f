@@ -12,7 +12,7 @@ import r01f.model.PersistableModelObject;
 import r01f.objectstreamer.annotations.MarshallType;
 import r01f.util.types.collections.CollectionUtils;
 
-@MarshallType(as="findResult",typeId="FINDOKOnModelObject")
+@MarshallType(as="findResult",typeId="findOnModelObjectOK")
 @Accessors(prefix="_")
 public class FindOnModelObjectOK<M extends PersistableModelObject<? extends OID>>
 	 extends FindOK<M>
@@ -35,7 +35,7 @@ public class FindOnModelObjectOK<M extends PersistableModelObject<? extends OID>
 	}
 	@Override @SuppressWarnings("cast")
 	public void setModelObjectType(final Class<M> type) {
-		_foundObjectType = (Class<M>)type;
+		_foundObjectType = type;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  
@@ -45,8 +45,8 @@ public class FindOnModelObjectOK<M extends PersistableModelObject<? extends OID>
 	 * @throws PersistenceException
 	 */
 	public <O extends OID> Collection<O> getOidsOrThrow() throws PersistenceException {
-		if (CollectionUtils.isNullOrEmpty(_operationExecResult)) return Lists.newArrayList();
-		return FluentIterable.from(_operationExecResult)
+		if (CollectionUtils.isNullOrEmpty(_methodExecResult)) return Lists.newArrayList();
+		return FluentIterable.from(_methodExecResult)
 							 .transform(new Function<M,O>() {
 												@Override @SuppressWarnings("unchecked")
 												public O apply(final M entity) {

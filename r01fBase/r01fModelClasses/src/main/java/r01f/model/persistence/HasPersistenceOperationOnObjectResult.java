@@ -1,10 +1,12 @@
 package r01f.model.persistence;
 
+import r01f.model.services.HasCOREServiceMethodExecResult;
+
 /**
  * An object that contains a {@link PersistenceOperationOnObjectResult}
  */
 public interface HasPersistenceOperationOnObjectResult<T>
-		 extends HasPersistenceOperationResult {
+		 extends HasCOREServiceMethodExecResult {
 /////////////////////////////////////////////////////////////////////////////////////////
 // 	ACCESSOR METHODS
 /////////////////////////////////////////////////////////////////////////////////////////

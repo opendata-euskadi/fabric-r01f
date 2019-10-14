@@ -2,17 +2,20 @@ package r01f.model.persistence;
 
 import java.util.Collection;
 
+import com.google.common.reflect.TypeToken;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import r01f.model.services.COREServiceErrorType;
 import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 import r01f.objectstreamer.annotations.MarshallType;
 
-@MarshallType(as="findResult",typeId="FINDError")
+@MarshallType(as="findResult",typeId="error")
 @Accessors(prefix="_")
 public class FindError<T>
-	 extends PersistenceOperationOnObjectError<Collection<T>>
+	 extends PersistenceOperationExecError<Collection<T>>
   implements FindResult<T>  {
 /////////////////////////////////////////////////////////////////////////////////////////
 //  FIELDS
@@ -31,31 +34,48 @@ public class FindError<T>
 	public FindError() {
 		super(PersistenceRequestedOperation.FIND);
 	}
-	FindError(final Throwable th) {
-		super(PersistenceRequestedOperation.FIND,
-			  Collection.class,
-			  th);
-	}
-	FindError(final String errMsg,final PersistenceErrorType errorCode) {
-		super(PersistenceRequestedOperation.FIND,
-			  Collection.class,
-			  errMsg,errorCode);
-	}
-	FindError(final Class<T> entityType,
+	public FindError(final Class<T> entityType,
 			  final Throwable th) {
-		this(th);
+		super(PersistenceRequestedOperation.FIND,
+			  th);
 		_findedObjectType = entityType;
 	}
-	FindError(final Class<T> entityType,
-			  final String errMsg,final PersistenceErrorType errorCode) {
-		this(errMsg,errorCode);
+	public FindError(final Class<T> entityType,
+			  		 final String msg) {
+		super(PersistenceRequestedOperation.FIND,
+			  msg);
+		_findedObjectType = entityType;
+	}
+	public FindError(final Class<T> entityType,
+			  		 final COREServiceErrorType errorType,
+			  		 final Throwable th) {
+		super(PersistenceRequestedOperation.FIND,
+			  errorType,
+			  th);
+		_findedObjectType = entityType;
+	}
+	public FindError(final Class<T> entityType,
+			  		 final COREServiceErrorType errorType,
+			  		 final String errMsg) {
+		super(PersistenceRequestedOperation.FIND,
+			  errorType,
+			  errMsg);
 		_findedObjectType = entityType;
 	}
 	public FindError(final Class<T> entityType,
 					 final PersistenceOperationExecError<?> otherError) {
 		super(PersistenceRequestedOperation.FIND,
-			  Collection.class,
 			  otherError);
+		_findedObjectType = entityType;
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	                                                                          
+/////////////////////////////////////////////////////////////////////////////////////////
+	@Override @SuppressWarnings({ "serial","unchecked" })
+	public Class<Collection<T>> getObjectType() {
+		return (Class<Collection<T>>)new TypeToken<Class<Collection<T>>>() { /* nothing */ }
+											.getComponentType()
+											.getRawType();
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  

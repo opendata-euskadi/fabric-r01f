@@ -3,11 +3,12 @@ package r01f.model.persistence;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import r01f.model.services.COREServiceErrorType;
 import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 import r01f.objectstreamer.annotations.MarshallType;
 
-@MarshallType(as="countResult",typeId="CountError")
+@MarshallType(as="countResult",typeId="countError")
 @Accessors(prefix="_")
 public class CountError<T>
 	 extends PersistenceOperationExecError<Long>
@@ -28,45 +29,43 @@ public class CountError<T>
 		// nothing
 	}
 	CountError(final Class<T> entityType,
-			   final String reqOp,
 	  		   final Throwable th) {
 		super(PersistenceRequestedOperation.COUNT,
 			  th);
-		_requestedOperationName = reqOp;
-	}
-	CountError(final Class<T> entityType,
-			   final String reqOp,
-	  		   final PersistenceErrorType errType) {
-		this();
-		_requestedOperationName = reqOp;
 		_objectType = entityType;
-		_errorType = errType;
 	}
 	CountError(final Class<T> entityType,
-			   final String reqOp,
-	  		   final String errMsg,final PersistenceErrorType errCode) {
+	  		   final COREServiceErrorType errType,
+	  		   final Throwable th) {
 		super(PersistenceRequestedOperation.COUNT,
-			  errMsg,errCode);
-		_requestedOperationName = reqOp;
+			  errType,
+			  th);
+		_objectType = entityType;
+	}
+	CountError(final Class<T> entityType,
+	  		   final String errMsg) {
+		super(PersistenceRequestedOperation.COUNT,
+			  errMsg);
+		_objectType = entityType;
+	}
+	CountError(final Class<T> entityType,
+			   final COREServiceErrorType errType,
+	  		   final String errMsg) {
+		super(PersistenceRequestedOperation.COUNT,
+			  errType,
+			  errMsg);
 		_objectType = entityType;
 	}
 	public CountError(final Class<T> entityType,
-					  final CountError<?> otherCountError) {
-		this(entityType,
-			 null,
-			 otherCountError);
-	}
-	public CountError(final Class<T> entityType,
-					  final String reqOp,
 					  final CountError<?> otherCountError) {
 		this();
-		_requestedOperationName = reqOp;
-		_objectType = entityType;
+		this.setRequestedOperation(otherCountError.getRequestedOperation());
 		this.setError(otherCountError.getError());
 		this.setErrorDebug(otherCountError.getErrorDebug());
 		this.setErrorMessage(otherCountError.getErrorMessage());
 		this.setErrorType(otherCountError.getErrorType());
-		this.setExtendedErrorCode(otherCountError.getExtendedErrorCode());
+		this.setErrorCode(otherCountError.getErrorCode());
+		_objectType = entityType;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CAST

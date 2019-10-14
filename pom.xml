@@ -131,16 +131,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
-		<!-- ///////////////////////////////////////// -->
-		<!-- TEST                                      -->
-		<!-- ///////////////////////////////////////// -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.12</version>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
 
 <!-- ====================================================================== -->
@@ -199,7 +189,6 @@
 	<build>
 
 		<pluginManagement>
-			<!-- Mav4en deploy: https://maven.apache.org/plugins/maven-deploy-plugin/usage.html -->
 			<plugins>
 				<!--
 					[0] - CLEAN: https://maven.apache.org/plugins/maven-clean-plugin/

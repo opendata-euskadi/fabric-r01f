@@ -7,6 +7,9 @@ import r01f.model.PersistableModelObject;
 public interface FindOnModelObjectResult<M extends PersistableModelObject<? extends OID>> 
    		 extends FindResult<M>,
    		 		 HasModelObjectTypeInfo<M> {
+/////////////////////////////////////////////////////////////////////////////////////////
+//	                                                                          
+/////////////////////////////////////////////////////////////////////////////////////////	
 	/**
 	 * @return a {@link FindOnModelObjectOK}
 	 */

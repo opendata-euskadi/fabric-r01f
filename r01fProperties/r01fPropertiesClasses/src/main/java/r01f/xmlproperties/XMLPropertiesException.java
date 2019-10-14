@@ -13,21 +13,24 @@ public class XMLPropertiesException
 
 	private static final long serialVersionUID = -285396264237852297L;
 /////////////////////////////////////////////////////////////////////////////////////////
-//  CONSTRUCTORES
+//  CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
-	public XMLPropertiesException(final String msg,
-								  final XMLPropertiesErrorType type) {
-		super(XMLPropertiesErrorType.class,
-			  msg,
-			  type);
+	public XMLPropertiesException(final XMLPropertiesErrorType type,
+								  final String msg) {
+		super(type,
+			  msg);
 	}
-	public XMLPropertiesException(final String msg,
-								  final Throwable cause,
-								  final XMLPropertiesErrorType type) {
-		super(XMLPropertiesErrorType.class,
+	public XMLPropertiesException(final XMLPropertiesErrorType type,
+								  final Throwable th) {
+		super(type,
+			  th);
+	}
+	public XMLPropertiesException(final XMLPropertiesErrorType type,
+								  final String msg,			
+								  final Throwable cause) {
+		super(type,
 			  msg,
-			  cause,
-			  type);
+			  cause);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  BUILDERS
@@ -52,9 +55,9 @@ public class XMLPropertiesException
 						 			 XMLPropertiesComponentDefLoader.componentDefFilePath(env,
 						 					 											  appCode, component));
 		}
-		return new XMLPropertiesException(err,
-										  ioEx,
-										  XMLPropertiesErrorType.COMPONENTDEF_NOT_FOUND);
+		return new XMLPropertiesException(XMLPropertiesErrorType.COMPONENTDEF_NOT_FOUND,
+										  err,
+										  ioEx);
 	}
 	public static XMLPropertiesException propertiesLoadError(final Environment env,final AppCode appCode,final AppComponent component) {
 		XMLPropertiesComponentDef compDef = null;
@@ -79,8 +82,8 @@ public class XMLPropertiesException
         				            		 		 : "the definition was NOT found",
         				  			 env,appCode,component);
         }
-		return new XMLPropertiesException(err,
-										  XMLPropertiesErrorType.PROPERTIES_NOT_FOUND);
+		return new XMLPropertiesException(XMLPropertiesErrorType.PROPERTIES_NOT_FOUND,
+										  err);
 	}
 	public static XMLPropertiesException propertiesXMLError(final Environment env,final AppCode appCode,final AppComponent component) {
 		String err = null;
@@ -91,7 +94,7 @@ public class XMLPropertiesException
 			err = Strings.customized("The properties XML for env/appCode/contentType={}/{}/{} contains some error or is malformed",
 						 			 env,appCode,component);
 		}
-		return new XMLPropertiesException(err,
-										  XMLPropertiesErrorType.PROPERTIES_XML_MALFORMED);
+		return new XMLPropertiesException(XMLPropertiesErrorType.PROPERTIES_XML_MALFORMED,
+										  err);
 	}
 }

@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.annotations.GwtIncompatible;
 
+import r01f.util.types.collections.CollectionUtils;
+
 /**
  * Some exception-related utilities
  */
@@ -44,29 +46,12 @@ public class Throwables {
 	}
 	private static String _message(final EnrichedThrowable th) {
 		String msg = th.getRawMessage() != null ? th.getRawMessage().replaceAll("[\n\r]"," ")
-											    : th.getSubType() != null ? th.getSubType().toString() : "";
+											    : th.getType() != null ? th.getType().toString() : "";
 		return msg;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  
 /////////////////////////////////////////////////////////////////////////////////////////
-	static <S extends EnrichedThrowableSubType<?>> S getSubType(final EnrichedThrowable th,
-																final Class<S> subTypeType) {
-		S outSubType = null;
-		if (th.getGroup() > 0 && th.getCode() > 0) {
-			// Call the static factory
-			outSubType = Throwables.<S>_invokeStaticMethod(subTypeType,
-														   "from",
-														   new Class<?>[] {Integer.class,Integer.class},
-														   new Object[] {th.getGroup(),th.getCode()});
-		}
-		return outSubType;
-	}
-	static <S extends EnrichedThrowableSubType<?>> S getSubType(final Class<S> subTypeType,
-																final int group,final int code) {
-		return Throwables.<S>_invokeStaticMethod(subTypeType,
-								   				 "from",new Class<?>[] {Integer.class,Integer.class},new Object[] {group,code});	
-	}
 	static boolean isMoreSerious(final EnrichedThrowable th,final EnrichedThrowable otherTh) {
 		ExceptionSeverity thSeverity = th.getSeverity();
 		ExceptionSeverity otherThSeverity = otherTh.getSeverity();
@@ -78,27 +63,23 @@ public class Throwables {
 		}
 		return false;
 	}
-	static <S extends EnrichedThrowableSubType<?>> boolean is(final EnrichedThrowable th,
-															  final S subType) {
-		return subType != null ? subType.is(th.getGroup(),
-						  					th.getCode())
-						  	   : false;
+	static <T extends EnrichedThrowableType> boolean is(final EnrichedThrowable th,
+													    final T type) {
+		return type != null ? type.is(th.getType())
+						  	: false;
 	}
-	static <S extends EnrichedThrowableSubType<?>> boolean isAny(final EnrichedThrowable th,final S... subClasses) {
-		if (subClasses == null || subClasses.length == 0) {
-			return false;
-		}
+	@SuppressWarnings("unchecked")
+	static <T extends EnrichedThrowableType> boolean isAny(final EnrichedThrowable th,final T... types) {
+		if (CollectionUtils.isNullOrEmpty(types)) return false;
 		boolean found = false;
-		for (S sub : subClasses) {
-			if (sub.is(th.getGroup(),
-					   th.getCode())) {
+		for (T sub : types) {
+			if (sub.is(th.getType())) {
 				found = true;
 				break;
 			}
 		}
 		return found;
 	}
-
 /////////////////////////////////////////////////////////////////////////////////////////
 //  UTILLITIES
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -130,7 +111,7 @@ public class Throwables {
      * @return
      * @see Matcher#quoteReplacement(String)
      */
-	private static String _matcherQuoteReplacement(String s) {
+	private static String _matcherQuoteReplacement(final String s) {
         if ((s.indexOf('\\') == -1) && (s.indexOf('$') == -1)) return s;
         StringBuilder sb = new StringBuilder();
         for (int i=0; i<s.length(); i++) {
@@ -155,7 +136,7 @@ public class Throwables {
 	 *				}
 	 * </pre>
 	 * @param throwingType the type where the exception is catched and logged
-	 * @param th the throwed exception
+	 * @param th the thrown exception
 	 * @param msg the message to log (can contain {}-like placeholder -see SL4FJ-)
 	 * @param vars the params of the message to log
 	 */
@@ -204,7 +185,7 @@ public class Throwables {
 	 * @see com.google.common.base.Throwables.propagateIfPossible
 	 */
 	@GwtIncompatible("Guava's Throwables NOT usable in GWT")
-	public static void propagateIfPossible(Throwable throwable) {
+	public static void propagateIfPossible(final Throwable throwable) {
 		com.google.common.base.Throwables.throwIfUnchecked(throwable);
 	}
 	/**

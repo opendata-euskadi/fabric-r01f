@@ -3,13 +3,14 @@ package r01f.model.persistence;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import r01f.model.services.COREServiceMethod;
 import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 
 @Accessors(prefix="_")
-abstract class PersistenceOperationOnObjectOK<T>
-	   extends PersistenceOperationExecOK<T>
-    implements PersistenceOperationOnObjectResult<T> {
+public abstract class PersistenceOperationOnObjectOK<T>
+	   		  extends PersistenceOperationExecOK<T>
+    	   implements PersistenceOperationOnObjectResult<T> {
 /////////////////////////////////////////////////////////////////////////////////////////
 //  SERIALIZABLE DATA
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -22,22 +23,24 @@ abstract class PersistenceOperationOnObjectOK<T>
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR & BUILDER
 /////////////////////////////////////////////////////////////////////////////////////////
+	public PersistenceOperationOnObjectOK(final COREServiceMethod reqOp,final COREServiceMethod perfOp) {
+		super(reqOp,perfOp);
+	}
 	public PersistenceOperationOnObjectOK(final PersistenceRequestedOperation reqOp,final PersistencePerformedOperation perfOp) {
 		super(reqOp,perfOp);
 	}
 	@SuppressWarnings("unchecked")
-	PersistenceOperationOnObjectOK(final PersistenceRequestedOperation reqOp,final PersistencePerformedOperation perfOp,
-								   final Class<?> entityType) {
+	PersistenceOperationOnObjectOK(final Class<?> entityType,
+								   final PersistenceRequestedOperation reqOp,final PersistencePerformedOperation perfOp) {
 		this(reqOp,perfOp);
 		_objectType = (Class<T>)entityType;
-		_requestedOperation = reqOp;
 	}
-/////////////////////////////////////////////////////////////////////////////////////////
-//  
-/////////////////////////////////////////////////////////////////////////////////////////
-	@Override
-	public String getRequestedOperationName() {
-		return _requestedOperation != null ? _requestedOperation.name() 
-										   : "unknown persistence operation";
+	@SuppressWarnings("unchecked")
+	PersistenceOperationOnObjectOK(final Class<?> entityType,
+								   final PersistenceRequestedOperation reqOp,final PersistencePerformedOperation perfOp,
+								   final T result) {
+		super(reqOp,perfOp,
+			  result);
+		_objectType = (Class<T>)entityType;
 	}
 }
