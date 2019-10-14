@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>r01.r01f.html</groupId>
 		<artifactId>r01fHTML</artifactId>
-		<version>${r01f.version}</version>
+		<version>${revision}</version>
 	</parent>
 
 <!-- ====================================================================== -->
@@ -30,13 +30,13 @@
 		<dependency>
 			<groupId>r01.r01f.base</groupId>
 			<artifactId>r01fIOClasses</artifactId>
-			<version>${r01f.version}</version>
+			<version>${revision}</version>
 		</dependency>
 		
 		<dependency>
 		    <groupId>r01.r01f.base</groupId>
 		    <artifactId>r01fRXJavaClasses</artifactId>
-		    <version>${r01f.version}</version>
+		    <version>${revision}</version>
 		</dependency>
 	</dependencies>
 </project>

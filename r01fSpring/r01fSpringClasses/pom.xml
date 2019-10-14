@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>r01.r01f.spring</groupId>
 		<artifactId>r01fSpring</artifactId>
-		<version>${r01f.version}</version>
+		<version>${revision}</version>
 	</parent>
 
 <!-- ====================================================================== -->

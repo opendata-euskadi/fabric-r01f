@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>r01.r01f.objectstreamer</groupId>
 		<artifactId>r01fObjectStreamer</artifactId>
-		<version>${r01f.version}</version>
+		<version>${revision}</version>
 	</parent>
 	
 <!-- ====================================================================== -->

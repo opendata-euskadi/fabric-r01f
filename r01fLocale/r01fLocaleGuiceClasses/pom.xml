@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>r01.r01f.locale</groupId>
 		<artifactId>r01fLocale</artifactId>
-		<version>${r01f.version}</version>
+		<version>${revision}</version>
 	</parent>
 	
 <!-- ====================================================================== -->
@@ -29,7 +29,7 @@
 		<dependency>
 			<groupId>r01.r01f.locale</groupId>
 			<artifactId>r01fLocaleClasses</artifactId>
-			<version>${r01f.version}</version>
+			<version>${revision}</version>
 		</dependency>
 		<!-- ///////////////////////////////////////// -->
 		<!-- Guice                                     -->
@@ -37,7 +37,7 @@
 		<dependency>
 			<groupId>r01.r01f.base</groupId>
 			<artifactId>r01fGuiceClasses</artifactId>
-			<version>${r01f.version}</version>
+			<version>${revision}</version>
 		</dependency>
 	</dependencies>
 </project>

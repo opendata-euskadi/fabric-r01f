@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>r01.r01f.filestore</groupId>
 		<artifactId>r01fFileStore</artifactId>
-		<version>${r01f.version}</version>
+		<version>${revision}</version>
 	</parent>
 	
 <!-- ====================================================================== -->
@@ -29,12 +29,12 @@
 		<dependency>
 			<groupId>r01.r01f.base</groupId>
 			<artifactId>r01fBaseClasses</artifactId>
-			<version>${r01f.version}</version>
+			<version>${revision}</version>
 		</dependency>
 		<dependency>
 			<groupId>r01.r01f.base</groupId>
 			<artifactId>r01fIOClasses</artifactId>
-			<version>${r01f.version}</version>
+			<version>${revision}</version>
 		</dependency>
 		<!-- ///////////////////////////////////////// -->
 		<!-- Properties                                -->
@@ -42,7 +42,7 @@
 		<dependency>
 			<groupId>r01.r01f.properties</groupId>
 			<artifactId>r01fPropertiesInterfaceClasses</artifactId>
-			<version>${r01f.version}</version>
+			<version>${revision}</version>
 		</dependency>
 	</dependencies>
 </project>

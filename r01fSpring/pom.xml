@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>r01.r01f</groupId>
 		<artifactId>r01f</artifactId>
-		<version>${r01f.version}</version>
+		<version>${revision}</version>
 	</parent>
 	
 <!-- ====================================================================== -->

@@ -8,11 +8,11 @@
 <!-- ====================================================================== -->
 <!-- PARENT                                                                 -->
 <!-- ====================================================================== -->
-  <parent>
-    <groupId>r01.r01f.spring.web</groupId>
-    <artifactId>r01fSpringWeb</artifactId>
-    <version>${r01f.version}</version>
-  </parent>
+	<parent>
+		<groupId>r01.r01f.spring.web</groupId>
+		<artifactId>r01fSpringWeb</artifactId>
+		<version>${revision}</version>
+	</parent>
 
 <!-- ====================================================================== -->
 <!-- ARTIFACT                                                               -->
@@ -24,11 +24,11 @@
 <!-- DEPENDENCIES                                                           -->
 <!-- ====================================================================== -->
 	<dependencies>
-	
+
 		<!-- ///////////////////////////////////////// -->
 		<!-- ServletAPI                                -->
 		<!-- ///////////////////////////////////////// -->
-		<!-- [r01fWebProfileClasses] has SevletAPI as a dependency, 
+		<!-- [r01fWebProfileClasses] has SevletAPI as a dependency,
 			 ... BUT it's SCOPE is PROVIDED so it has to be defined
 			     here again -->
 		<dependency>
@@ -37,7 +37,7 @@
 		    <version>3.1.0</version>
 		    <scope>provided</scope>		<!-- BEWARE!!! -->
 		</dependency>
-		
+
 		<!-- ///////////////////////////////////////// -->
 		<!-- GUICE WEb                                 -->
 		<!-- ///////////////////////////////////////// -->
@@ -46,36 +46,36 @@
 		    <artifactId>guice</artifactId>
 		    <version>${guice.version}</version>
 		</dependency>
-	
+
 		<!-- ///////////////////////////////////////// -->
 		<!-- R01: Web Profile                          -->
 		<!-- ///////////////////////////////////////// -->
 		<dependency>
 			<groupId>r01.r01f.web</groupId>
 			<artifactId>r01fWebProfileClasses</artifactId>
-			<version>${r01f.version}</version>
+			<version>${revision}</version>
 		</dependency>
 		<!-- ///////////////////////////////////////// -->
 		<!-- R01: REST :
 		      Note:  Spring does not uses  javax.ws.rs-api,
-		              but this dependency is needed for this kind of interface clases: 
+		              but this dependency is needed for this kind of interface clases:
 		                             RESTResource,  RESTResourceBase, RESTDelegate...
 		              		                            -->
 		<!-- ///////////////////////////////////////// -->
 		<dependency>
 			<groupId>r01.r01f.web</groupId>
 			<artifactId>r01fRESTServicesClasses</artifactId>
-			<version>${r01f.version}</version>
-		</dependency>		
+			<version>${revision}</version>
+		</dependency>
 		<!-- ///////////////////////////////////////// -->
 		<!--  Spring Web MVC			               -->
-		<!-- ///////////////////////////////////////// -->			
+		<!-- ///////////////////////////////////////// -->
 		<dependency>
 		    <groupId>org.springframework</groupId>
 		    <artifactId>spring-webmvc</artifactId>
 		    <version>5.1.6.RELEASE</version>
 		</dependency>
-		
+
 	</dependencies>
 </project>
 

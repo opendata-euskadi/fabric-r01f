@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>r01.r01f.aspect</groupId>
 		<artifactId>r01fAspectInterfaces</artifactId>
-		<version>${r01f.version}</version>
+		<version>${revision}</version>
 	</parent>
 	
 <!-- ====================================================================== -->
