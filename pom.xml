@@ -17,7 +17,7 @@
 		<!-- BEWARE! use this property on [dependencies] ONLY
 					 for [artifact] versioning use maven versions plugin:
 						> mvn versions:set -DnewVersion=1.0.3 -->
-		<revision>0.0.1-SNAPSHOT</revision>
+		<revision>0.0.1</revision>
 		<r01f.version>${revision}</r01f.version>
 
 		<!-- Dependencies versions -->
