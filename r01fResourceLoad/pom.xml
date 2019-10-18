@@ -24,9 +24,9 @@
 <!-- MODULES                                                                -->
 <!-- ====================================================================== -->
 	<modules>
-   		<module>r01fResourceLoadInterfaceClasses</module>
-    	<module>r01fResourceLoadClasses</module>
-  </modules>
+		<module>r01fResourceLoadInterfaceClasses</module>
+		<module>r01fResourceLoadClasses</module>
+	</modules>
   
 <!-- ====================================================================== -->
 <!-- DEPENDENCIES                                                           -->

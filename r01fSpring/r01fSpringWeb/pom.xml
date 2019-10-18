@@ -25,6 +25,6 @@
 <!-- ====================================================================== -->
 	<modules>
 		<module>r01fSpringWebProfileClasses</module>
-    <module>r01fRESTServicesSpringClasses</module>
-  </modules>
+		<module>r01fRESTServicesSpringClasses</module>
+	</modules>
 </project>

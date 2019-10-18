@@ -24,6 +24,6 @@
 <!-- MODULES                                                                -->
 <!-- ====================================================================== -->
 	<modules>
-    <module>r01fHttpClientClasses</module>
-  </modules>
+		<module>r01fHttpClientClasses</module>
+	</modules>
 </project>

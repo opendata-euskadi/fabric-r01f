@@ -24,8 +24,8 @@
 <!-- MODULES                                                                -->
 <!-- ====================================================================== -->
 	<modules>
-   		<module>r01fPropertiesInterfaceClasses</module>
-    <module>r01fPropertiesClasses</module>
-    <module>r01fPropertiesGuiceClasses</module>
-  </modules>
+		<module>r01fPropertiesInterfaceClasses</module>
+		<module>r01fPropertiesClasses</module>
+		<module>r01fPropertiesGuiceClasses</module>
+	</modules>
 </project>

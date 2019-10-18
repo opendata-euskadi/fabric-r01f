@@ -24,10 +24,10 @@
 <!-- MODULES                                                                -->
 <!-- ====================================================================== -->
 	<modules>
-  <module>r01fWebProfileClasses</module>
-    <module>r01fRESTServicesClasses</module>
-    <module>r01fRESTServicesJerseyClasses</module>
-  </modules>
+		<module>r01fWebProfileClasses</module>
+		<module>r01fRESTServicesClasses</module>
+		<module>r01fRESTServicesJerseyClasses</module>
+	</modules>
   
 <!-- ====================================================================== -->
 <!-- DEPENDENCIES                                                           -->

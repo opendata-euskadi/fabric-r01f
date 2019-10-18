@@ -24,7 +24,7 @@
 <!-- MODULES                                                                -->
 <!-- ====================================================================== -->
 	<modules>
-	    <module>r01fFileStoreClasses</module>
-	    <module>r01fHDFSFileStoreClasses</module>
-  	</modules>
+		<module>r01fFileStoreClasses</module>
+		<module>r01fHDFSFileStoreClasses</module>
+	</modules>
 </project>

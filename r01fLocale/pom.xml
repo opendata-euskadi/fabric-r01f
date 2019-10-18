@@ -24,7 +24,7 @@
 <!-- MODULES                                                                -->
 <!-- ====================================================================== -->
 	<modules>
-    <module>r01fLocaleClasses</module>
-    <module>r01fLocaleGuiceClasses</module>
-  </modules>
+		<module>r01fLocaleClasses</module>
+		<module>r01fLocaleGuiceClasses</module>
+	</modules>
 </project>

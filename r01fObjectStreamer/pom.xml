@@ -24,10 +24,10 @@
 <!-- MODULES                                                                -->
 <!-- ====================================================================== -->
 	<modules>
-    	<module>r01fObjectStreamerInterfaceClasses</module>
-    	<module>r01fObjectStreamerClasses</module>
-    	<module>r01fObjectStreamerGuiceClasses</module>
-  </modules>
+		<module>r01fObjectStreamerInterfaceClasses</module>
+		<module>r01fObjectStreamerClasses</module>
+		<module>r01fObjectStreamerGuiceClasses</module>
+	</modules>
   
 <!-- ====================================================================== -->
 <!-- DEPENDENCIES                                                           -->

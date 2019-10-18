@@ -28,5 +28,5 @@
 		<module>r01fFreezableInterfaceClasses</module>
 		<module>r01fLazyLoadInterfaceClasses</module>
 		<module>r01fLoggingInterfaceClasses</module>
-  	</modules>
+	</modules>
 </project>
