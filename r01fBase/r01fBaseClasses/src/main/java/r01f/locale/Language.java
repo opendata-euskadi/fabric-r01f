@@ -1,10 +1,15 @@
 package r01f.locale;
 
 
+import java.util.Iterator;
+import java.util.Set;
+
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
+import com.google.common.collect.Iterators;
+import com.google.common.collect.Sets;
 
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -93,7 +98,7 @@ public enum Language
 		return !this.is(other);
 	}
 	@Override
-	public boolean isIn(Language... els) {
+	public boolean isIn(final Language... els) {
 		return WRAPPER.isIn(this,els);
 	}
 	public boolean in(final Language... others) {
@@ -145,5 +150,20 @@ public enum Language
 	}
 	public static boolean canBe(final int code) {
 		return WRAPPER.canBeFromCode(code);
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	                                                                          
+/////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Returns a {@link Set} of {@link Language}
+	 * @return
+	 */
+	public static Set<Language> valueSet() {
+		return Sets.newLinkedHashSet(new Iterable<Language>() {
+											@Override
+											public Iterator<Language> iterator() {
+												return Iterators.forArray(Language.values());
+											}
+									 });
 	}
 }
