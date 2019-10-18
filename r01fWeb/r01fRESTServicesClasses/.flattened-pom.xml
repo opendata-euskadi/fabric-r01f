@@ -4,12 +4,12 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>r01.r01f.web</groupId>
   <artifactId>r01fRESTServicesClasses</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.1</version>
   <dependencies>
     <dependency>
       <groupId>r01.r01f.web</groupId>
       <artifactId>r01fWebProfileClasses</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
+      <version>0.0.1</version>
       <scope>compile</scope>
       <exclusions>
         <exclusion>

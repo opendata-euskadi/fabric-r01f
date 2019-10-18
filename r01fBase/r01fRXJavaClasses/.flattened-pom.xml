@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>r01.r01f.base</groupId>
   <artifactId>r01fRXJavaClasses</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.1</version>
   <dependencies>
     <dependency>
       <groupId>io.reactivex.rxjava2</groupId>

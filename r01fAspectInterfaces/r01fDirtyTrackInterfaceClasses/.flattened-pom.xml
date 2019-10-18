@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>r01.r01f.aspect.dirtytrack</groupId>
   <artifactId>r01fDirtyTrackInterfaceClasses</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.1</version>
   <dependencies>
     <dependency>
       <groupId>org.projectlombok</groupId>

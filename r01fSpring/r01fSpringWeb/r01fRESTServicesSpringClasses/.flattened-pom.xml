@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>r01.r01f.spring.web</groupId>
   <artifactId>r01fRESTServicesSpringClasses</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.1</version>
   <dependencies>
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -15,13 +15,13 @@
     <dependency>
       <groupId>r01.r01f.spring.web</groupId>
       <artifactId>r01fSpringWebProfileClasses</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
+      <version>0.0.1</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>r01.r01f.web</groupId>
       <artifactId>r01fRESTServicesClasses</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
+      <version>0.0.1</version>
       <scope>compile</scope>
     </dependency>
     <dependency>

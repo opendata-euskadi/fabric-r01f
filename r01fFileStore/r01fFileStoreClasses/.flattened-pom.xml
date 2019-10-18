@@ -4,24 +4,24 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>r01.r01f.filestore</groupId>
   <artifactId>r01fFileStoreClasses</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.1</version>
   <dependencies>
     <dependency>
       <groupId>r01.r01f.base</groupId>
       <artifactId>r01fBaseClasses</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
+      <version>0.0.1</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>r01.r01f.base</groupId>
       <artifactId>r01fIOClasses</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
+      <version>0.0.1</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>r01.r01f.properties</groupId>
       <artifactId>r01fPropertiesInterfaceClasses</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
+      <version>0.0.1</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
