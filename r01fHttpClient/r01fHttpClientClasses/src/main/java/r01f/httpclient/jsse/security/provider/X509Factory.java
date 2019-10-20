@@ -644,7 +644,7 @@ is)
             len += temp.length();
         }
         StringBuffer strBuf = new StringBuffer();
-        while ((temp=readLine(br))!=null && !temp.startsWith("-----END")) {
+        while ((temp=readLine(br)) != null  && !temp.startsWith("-----END")) {
             strBuf.append(temp);
         }
         if (temp == null) {

@@ -413,7 +413,7 @@ public abstract class SearchFilterForModelObjectBase<SELF_TYPE extends SearchFil
 		Preconditions.checkArgument(range != null,"The time range cannot be null");
 		// Search for a full day
 		Range<Date> newDateRange = range;
-		if(range.getLowerBound() != null && 
+		if (range.getLowerBound() != null && 
 				range.getUpperBound() != null) {
 			Calendar c = Calendar.getInstance();
 			c.setTime(range.getUpperBound());

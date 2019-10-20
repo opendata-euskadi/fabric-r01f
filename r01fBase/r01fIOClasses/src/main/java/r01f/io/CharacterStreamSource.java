@@ -30,7 +30,7 @@ import lombok.extern.slf4j.Slf4j;
  *		
  *		String readedStr = "";
  *		CharacterStreamSource source = new CharacterStreamSource(new ByteArrayInputStream(src.getBytes()),Charset.defaultCharset());
- *		while(source.hasData()) {
+ *		while (source.hasData()) {
  *			char[] buf = new char[100];
  *			int readed = source.read(buf);
  *			String str = new String(Arrays.copyOf(buf,readed));

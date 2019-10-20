@@ -285,7 +285,7 @@ public class StringEncodeUtils {
      * @throws EncoderException if the encoding could not be done
      */
     public static byte[] encodeBase64(final byte[] bytes, final boolean isChunked, final boolean urlSafe) {
-    	if(bytes == null || bytes.length == 0) return null;
+    	if (bytes == null || bytes.length == 0) return null;
     	return Base64.encodeBase64(bytes, isChunked, urlSafe);
     }
 
@@ -307,7 +307,7 @@ public class StringEncodeUtils {
      * @return The decoded data in byte array format
      */
     public static byte[] decodeBase64(final byte[] bytes) {
-    	if(bytes == null || bytes.length == 0) return null;
+    	if (bytes == null || bytes.length == 0) return null;
     	return Base64.decodeBase64(bytes);
     }
 

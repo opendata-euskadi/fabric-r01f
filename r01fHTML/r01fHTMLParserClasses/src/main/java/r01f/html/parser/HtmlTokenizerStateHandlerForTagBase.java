@@ -9,7 +9,7 @@ abstract class HtmlTokenizerStateHandlerForTagBase
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTANTS
 /////////////////////////////////////////////////////////////////////////////////////////
-	protected static final String ALLOWED_CHARS = "\t\r\n /.,;:#@$%&?¿!¡*(){}[]Ç=_+-\"'áéíóúÁÉÍÓÚüÜàèìòùabcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789";
+	protected static final String ALLOWED_CHARS = "\t\r\n /.,;:#@$%&?¿!¡*() {}[]Ç=_+-\"'áéíóúÁÉÍÓÚüÜàèìòùabcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789";
 
 /////////////////////////////////////////////////////////////////////////////////////////
 //

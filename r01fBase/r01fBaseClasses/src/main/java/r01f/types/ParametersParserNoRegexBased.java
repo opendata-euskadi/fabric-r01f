@@ -25,7 +25,7 @@ public class ParametersParserNoRegexBased
 		Iterable<String> params = Splitter.on(ParametersWrapperBase.DEFAULT_PARAM_SPLIT_CHAR)
 										  .split(paramsStr.trim());
 		Iterator<String> paramsIt = params.iterator();
-		while(paramsIt.hasNext()) {
+		while (paramsIt.hasNext()) {
 			String param = paramsIt.next();
 			Iterable<String> paramNameAndValueIt = Splitter.on('=')
 										  				   .split(paramsStr.trim());

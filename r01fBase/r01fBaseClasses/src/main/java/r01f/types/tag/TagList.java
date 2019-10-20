@@ -101,7 +101,7 @@ public class TagList<T extends Comparable<T>>
 		do {
 			outSb.append(tagIt.next());
 			if (tagIt.hasNext()) outSb.append(sep);
-		} while(tagIt.hasNext());
+		} while (tagIt.hasNext());
 		return outSb.toString();
 	}
 	@Override
@@ -118,7 +118,7 @@ public class TagList<T extends Comparable<T>>
 				 .append(tagIt.next())
 				 .append(endQuote);
 			if (tagIt.hasNext()) outSb.append(sep);
-		} while(tagIt.hasNext());
+		} while (tagIt.hasNext());
 		return outSb.toString();
 	}
 }

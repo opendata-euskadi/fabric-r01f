@@ -31,7 +31,7 @@ import r01f.util.types.collections.CollectionUtils;
  *							  1);		// current page
  *		
  *		Iterator<PagingItem> it = p.getPagingIterator();
- *		while(it.hasNext()) {
+ *		while (it.hasNext()) {
  *			PagingItem pgItem = it.next();
  *			System.out.println(pgItem.debugInfo());
  *		} 
@@ -382,7 +382,7 @@ public class Paging
     			}
     		}
     		if (!found && _currentPage < _pageCount) this.goToNextPage();
-    	} while(!found && _currentPage <= _pageCount);
+    	} while (!found && _currentPage <= _pageCount);
     	if (!found) throw new IllegalArgumentException("Could NOT find a page with item number=" + itemNum);
     }
     /**

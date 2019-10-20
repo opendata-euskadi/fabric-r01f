@@ -269,7 +269,7 @@ public class LocalFileStoreAPI
 												: outReaded;
 			return null;	// no data readed
 		} finally {
-			if (srcFIS!=null) srcFIS.close();
+			if (srcFIS != null)  srcFIS.close();
 		}
     }
 /////////////////////////////////////////////////////////////////////////////////////////

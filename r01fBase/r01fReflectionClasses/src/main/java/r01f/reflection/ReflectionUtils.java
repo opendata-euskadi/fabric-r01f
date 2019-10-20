@@ -161,7 +161,7 @@ public class ReflectionUtils {
 	        do {
 	            hierarchy.add(t);	            
 	        	t = t.getSuperclass();
-	        } while( !(t == theAncestorType || t == Object.class || t == null) );
+	        } while ( !(t == theAncestorType || t == Object.class || t == null) );
 	        if (type != ancestorType) hierarchy.add(t);		// beware that in the previous loop the last element is NOT added
         } else {
         	hierarchy.add(type);
@@ -1995,7 +1995,7 @@ public class ReflectionUtils {
                 ReflectionUtils.setFieldValue(currObj,currFieldName,
                                               memberValue,useAccesors);
             }
-        } while(st.hasMoreTokens());
+        } while (st.hasMoreTokens());
     }
     /**
      * Funcion que se encarga de obtener un valor de una jerarquia de objetos

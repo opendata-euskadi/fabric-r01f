@@ -30,7 +30,7 @@ public class ParametersParserRegexBased
 		Iterable<String> params = Splitter.on(ParametersWrapperBase.DEFAULT_PARAM_SPLIT_CHAR)
 										  .split(paramsStr.trim());
 		Iterator<String> paramsIt = params.iterator();
-		while(paramsIt.hasNext()) {
+		while (paramsIt.hasNext()) {
 			String param = paramsIt.next();
 			Matcher m = DEFAULT_PARAM_VALUE_SPLIT_PATTERN.matcher(param);
 			if (m.find()) {

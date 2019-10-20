@@ -339,7 +339,7 @@ public class Strings {
 		StringBuffer sb = new StringBuffer();
 		Pattern regex = Pattern.compile("[^\\w]");
 		Matcher regexMatcher = regex.matcher(str);
-		while(regexMatcher.find()) regexMatcher.appendReplacement(sb,"");
+		while (regexMatcher.find()) regexMatcher.appendReplacement(sb,"");
 		regexMatcher.appendTail(sb);
 		return sb.toString();
 	}

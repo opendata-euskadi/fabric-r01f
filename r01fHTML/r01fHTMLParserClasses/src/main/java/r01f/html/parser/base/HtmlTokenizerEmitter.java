@@ -20,7 +20,7 @@ abstract class HtmlTokenizerEmitter<TK extends HtmlParserTokenBase<?>,
 		if (!this.emitterAvailable(emitter)) return;
 	
 		// start with a TextToken
-		while(!_tokenizer.isEof() 					// not the EOF token
+		while (!_tokenizer.isEof() 					// not the EOF token
 		   && this.emitterAvailable(emitter)) {		// observer still there
 			
 			boolean tokenComplete = false;

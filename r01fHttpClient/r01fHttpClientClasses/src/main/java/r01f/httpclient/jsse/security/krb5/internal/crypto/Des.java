@@ -294,7 +294,7 @@ public final class Des {
         Cipher cipher = null;
 
         byte[] result = new byte[8];
-        try{
+        try {
             cipher = Cipher.getInstance("DES/CBC/NoPadding");
         } catch (Exception e) {
             KrbCryptoException ke = new KrbCryptoException("JCE provider may not be installed. "

@@ -620,7 +620,7 @@ public class Realm implements Cloneable {
     {
         int i = 0 , j = 0, len = realm.length();
 
-        while(i < len && j != componentIndex) {
+        while (i < len && j != componentIndex) {
             if (realm.charAt(i++) != PrincipalName.REALM_COMPONENT_SEPARATOR)
                 continue;
             j++;

@@ -348,7 +348,7 @@ public class I18NService {
 							String msg = key.startsWith(keyPrefix) ? bundle.getString(key)
 																   : null;
 							if (msg != null) outMessages.put(key,msg);
-						} while(keys.hasMoreElements());
+						} while (keys.hasMoreElements());
 					}
 				}
 			} catch (MissingResourceException mrEx) {
@@ -371,7 +371,7 @@ public class I18NService {
 							String key = keys.nextElement();
 							String msg = bundle.getString(key);
 							if (msg != null) outMessages.put(key,msg);
-						} while(keys.hasMoreElements());
+						} while (keys.hasMoreElements());
 					}
 				}
 			} catch (MissingResourceException mrEx) {

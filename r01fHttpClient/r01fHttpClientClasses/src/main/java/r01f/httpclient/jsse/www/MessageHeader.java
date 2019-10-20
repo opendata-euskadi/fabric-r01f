@@ -114,7 +114,7 @@ class MessageHeader {
      *  It finds the first value that follows v. To iterate
      *  over all the values of a key use:
      *  <pre>
-     *          for (String v=h.findValue(k); v!=null; v=h.findNextValue(k, v)) {
+     *          for (String v=h.findValue(k); v != null;  v=h.findNextValue(k, v)) {
      *              ...
      *          }
      *  </pre>

@@ -163,7 +163,7 @@ public class KDCReqBody {
             subDer = der.getData().getDerValue();
 
             if (subDer.getTag() == DerValue.tag_SequenceOf) {
-                while(subDer.getData().available() > 0) {
+                while (subDer.getData().available() > 0) {
                     v.addElement(subDer.getData().getBigInteger().intValue());
                 }
                 eType = new int[v.size()];

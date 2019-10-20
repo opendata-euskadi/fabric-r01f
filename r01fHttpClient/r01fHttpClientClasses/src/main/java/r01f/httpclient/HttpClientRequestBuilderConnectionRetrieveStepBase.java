@@ -320,7 +320,7 @@ public class HttpClientRequestBuilderConnectionRetrieveStepBase<T> {
 			BufferedReader lineReader = new BufferedReader(new InputStreamReader(responseIs));
 			Collection<String> outLines = Lists.newArrayList();
 			String line = null;
-			while((line = lineReader.readLine()) != null) {
+			while ((line = lineReader.readLine()) != null) {
 				outLines.add(line);
 			}
 			return outLines;

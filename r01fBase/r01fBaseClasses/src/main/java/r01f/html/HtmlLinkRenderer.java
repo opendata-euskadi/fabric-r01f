@@ -100,7 +100,7 @@ public abstract class HtmlLinkRenderer {
 		 */
 		public String render() {
 			String outLink = "<a href=''></a>";
-			if(_link != null) {
+			if (_link != null) {
 				outLink = Strings.customized("<a href='{}' {}>{}</a>",
 											   		_link.getUrl().asStringNotUrlEncodingQueryStringParamsValues(),
 											   		_renderPresentationData(_link.getText() != null ? _link.getTitle() : null,

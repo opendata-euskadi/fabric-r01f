@@ -108,7 +108,7 @@ public class FutureResult<T>
 	public T get() {
 		do {
 			// ...waiting for result
-		} while(!this.isComplete() || !this.hasFailed() || !this.wasCancelled());
+		} while (!this.isComplete() || !this.hasFailed() || !this.wasCancelled());
 		return this.result();
 	}
 	/**

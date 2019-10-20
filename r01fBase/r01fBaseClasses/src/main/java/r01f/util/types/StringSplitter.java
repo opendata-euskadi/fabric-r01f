@@ -91,7 +91,7 @@ public abstract class StringSplitter {
 				do {
 					outGroup = it.next();
 					i++;
-				} while(i <= groupNum && it.hasNext());
+				} while (i <= groupNum && it.hasNext());
 			}
 		}
 		return outGroup;

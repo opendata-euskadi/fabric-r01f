@@ -119,7 +119,7 @@ public class ReplayCache extends LinkedList<AuthTime> {
             do {
                 //remove expired timestamps from the list.
                 removeLast();
-            } while(size() > index);
+            } while (size() > index);
         }
         if (DEBUG) {
             printList();

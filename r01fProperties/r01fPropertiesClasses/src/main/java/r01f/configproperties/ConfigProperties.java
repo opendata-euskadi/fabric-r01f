@@ -177,7 +177,7 @@ public class ConfigProperties {
     				String keyValue = key.startsWith(keyPrefix) ? bundle.getString(key)
     													   		: null;
     				if (keyValue != null) outMessages.put(key,new StringConverterWrapper(keyValue));
-    			} while(keys.hasMoreElements());
+    			} while (keys.hasMoreElements());
     		}
         } catch (MissingResourceException mrEx) {
         	log.error("The properties file could not be retrieved {}",_bundleSpec,mrEx);

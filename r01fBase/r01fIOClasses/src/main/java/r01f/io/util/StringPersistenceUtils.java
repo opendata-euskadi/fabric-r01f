@@ -316,7 +316,7 @@ public abstract class StringPersistenceUtils {
     		w.write(currLine);
     		if (!currLine.endsWith("\n")) w.write("\n");
     		currLine = lineProducer.nextLine();
-    	} while(currLine != null);
+    	} while (currLine != null);
     	
     	w.flush();
     	w.close();

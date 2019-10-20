@@ -71,7 +71,7 @@ public class HtmlLinkLoader {
 			if (Strings.isNOTNullOrEmpty(linkAttributes)) {
 				props = Maps.newHashMap();
 				Matcher attrMatcher = LINK_ATTRIBUTES_PATTERN.matcher(linkAttributes);
-				while(attrMatcher.find()) {
+				while (attrMatcher.find()) {
 					props.put(attrMatcher.group(1),attrMatcher.group(2));
 				}
 			}

@@ -247,7 +247,7 @@ public class PrincipalName
             }
             Vector<String> v = new Vector<String> ();
             DerValue subSubDer;
-            while(subDer.getData().available() > 0) {
+            while (subDer.getData().available() > 0) {
                 subSubDer = subDer.getData().getDerValue();
                 v.addElement(subSubDer.getGeneralString());
             }

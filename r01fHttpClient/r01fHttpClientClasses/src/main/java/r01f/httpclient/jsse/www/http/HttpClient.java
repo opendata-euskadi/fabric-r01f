@@ -808,7 +808,7 @@ public class HttpClient extends NetworkClient {
              */
             int ind;
             ind = resp.indexOf(' ');
-            while(resp.charAt(ind) == ' ')
+            while (resp.charAt(ind) == ' ')
                 ind++;
             code = Integer.parseInt(resp.substring(ind, ind + 3));
         } catch (Exception e) {}

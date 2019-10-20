@@ -1878,7 +1878,7 @@ public class HttpURLConnection extends java.net.HttpURLConnection {
             // maintain previous headers, just change the name
             // of the file we're getting
             url = locUrl;
-            if (method.equals("POST") && !Boolean.getBoolean("http.strictPostRedirect") && (stat!=307)) {
+            if (method.equals("POST") && !Boolean.getBoolean("http.strictPostRedirect") && (stat != 307))  {
                 /* The HTTP/1.1 spec says that a redirect from a POST
                  * *should not* be immediately turned into a GET, and
                  * that some HTTP/1.0 clients incorrectly did this.

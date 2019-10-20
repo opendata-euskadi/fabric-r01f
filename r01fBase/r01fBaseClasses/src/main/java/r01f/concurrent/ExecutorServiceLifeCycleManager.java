@@ -95,7 +95,7 @@ public class ExecutorServiceLifeCycleManager
 			int cyclesAwaited = 1;
 			int secondsPerCycle = 10;
 			boolean done = _executor.awaitTermination(secondsPerCycle,TimeUnit.SECONDS);
-			while(!done && cyclesAwaited < 10) {
+			while (!done && cyclesAwaited < 10) {
 				log.warn("\t--still pending jobs executing....");
 				done = _executor.awaitTermination(secondsPerCycle,TimeUnit.SECONDS);
 				cyclesAwaited++;
