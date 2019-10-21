@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-			 
+
 	<modelVersion>4.0.0</modelVersion>
 
 <!-- ====================================================================== -->
 <!-- PARENT                                                                 -->
 <!-- ====================================================================== -->
-   <parent>
-    <groupId>r01.r01f.spring</groupId>
-    <artifactId>r01fSpring</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
-	
+	<parent>
+		<groupId>r01.r01f.spring</groupId>
+		<artifactId>r01fSpring</artifactId>
+		<version>${revision}</version>
+	</parent>
+
 <!-- ====================================================================== -->
 <!-- ARTIFACT                                                               -->
 <!-- ====================================================================== -->
@@ -19,12 +19,12 @@
     <artifactId>r01fSpringWeb</artifactId>
 	<name>r01fSpringWeb</name>
 	<packaging>pom</packaging>				<!-- it's a parent project -->
-	
+
 <!-- ====================================================================== -->
 <!-- MODULES                                                                -->
 <!-- ====================================================================== -->
 	<modules>
 		<module>r01fSpringWebProfileClasses</module>
-    <module>r01fRESTServicesSpringClasses</module>
-  </modules>
+		<module>r01fRESTServicesSpringClasses</module>
+	</modules>
 </project>

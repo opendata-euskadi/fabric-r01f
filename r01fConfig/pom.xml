@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>r01.r01f</groupId>
 		<artifactId>r01f</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>${revision}</version>
 	</parent>
 	
 <!-- ====================================================================== -->
@@ -23,5 +23,5 @@
 <!-- MODULES                                                                -->
 <!-- ====================================================================== -->
 	<modules>
-  	</modules>
+	</modules>
 </project>

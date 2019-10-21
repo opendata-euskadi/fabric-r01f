@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>r01.r01f.base</groupId>
 		<artifactId>r01fBase</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>${revision}</version>
 	</parent>
 
 <!-- ====================================================================== -->
@@ -29,7 +29,7 @@
 		<dependency>
 			<groupId>r01.r01f.resourceload</groupId>
 			<artifactId>r01fResourceLoadInterfaceClasses</artifactId>
-			<version>${r01f.version}</version>
+			<version>${revision}</version>
 		</dependency>
 		<!-- ///////////////////////////////////////// -->
 		<!-- Apache commons                            -->

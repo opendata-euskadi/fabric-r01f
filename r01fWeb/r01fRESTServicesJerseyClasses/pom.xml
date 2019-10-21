@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>r01.r01f.web</groupId>
 		<artifactId>r01fWeb</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>${revision}</version>
 	</parent>
 
 <!-- ====================================================================== -->
@@ -30,7 +30,7 @@
 		<dependency>
 			<groupId>r01.r01f.web</groupId>
 			<artifactId>r01fRESTServicesClasses</artifactId>
-			<version>${r01f.version}</version>
+			<version>${revision}</version>
 		</dependency>
 		
 		<!-- ///////////////////////////////////////// -->
