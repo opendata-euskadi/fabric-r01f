@@ -8,11 +8,11 @@
 <!-- ====================================================================== -->
 <!-- PARENT                                                                 -->
 <!-- ====================================================================== -->
-  <parent>
-    <groupId>r01.r01f.spring.web</groupId>
-    <artifactId>r01fSpringWeb</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
+	<parent>
+		<groupId>r01.r01f.spring.web</groupId>
+		<artifactId>r01fSpringWeb</artifactId>
+		<version>${revision}</version>
+	</parent>
 
 <!-- ====================================================================== -->
 <!-- ARTIFACT                                                               -->
@@ -24,11 +24,11 @@
 <!-- DEPENDENCIES                                                           -->
 <!-- ====================================================================== -->
 	<dependencies>
-	
+
 		<!-- ///////////////////////////////////////// -->
 		<!-- ServletAPI                                -->
 		<!-- ///////////////////////////////////////// -->
-		<!-- [r01fWebProfileClasses] has SevletAPI as a dependency, 
+		<!-- [r01fWebProfileClasses] has SevletAPI as a dependency,
 			 ... BUT it's SCOPE is PROVIDED so it has to be defined
 			     here again -->
 		<dependency>
@@ -44,22 +44,22 @@
 		<dependency>
 			<groupId>r01.r01f.spring.web</groupId>
 			<artifactId>r01fSpringWebProfileClasses</artifactId>
-			<version>${r01f.version}</version>
+			<version>${revision}</version>
 		</dependency>
 		<!-- ///////////////////////////////////////// -->
 		<!-- R01: REST :
 		      Note:  Spring does not uses  javax.ws.rs-api,
-		              but this dependency is needed for this kind of interface clases: 
+		              but this dependency is needed for this kind of interface clases:
 		                             RESTResource,  RESTResourceBase, RESTDelegate...
 		              		                            -->
 		<!-- ///////////////////////////////////////// -->
 		<dependency>
 			<groupId>r01.r01f.web</groupId>
 			<artifactId>r01fRESTServicesClasses</artifactId>
-			<version>${r01f.version}</version>
-		</dependency>		
-		
-		
+			<version>${revision}</version>
+		</dependency>
+
+
 	</dependencies>
 </project>
 

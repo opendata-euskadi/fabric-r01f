@@ -15,9 +15,10 @@
 
 		<!-- R01F version -->
 		<!-- BEWARE! use this property on [dependencies] ONLY
-		     		 for [artifact] versioning use maven versions plugin:
-		     		 	> mvn versions:set -DnewVersion=1.0.3 -->
-		<r01f.version>0.0.1-SNAPSHOT</r01f.version>
+					 for [artifact] versioning use maven versions plugin:
+						> mvn versions:set -DnewVersion=1.0.3 -->
+		<revision>0.0.1-SNAPSHOT</revision>
+		<r01f.version>${revision}</r01f.version>
 
 		<!-- Dependencies versions -->
 		<slf4j.version>1.7.25</slf4j.version>
@@ -31,7 +32,7 @@
 	<groupId>r01.r01f</groupId>
 	<name>r01f</name>
 	<artifactId>r01f</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>${revision}</version>
 	<packaging>pom</packaging>				<!-- it's a parent project -->
 
 <!-- ====================================================================== -->
@@ -50,7 +51,7 @@
 		<module>r01fHTML</module>
 		<module>r01fConfig</module>
 		<module>r01fAspectInterfaces</module>
-  </modules>
+	</modules>
 
 <!-- ====================================================================== -->
 <!-- DEPENDENCIES                                                           -->
@@ -181,82 +182,83 @@
 		</repository>
 	</repositories>
 
+
 <!-- ====================================================================== -->
 <!-- PLUGINS                                                                -->
 <!-- ====================================================================== -->
 	<build>
+
 		<pluginManagement>
-	      	<plugins>
-	      		<!--
-	      			[0] - Clean
-	      			https://maven.apache.org/plugins/maven-clean-plugin/
-	      			The Clean Plugin is used when you want to remove files generated at build-time in a project's ServiceCatalog.
-	      		-->
-		        <plugin>
-		        	<artifactId>maven-clean-plugin</artifactId>
-		          	<version>3.1.0</version>
-		        </plugin>
-		        <!--
-		        	PHASES: see http://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_war_packaging
-		        		[1] - process-resources
-		        			  process-test-resources
-		        		[2] - test-compile
-		        		[3] - test
-		        		[4] - package
-		        		[5] - install
-		        		[6] - deploy
-		        -->
-	      		<!--
-	      			[1] - RESOURCES: https://maven.apache.org/plugins/maven-resources-plugin/
-	      				  The Resources Plugin handles the copying of project resources to the output directory
-	      			There are two different kinds of resources: main resources and test resources
-	      		-->
-		        <plugin>
-		          	<artifactId>maven-resources-plugin</artifactId>
-		          	<version>3.1.0</version>
-		        </plugin>
-	      		<!--
-	      			[2] - COMPILE: https://maven.apache.org/plugins/maven-compiler-plugin/
-	      				  The Compiler Plugin is used to compile the sources of your project.
-	      		-->
-		        <plugin>
-		          	<artifactId>maven-compiler-plugin</artifactId>
-		          	<version>3.8.1</version>
+			<plugins>
+				<!--
+					[0] - CLEAN: https://maven.apache.org/plugins/maven-clean-plugin/
+						  The Clean Plugin is used when you want to remove files generated at build-time in a project's ServiceCatalog.
+				-->
+				<plugin>
+					<artifactId>maven-clean-plugin</artifactId>
+					<version>3.1.0</version>
+				</plugin>
+				<!--
+					PHASES: see http://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_war_packaging
+						[1] - process-resources
+							  process-test-resources
+						[2] - test-compile
+						[3] - test
+						[4] - package
+						[5] - install
+						[6] - deploy
+				-->
+				<!--
+					[1] - RESOURCES: https://maven.apache.org/plugins/maven-resources-plugin/
+						  The Resources Plugin handles the copying of project resources to the output directory
+					There are two different kinds of resources: main resources and test resources
+				-->
+				<plugin>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>3.1.0</version>
+				</plugin>
+				<!--
+					[2] - COMPILE: https://maven.apache.org/plugins/maven-compiler-plugin/
+						The Compiler Plugin is used to compile the sources of your project.
+				-->
+				<plugin>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.8.1</version>
 					<configuration>
 						<source>${maven.compiler.source}</source>
 						<target>${maven.compiler.target}</target>
 					</configuration>
-		        </plugin>
-	      		<!--
-	      			[3] - TEST: https://maven.apache.org/surefire/maven-surefire-plugin/
-	      				  The Surefire Plugin is used during the test phase of the build lifecycle to execute the unit tests of an application
-	      		-->
-		        <plugin>
-		          	<artifactId>maven-surefire-plugin</artifactId>
-		          	<version>3.0.0-M3</version>
-		        </plugin>
-	      		<!--
-	      			[4] - PACKAGE: https://maven.apache.org/plugins/maven-war-plugin/
-	      				  The WAR Plugin is responsible for collecting all artifact dependencies, classes and resources of the web application and packaging them into a web application archive
-	      		-->
-		        <plugin>
-		          	<artifactId>maven-jar-plugin</artifactId>
-		          	<version>3.1.1</version>	<!-- version 3.1.2 is problematic in older versions of eclipse (upgrade the maven conector from https://download.eclipse.org/m2e-wtp/releases/1.4/) -->
-		        </plugin>
-		        <plugin>
-		          	<artifactId>maven-war-plugin</artifactId>
-		          	<version>3.2.3</version>
-		        </plugin>
-	      		<!--
-	      			[5] - INSTALL: https://maven.apache.org/plugins/maven-war-plugin/
-	      				  The Install Plugin is used during the install phase to add artifact(s) to the local repository
-	      		-->
-		        <plugin>
-		          	<artifactId>maven-install-plugin</artifactId>
-		          	<version>3.0.0-M1</version>
-		        </plugin>
+				</plugin>
 				<!--
-					[6] - DEPLOY:: https://maven.apache.org/plugins/maven-deploy-plugin/usage.html
+					[3] - TEST: https://maven.apache.org/surefire/maven-surefire-plugin/
+						The Surefire Plugin is used during the test phase of the build lifecycle to execute the unit tests of an application
+				-->
+				<plugin>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>3.0.0-M3</version>
+				</plugin>
+				<!--
+					[4] - PACKAGE: https://maven.apache.org/plugins/maven-war-plugin/
+						The WAR Plugin is responsible for collecting all artifact dependencies, classes and resources of the web application and packaging them into a web application archive
+				-->
+				<plugin>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>3.1.1</version>	<!-- version 3.1.2 is problematic in older versions of eclipse (upgrade the maven conector from https://download.eclipse.org/m2e-wtp/releases/1.4/) -->
+				</plugin>
+				<plugin>
+					<artifactId>maven-war-plugin</artifactId>
+					<version>3.2.3</version>
+				</plugin>
+				<!--
+					[5] - INSTALL: https://maven.apache.org/plugins/maven-install-plugin/
+						The Install Plugin is used during the install phase to add artifact(s) to the local repository
+				-->
+				<plugin>
+					<artifactId>maven-install-plugin</artifactId>
+					<version>3.0.0-M1</version>
+				</plugin>
+				<!--
+					[6] - DEPLOY: https://maven.apache.org/plugins/maven-deploy-plugin/usage.html
 				-->
 				<plugin>
 					<artifactId>maven-deploy-plugin</artifactId>
@@ -271,8 +273,6 @@
 						</execution>
 					</executions>
 				</plugin>
-
-
 
 				<!-- Add the [resources] dir to the compile & package phase -->
 				<!-- https://www.mojohaus.org/build-helper-maven-plugin/usage.html -->
@@ -297,13 +297,44 @@
 					</executions>
 				</plugin>
 
+				<!-- Since Maven 3.5.0 you can use the ${revision} placeholder for that. -->
+				<!-- The use is documented here: Maven CI Friendly Versions. (https://maven.apache.org/maven-ci-friendly.html) -->
+				<!-- You also have to use the Flatten Maven Plugin to generate pom documents with the dedicated version number included for deployment. -->
+				<!-- https://www.mojohaus.org/flatten-maven-plugin/ -->
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>flatten-maven-plugin</artifactId>
+					<version>1.1.0</version>
+					<configuration>
+						<updatePomFile>true</updatePomFile>
+						<!-- <flattenMode>resolveCiFriendliesOnly</flattenMode> -->
+					</configuration>
+					<executions>
+						<execution>
+							<id>flatten</id>
+							<phase>process-resources</phase>
+							<goals>
+								<goal>flatten</goal>
+							</goals>
+						</execution>
+<!--
+						<execution>
+							<id>flatten.clean</id>
+							<phase>clean</phase>
+							<goals>
+								<goal>clean</goal>
+							</goals>
+						</execution>
+-->
+					</executions>
+				</plugin>
+
 				<!-- Version plugin -->
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>versions-maven-plugin</artifactId>
 					<version>2.7</version>
 				</plugin>
-
 			</plugins>
 		</pluginManagement>
 
@@ -318,12 +349,15 @@
 				</includes>
 			</resource>
 			<resource>
-			    <directory>src/main/resources</directory>
+				<directory>src/main/resources</directory>
 			</resource>
 		</resources>
+
 	</build>
 
-	<!-- Maven deploy -->
+<!-- ====================================================================== -->
+<!-- DISTRIBUTION ARTIFACTS                                                 -->
+<!-- ====================================================================== -->
 	<distributionManagement>
 		<repository>
 			<id>maven-public-releases</id>
@@ -333,7 +367,7 @@
 		</repository>
 		<snapshotRepository>
 			<id>maven-snapshots</id>
-			<name>maven-public-releases</name>
+			<name>maven-snapshots</name>
 			<layout>default</layout>
 			<url>https://bin1.alm02.itbatera.euskadi.eus/repository/maven-snapshots/</url>
 		</snapshotRepository>

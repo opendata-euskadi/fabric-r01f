@@ -17,7 +17,7 @@
 	<parent>
 		<groupId>r01.r01f.base</groupId>
 		<artifactId>r01fBase</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>${revision}</version>
 	</parent>
 	
 <!-- ====================================================================== -->

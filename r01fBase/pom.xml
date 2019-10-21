@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>r01.r01f</groupId>
 		<artifactId>r01f</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>${revision}</version>
 	</parent>
 	
 <!-- ====================================================================== -->
@@ -24,14 +24,14 @@
 <!-- MODULES                                                                -->
 <!-- ====================================================================== -->
 	<modules>
-    	<module>r01fBaseClasses</module>
-    	<module>r01fCollectionClasses</module>
-    	<module>r01fModelClasses</module>
-    	<module>r01fReflectionClasses</module>
-    	<module>r01fXMLClasses</module>
-    	<module>r01fIOClasses</module>
-    	<module>r01fGuiceClasses</module>
-    <module>r01fMimeClasses</module>
-    <module>r01fRXJavaClasses</module>
-  </modules>
+		<module>r01fBaseClasses</module>
+		<module>r01fCollectionClasses</module>
+		<module>r01fModelClasses</module>
+		<module>r01fReflectionClasses</module>
+		<module>r01fXMLClasses</module>
+		<module>r01fIOClasses</module>
+		<module>r01fGuiceClasses</module>
+		<module>r01fMimeClasses</module>
+		<module>r01fRXJavaClasses</module>
+	</modules>
 </project>

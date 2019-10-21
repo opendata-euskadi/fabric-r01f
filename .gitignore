@@ -28,6 +28,7 @@ release.properties
 pom.xml.releaseBackup
 pom.xml.versionsBackup
 pom.xml.tag
+.flattened-pom.xml
 
 # Eclipse
 # ===============================

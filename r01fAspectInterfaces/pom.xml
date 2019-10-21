@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>r01.r01f</groupId>
 		<artifactId>r01f</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>${revision}</version>
 	</parent>
 	
 <!-- ====================================================================== -->
@@ -28,5 +28,5 @@
 		<module>r01fFreezableInterfaceClasses</module>
 		<module>r01fLazyLoadInterfaceClasses</module>
 		<module>r01fLoggingInterfaceClasses</module>
-  	</modules>
+	</modules>
 </project>

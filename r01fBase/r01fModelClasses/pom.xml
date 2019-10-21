@@ -9,16 +9,16 @@
 <!-- ====================================================================== -->
 	<parent>
 		<groupId>r01.r01f.base</groupId>
-    	<artifactId>r01fBase</artifactId>
-    	<version>0.0.1-SNAPSHOT</version>
-  	</parent>
-  	
+		<artifactId>r01fBase</artifactId>
+		<version>${revision}</version>
+	</parent>
+
 <!-- ====================================================================== -->
 <!-- ARTIFACT                                                               -->
 <!-- ====================================================================== -->
 	<name>r01fModelClasses</name>
 	<artifactId>r01fModelClasses</artifactId>
-	
+
 <!-- ====================================================================== -->
 <!-- DEPENDENCIES                                                           -->
 <!-- ====================================================================== -->
@@ -29,12 +29,12 @@
 		<dependency>
 			<groupId>r01.r01f.base</groupId>
 			<artifactId>r01fBaseClasses</artifactId>
-			<version>${r01f.version}</version>
+			<version>${revision}</version>
 		</dependency>
 		<dependency>
 			<groupId>r01.r01f.base</groupId>
 			<artifactId>r01fReflectionClasses</artifactId>
-			<version>${r01f.version}</version>
+			<version>${revision}</version>
 		</dependency>
 	</dependencies>
 </project>
