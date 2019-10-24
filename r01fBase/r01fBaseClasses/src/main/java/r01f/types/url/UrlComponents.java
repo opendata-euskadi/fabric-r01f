@@ -35,15 +35,34 @@ public class UrlComponents
 	public UrlQueryString getQueryStringOrDefault(final UrlQueryString def) {
 		return _queryString != null ? _queryString : def;
 	}
-	public String getAnchorOrDefault(final String def) {
+	public String getUrlPathFragmentOrDefault(final String def) {
 		return Strings.isNOTNullOrEmpty(_urlPathFragment) ? _urlPathFragment : def;
 	}
-	public boolean hasPort() {
-		return _port > 0;
+	@Deprecated
+	public String getAnchorOrDefault(final String def) {
+		return this.getUrlPathFragmentOrDefault(def);
 	}
 	@Deprecated
 	public String getAnchor() {
 		return _urlPathFragment;
+	}
+	public boolean hasPort() {
+		return _port > 0;
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	BUILDER                                                                          
+/////////////////////////////////////////////////////////////////////////////////////////
+	public static UrlComponents from(final Url url) {
+		return new UrlComponents(url.getProtocol(),url.getHost(),url.getPort(),
+								 url.getUrlPath(),
+								 url.getQueryString(),
+								 url.getUrlPathFragment());
+	}
+	public static UrlComponents from(final UrlPath urlPath) {
+		return new UrlComponents(null,null,0,	// no protocol, host or port
+								 urlPath,
+								 null,		// no query string
+								 null);		// no url path fragment
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  DEBUG
