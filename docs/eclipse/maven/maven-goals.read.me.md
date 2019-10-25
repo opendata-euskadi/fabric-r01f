@@ -6,6 +6,6 @@ Ej:
 mvn versions:set -DnewVersion=1.0.3-SNAPSHOT
 
 
-Update version
+Update with Flatten Pluggin
 ======================================
 mvn clean flatten:flatten install
