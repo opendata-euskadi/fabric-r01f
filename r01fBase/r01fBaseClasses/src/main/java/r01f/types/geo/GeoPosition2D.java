@@ -2,6 +2,8 @@ package r01f.types.geo;
 
 import java.io.Serializable;
 
+import com.google.common.base.Objects;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -25,7 +27,7 @@ public class GeoPosition2D
 
 	private static final long serialVersionUID = 3126318415213511386L;
 /////////////////////////////////////////////////////////////////////////////////////////
-//  ESTADO
+//  FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
 	@MarshallField(as="standard",
 				   whenXml=@MarshallFieldAsXml(attr=true))
@@ -74,39 +76,24 @@ public class GeoPosition2D
 		_standard = std;
 		return this;
 	}
-
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((_standard == null) ? 0 : _standard.hashCode());
-		long temp;
-		temp = Double.doubleToLongBits(_x);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(_y);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		return result;
+		return Objects.hashCode(_standard,
+								_x,_y);
 	}
-
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		GeoPosition2D other = (GeoPosition2D) obj;
-		if (_standard != other._standard)
-			return false;
-		if (Double.doubleToLongBits(_x) != Double.doubleToLongBits(other._x))
-			return false;
-		if (Double.doubleToLongBits(_y) != Double.doubleToLongBits(other._y))
-			return false;
+	public boolean equals(final Object obj) {
+		if (obj == null) return false;
+		if (this == obj) return true;
+		if (this.getClass() != obj.getClass()) return false;
+		GeoPosition2D other = (GeoPosition2D)obj;
+		if (_standard != other._standard) return false;
+		if (Double.doubleToLongBits(_x) != Double.doubleToLongBits(other._x)) return false;
+		if (Double.doubleToLongBits(_y) != Double.doubleToLongBits(other._y)) return false;
 		return true;
 	}
 
