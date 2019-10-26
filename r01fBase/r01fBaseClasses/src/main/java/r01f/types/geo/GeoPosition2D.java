@@ -74,4 +74,40 @@ public class GeoPosition2D
 		_standard = std;
 		return this;
 	}
+
+/////////////////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////////////////
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((_standard == null) ? 0 : _standard.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(_x);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(_y);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		GeoPosition2D other = (GeoPosition2D) obj;
+		if (_standard != other._standard)
+			return false;
+		if (Double.doubleToLongBits(_x) != Double.doubleToLongBits(other._x))
+			return false;
+		if (Double.doubleToLongBits(_y) != Double.doubleToLongBits(other._y))
+			return false;
+		return true;
+	}
+
 }
