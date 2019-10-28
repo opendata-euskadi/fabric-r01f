@@ -5,6 +5,7 @@ import java.io.Serializable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import r01f.config.ContainsConfigData;
 import r01f.debug.Debuggable;
 import r01f.guids.CommonOIDs.Password;
 import r01f.guids.CommonOIDs.UserCode;
@@ -22,6 +23,7 @@ import r01f.util.types.Strings;
 @Accessors(prefix="_")
 public class HttpClientProxySettings
   implements Debuggable,
+  			 ContainsConfigData,
   			 Serializable {
 
 	private static final long serialVersionUID = -4581831883858484268L;
