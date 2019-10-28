@@ -1,6 +1,10 @@
 package r01f.model;
 
-public interface ExtensibleModelObject<E extends ModelObjectExtension<?>> 
+/**
+ * An model object extended with the {@link ModelObjectExtension}
+ * @param <E>
+ */
+public interface ExtendedModelObject<E extends ModelObjectExtension<?>> 
 		 extends ModelObject {
 	/**
 	 * Returns the content model object's extension
