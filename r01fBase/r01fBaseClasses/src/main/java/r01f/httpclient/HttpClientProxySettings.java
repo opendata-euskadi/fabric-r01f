@@ -5,7 +5,6 @@ import java.io.Serializable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import lombok.extern.slf4j.Slf4j;
 import r01f.debug.Debuggable;
 import r01f.guids.CommonOIDs.Password;
 import r01f.guids.CommonOIDs.UserCode;
@@ -20,7 +19,6 @@ import r01f.util.types.Strings;
  */
 @NoArgsConstructor
 @MarshallType(as="proxySettings")
-@Slf4j
 @Accessors(prefix="_")
 public class HttpClientProxySettings
   implements Debuggable,
