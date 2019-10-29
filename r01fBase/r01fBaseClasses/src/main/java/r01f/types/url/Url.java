@@ -548,6 +548,7 @@ public class Url
 		return outValue != null ? new StringConverterWrapper(outValue)
 								: new StringConverterWrapper(null);
 	}
+	@Deprecated
 	public String getAnchor() {
 		return this.getUrlPathFragment();
 	}

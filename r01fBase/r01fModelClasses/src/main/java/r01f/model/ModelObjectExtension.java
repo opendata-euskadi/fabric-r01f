@@ -2,9 +2,9 @@ package r01f.model;
 
 
 
-public interface ModelObjectExtension<M extends ExtensibleModelObject<?>> {
+public interface ModelObjectExtension<M extends ExtendedModelObject<?>> {
 	/**
-	 * Extends a model object that implements {@link ExtensibleModelObject}
+	 * Extends a model object that implements {@link ExtendedModelObject}
 	 * @param extensible 
 	 */
 	public void extend(final M extensible);
