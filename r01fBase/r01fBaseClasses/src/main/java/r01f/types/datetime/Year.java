@@ -1,7 +1,9 @@
 package r01f.types.datetime;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 
 import org.joda.time.DateTime;
@@ -16,6 +18,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import r01f.objectstreamer.annotations.MarshallType;
 import r01f.types.CanBeRepresentedAsString;
+import r01f.types.Range;
 import r01f.util.types.Dates;
 import r01f.util.types.Numbers;
 import r01f.util.types.Strings;
@@ -168,11 +171,32 @@ public class Year
 		return Year.of(_year - years);
 	}
 	/**
-	 * Creates a new Year from this year minus the given number of years
+	 * Creates a new Year from this year plus the given number of years
 	 * @param years
 	 * @return
 	 */
 	public Year plus(final int years) {
 		return Year.of(_year + years);
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	                                                                          
+/////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Returns the years within the given range
+	 * @param range
+	 * @return
+	 */
+	public static Collection<Year> yearsWithin(final Range<Year> range) {
+		if (!range.hasLowerBound() || !range.hasUpperBound()) throw new IllegalArgumentException("Year range MUST be a CLOSED range (it MUST have upper and lower bounds)!");
+		if (range.getUpperBound().isBefore(range.getUpperBound())) throw new IllegalArgumentException("range upper bound is AFTER the lower bound!!");
+		
+		Collection<Year> years = new ArrayList<>(); 
+		Year currYear = range.upperEndpoint();
+		Year lowerLimitYear = range.lowerEndpoint();
+		while(currYear.isAfter(lowerLimitYear)) {
+			years.add(currYear);
+			currYear = currYear.minus(1);
+		}
+		return years;
 	}
 }

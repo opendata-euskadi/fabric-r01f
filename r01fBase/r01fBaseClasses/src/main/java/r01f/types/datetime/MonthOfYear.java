@@ -1,6 +1,7 @@
 package r01f.types.datetime;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -18,6 +19,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import r01f.objectstreamer.annotations.MarshallType;
 import r01f.types.CanBeRepresentedAsString;
+import r01f.types.Range;
 import r01f.util.types.Dates;
 import r01f.util.types.Numbers;
 import r01f.util.types.Strings;
@@ -191,6 +193,29 @@ public class MonthOfYear
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Creates a new MonthOfYear from this month minus the given number of months
+	 * @param months
+	 * @return
+	 */
+	public MonthOfYear minus(final int months) {
+		int newMonth = _monthOfYear - months;
+		if (newMonth <= 0) newMonth = 12 - Math.abs(newMonth);
+		return MonthOfYear.of(newMonth);
+	}
+	/**
+	 * Creates a new MonthOfYear from this month plus the given number of months
+	 * @param months
+	 * @return
+	 */
+	public MonthOfYear plus(final int months) {
+		int newMonth = _monthOfYear + months;
+		if (newMonth > 12) newMonth = 12 - newMonth;
+		return MonthOfYear.of(newMonth);
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////////////////
 	public static final MonthOfYear JANUARY = new MonthOfYear(1);
 	public static final MonthOfYear FEBRUARY = new MonthOfYear(2);
 	public static final MonthOfYear MARCH = new MonthOfYear(3);
@@ -219,4 +244,25 @@ public class MonthOfYear
 	public static final MonthOfYear MONTH11 = NOVEMBER;
 	public static final MonthOfYear MONTH12 = DECEMBER;
 
+/////////////////////////////////////////////////////////////////////////////////////////
+//	                                                                          
+/////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Returns the months within the given range
+	 * @param range
+	 * @return
+	 */
+	public static Collection<MonthOfYear> monthsOfYearWithin(final Range<MonthOfYear> range) {
+		if (!range.hasLowerBound() || !range.hasUpperBound()) throw new IllegalArgumentException("Year range MUST be a CLOSED range (it MUST have upper and lower bounds)!");
+		if (range.getUpperBound().isBefore(range.getUpperBound())) throw new IllegalArgumentException("range upper bound is AFTER the lower bound!!");
+		
+		Collection<MonthOfYear> monthsOfYear = new ArrayList<>(); 
+		MonthOfYear currMonthOfYear = range.upperEndpoint();
+		MonthOfYear lowerMonthOfYear = range.lowerEndpoint();
+		while(currMonthOfYear.isAfter(lowerMonthOfYear)) {
+			monthsOfYear.add(currMonthOfYear);
+			currMonthOfYear = currMonthOfYear.minus(1);
+		}
+		return monthsOfYear;
+	}
 }
