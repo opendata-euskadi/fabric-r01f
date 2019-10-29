@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
 import r01f.exceptions.Throwables;
 import r01f.facets.HasOID;
 import r01f.guids.OID;
-import r01f.model.PersistableModelObject;
+import r01f.model.ModelObject;
 import r01f.model.SummarizedModelObject;
 import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
@@ -23,7 +23,7 @@ import r01f.util.types.collections.CollectionUtils;
 @MarshallType(as="findResult",typeId="findSummariesOK")
 @Accessors(prefix="_")
 @SuppressWarnings("unchecked")
-public class FindSummariesOK<M extends PersistableModelObject<? extends OID>>
+public class FindSummariesOK<M extends ModelObject>
 	 extends PersistenceOperationExecOK<Collection<? extends SummarizedModelObject<M>>>
   implements FindSummariesResult<M> {
 /////////////////////////////////////////////////////////////////////////////////////////

@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import r01f.guids.OID;
-import r01f.model.PersistableModelObject;
+import r01f.model.ModelObject;
 import r01f.model.SummarizedModelObject;
 import r01f.model.services.COREServiceErrorType;
 import r01f.objectstreamer.annotations.MarshallField;
@@ -18,7 +18,7 @@ import r01f.objectstreamer.annotations.MarshallType;
 @MarshallType(as="findResult",typeId="findSummariesError")
 @Accessors(prefix="_")
 @SuppressWarnings("unchecked")
-public class FindSummariesError<M extends PersistableModelObject<? extends OID>>
+public class FindSummariesError<M extends ModelObject>
 	 extends PersistenceOperationExecError<Collection<? extends SummarizedModelObject<M>>>
   implements FindSummariesResult<M> {
 /////////////////////////////////////////////////////////////////////////////////////////

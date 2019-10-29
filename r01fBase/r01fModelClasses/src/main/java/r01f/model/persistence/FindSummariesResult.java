@@ -4,14 +4,14 @@ import java.util.Collection;
 
 import r01f.guids.OID;
 import r01f.model.HasModelObjectTypeInfo;
-import r01f.model.PersistableModelObject;
+import r01f.model.ModelObject;
 import r01f.model.SummarizedModelObject;
 import r01f.objectstreamer.annotations.MarshallPolymorphicTypeInfo;
 import r01f.objectstreamer.annotations.MarshallPolymorphicTypeInfo.MarshalTypeInfoIncludeCase;
 import r01f.objectstreamer.annotations.MarshallPolymorphicTypeInfo.MarshallTypeInfoInclude;
 
 @MarshallPolymorphicTypeInfo(includeTypeInfo=@MarshallTypeInfoInclude(type=MarshalTypeInfoIncludeCase.ALWAYS))
-public interface FindSummariesResult<M extends PersistableModelObject<? extends OID>> 
+public interface FindSummariesResult<M extends ModelObject> 
        	 extends PersistenceOperationOnObjectResult<Collection<? extends SummarizedModelObject<M>>>,
        	 		 HasModelObjectTypeInfo<M> {
 /////////////////////////////////////////////////////////////////////////////////////////
