@@ -33,6 +33,9 @@ import r01f.objectstreamer.annotations.MarshallFrom;
 import r01f.objectstreamer.annotations.MarshallIgnoredField;
 import r01f.objectstreamer.annotations.MarshallType;
 import r01f.types.Range;
+import r01f.types.datetime.DayOfMonth;
+import r01f.types.datetime.MonthOfYear;
+import r01f.types.datetime.Year;
 import r01f.util.types.Strings;
 import r01f.util.types.collections.CollectionUtils;
 
@@ -555,6 +558,24 @@ public class BooleanQueryClause
 																			_occur));
 			return new BooleanQueryClauseStep0Builder(_id,_clauses);
 		}
+		public BooleanQueryClauseStep0Builder beEqualTo(final Year year) {
+			_clauses.add(new QualifiedQueryClause<EqualsQueryClause<Year>>(EqualsQueryClause.forField(_fieldId)
+																							 .of(year),
+																			_occur));
+			return new BooleanQueryClauseStep0Builder(_id,_clauses);
+		}
+		public BooleanQueryClauseStep0Builder beEqualTo(final MonthOfYear monthOfYear) {
+			_clauses.add(new QualifiedQueryClause<EqualsQueryClause<MonthOfYear>>(EqualsQueryClause.forField(_fieldId)
+																								   .of(monthOfYear),
+																				  _occur));
+			return new BooleanQueryClauseStep0Builder(_id,_clauses);
+		}
+		public BooleanQueryClauseStep0Builder beEqualTo(final DayOfMonth dayOfMonth) {
+			_clauses.add(new QualifiedQueryClause<EqualsQueryClause<DayOfMonth>>(EqualsQueryClause.forField(_fieldId)
+																								   .of(dayOfMonth),
+																				 _occur));
+			return new BooleanQueryClauseStep0Builder(_id,_clauses);
+		}
 		
 		// ------ Range
 		public BooleanQueryClauseStep0Builder beInsideIntRange(final Range<Integer> range) {
@@ -745,7 +766,7 @@ public class BooleanQueryClause
 			return _enums.isIn(this,els);
 		}
 		@Override
-		public boolean is(QueryClauseOccur el) {
+		public boolean is(final QueryClauseOccur el) {
 			return _enums.is(this,el);
 		}
 	}

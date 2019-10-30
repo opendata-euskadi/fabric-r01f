@@ -86,7 +86,9 @@ class SearchFilterToAndFromCriteriaStringMarshaller<F extends SearchFilterForMod
 										   modelObjTypesCriteriaStrPart,
 										   boolClausesPart);
 		} else if (uiLangPart == null && boolClausesPart == null) {
-			outCriteriaStr = modelObjTypesCriteriaStrPart;
+			outCriteriaStr = String.format("%s#%s",
+										   filterTypePart,
+										   modelObjTypesCriteriaStrPart);
 		}
 		return SearchFilterAsCriteriaString.of(outCriteriaStr);
     }
