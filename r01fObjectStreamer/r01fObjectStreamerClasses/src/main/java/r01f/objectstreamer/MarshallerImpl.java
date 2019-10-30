@@ -14,12 +14,15 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.common.reflect.TypeToken;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.Accessors;
 import r01f.guids.CommonOIDs.AppCode;
 import r01f.objectstreamer.annotations.MarshallFormat;
 import r01f.patterns.Memoized;
 import r01f.types.JavaPackage;
 
+@Accessors(prefix="_")
 @RequiredArgsConstructor
 public class MarshallerImpl
   implements Marshaller {
@@ -30,14 +33,14 @@ public class MarshallerImpl
 	private final Set<? extends MarshallerModule> _jacksonModules;
 	private final Charset _defaultCharset;
 
-	private final Memoized<MarshallerMapperForXml> _marshallerXmlMapper = new Memoized<MarshallerMapperForXml>() {
+	@Getter private final Memoized<MarshallerMapperForXml> _marshallerXmlMapper = new Memoized<MarshallerMapperForXml>() {
 																				@Override
 																				public MarshallerMapperForXml supply() {
 																					return new MarshallerMapperForXml(_javaPackages,
 																													  _jacksonModules);
 																				}
 																	   };
-	private final Memoized<MarshallerMapperForJson> _marshallerJsonMapper = new Memoized<MarshallerMapperForJson>() {
+	@Getter private final Memoized<MarshallerMapperForJson> _marshallerJsonMapper = new Memoized<MarshallerMapperForJson>() {
 																				@Override
 																				public MarshallerMapperForJson supply() {
 																					return new MarshallerMapperForJson(_javaPackages,
