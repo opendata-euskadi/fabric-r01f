@@ -35,9 +35,9 @@ a) Download the [eclipse IDE for Java Developers] from http://www.eclipse.org/do
 
 b) Extract the contents of the [eclipse] folder inside the previously downloaded eclipse ZIP to the `/{dev_home}/instances/[instance_name]`
 
-c) Copy the `/{dev_home}/instances/[instance_name]/eclipse.ini` to eclipse.ini.original
+c) Copy the `/{dev_home}/[instance_name]/eclipse.ini` to eclipse.ini.original
 
-d) Edit the `/{dev_home}/instances/[instance_name]/eclipse.ini` file and set this content:
+d) Edit the `/{dev_home}/[instance_name]/eclipse.ini` file and set this content:
 
 > BEWARE!!!
 
@@ -166,6 +166,8 @@ b) **[Maven]**
 > `[Maven > Archetypes]` > Add a NEW remote catalog at: http://repo1.maven.org/maven2/archetype-catalog.xml
 
 > `[Maven > User Settings] > Global Settings`: {dev_home}/projects/fabric/r01f/docs/eclipse/maven/settings_{env}.xml
+
+> `[Maven > User Settings] > Error/Warnings > Plugin execution not covered by lifecycle configuration`: change to WARNING!
 
 By default, EGit automatically adds resources marked as "Derived" to .gitignore
 ... if `[Maven > Hide folders of physically nested modules` is **enabled** (true), eclipse adds nested modules' folders to .gitignore
