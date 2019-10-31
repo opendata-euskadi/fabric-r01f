@@ -107,7 +107,7 @@ class XMLPropertiesForAppComponentsContainer {
 			}
 			return isSame;
 		}
-		AppComponent composeKey(AppComponent... keyComponent) {
+		AppComponent composeKey(final AppComponent... keyComponent) {
 			AppComponent outKey = null;
 			if (keyComponent.length == 1) {
 				outKey = keyComponent[0];
@@ -249,7 +249,7 @@ class XMLPropertiesForAppComponentsContainer {
     Node getPropertyNode(final AppComponent component,final Path xPath) {
     	return (Node)this.getPropertyNode(component,xPath,XPathConstants.NODE);
     }
-    NodeList getPropertyNodeList(AppComponent component,Path xPath) {
+    NodeList getPropertyNodeList(final AppComponent component,final Path xPath) {
     	String xPathStr = xPath.asString();
     	String effXPath = !xPathStr.endsWith("/child::*") ? xPathStr.concat("/child::*")
     													  : xPathStr;
@@ -384,9 +384,6 @@ class XMLPropertiesForAppComponentsContainer {
         		// Load the component definition
         		XMLPropertiesComponentDef compDef = XMLPropertiesComponentDefLoader.loadOrDefault(_systemSetEnvironment,
 	        													   								  _appCode,component);
-    			log.warn("Loading xml properties for {}/{} using {} loader",
-    					 _appCode,component,
-    					 compDef.getLoaderDef().getLoader());
 
     			// [0] -- Tell the cache that a new properties component has been loaded
     			//		  (at this point the cache is re-built to accommodate the new estimated property number)
@@ -416,12 +413,15 @@ class XMLPropertiesForAppComponentsContainer {
      * @throws XMLPropertiesException if the XML file cannot be loaded or it's malformed
      */
     private Document _loadComponentXML(final XMLPropertiesComponentDef compDef) throws XMLPropertiesException {
+		log.warn("Loading xml properties for {}.{} using {} loader",
+				 _appCode,compDef.getName(),
+				 compDef.getLoaderDef().getLoader());
     	// [1] Get a resources loader
     	ResourcesLoader resLoader = ResourcesLoaderBuilder.createResourcesLoaderFor(compDef.getLoaderDef());
 
 		XMLDocumentBuilder domBuilder = new XMLDocumentBuilder(resLoader);
     	
-    	// [2] Load the XML file using the configured resourcesLoader and parse it
+    	// [2] Load the env-independent XML properties file 
 		Path defPropsFileUri = compDef.getPropertiesFileURI();
 		Document defXmlDoc = null;
 		try {
@@ -440,7 +440,7 @@ class XMLPropertiesForAppComponentsContainer {
 			throw XMLPropertiesException.propertiesXMLError(_systemSetEnvironment,_appCode,compDef.getName());
 		}
 		
-		// [3] Try to find an env-dependent XML Properties file
+		// [3] Try to find an env-dependent XML properties file
 		Document envXmlDoc = null;
 		Path envDepPropsFileUri = Path.from(_systemSetEnvironment)
 									  .joinedWith(compDef.getPropertiesFileURI());

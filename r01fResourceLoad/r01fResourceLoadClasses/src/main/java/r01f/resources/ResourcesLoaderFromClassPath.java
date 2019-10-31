@@ -28,7 +28,7 @@ import r01f.types.IsPath;
  * is RELATIVE and converts an absolute path into a relative one
  */
 public class ResourcesLoaderFromClassPath
-     extends ResourcesLoaderBase {
+	 extends ResourcesLoaderBase {
 ///////////////////////////////////////////////////////////////////////////////
 // 	CONSTRUCTOR
 ///////////////////////////////////////////////////////////////////////////////
@@ -43,8 +43,8 @@ public class ResourcesLoaderFromClassPath
 //  METHODS
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
-    protected InputStream _doGetInputStream(final IsPath resourcePath,
-    								        final boolean reload) throws IOException {
+	protected InputStream _doGetInputStream(final IsPath resourcePath,
+											final boolean reload) throws IOException {
 		// IMPORTANT: ClassLoader and Class apply resource names differently
 		// see: http://www.thinkplexx.com/learn/howto/java/system/java-resource-loading-explained-absolute-and-relative-names-difference-between-classloader-and-class-resource-loading
 		// The ClassLoader methods, NEEDS absolute paths while Class methods NEEDS relative paths
@@ -54,24 +54,24 @@ public class ResourcesLoaderFromClassPath
 		//		  use relative paths
 
 		String theResourcePath = resourcePath.asRelativeString();
-        InputStream outResourceIS = null;
-        ClassLoader loader = ResourcesLoaderFromClassPath.class.getClassLoader();
+		InputStream outResourceIS = null;
+		ClassLoader loader = ResourcesLoaderFromClassPath.class.getClassLoader();
 
-        if (reload) {
-        	// ... ensures NOT to use the loader's cache
-        	URL url = loader.getResource(theResourcePath);
-            if (url != null) {
-            	URLConnection connection = url.openConnection();
-                if (connection != null) {
-                	// Disable caches to get fresh data for reloading.
-                    connection.setUseCaches(false);
-                    outResourceIS = connection.getInputStream();
-                }
-            }
-        } else {
-        	// ... can use the loader's cache
-        	outResourceIS = loader.getResourceAsStream(theResourcePath);
-        }
-        return outResourceIS;
-    }
+		if (reload) {
+			// ... ensures NOT to use the loader's cache
+			URL url = loader.getResource(theResourcePath);
+			if (url != null) {
+				URLConnection connection = url.openConnection();
+				if (connection != null) {
+					// Disable caches to get fresh data for reloading.
+					connection.setUseCaches(false);
+					outResourceIS = connection.getInputStream();
+				}
+			}
+		} else {
+			// ... can use the loader's cache
+			outResourceIS = loader.getResourceAsStream(theResourcePath);
+		}
+		return outResourceIS;
+	}
 }

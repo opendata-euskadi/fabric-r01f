@@ -2,12 +2,14 @@ package r01f.xmlproperties;
 
 import java.io.IOException;
 
+import lombok.extern.slf4j.Slf4j;
 import r01f.exceptions.EnrichedRuntimeException;
 import r01f.guids.CommonOIDs.AppCode;
 import r01f.guids.CommonOIDs.AppComponent;
 import r01f.guids.CommonOIDs.Environment;
 import r01f.util.types.Strings;
 
+@Slf4j
 public class XMLPropertiesException
      extends EnrichedRuntimeException {
 
@@ -62,6 +64,8 @@ public class XMLPropertiesException
 	public static XMLPropertiesException propertiesLoadError(final Environment env,final AppCode appCode,final AppComponent component) {
 		XMLPropertiesComponentDef compDef = null;
 		try {
+			log.warn("XMLProperties LOAD ERROR {}.{} ({}): trying to load the component DEFINITION to compose the error message",
+					 appCode,component,env);
 			compDef = XMLPropertiesComponentDefLoader.loadOrDefault(env,appCode,component);		// Load again the definition
 		} catch(XMLPropertiesException xmlEx) {
 			/* ignore */
