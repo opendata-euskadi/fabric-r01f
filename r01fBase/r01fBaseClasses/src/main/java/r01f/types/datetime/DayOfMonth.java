@@ -2,6 +2,7 @@ package r01f.types.datetime;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 
@@ -11,6 +12,7 @@ import org.joda.time.LocalDate;
 
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
 
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -170,6 +172,15 @@ public class DayOfMonth
 								   };
 						}
 			   };
+	}
+	public static Collection<DayOfMonth> dayOfMonthCollectionOf(final Year year,
+																final MonthOfYear monthOfYear) {
+		return Lists.newArrayList(DayOfMonth.dayOfMonthIterableOf(year,monthOfYear));
+	}
+	public static DayOfMonth maxDayOfMonthOf(final Year year,final MonthOfYear monthOfYear) {
+		LocalDate endOfMonth = new LocalDate(year.asInteger(),monthOfYear.asInteger(),1)
+										.dayOfMonth().withMaximumValue();
+		return DayOfMonth.of(endOfMonth.getDayOfMonth());
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  EQUALS & HASHCODE

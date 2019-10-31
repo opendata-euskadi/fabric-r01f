@@ -466,14 +466,14 @@ public abstract class Dates {
 			case SPANISH:
 				// Lunes, 25 de abril de 1995
 				outDate = new StringBuilder()
-								 .append(_getDayOfWeekName(dayOfWeek,Language.SPANISH)).append(", ")
+								 .append(Dates.getDayOfWeekName(dayOfWeek,Language.SPANISH)).append(", ")
 								 .append(Integer.toString(calendar.get(Calendar.DAY_OF_MONTH))).append(" de ")
 								 .append(getMonthName(monthOfYear,Language.SPANISH)).append(" de ")
 								 .append(Integer.toString(year)).toString();
 				break;
 			case BASQUE:
 				outDate = new StringBuilder()
-								 .append(_getDayOfWeekName(dayOfWeek,Language.BASQUE)).append(", ")
+								 .append(Dates.getDayOfWeekName(dayOfWeek,Language.BASQUE)).append(", ")
 								 .append(Integer.toString(year)).append("-ko ")
 								 .append(getMonthName(monthOfYear,Language.BASQUE)).append("ren ")
 								 .append(Integer.toString(calendar.get(Calendar.DAY_OF_MONTH))).toString();
@@ -493,7 +493,7 @@ public abstract class Dates {
 		}
 		return outDate;
 	}
-	private static String _getDayOfWeekName(final int dayOfWeek,final Language language) {
+	public static String getDayOfWeekName(final int dayOfWeek,final Language language) {
 		String outDayName = null;
 		switch(language) {
 			case SPANISH:
@@ -642,13 +642,13 @@ public abstract class Dates {
 		return outMonthName;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  OTROS METODOS
+//  OTHER
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
-	 * Pasa una fecha al maximo, es decir si la fecha suministrada es 25/03/07 11:44:00 pasa
-	 * a 25/03/07 23:59:999
-	 * @param date la fecha
-	 * @return otra fecha en el ultimo mili
+	 * Swift a date to its maximun, ie if the given date is  2197/03/25 11:44:00 
+	 * it'll be swifteed to 2017/03/25 23:59:999
+	 * @param 
+	 * @return 
 	 */
 	@GwtIncompatible
 	public static Date rollDateToMaximum(final Date date) {
@@ -657,10 +657,10 @@ public abstract class Dates {
 		return Dates.rollCalendarToMaximum(theCal).getTime();
 	}
 	/**
-	 * Pasa una fecha al minimo, es decir si la fecha suministrada es 25/03/07 11:44:00 pasa
-	 * a 25/03/07 00:00:000
-	 * @param date la fecha
-	 * @return otra fecha en el primer mili
+	 * Swift a date to its minimum, ie if the given date is  2197/03/25 11:44:00 
+	 * it'll be swifteed to 2017/03/25 00:00:000
+	 * @param date 
+	 * @return 
 	 */
 	@GwtIncompatible
 	public static Date rollDateToMinimum(final Date date) {
@@ -669,8 +669,8 @@ public abstract class Dates {
 		return Dates.rollCalendarToMinimum(theCal).getTime();
 	}
 	/**
-	 * Pasa una fecha al maximo, es decir si la fecha suministrada es 25/03/07 11:44:00 pasa
-	 * a 25/03/07 23:59:999
+	 * Swift a date to its maximun, ie if the given date is  2197/03/25 11:44:00 
+	 * it'll be swifteed to 2017/03/25 23:59:999
 	 * @param theCal la fecha
 	 * @return otra fecha en el ultimo mili
 	 */
@@ -684,10 +684,10 @@ public abstract class Dates {
 		return cal;
 	}
 	/**
-	 * Pasa una fecha al minimo, es decir si la fecha suministrada es 25/03/07 11:44:00 pasa
-	 * a 25/03/07 00:00:000
-	 * @param theCal la fecha
-	 * @return otra fecha en el primer mili
+	 * Swift a date to its minimum, ie if the given date is  2197/03/25 11:44:00 
+	 * it'll be swifteed to 2017/03/25 23:59:999
+	 * @param theCal 
+	 * @return
 	 */
 	@GwtIncompatible
 	public static Calendar rollCalendarToMinimum(final Calendar theCal) {
