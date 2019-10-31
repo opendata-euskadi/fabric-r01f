@@ -187,7 +187,11 @@
 <!-- PLUGINS                                                                -->
 <!-- ====================================================================== -->
 	<build>
-
+		<!--
+		Default plugin config
+		BEWARE!! In [eclipse] ensure this config is set:
+					[window] > [preferences] > [Maven] > [Errors/Wranings] > [Plugin execution NOT covered by lifecycle configuration] >>> se to WARNING 
+		-->
 		<pluginManagement>
 			<plugins>
 				<!--
@@ -297,10 +301,8 @@
 					</executions>
 				</plugin>
 
-				<!-- Since Maven 3.5.0 you can use the ${revision} placeholder for that. -->
-				<!-- The use is documented here: Maven CI Friendly Versions. (https://maven.apache.org/maven-ci-friendly.html) -->
-				<!-- You also have to use the Flatten Maven Plugin to generate pom documents with the dedicated version number included for deployment. -->
-				<!-- https://www.mojohaus.org/flatten-maven-plugin/ -->
+				<!-- Automatic replacement of a parent [version] variable in child modules -->
+				<!-- https://www.mojohaus.org/flatten-maven-plugin/usage.html -->
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>flatten-maven-plugin</artifactId>
@@ -337,6 +339,23 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
+		
+		<!--
+		Plugins to be run by default 
+		-->
+		<plugins>
+			<!--
+			Run the [flatten] plugin by default
+			if the [flatten] plugin is NOT run by default the GOAL MUST be run instead:
+				mvn clean flatten:flatten install
+			If none of the above is done, the folder containing the artifact will be 
+			incorrectly named ${revision} instead of the revision number
+			-->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>flatten-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
 
 		<!--
 		The Resources Plugin handles the copying of project resources to the output directory
