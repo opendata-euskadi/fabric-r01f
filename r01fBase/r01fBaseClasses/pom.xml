@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 <!-- ====================================================================== -->
-<!-- PARENT                                                                 -->
+<!-- PARENT																 -->
 <!-- ====================================================================== -->
 	<parent>
 		<groupId>r01.r01f.base</groupId>
@@ -14,17 +14,17 @@
 	</parent>
 
 <!-- ====================================================================== -->
-<!-- ARTIFACT                                                               -->
+<!-- ARTIFACT															   -->
 <!-- ====================================================================== -->
 	<name>r01fBaseClasses</name>
 	<artifactId>r01fBaseClasses</artifactId>
 
 <!-- ====================================================================== -->
-<!-- DEPENDENCIES                                                           -->
+<!-- DEPENDENCIES														   -->
 <!-- ====================================================================== -->
 	<dependencies>
 		<!-- ///////////////////////////////////////// -->
-		<!-- Aspect Interfaces                         -->
+		<!-- Aspect Interfaces						 -->
 		<!-- ///////////////////////////////////////// -->
 		<dependency>
 			<groupId>r01.r01f.aspect.dirtytrack</groupId>
@@ -48,7 +48,7 @@
 		</dependency>
 
 		<!-- ///////////////////////////////////////// -->
-		<!-- Object streamer Interfaces                -->
+		<!-- Object streamer Interfaces				-->
 		<!-- ///////////////////////////////////////// -->
 		<dependency>
 			<groupId>r01.r01f.objectstreamer</groupId>
@@ -57,16 +57,16 @@
 		</dependency>
 
 		<!-- ///////////////////////////////////////// -->
-		<!-- javax.inject                              -->
+		<!-- javax.inject							  -->
 		<!-- ///////////////////////////////////////// -->
 		<dependency>
-    		<groupId>javax.inject</groupId>
-    		<artifactId>javax.inject</artifactId>
-    		<version>1</version>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
+			<version>1</version>
 		</dependency>
 
 		<!-- ///////////////////////////////////////// -->
-		<!-- Apache commons                            -->
+		<!-- Apache commons							-->
 		<!-- ///////////////////////////////////////// -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -80,13 +80,12 @@
 		</dependency>
 
 		<!-- ///////////////////////////////////////// -->
-		<!-- Joda Time                                 -->
+		<!-- Joda Time								 -->
 		<!-- ///////////////////////////////////////// -->
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
 			<version>2.8.1</version>
 		</dependency>
-
 	</dependencies>
 </project>
