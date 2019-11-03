@@ -134,56 +134,6 @@
 	</dependencies>
 
 <!-- ====================================================================== -->
-<!-- REPOSITORIES                                                           -->
-<!-- ====================================================================== -->
-	<!--
-	IMPORTANT: IZENPE's root certificate MUST be installed at the jdk's [cert-store]
-	[1] - Using a [web browser], goto to the repository url
-		  		https://bin1.alm02.itbatera.euskadi.eus/repository/maven-public-releases/
-	[2] - Check the certificate chain:
-				[Izenpe.com]
-					|- EAEKo Herri Administrazioen CA - CA AAPP Vascas (2)
-							|- builds1.alm02.itbatera.euskadi.eus
-
-			Download the ROOT certificate as CER files (only the [root] certificate is really needed)
-
-	[3] - When in [eclipse], guess what is the eclipse workspace active jdk
-				[window] > [preferences] > [java] > [installed JREs]
-
-	[3] - Open a system console
-			a) goto to the [jdk] bin directory
-					$> cd {jdk_root}/bin
-			b) run the [keytool]
-				- If JRE <= 8
-						$>keytool -keystore {jdk_root}\jre\lib\security\cacerts -import -file {develop_root}\projects\fabric\r01f\docs\eclipse\maven\certs\izenpe.com.cer -alias izenpe_root -storepass changeit
-
-				- If JRE > 8
-						$>keytool -keystore {jdk_root}\lib\security\cacerts -import -file {develop_root}\projects\fabric\r01f\docs\eclipse\maven\certs\izenpe.com.cer -alias izenpe_root -storepass changeit
-			BEWARE!!!
-				- DO NOT delete the jdk's origina keystore at {jdk_root}\jre\lib\security\cacerts since it contains the
-				  most common certificate-authorities public root certificates
-	-->
-	<repositories>
-		<repository>
-			<id>EJIE</id>
-			<name>EJIE Public Releases</name>
-			<url>https://bin1.alm02.itbatera.euskadi.eus/repository/maven-public-releases/</url>
-			<releases>
-				<enabled>true</enabled>
-				<updatePolicy>always</updatePolicy>
-				<checksumPolicy>warn</checksumPolicy>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-				<updatePolicy>never</updatePolicy>
-				<checksumPolicy>fail</checksumPolicy>
-			</snapshots>
-			<layout>default</layout>
-		</repository>
-	</repositories>
-
-
-<!-- ====================================================================== -->
 <!-- PLUGINS                                                                -->
 <!-- ====================================================================== -->
 	<build>
@@ -338,16 +288,72 @@
 						</execution>
 					</executions>
 				</plugin>
-				<!--This plugin's configuration is only used to store Eclipse m2e settings. 
-					It has no influence on the Maven build itself.-->
+				
+				<!-- Version plugin (not currently used -replaced by version & flatten- -->
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>versions-maven-plugin</artifactId>
+					<version>2.7</version>
+				</plugin>
+				
+				<!--
+				ECLIPSE ========================================================
+				This plugin has NO effects in maven build:
+					m2e ONLY runs some 'standard' goals of the maven pom.xml since the aim of m2e is NOT to be a complete CI tool
+					... in order to include 'non-standard' goals in m2e execution and avoid [plugin execution not covered by the eclipse m2e plugin project build lifecycle mapping]
+						the 'non-standard' plugin MUST be explicitly included in m2e execution
+				
+				m2eclipse executes the default phases and goals of maven into the internal Eclipse build workflow.
+					IDE usecase is editing sources and running tests, NOT the complete Maven build, 
+					... so for example, plugin goals that publish build results to a remote repository can be ignored 
+					    without any adverse side effects, while java source code compilation is strictly necessary
+						
+				m2eclipse requires EXPLICIT INSTRUCTIONS about what to do with all Maven plugins bound to “interesting” phases
+				of a project build lifecycle
+					These INSTRUCTUONS are called [project build lifecycle mapping] or simply [lifecycle mapping]
+					because they define how m2e maps information from pom.xml file to:
+						- Eclipse workspace project configuration 
+						- behaviour during Eclipse workspace build
+					Project build [lifecycle mapping] can be configured in:
+					[1] - The pom.xml
+							<build>
+								<pluginManagement>
+									<plugins>
+										<plugin>
+											<groupId>org.eclipse.m2e</groupId>
+											<artifactId>lifecycle-mapping</artifactId>
+											<version>1.0.0</version>
+											<configuration>
+												<lifecycleMappingMetadata>
+													... put here the lifecycle metadata ...
+												</lifecycleMappingMetadata>
+											</configuraction>
+										</plugin>
+									</plugins>
+								</pluginManagement>
+							</build>
+							
+					[2] - The [lifecycle-mapping-metadata.xml] file (see [window] > [preferences] > [maven] > [lifecycle mappings])
+							Just create a file called [lifecycle-mapping-metadata.xml] at the location configured at [window] > [preferences] > [maven] > [lifecycle mappings]
+							The content of this file is the same as the content of the <configuration> above:
+								<lifecycleMappingMetadata>
+									... put here the lifecycle metadata ...
+								</lifecycleMappingMetadata>		
+					
+					The first approach does NOT require any [eclipse]-specific config but 'polutes' the pom.xml with 
+					CI non-required config
+						
+				See: https://www.eclipse.org/m2e/documentation/m2e-execution-not-covered.html
+					 https://stackoverflow.com/questions/30063357/how-can-i-map-maven-lifecycle-phases-not-covered-by-the-eclipse-m2e-plugin
+				-->
 				<plugin>
 				  	<groupId>org.eclipse.m2e</groupId>
 				  	<artifactId>lifecycle-mapping</artifactId>
 				  	<version>1.0.0</version>
-				  	<configuration>
-				  		<!-- 
+				  	<configuration> 
 						<lifecycleMappingMetadata>
 							<pluginExecutions>
+								<!-- flatten plugin -->
 								<pluginExecution>
 									<pluginExecutionFilter>
 										<groupId>org.codehaus.mojo</groupId>
@@ -363,15 +369,7 @@
 								</pluginExecution>
 							</pluginExecutions>
 						</lifecycleMappingMetadata>
-						-->
 					</configuration>
-				</plugin>
-
-				<!-- Version plugin -->
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>versions-maven-plugin</artifactId>
-					<version>2.7</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -407,11 +405,59 @@
 				<directory>src/main/resources</directory>
 			</resource>
 		</resources>
-
 	</build>
 
 <!-- ====================================================================== -->
-<!-- DISTRIBUTION ARTIFACTS                                                 -->
+<!-- REPOSITORIES                                                           -->
+<!-- ====================================================================== -->
+	<!--
+	IMPORTANT: IZENPE's root certificate MUST be installed at the jdk's [cert-store]
+	[1] - Using a [web browser], goto to the repository url
+		  		https://bin1.alm02.itbatera.euskadi.eus/repository/maven-public-releases/
+	[2] - Check the certificate chain:
+				[Izenpe.com]
+					|- EAEKo Herri Administrazioen CA - CA AAPP Vascas (2)
+							|- builds1.alm02.itbatera.euskadi.eus
+
+			Download the ROOT certificate as CER files (only the [root] certificate is really needed)
+
+	[3] - When in [eclipse], guess what is the eclipse workspace active jdk
+				[window] > [preferences] > [java] > [installed JREs]
+
+	[3] - Open a system console
+			a) goto to the [jdk] bin directory
+					$> cd {jdk_root}/bin
+			b) run the [keytool]
+				- If JRE <= 8
+						$>keytool -keystore {jdk_root}\jre\lib\security\cacerts -import -file {develop_root}\projects\fabric\r01f\docs\eclipse\maven\certs\izenpe.com.cer -alias izenpe_root -storepass changeit
+
+				- If JRE > 8
+						$>keytool -keystore {jdk_root}\lib\security\cacerts -import -file {develop_root}\projects\fabric\r01f\docs\eclipse\maven\certs\izenpe.com.cer -alias izenpe_root -storepass changeit
+			BEWARE!!!
+				- DO NOT delete the jdk's origina keystore at {jdk_root}\jre\lib\security\cacerts since it contains the
+				  most common certificate-authorities public root certificates
+	-->
+	<repositories>
+		<repository>
+			<id>EJIE</id>
+			<name>EJIE Public Releases</name>
+			<url>https://bin1.alm02.itbatera.euskadi.eus/repository/maven-public-releases/</url>
+			<releases>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+				<checksumPolicy>warn</checksumPolicy>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+				<updatePolicy>never</updatePolicy>
+				<checksumPolicy>fail</checksumPolicy>
+			</snapshots>
+			<layout>default</layout>
+		</repository>
+	</repositories>
+	
+<!-- ====================================================================== -->
+<!-- ARTIFACT DISTRIBUTION                                                  -->
 <!-- ====================================================================== -->
 	<distributionManagement>
 		<repository>
@@ -427,49 +473,52 @@
 			<url>https://bin1.alm02.itbatera.euskadi.eus/repository/maven-snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
-
+	
 <!-- ====================================================================== -->
-<!-- ECLIPSE LIFECYCLE MANAGEMENT                                           -->
+<!-- PROFILES                                                               -->
 <!-- ====================================================================== -->
-	<!--
-	m2eclipse executes the default phases and goals of maven into the internal Eclipse build workflow.
-		IDE usecase: editing sources and running tests, NOT the complete Maven build, 
-					 ... so for example, plugin goals that publish build results to a remote repository 
-						  can be ignored without any adverse side effects, while java source code generation 
-						  is necessary
-	m2eclipse requires EXPLICIT INSTRUCTIONS about what to do with all Maven plugins bound to “interesting” phases
-	of a project build lifecycle
-		These INSTRUCTUONS are called [project build lifecycle mapping] or simply [lifecycle mapping]
-		because they define how m2e maps information from pom.xml file to:
-			- Eclipse workspace project configuration 
-			- behaviour during Eclipse workspace build
-		Project build [lifecycle mapping] can be configured in:
-			- The pom.xml
-					<build>
-						<pluginManagement>
-							<plugins>
-								<plugin>
-									<groupId>org.eclipse.m2e</groupId>
-									<artifactId>lifecycle-mapping</artifactId>
-									<version>1.0.0</version>
-									<configuration>
-										<lifecycleMappingMetadata>
-											... put here the lifecycle metadata ...
-										</lifecycleMappingMetadata>
-									</configuraction>
-								</plugin>
-							</plugins>
-						</pluginManagement>
-					</build>
-					
-			- The [lifecycle-mapping-metadata.xml] file (see [window] > [preferences] > [maven] > [lifecycle mappings])
-					Just create a file called [lifecycle-mapping-metadata.xml] at the location configured at [window] > [preferences] > [maven] > [lifecycle mappings]
-					The content of this file is the same as the content of the <configuration> above:
-						<lifecycleMappingMetadata>
-							... put here the lifecycle metadata ...
-						</lifecycleMappingMetadata>			 		
-			
-	See: https://www.eclipse.org/m2e/documentation/m2e-execution-not-covered.html
-		 https://stackoverflow.com/questions/30063357/how-can-i-map-maven-lifecycle-phases-not-covered-by-the-eclipse-m2e-plugin
-	-->
+<!--
+	The application config has TWO levels:
+	- public:                      anyone can see it 					> Project (artifact) name: [{appCode}Config]
+	- private by EJIE environment: only authorized people can access it > Project (artifact) name: [{appCode}ConfigByEnv]
+											
+	The aim of the existence of TWO separate projects for configs is that anyone at the outside (not from EJIE) do NOT have the need of  
+	private EJIE-dependent projects like `[{appCode}ConfigByEnv]` so just cloning the 'public' part of the code & config is
+	usually enough to run the app
+	... at the same time, inside EJIE, a `[{appCode}ConfigByEnv]` is used to store the environment-dependent or 'secret' config
+	
+	At runtime, while loading the config:
+	- if an R01_ENV system property is set, config from the 'public' project (artifact) [{appCode}Config]
+	  is MIXED with config from the 'private' project (artifcat)  [{appCode}ConfigByEnv]
+	  
+	- if NO R01_ENV system property is set only config from the 'public' project (artifact) [{appCode}Config] is used
+	
+	A Maven PROFILE is used so the 'private' project `[{appCode}ConfigByEnv]` is only required if `PROFILE=env_profile` 
+	If a Maven PROFILE is **NOT** set (the default _'public'_ case), the `[{appCode}ConfigByEnv]` dependency is NOT required
+	
+	This way, the EJIE private config is 'secret' while anyone from the 'outside' (public) still can build the app without the EJIE private config artifact dependency 
+-->
+	<profiles>
+		<!-- Used when a profile is NOT set [mvn clean install] (public) -->
+		<profile>
+			<id>default_profile</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+		<!-- Used when setting a profile like [mvn clean install -Penv_profile] (ejie internal) -->
+		<profile>
+			<id>env_profile</id>
+			<dependencies>	
+				<dependency>
+					<!-- place here any env-dependent artifact -->
+					<!--
+					<groupId>...the group id...</groupId>
+					<artifactId>...the artifact id...</artifactId>
+					<version>version</version>
+					-->
+				</dependency>
+			</dependencies>
+		</profile> 
+	</profiles>
 </project>
