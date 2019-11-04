@@ -507,18 +507,17 @@
 			</activation>
 		</profile>
 		<!-- Used when setting a profile like [mvn clean install -Penv_profile] (ejie internal) -->
+		<!-- place here any env-dependent artifact -->
+		<!--
 		<profile>
 			<id>env_profile</id>
 			<dependencies>	
-				<dependency>
-					<!-- place here any env-dependent artifact -->
-					<!--
+				<dependency>					
 					<groupId>...the group id...</groupId>
 					<artifactId>...the artifact id...</artifactId>
-					<version>version</version>
-					-->
-				</dependency>
-			</dependencies>
-		</profile> 
+					<version>version</version>					
+		    	</dependency>
+		    </dependencies>
+		</profile> -->
 	</profiles>
 </project>
