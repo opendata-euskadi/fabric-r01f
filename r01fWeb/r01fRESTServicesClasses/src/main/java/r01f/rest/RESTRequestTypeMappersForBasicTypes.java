@@ -91,10 +91,11 @@ public class RESTRequestTypeMappersForBasicTypes {
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 	@RequiredArgsConstructor
-	public static abstract class XMLMarshalledObjectRequestTypeMapper<T> 
+	public static abstract class MarshalledObjectRequestTypeMapper<T> 
 		  	 		  implements MessageBodyReader<T> {
 		
 		private final Class<?> _mappedType;
+		private final MediaType _mediaType;
 		
 		public abstract r01f.objectstreamer.Marshaller getObjectsMarshaller();
 		
@@ -103,7 +104,7 @@ public class RESTRequestTypeMappersForBasicTypes {
 								  final Annotation[] annotations,
 								  final MediaType mediaType) {
 			// every application/xml received params are transformed to java in this type
-			return mediaType.isCompatible(MediaType.APPLICATION_XML_TYPE)
+			return mediaType.isCompatible(_mediaType)
 				&& ReflectionUtils.isImplementing(type,_mappedType);
 		}
 		@Override
@@ -118,9 +119,13 @@ public class RESTRequestTypeMappersForBasicTypes {
 			String xml = StringPersistenceUtils.load(entityStream);
 			T outObj = null;
 			if (Strings.isNOTNullOrEmpty(xml)) {
-				//System.out.println("---->" + xml);
-				outObj = this.getObjectsMarshaller().forReading().fromXml(xml,
-																		  type);
+				if(mediaType.isCompatible(MediaType.APPLICATION_JSON_TYPE)) {
+					outObj = this.getObjectsMarshaller().forReading().fromJson(xml, type);
+				} else if(mediaType.isCompatible(MediaType.APPLICATION_XML_TYPE)) {
+					outObj = this.getObjectsMarshaller().forReading().fromXml(xml, type);
+				} else {
+					throw new IllegalArgumentException("Received media type is not compatible");
+				}
 			}
 			return outObj;
 		}
