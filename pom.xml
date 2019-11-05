@@ -21,7 +21,7 @@
 		
 		<!-- Dependencies versions -->
 		<slf4j.version>1.7.25</slf4j.version>
-		<logback.verson>1.2.3</logback.verson>
+		<logback.version>1.2.3</logback.version>
 		<guice.version>4.2.1</guice.version>	<!-- TODO 4.2.2 version exists BUT somehow it cannot be loaded! -->
 	</properties>
 
@@ -80,12 +80,12 @@
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-core</artifactId>
-			<version>${logback.verson}</version>
+			<version>${logback.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<version>${logback.verson}</version>
+			<version>${logback.version}</version>
 		</dependency>
 
 		<!-- ///////////////////////////////////////// -->
