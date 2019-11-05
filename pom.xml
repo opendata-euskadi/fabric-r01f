@@ -18,8 +18,7 @@
 					 for [artifact] versioning use maven versions plugin:
 						> mvn versions:set -DnewVersion=1.0.3 -->
 		<revision>0.0.1-SNAPSHOT</revision>
-		<r01f.version>${revision}</r01f.version>
-
+		
 		<!-- Dependencies versions -->
 		<slf4j.version>1.7.25</slf4j.version>
 		<logback.verson>1.2.3</logback.verson>
