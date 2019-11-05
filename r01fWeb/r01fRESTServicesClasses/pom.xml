@@ -92,10 +92,10 @@
 						the 'non-standard' plugin MUST be explicitly included in m2e execution
 				-->
 				<plugin>
-				  	<groupId>org.eclipse.m2e</groupId>
-				  	<artifactId>lifecycle-mapping</artifactId>
-				  	<version>1.0.0</version>
-				  	<configuration> 
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration> 
 						<lifecycleMappingMetadata>
 							<pluginExecutions>
 								<!-- flatten plugin -->

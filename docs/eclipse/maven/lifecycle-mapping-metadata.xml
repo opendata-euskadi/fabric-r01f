@@ -2,15 +2,15 @@
 <lifecycleMappingMetadata>
 	<!--
 	m2eclipse executes the default phases and goals of maven into the internal Eclipse build workflow.
-		IDE usecase: editing sources and running tests, NOT the complete Maven build, 
-					 ... so for example, plugin goals that publish build results to a remote repository 
-						  can be ignored without any adverse side effects, while java source code generation 
+		IDE usecase: editing sources and running tests, NOT the complete Maven build,
+					 ... so for example, plugin goals that publish build results to a remote repository
+						  can be ignored without any adverse side effects, while java source code generation
 						  is necessary
 	m2eclipse requires EXPLICIT INSTRUCTIONS about what to do with all Maven plugins bound to “interesting” phases
 	of a project build lifecycle
 		These INSTRUCTUONS are called [project build lifecycle mapping] or simply [lifecycle mapping]
 		because they define how m2e maps information from pom.xml file to:
-			- Eclipse workspace project configuration 
+			- Eclipse workspace project configuration
 			- behaviour during Eclipse workspace build
 		Project build [lifecycle mapping] can be configured in:
 			- The pom.xml
@@ -30,14 +30,14 @@
 							</plugins>
 						</pluginManagement>
 					</build>
-					
+
 			- The [lifecycle-mapping-metadata.xml] file (see [window] > [preferences] > [maven] > [lifecycle mappings])
 					Just create a file called [lifecycle-mapping-metadata.xml] at the location configured at [window] > [preferences] > [maven] > [lifecycle mappings]
 					The content of this file is the same as the content of the <configuration> above:
 						<lifecycleMappingMetadata>
 							... put here the lifecycle metadata ...
-						</lifecycleMappingMetadata>			 		
-			
+						</lifecycleMappingMetadata>
+
 	See: https://www.eclipse.org/m2e/documentation/m2e-execution-not-covered.html
 		 https://stackoverflow.com/questions/30063357/how-can-i-map-maven-lifecycle-phases-not-covered-by-the-eclipse-m2e-plugin
 	-->
@@ -56,7 +56,7 @@
 				<ignore></ignore>
 			</action>
 		</pluginExecution>
-		
+
 		<!-- add aspect plugin -->
 		<pluginExecution>
 			<pluginExecutionFilter>
@@ -65,7 +65,6 @@
 				<versionRange>[1.11,)</versionRange>
 				<goals>
 					<goal>compile</goal>	   <!-- use this goal to weave all your main classes -->
-					<goal>test-compile</goal>  <!-- use this goal to weave all your test classes -->
 				</goals>
 			</pluginExecutionFilter>
 			<action>
