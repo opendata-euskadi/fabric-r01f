@@ -18,8 +18,7 @@
 					 for [artifact] versioning use maven versions plugin:
 						> mvn versions:set -DnewVersion=1.0.3 -->
 		<revision>0.0.1-SNAPSHOT</revision>
-		<r01f.version>${revision}</r01f.version>
-
+		
 		<!-- Dependencies versions -->
 		<slf4j.version>1.7.25</slf4j.version>
 		<logback.verson>1.2.3</logback.verson>
@@ -140,7 +139,7 @@
 		<!--
 		Default plugin config
 		BEWARE!! In [eclipse] ensure this config is set:
-					[window] > [preferences] > [Maven] > [Errors/Wranings] > [Plugin execution NOT covered by lifecycle configuration] >>> se to WARNING 
+					[window] > [preferences] > [Maven] > [Errors/Wranings] > [Plugin execution NOT covered by lifecycle configuration] >>> se to WARNING
 		-->
 		<pluginManagement>
 			<plugins>
@@ -288,31 +287,31 @@
 						</execution>
 					</executions>
 				</plugin>
-				
+
 				<!-- Version plugin (not currently used -replaced by version & flatten- -->
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>versions-maven-plugin</artifactId>
 					<version>2.7</version>
 				</plugin>
-				
+
 				<!--
 				ECLIPSE ========================================================
 				This plugin has NO effects in maven build:
 					m2e ONLY runs some 'standard' goals of the maven pom.xml since the aim of m2e is NOT to be a complete CI tool
 					... in order to include 'non-standard' goals in m2e execution and avoid [plugin execution not covered by the eclipse m2e plugin project build lifecycle mapping]
 						the 'non-standard' plugin MUST be explicitly included in m2e execution
-				
+
 				m2eclipse executes the default phases and goals of maven into the internal Eclipse build workflow.
-					IDE usecase is editing sources and running tests, NOT the complete Maven build, 
-					... so for example, plugin goals that publish build results to a remote repository can be ignored 
+					IDE usecase is editing sources and running tests, NOT the complete Maven build,
+					... so for example, plugin goals that publish build results to a remote repository can be ignored
 					    without any adverse side effects, while java source code compilation is strictly necessary
-						
+
 				m2eclipse requires EXPLICIT INSTRUCTIONS about what to do with all Maven plugins bound to “interesting” phases
 				of a project build lifecycle
 					These INSTRUCTUONS are called [project build lifecycle mapping] or simply [lifecycle mapping]
 					because they define how m2e maps information from pom.xml file to:
-						- Eclipse workspace project configuration 
+						- Eclipse workspace project configuration
 						- behaviour during Eclipse workspace build
 					Project build [lifecycle mapping] can be configured in:
 					[1] - The pom.xml
@@ -332,25 +331,25 @@
 									</plugins>
 								</pluginManagement>
 							</build>
-							
+
 					[2] - The [lifecycle-mapping-metadata.xml] file (see [window] > [preferences] > [maven] > [lifecycle mappings])
 							Just create a file called [lifecycle-mapping-metadata.xml] at the location configured at [window] > [preferences] > [maven] > [lifecycle mappings]
 							The content of this file is the same as the content of the <configuration> above:
 								<lifecycleMappingMetadata>
 									... put here the lifecycle metadata ...
-								</lifecycleMappingMetadata>		
-					
-					The first approach does NOT require any [eclipse]-specific config but 'polutes' the pom.xml with 
+								</lifecycleMappingMetadata>
+
+					The first approach does NOT require any [eclipse]-specific config but 'polutes' the pom.xml with
 					CI non-required config
-						
+
 				See: https://www.eclipse.org/m2e/documentation/m2e-execution-not-covered.html
 					 https://stackoverflow.com/questions/30063357/how-can-i-map-maven-lifecycle-phases-not-covered-by-the-eclipse-m2e-plugin
 				-->
 				<plugin>
-				  	<groupId>org.eclipse.m2e</groupId>
-				  	<artifactId>lifecycle-mapping</artifactId>
-				  	<version>1.0.0</version>
-				  	<configuration> 
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
 						<lifecycleMappingMetadata>
 							<pluginExecutions>
 								<!-- flatten plugin -->
@@ -373,16 +372,16 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
-		
+
 		<!--
-		Plugins to be run by default 
+		Plugins to be run by default
 		-->
 		<plugins>
 			<!--
 			Run the [flatten] plugin by default
 			if the [flatten] plugin is NOT run by default the GOAL MUST be run instead:
 				mvn clean flatten:flatten install
-			If none of the above is done, the folder containing the artifact will be 
+			If none of the above is done, the folder containing the artifact will be
 			incorrectly named ${revision} instead of the revision number
 			-->
 			<plugin>
@@ -455,7 +454,7 @@
 			<layout>default</layout>
 		</repository>
 	</repositories>
-	
+
 <!-- ====================================================================== -->
 <!-- ARTIFACT DISTRIBUTION                                                  -->
 <!-- ====================================================================== -->
@@ -473,7 +472,7 @@
 			<url>https://bin1.alm02.itbatera.euskadi.eus/repository/maven-snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
-	
+
 <!-- ====================================================================== -->
 <!-- PROFILES                                                               -->
 <!-- ====================================================================== -->
@@ -481,22 +480,22 @@
 	The application config has TWO levels:
 	- public:                      anyone can see it 					> Project (artifact) name: [{appCode}Config]
 	- private by EJIE environment: only authorized people can access it > Project (artifact) name: [{appCode}ConfigByEnv]
-											
-	The aim of the existence of TWO separate projects for configs is that anyone at the outside (not from EJIE) do NOT have the need of  
+
+	The aim of the existence of TWO separate projects for configs is that anyone at the outside (not from EJIE) do NOT have the need of
 	private EJIE-dependent projects like `[{appCode}ConfigByEnv]` so just cloning the 'public' part of the code & config is
 	usually enough to run the app
 	... at the same time, inside EJIE, a `[{appCode}ConfigByEnv]` is used to store the environment-dependent or 'secret' config
-	
+
 	At runtime, while loading the config:
 	- if an R01_ENV system property is set, config from the 'public' project (artifact) [{appCode}Config]
 	  is MIXED with config from the 'private' project (artifcat)  [{appCode}ConfigByEnv]
-	  
+
 	- if NO R01_ENV system property is set only config from the 'public' project (artifact) [{appCode}Config] is used
-	
-	A Maven PROFILE is used so the 'private' project `[{appCode}ConfigByEnv]` is only required if `PROFILE=env_profile` 
+
+	A Maven PROFILE is used so the 'private' project `[{appCode}ConfigByEnv]` is only required if `PROFILE=env_profile`
 	If a Maven PROFILE is **NOT** set (the default _'public'_ case), the `[{appCode}ConfigByEnv]` dependency is NOT required
-	
-	This way, the EJIE private config is 'secret' while anyone from the 'outside' (public) still can build the app without the EJIE private config artifact dependency 
+
+	This way, the EJIE private config is 'secret' while anyone from the 'outside' (public) still can build the app without the EJIE private config artifact dependency
 -->
 	<profiles>
 		<!-- Used when a profile is NOT set [mvn clean install] (public) -->
@@ -511,11 +510,11 @@
 		<!--
 		<profile>
 			<id>env_profile</id>
-			<dependencies>	
-				<dependency>					
+			<dependencies>
+				<dependency>
 					<groupId>...the group id...</groupId>
 					<artifactId>...the artifact id...</artifactId>
-					<version>version</version>					
+					<version>version</version>
 		    	</dependency>
 		    </dependencies>
 		</profile> -->
