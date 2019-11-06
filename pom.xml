@@ -254,6 +254,8 @@
 								<sources>
 									<source>src/main/resources</source>
 									<source>src/test/resources</source>
+									<source>src/main/config</source>
+									<source>src/main/aspect</source>
 								</sources>
 							</configuration>
 						</execution>
@@ -515,8 +517,9 @@
 					<groupId>...the group id...</groupId>
 					<artifactId>...the artifact id...</artifactId>
 					<version>version</version>
-		    	</dependency>
-		    </dependencies>
-		</profile> -->
+				</dependency>
+			</dependencies>
+		</profile> 
+		-->
 	</profiles>
 </project>
