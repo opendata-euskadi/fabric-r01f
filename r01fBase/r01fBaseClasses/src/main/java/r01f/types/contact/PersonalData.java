@@ -1,6 +1,7 @@
 package r01f.types.contact;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import com.google.common.base.Objects;
 
@@ -16,6 +17,9 @@ import r01f.facets.Summarizable.HasSummaryFacet;
 import r01f.facets.builders.SummarizableBuilder;
 import r01f.locale.Language;
 import r01f.objectstreamer.annotations.MarshallField;
+import r01f.objectstreamer.annotations.MarshallField.DateFormat;
+import r01f.objectstreamer.annotations.MarshallField.MarshallDateFormat;
+import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 import r01f.objectstreamer.annotations.MarshallType;
 import r01f.types.summary.Summary;
 import r01f.types.summary.SummaryStringBacked;
@@ -41,42 +45,46 @@ public class PersonalData
 	/**
 	 * Name
 	 */
-	@MarshallField(as="name",
-				   escape=true)
+	@MarshallField(as="name",escape=true)
 	@Getter @Setter protected String _name;
 	/**
 	 * Surname or first name
 	 */
-	@MarshallField(as="firstName",
-				   escape=true)
+	@MarshallField(as="firstName",escape=true)
 	@Getter @Setter protected String _surname1;
 	/**
 	 * Second name
 	 */
-	@MarshallField(as="secondName",
-				   escape=true)
+	@MarshallField(as="secondName",escape=true)
 	@Getter @Setter protected String _surname2;
 	/**
 	 * Mr, Ms, Doc, etc
 	 */
 	@MarshallField(as="salutation",
-				   escape=true)
+				   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter @Setter protected PersonSalutation _salutation;
 	/**
 	 * Preferred language
 	 */
-	@MarshallField(as="preferredLang")
+	@MarshallField(as="preferredLang",
+				   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter @Setter protected Language _preferredLang;
 	/**
 	 * The person gender
 	 */
-	@MarshallField(as="gender")
+	@MarshallField(as="gender",
+				   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter @Setter protected PersonGender _gender;
+	/**
+	 * Birth date 
+	 */
+	@MarshallField(as="birthDate",dateFormat=@MarshallDateFormat(use=DateFormat.ISO8601),
+				   whenXml=@MarshallFieldAsXml(attr=true))
+	@Getter @Setter protected Date _birthDate;
 	/**
 	 * Details about the person
 	 */
-	@MarshallField(as="details",
-				   escape=true)
+	@MarshallField(as="details",escape=true)
 	@Getter @Setter protected String _details;
 /////////////////////////////////////////////////////////////////////////////////////////
 //  HasSummary
