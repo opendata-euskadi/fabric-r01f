@@ -75,7 +75,7 @@ public abstract class HttpClientProxySettingsBuilder
 
 		log.warn("It seems that there's NO internet connection... try with proxy");
 		HttpClientProxySettings proxySettings = HttpClientProxySettingsBuilder.loadFromProperties(props,
-																								  propsRootNode + "/proxy");
+																								  propsRootNode + "/proxySettings");
 		if (proxySettings == null) {
 			throw new IllegalStateException(Throwables.message("It seems that there's NO direct internet connection; tried using a proxy BUT no config found at {} in {} properties file",
 															   propsRootNode + "/proxy",props.getAppCode()));
@@ -90,7 +90,7 @@ public abstract class HttpClientProxySettingsBuilder
 		 && !proxySettings.isEnabled()) {
 			log.warn("A proxy ({}:{}) is configured BUT not enabled at {} in {} properties file and it seems there's internet connection through it... overriding the enabled state of the config",
 					 proxySettings.getProxyHost(),proxySettings.getProxyPort(),
-					 propsRootNode + "/proxy",props.getAppCode());
+					 propsRootNode + "/proxySettings",props.getAppCode());
 			proxySettings = new HttpClientProxySettings(proxySettings,
 														true);
 		}
