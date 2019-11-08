@@ -211,9 +211,10 @@ public class RESTResponseTypeMappersForBasicTypes {
 	 */
 	@SuppressWarnings("rawtypes")
 	public static abstract class CollectionResponseTypeMapperBase 
-		                 extends XMLMarshalledObjectResultTypeMapperBase<Collection> {
-		public CollectionResponseTypeMapperBase(final Marshaller modelObjectsMarshaller) {
+		                 extends MarshalledObjectResultTypeMapperBase<Collection> {
+		public CollectionResponseTypeMapperBase(final Marshaller modelObjectsMarshaller, final MediaType mediaType) {
 			super(Map.class,
+				  mediaType,
 				  modelObjectsMarshaller);
 		}
 	}
@@ -226,9 +227,10 @@ public class RESTResponseTypeMappersForBasicTypes {
 	 */
 	@SuppressWarnings("rawtypes")
 	public static abstract class MapResponseTypeMapperBase 
-		                 extends XMLMarshalledObjectResultTypeMapperBase<Map> {
-		public MapResponseTypeMapperBase(final Marshaller modelObjectsMarshaller) {
+		                 extends MarshalledObjectResultTypeMapperBase<Map> {
+		public MapResponseTypeMapperBase(final Marshaller modelObjectsMarshaller, final MediaType mediaType) {
 			super(Map.class,
+				  mediaType,
 				  modelObjectsMarshaller);
 		}
 	}
@@ -240,11 +242,13 @@ public class RESTResponseTypeMappersForBasicTypes {
 	 */
 	@Accessors(prefix="_")
 	@RequiredArgsConstructor
-	public static abstract class XMLMarshalledObjectResultTypeMapperBase<T> 
+	public static abstract class MarshalledObjectResultTypeMapperBase<T> 
 		              implements MessageBodyWriter<T>,
 		              			 HasMarshaller {
 		
-				private final Class<?> _mappedType;
+		private final Class<?> _mappedType;
+		private final MediaType _mediaType;
+		
 		@Getter private final Marshaller _modelObjectsMarshaller;
 		
 		@Override
@@ -252,8 +256,8 @@ public class RESTResponseTypeMappersForBasicTypes {
 								   final Annotation[] annotations,
 								   final MediaType mediaType) {
 			boolean outWriteable = false;
-			if (mediaType.equals(MediaType.APPLICATION_XML_TYPE) 
-			 && ReflectionUtils.isImplementingAny(type,_mappedType)) {
+			if (mediaType.equals(_mediaType) 
+			 && ReflectionUtils.isImplementingAny(type, _mappedType)) {
 			     outWriteable = true;
 			}
 			log.trace("{} type is {} writeable with {}",type.getName(),
@@ -277,12 +281,19 @@ public class RESTResponseTypeMappersForBasicTypes {
 							final OutputStream entityStream) throws IOException,
 																	WebApplicationException {
 			log.trace("writing {} type",type.getName());
+			String outString = null;
 			
-			// Marshall using XMLMarshaller
-			String xml = obj != null ? this.getModelObjectsMarshaller().forWriting().toXml(obj)	
-							  		 : null;
-			// write 
-			if (Strings.isNOTNullOrEmpty(xml)) entityStream.write(xml.getBytes());
+			if(_mediaType.isCompatible(MediaType.APPLICATION_JSON_TYPE)) {
+				outString = obj != null ? this.getModelObjectsMarshaller().forWriting().toJson(obj)	
+							  		 	   : null;
+			} else if (_mediaType.isCompatible(MediaType.APPLICATION_XML_TYPE)) {
+				outString = obj != null ? this.getModelObjectsMarshaller().forWriting().toXml(obj)	
+							  		 	   : null;
+			} else {
+				throw new IllegalArgumentException("Received media type is not compatible");
+			}
+			
+			if (Strings.isNOTNullOrEmpty(outString)) entityStream.write(outString.getBytes());
 		}
 	}
 }
