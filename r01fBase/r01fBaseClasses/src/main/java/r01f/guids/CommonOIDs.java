@@ -277,7 +277,7 @@ public abstract class CommonOIDs {
 		public boolean isMaster() {
 			return this.is(MASTER);
 		}
-		public static final UserCode ADMIN = UserCode.forId("admin");
+		public static final UserCode ADMIN = MASTER;
 		public boolean isAdmin() {
 			return this.is(ADMIN);
 		}
