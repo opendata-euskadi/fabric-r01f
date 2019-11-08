@@ -324,7 +324,7 @@ class XMLPropertiesForAppComponentsContainer {
     			if (XMLUtils.isTextNode(contentNode)) {
     				nodeStrValue = contentNode.getTextContent();
     			} else {
-    				nodeStrValue = XMLStringSerializer.writeNode(contentNode,null);
+    				nodeStrValue = XMLStringSerializer.writeNodeNoFail(contentNode,null);
     			}
     			// Put the item at the Map
 				if (nodeStrValue != null) {

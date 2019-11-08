@@ -424,7 +424,7 @@ public final class XMLUtils {
 			if (XMLUtils.isTextNode(firstChild)) {
 				outStr = node.getTextContent();
 			} else {
-				outStr = XMLStringSerializer.writeNode(firstChild,null);
+				outStr = XMLStringSerializer.writeNodeNoFail(firstChild,null);
 			}
     	}
     	return outStr;
