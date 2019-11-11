@@ -130,4 +130,13 @@ public class RESTRequestTypeMappersForBasicTypes {
 			return outObj;
 		}
 	}
+	
+	@Deprecated
+	public static abstract class XMLMarshalledObjectRequestTypeMapper<T>
+						 extends MarshalledObjectRequestTypeMapper<T>{
+		
+		public XMLMarshalledObjectRequestTypeMapper(Class<?> mappedType){
+			super(mappedType, MediaType.APPLICATION_XML_TYPE);
+		}
+	}
 }
