@@ -36,7 +36,7 @@ public class RESTResponseTypeMappersForBasicTypes {
 	/**
 	 * 	Jersey only scans at the locations defined under web.xml com.sun.jersey.config.property.packages
 	 * <init-param>
-	 *	To overcome this restriction, simply extend this type in a new type at the defined package 
+	 *	To overcome this restriction, simply extend this type in a new type at the defined package
 	 */
 	public static abstract class BooleanResponseTypeMapperBase
 	  		 	      implements MessageBodyWriter<Boolean> {
@@ -61,7 +61,7 @@ public class RESTResponseTypeMappersForBasicTypes {
 		@Override
 		public void writeTo(final Boolean theBoolean,
 							final Class<?> type,final Type genericType,
-							final Annotation[] annotations, 
+							final Annotation[] annotations,
 							final MediaType mediaType,
 							final MultivaluedMap<String,Object> httpHeaders,
 							final OutputStream entityStream) throws IOException,
@@ -79,7 +79,7 @@ public class RESTResponseTypeMappersForBasicTypes {
 	/**
 	 * 	Jersey only scans at the locations defined under web.xml com.sun.jersey.config.property.packages
 	 * <init-param>
-	 *	To overcome this restriction, simply extend this type in a new type at the defined package 
+	 *	To overcome this restriction, simply extend this type in a new type at the defined package
 	 */
 	public static abstract class DateResponseTypeMapperBase
 	  		          implements MessageBodyWriter<Date> {
@@ -104,7 +104,7 @@ public class RESTResponseTypeMappersForBasicTypes {
 		@Override
 		public void writeTo(final Date theDate,
 							final Class<?> type,final Type genericType,
-							final Annotation[] annotations, 
+							final Annotation[] annotations,
 							final MediaType mediaType,
 							final MultivaluedMap<String,Object> httpHeaders,
 							final OutputStream entityStream) throws IOException,
@@ -122,7 +122,7 @@ public class RESTResponseTypeMappersForBasicTypes {
 	/**
 	 * 	Jersey only scans at the locations defined under web.xml com.sun.jersey.config.property.packages
 	 * <init-param>
-	 *	To overcome this restriction, simply extend this type in a new type at the defined package 
+	 *	To overcome this restriction, simply extend this type in a new type at the defined package
 	 */
 	public static abstract class LongResponseTypeMapperBase
 	  		 		  implements MessageBodyWriter<Long> {
@@ -147,7 +147,7 @@ public class RESTResponseTypeMappersForBasicTypes {
 		@Override
 		public void writeTo(final Long theLong,
 							final Class<?> type,final Type genericType,
-							final Annotation[] annotations, 
+							final Annotation[] annotations,
 							final MediaType mediaType,
 							final MultivaluedMap<String,Object> httpHeaders,
 							final OutputStream entityStream) throws IOException,
@@ -165,7 +165,7 @@ public class RESTResponseTypeMappersForBasicTypes {
 	/**
 	 * 	Jersey only scans at the locations defined under web.xml com.sun.jersey.config.property.packages
 	 * <init-param>
-	 *	To overcome this restriction, simply extend this type in a new type at the defined package 
+	 *	To overcome this restriction, simply extend this type in a new type at the defined package
 	 */
 	public static abstract class RangeResponseTypeMapperBase
 					  implements MessageBodyWriter<Range<?>> {
@@ -190,7 +190,7 @@ public class RESTResponseTypeMappersForBasicTypes {
 		@Override
 		public void writeTo(final Range<?> theRange,
 							final Class<?> type,final Type genericType,
-							final Annotation[] annotations, 
+							final Annotation[] annotations,
 							final MediaType mediaType,
 							final MultivaluedMap<String,Object> httpHeaders,
 							final OutputStream entityStream) throws IOException,
@@ -210,13 +210,19 @@ public class RESTResponseTypeMappersForBasicTypes {
 	 * This type is used when the REST service has to return a {@link Collection} type
 	 */
 	@SuppressWarnings("rawtypes")
-	public static abstract class CollectionResponseTypeMapperBase 
+	public static abstract class CollectionResponseTypeMapperBase
 		                 extends MarshalledObjectResultTypeMapperBase<Collection> {
 		public CollectionResponseTypeMapperBase(final Marshaller modelObjectsMarshaller, final MediaType mediaType) {
 			super(Map.class,
 				  mediaType,
 				  modelObjectsMarshaller);
 		}
+		public CollectionResponseTypeMapperBase(final Marshaller modelObjectsMarshaller) {
+			super(Map.class,
+				  MediaType.APPLICATION_XML_TYPE,
+				  modelObjectsMarshaller);
+		}
+
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	Map
@@ -226,37 +232,42 @@ public class RESTResponseTypeMappersForBasicTypes {
 	 * This type is used when the REST service has to return a {@link Collection} type
 	 */
 	@SuppressWarnings("rawtypes")
-	public static abstract class MapResponseTypeMapperBase 
+	public static abstract class MapResponseTypeMapperBase
 		                 extends MarshalledObjectResultTypeMapperBase<Map> {
 		public MapResponseTypeMapperBase(final Marshaller modelObjectsMarshaller, final MediaType mediaType) {
 			super(Map.class,
 				  mediaType,
 				  modelObjectsMarshaller);
 		}
+		public MapResponseTypeMapperBase(final Marshaller modelObjectsMarshaller) {
+			super(Map.class,
+				  MediaType.APPLICATION_XML_TYPE,
+				  modelObjectsMarshaller);
+		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * MessageBodyWriter for all {@link PersistenceOperationResult}
 	 */
 	@Accessors(prefix="_")
 	@RequiredArgsConstructor
-	public static abstract class MarshalledObjectResultTypeMapperBase<T> 
+	public static abstract class MarshalledObjectResultTypeMapperBase<T>
 		              implements MessageBodyWriter<T>,
 		              			 HasMarshaller {
-		
+
 		private final Class<?> _mappedType;
 		private final MediaType _mediaType;
-		
+
 		@Getter private final Marshaller _modelObjectsMarshaller;
-		
+
 		@Override
 		public boolean isWriteable(final Class<?> type,final Type genericType,
 								   final Annotation[] annotations,
 								   final MediaType mediaType) {
 			boolean outWriteable = false;
-			if (mediaType.equals(_mediaType) 
+			if (mediaType.equals(_mediaType)
 			 && ReflectionUtils.isImplementingAny(type, _mappedType)) {
 			     outWriteable = true;
 			}
@@ -275,24 +286,24 @@ public class RESTResponseTypeMappersForBasicTypes {
 		@Override @SuppressWarnings("null")
 		public void writeTo(final T obj,
 							final Class<?> type,final Type genericType,
-							final Annotation[] annotations, 
+							final Annotation[] annotations,
 							final MediaType mediaType,
 							final MultivaluedMap<String,Object> httpHeaders,
 							final OutputStream entityStream) throws IOException,
 																	WebApplicationException {
 			log.trace("writing {} type",type.getName());
 			String outString = null;
-			
+
 			if(_mediaType.isCompatible(MediaType.APPLICATION_JSON_TYPE)) {
-				outString = obj != null ? this.getModelObjectsMarshaller().forWriting().toJson(obj)	
+				outString = obj != null ? this.getModelObjectsMarshaller().forWriting().toJson(obj)
 							  		 	   : null;
 			} else if (_mediaType.isCompatible(MediaType.APPLICATION_XML_TYPE)) {
-				outString = obj != null ? this.getModelObjectsMarshaller().forWriting().toXml(obj)	
+				outString = obj != null ? this.getModelObjectsMarshaller().forWriting().toXml(obj)
 							  		 	   : null;
 			} else {
 				throw new IllegalArgumentException("Received media type is not compatible");
 			}
-			
+
 			if (Strings.isNOTNullOrEmpty(outString)) entityStream.write(outString.getBytes());
 		}
 	}
