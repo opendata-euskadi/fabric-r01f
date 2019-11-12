@@ -16,6 +16,9 @@ public class I18NKey
 	public I18NKey(final String oid) {
 		super(oid);
 	}
+	public static I18NKey named(final String id) {
+		return new I18NKey(id);
+	}
 	public static I18NKey forId(final String id) {
 		return new I18NKey(id);
 	}
