@@ -47,11 +47,11 @@ public class XMLPropertiesException
 															   final IOException ioEx) {
 		String err = null;
 		if (env == null) {
-			err = Strings.customized("Error trying to load the component definition xml for appCode/component={}/{}; Ensure that the file {} is in the application classpath",
+			err = Strings.customized("Error trying to load the component definition xml for appCode/component={}.{}; Ensure that the file {} is in the application classpath",
 						 			 appCode,component,
 						 			 XMLPropertiesComponentDefLoader.componentDefFilePath(appCode,component));
 		} else {
-			err = Strings.customized("Error trying to load the component definition xml for env/appCode/component={}/{}/{}; Ensure that the file {} or {}  is in the application classpath",
+			err = Strings.customized("Error trying to load the component definition xml for env/appCode/component={}/{}.{}; Ensure that the file {} or {}  is in the application classpath",
 						 			 env,appCode,component,
 						 			 XMLPropertiesComponentDefLoader.componentDefFilePath(appCode,component),
 						 			 XMLPropertiesComponentDefLoader.componentDefFilePath(env,
@@ -72,14 +72,14 @@ public class XMLPropertiesException
 		}
         String err = null;
         if (env == null) {
-        	err = Strings.customized("The XML properties file {} was NOT found for appCode/component={}/{}",
+        	err = Strings.customized("The XML properties file {} was NOT found for appCode/component={}.{}",
         				             compDef != null ? Strings.customized("{} ({})",
         				            		 							  compDef.getPropertiesFileURI(),
         				            		 							  compDef.getLoaderDef() != null ? compDef.getLoaderDef().getLoader() : "unknown loader type")
         				            		 		 : "the definition was NOT found",
         				             appCode,component);
         } else {
-        	err = Strings.customized("The XML properties file {} was NOT found for env/appCode/component={}/{}/{}",
+        	err = Strings.customized("The XML properties file {} was NOT found for env/appCode/component={}/{}.{}",
         				             compDef != null ? Strings.customized("{} ({})",
         				            		 							  compDef.getPropertiesFileURI(),
         				            		 							  compDef.getLoaderDef() != null ? compDef.getLoaderDef().getLoader() : "unknown loader type")
@@ -92,10 +92,10 @@ public class XMLPropertiesException
 	public static XMLPropertiesException propertiesXMLError(final Environment env,final AppCode appCode,final AppComponent component) {
 		String err = null;
 		if (env == null) {
-			err = Strings.customized("The properties XML for appCode/contentType={}/{} contains some error or is malformed",
+			err = Strings.customized("The properties XML for appCode/component={}.{} contains some error or is malformed",
 						 			 appCode,component);
 		} else {
-			err = Strings.customized("The properties XML for env/appCode/contentType={}/{}/{} contains some error or is malformed",
+			err = Strings.customized("The properties XML for env/appCode/component={}/{}.{} contains some error or is malformed",
 						 			 env,appCode,component);
 		}
 		return new XMLPropertiesException(XMLPropertiesErrorType.PROPERTIES_XML_MALFORMED,
