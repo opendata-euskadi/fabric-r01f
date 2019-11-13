@@ -267,7 +267,7 @@ public class RESTResponseTypeMappersForBasicTypes {
 								   final Annotation[] annotations,
 								   final MediaType mediaType) {
 			boolean outWriteable = false;
-			if (mediaType.equals(_mediaType)
+			if (mediaType.isCompatible(_mediaType)
 			 && ReflectionUtils.isImplementingAny(type, _mappedType)) {
 			     outWriteable = true;
 			}
