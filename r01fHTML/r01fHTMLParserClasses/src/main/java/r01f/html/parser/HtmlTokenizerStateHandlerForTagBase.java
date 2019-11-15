@@ -19,3 +19,4 @@ abstract class HtmlTokenizerStateHandlerForTagBase
 		//return _isAllowedChar(ALLOWED_CHARS,c);
 	}
 }
+
