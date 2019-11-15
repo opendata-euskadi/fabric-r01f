@@ -213,7 +213,7 @@ public class RESTResponseTypeMappersForBasicTypes {
 	public static abstract class CollectionResponseTypeMapperBase
 		                 extends MarshalledObjectResultTypeMapperBase<Collection> {
 		public CollectionResponseTypeMapperBase(final Marshaller modelObjectsMarshaller, final MediaType mediaType) {
-			super(Map.class,
+			super(Collection.class,
 				  mediaType,
 				  modelObjectsMarshaller);
 		}
