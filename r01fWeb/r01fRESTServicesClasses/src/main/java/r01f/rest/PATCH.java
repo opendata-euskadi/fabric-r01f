@@ -11,4 +11,5 @@ import javax.ws.rs.HttpMethod;
 @Retention(RetentionPolicy.RUNTIME)
 @HttpMethod("PATCH")
 public @interface PATCH {
+	// PATCH.
 }
