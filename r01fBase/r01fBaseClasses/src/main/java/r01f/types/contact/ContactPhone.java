@@ -26,7 +26,7 @@ import r01f.objectstreamer.annotations.MarshallType;
 @Accessors(prefix="_")
 @NoArgsConstructor
 public class ContactPhone 
-	 extends ContactInfoMediaBase<ContactPhone> {
+	 extends ContactMeanDataBase<ContactPhone> {
 	
 	private static final long serialVersionUID = 6677974112128068298L;
 	

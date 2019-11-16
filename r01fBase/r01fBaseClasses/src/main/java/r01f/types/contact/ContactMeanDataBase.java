@@ -11,9 +11,9 @@ import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
  * @param <SELF_TYPE>
  */
 @Accessors(prefix="_")
-abstract class ContactInfoMediaBase<SELF_TYPE extends ContactInfoMediaBase<SELF_TYPE>>   
-       extends ContactInfoBase<ContactInfoMediaBase<SELF_TYPE>> {
-
+abstract class ContactMeanDataBase<SELF_TYPE extends ContactMeanDataBase<SELF_TYPE>>   
+       extends ContactInfoBase<ContactMeanDataBase<SELF_TYPE>>
+	implements ContactMeanData {
 
 	private static final long serialVersionUID = 8474784639738421690L;
 /////////////////////////////////////////////////////////////////////////////////////////

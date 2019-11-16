@@ -367,13 +367,13 @@ public class ContactInfo
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 	@SuppressWarnings("unchecked")
-	private static <M extends ContactInfoMediaBase<?>> M _find(final Collection<? extends ContactInfoMediaBase<?>> col,
+	private static <M extends ContactMeanDataBase<?>> M _find(final Collection<? extends ContactMeanDataBase<?>> col,
 													 		   final ContactInfoUsage usage) {
 		M out = null;
 		if (CollectionUtils.hasData(col)) out = (M)CollectionUtils.of(col)
-														     	  .findFirstElementMatching(new Predicate<ContactInfoMediaBase<?>>() {
+														     	  .findFirstElementMatching(new Predicate<ContactMeanDataBase<?>>() {
 																									@Override
-																									public boolean apply(final ContactInfoMediaBase<?> el) {
+																									public boolean apply(final ContactMeanDataBase<?> el) {
 																										return el.getUsage() == usage;
 																									}
 															  							    });
@@ -395,19 +395,19 @@ public class ContactInfo
 	}
 
 	@SuppressWarnings("unchecked")
-	private static <M extends ContactInfoMediaBase<?>> M _findDefault(final Collection<? extends ContactInfoMediaBase<?>> col) {
+	private static <M extends ContactMeanDataBase<?>> M _findDefault(final Collection<? extends ContactMeanDataBase<?>> col) {
 		M out = null;
 		if (CollectionUtils.hasData(col)) out = (M)CollectionUtils.of(col)
-														     	  .findFirstElementMatching(new Predicate<ContactInfoMediaBase<?>>() {
+														     	  .findFirstElementMatching(new Predicate<ContactMeanDataBase<?>>() {
 																									@Override
-																									public boolean apply(final ContactInfoMediaBase<?> el) {
+																									public boolean apply(final ContactMeanDataBase<?> el) {
 																										return el.isDefault();
 																									}
 															  							    });
 		return out;
 	}
 	@SuppressWarnings("unchecked")
-	private static <M extends ContactInfoMediaBase<?>> M _findOne(final Collection<? extends ContactInfoMediaBase<?>> col) {
+	private static <M extends ContactMeanDataBase<?>> M _findOne(final Collection<? extends ContactMeanDataBase<?>> col) {
 		M out = null;
 		if (CollectionUtils.hasData(col)) out = (M)CollectionUtils.of(col)
 																  .pickOneElement();
@@ -415,12 +415,12 @@ public class ContactInfo
 	}
 
 	@SuppressWarnings("unchecked")
-	private static <M extends ContactInfoMediaBase<?>> M _findOtherThanDefault(final Collection<? extends ContactInfoMediaBase<?>> col) {
+	private static <M extends ContactMeanDataBase<?>> M _findOtherThanDefault(final Collection<? extends ContactMeanDataBase<?>> col) {
 		M out = null;
 		if (CollectionUtils.hasData(col)) out = (M)CollectionUtils.of(col)
-														     	  .findFirstElementMatching(new Predicate<ContactInfoMediaBase<?>>() {
+														     	  .findFirstElementMatching(new Predicate<ContactMeanDataBase<?>>() {
 																									@Override
-																									public boolean apply(final ContactInfoMediaBase<?> el) {
+																									public boolean apply(final ContactMeanDataBase<?> el) {
 																										return !el.isDefault();
 																									}
 															  							    });

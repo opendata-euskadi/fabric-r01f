@@ -28,8 +28,9 @@ import r01f.types.url.Url;
 @Accessors(prefix="_")
 @NoArgsConstructor @AllArgsConstructor
 public class ContactWeb 
-     extends ContactInfoMediaBase<ContactWeb>
-  implements HasLanguage {
+     extends ContactMeanDataBase<ContactWeb>
+  implements ContactMean,
+  			 HasLanguage {
 	
 	private static final long serialVersionUID = -4012809208590547328L;
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -70,5 +71,12 @@ public class ContactWeb
 	public ContactWeb in(final Language lang) {
 		_language = lang;
 		return this;
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	                                                                          
+/////////////////////////////////////////////////////////////////////////////////////////	
+	@Override
+	public String asString() {
+		return _web != null ? _web.asString() : null;
 	}
 }

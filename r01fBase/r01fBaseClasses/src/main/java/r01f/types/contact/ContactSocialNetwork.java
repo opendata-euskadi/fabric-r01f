@@ -28,8 +28,9 @@ import r01f.types.url.Url;
 @Accessors(prefix="_")
 @NoArgsConstructor
 public class ContactSocialNetwork 
-     extends ContactInfoMediaBase<ContactSocialNetwork>
-  implements HasLanguage {
+     extends ContactMeanDataBase<ContactSocialNetwork>
+  implements ContactMean,
+  			 HasLanguage {
 	
 	private static final long serialVersionUID = 4611690233960483088L;
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -81,5 +82,13 @@ public class ContactSocialNetwork
 	public ContactSocialNetwork profileAt(final Url profileUrl) {
 		_profileUrl = profileUrl;
 		return this;
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	                                                                          
+/////////////////////////////////////////////////////////////////////////////////////////	
+	@Override
+	public String asString() {
+		return _user != null ? _user.asString()
+							 : null;
 	}
 }

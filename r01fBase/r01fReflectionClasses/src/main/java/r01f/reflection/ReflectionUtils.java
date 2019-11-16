@@ -1620,7 +1620,7 @@ public class ReflectionUtils {
     public static <T> T fieldValue(final Object obj,final Field field,
     							   final boolean useAccessor) {    	
     	T outObj = ReflectionUtils.<T>fieldValue(obj,field.getName(),useAccessor,
-    										  field.getType());
+    										  	 field.getType());
     	return outObj;
     }   
     /**
@@ -1639,14 +1639,13 @@ public class ReflectionUtils {
     	return outObj;    	
     }
     /**
-     * Obtiene el valor de un miembro en un objeto, bien accediendo directamente al miembro
-     * o bien utilizando un accessor (get[fieldName])
-     * @param obj El objeto
-     * @param fieldName El nombre del miembro
-     * @param useAccessor Si hay que utilizar accessors
-     * @param fieldType type of returned field
-     * @return El valor del miembro
-     * @throws ReflectionException si se produce alguna excepcion en el proceso
+     * Gets a field value on an object, either using accessor methods or accessing directly to the field
+     * @param obj 
+     * @param fieldName 
+     * @param useAccessor 
+     * @param fieldType 
+     * @return 
+     * @throws ReflectionException
      */
 	public static <T> T fieldValue(final Object obj,final String fieldName,final boolean useAccessor,
 								   final Class<?> fieldType) {
@@ -1656,32 +1655,32 @@ public class ReflectionUtils {
         	Object outObj = null;
             if (useAccessor) {
             	try {    	 
-            		// Utilizar m�todos accessor
+            		// use accessors
             		Method getter = _fieldGetterMethod(obj.getClass(),fieldName,fieldType);
             		if (getter == null) throw ReflectionException.noMethodException(obj.getClass(),fieldName + " getter");
 					outObj = getter.invoke(obj,(Object[])null);
-            		//outObj = PropertyUtils.getProperty(obj,fieldName);
+            		// outObj = PropertyUtils.getProperty(obj,fieldName);
             	} catch(Throwable th) {
 	            	_warnFieldAccessException(th,
 	            							  obj,fieldName);
-            		// Puede saltar la excepcion java.lang.NoClassDefFoundError: org/apache/commons/logging/LogFactory
-            		// debido a que falta el JAR de apache commons logging
+            		// java.lang.NoClassDefFoundError: org/apache/commons/logging/LogFactory 
+            		// ... this is due to commons lang is NOT present
             		
-	                // ERROR!!! NO existe el metodo setter para la propiedad. Se intenta de otra forma "no ortodoxa"               
-	                // Invocarlo... cuidado con los mapas y listas...INVOCAR SIEMPRE CON EL INTERFAZ!!!	                
+	                // ERROR!!! There's NO setter method for the property
+	            	//			... try a less conventional way (beware maps & lists: use always the interface!)	                
 	                Class<?> valueType = fieldType != null ? CollectionUtils.getCollectionType(fieldType) : null;
-	                if (valueType == null) valueType = fieldType;	// Si no es una colecci�n es un tipo "normal"		                	
+	                if (valueType == null) valueType = fieldType;	// if it's NOT a collection it's an "usual" type		                	
                 	Method accessorMethod = _fieldGetterMethod(obj.getClass(),fieldName,valueType);	                	
 	                if (accessorMethod != null) {
 	                	outObj = ReflectionUtils.invokeMethod(obj,accessorMethod);
 	                } else {
-	                	// acceder al miembro directamente... si accessors
+	                	// direct field access: no accessors
                 		outObj = ReflectionUtils.fieldValue(obj,fieldName,false,
-                											null);	// intentarlo accediendo directamente al field		                	
+                											null);	// no accessors		                	
 	                }          		
             	}
             } else {
-	            // No utilizar m�todos de acceso, directamente obtener el valor del miembro...
+	            // Do NOT use accessors
             	outObj = _getFieldValueWithoutUsingAccessors(obj,fieldName);
             }
             @SuppressWarnings("unchecked")            

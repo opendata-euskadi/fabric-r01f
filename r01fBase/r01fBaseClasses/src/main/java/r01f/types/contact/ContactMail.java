@@ -22,7 +22,7 @@ import r01f.objectstreamer.annotations.MarshallType;
 @Accessors(prefix="_")
 @NoArgsConstructor
 public class ContactMail 
-     extends ContactInfoMediaBase<ContactMail> {
+     extends ContactMeanDataBase<ContactMail> {
 	
 	private static final long serialVersionUID = 586551188692425105L;
 /////////////////////////////////////////////////////////////////////////////////////////
