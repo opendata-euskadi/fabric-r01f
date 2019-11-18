@@ -41,6 +41,12 @@ abstract class ContactInfoBase<SELF_TYPE extends ContactInfoBase<SELF_TYPE>>
 		return (SELF_TYPE)this;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
+//	                                                                          
+/////////////////////////////////////////////////////////////////////////////////////////
+	public void updateFrom(final SELF_TYPE other) {
+		_private = other.isPrivate();
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
 //	EQUALS & HASHCODE                                                                          
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override @SuppressWarnings("unchecked")
@@ -48,7 +54,7 @@ abstract class ContactInfoBase<SELF_TYPE extends ContactInfoBase<SELF_TYPE>>
 		if (obj == null) return false;
 		if (obj == this) return true;
 		if (!(obj instanceof ContactInfoBase)) return false;
-		ContactInfoBase<SELF_TYPE> other = (ContactInfoBase<SELF_TYPE>)obj;
+		SELF_TYPE other = (SELF_TYPE)obj;
 		return this.isPrivate() == other.isPrivate();
 	}
 	@Override

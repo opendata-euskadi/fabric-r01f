@@ -58,6 +58,15 @@ abstract class ContactMeanDataBase<SELF_TYPE extends ContactMeanDataBase<SELF_TY
 		return (SELF_TYPE)this;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
+//	                                                                          
+/////////////////////////////////////////////////////////////////////////////////////////
+	public void updateFrom(final SELF_TYPE other) {
+		super.updateFrom(other);
+		_usage = other.getUsage();
+		_usageDetails = other.getUsageDetails();
+		_default = other.isDefault();
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
 //	EQUALS & HASHCODE                                                                          
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override @SuppressWarnings("unchecked")
@@ -65,7 +74,7 @@ abstract class ContactMeanDataBase<SELF_TYPE extends ContactMeanDataBase<SELF_TY
 		if (obj == null) return false;
 		if (obj == this) return true;
 		if (!(obj instanceof ContactMeanDataBase)) return false;
-		ContactMeanDataBase<SELF_TYPE> other = (ContactMeanDataBase<SELF_TYPE>)obj;
+		SELF_TYPE other = (SELF_TYPE)obj;
 		return super.equals(other)
 			&& Objects.equal(this.getUsage(),other.getUsage())
 			&& Objects.equal(this.getUsageDetails(),other.getUsageDetails())
