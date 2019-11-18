@@ -52,7 +52,7 @@ public class ContactInfo
 	 * email
 	 */
 	@MarshallField(as="emailChannels")
-	@Getter @Setter private Collection<ContactMail> _contactMailAddresses;
+	@Getter @Setter private Collection<ContactMail> _contactMails;
 	/**
 	 * web sites
 	 */
@@ -82,7 +82,7 @@ public class ContactInfo
 	 * @return true if there are mail address associated with the contact info
 	 */
 	public boolean hasMailAddresses() {
-		return CollectionUtils.hasData(_contactMailAddresses);
+		return CollectionUtils.hasData(_contactMails);
 	}
 	/**
 	 * Check if there exists a {@link ContactMail} with the given email
@@ -105,8 +105,8 @@ public class ContactInfo
 	 * @return
 	 */
 	public ContactMail getMailFor(final EMail email) {
-		if (CollectionUtils.isNullOrEmpty(_contactMailAddresses)) return null;
-		return FluentIterable.from(_contactMailAddresses)
+		if (CollectionUtils.isNullOrEmpty(_contactMails)) return null;
+		return FluentIterable.from(_contactMails)
 							 .firstMatch(new Predicate<ContactMail>() {
 												@Override
 												public boolean apply(final ContactMail mail) {
@@ -122,7 +122,7 @@ public class ContactInfo
 	 * @return
 	 */
 	public EMail getMailAddress(final ContactInfoUsage usage) {
-		ContactMail mail = _find(_contactMailAddresses,usage);
+		ContactMail mail = _find(_contactMails,usage);
 		return mail != null ? mail.getMail() : null;
 	}
 	/**
@@ -133,8 +133,8 @@ public class ContactInfo
 	 */
 	public EMail getMailAddressOrAny(final ContactInfoUsage usage) {
 		EMail outMail = this.getMailAddress(usage);
-		if (outMail == null && CollectionUtils.hasData(_contactMailAddresses)) {
-			ContactMail mail = CollectionUtils.pickOneElement(_contactMailAddresses);
+		if (outMail == null && CollectionUtils.hasData(_contactMails)) {
+			ContactMail mail = CollectionUtils.pickOneElement(_contactMails);
 			if (mail != null) outMail = mail.getMail();
 		}
 		return outMail;
@@ -144,7 +144,7 @@ public class ContactInfo
 	 * @return
 	 */
 	public EMail getDefaultMailAddress() {
-		ContactMail mail = _findDefault(_contactMailAddresses);
+		ContactMail mail = _findDefault(_contactMails);
 		return mail != null ? mail.getMail() : null;
 	}
 	/**
@@ -152,8 +152,8 @@ public class ContactInfo
 	 * @return
 	 */
 	public EMail getDefaultMailAddressOrAny() {
-		ContactMail mail = _findDefault(_contactMailAddresses);
-		if (mail == null && CollectionUtils.hasData(_contactMailAddresses)) mail = CollectionUtils.pickOneElement(_contactMailAddresses);
+		ContactMail mail = _findDefault(_contactMails);
+		if (mail == null && CollectionUtils.hasData(_contactMails)) mail = CollectionUtils.pickOneElement(_contactMails);
 		return mail != null ? mail.getMail() : null;
 	}
 	/**
@@ -161,7 +161,7 @@ public class ContactInfo
 	 * @return
 	 */
 	public EMail getMailAddressOtherThanDefaul() {
-		ContactMail mail = _findOtherThanDefault(_contactMailAddresses);
+		ContactMail mail = _findOtherThanDefault(_contactMails);
 		return mail != null ? mail.getMail() : null;
 	}
 	/**
@@ -173,7 +173,7 @@ public class ContactInfo
 		EMail mail = this.getDefaultMailAddress();
 		// ... if there's NO default, return any of them
 		if (mail == null) {
-			ContactMail contactMail = _findOne(_contactMailAddresses);
+			ContactMail contactMail = _findOne(_contactMails);
 			mail = contactMail != null ? contactMail.getMail() : null;
 		}
 		return mail;
@@ -183,8 +183,8 @@ public class ContactInfo
 	 * @return
 	 */
 	public Collection<EMail> getMailAddresses() {
-		Collection<EMail> mails = CollectionUtils.hasData(_contactMailAddresses)
-										? FluentIterable.from(_contactMailAddresses)
+		Collection<EMail> mails = CollectionUtils.hasData(_contactMails)
+										? FluentIterable.from(_contactMails)
 														.filter(new Predicate<ContactMail>() {
 																	@Override
 																	public boolean apply(final ContactMail contactMail) {
@@ -597,18 +597,18 @@ public class ContactInfo
 		return outNet;
 	}
 	public ContactInfo addMailAddress(final ContactMail mail) {
-		if (_contactMailAddresses == null) _contactMailAddresses = Lists.newArrayList();
-		_contactMailAddresses.add(mail);
+		if (_contactMails == null) _contactMails = Lists.newArrayList();
+		_contactMails.add(mail);
 		return this;
 	}
 	public ContactInfo addMailAddress(final Collection<ContactMail> mails) {
-		if (_contactMailAddresses == null) _contactMailAddresses = Lists.newArrayList();
-		if (CollectionUtils.hasData(mails)) _contactMailAddresses.addAll(mails);
+		if (_contactMails == null) _contactMails = Lists.newArrayList();
+		if (CollectionUtils.hasData(mails)) _contactMails.addAll(mails);
 		return this;
 	}
 	public ContactMail removeMailAddress(final ContactInfoUsage usage) {
-		ContactMail outMail = _find(_contactMailAddresses,usage);
-		if (outMail != null) _contactMailAddresses.remove(outMail);
+		ContactMail outMail = _find(_contactMails,usage);
+		if (outMail != null) _contactMails.remove(outMail);
 		return outMail;
 	}
 	public ContactInfo addWebSite(final ContactWeb web) {
