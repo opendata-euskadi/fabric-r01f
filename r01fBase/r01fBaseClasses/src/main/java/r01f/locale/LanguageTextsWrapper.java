@@ -33,18 +33,12 @@ import r01f.locale.LanguageTexts.LangTextNotFoundBehabior;
  * 		  implements HasLangDependentNamedFacet {
  * 			@Getter @Setter private LanguageTexts _nameByLang;
  * 
- * 			@Getter private final transient LanguageTextsWrapper<MyType> _name = LanguageTextsWrapper.at(this);
- * 					private final transient LangDependentNamed _langDepNamedDelegate = new LangDependentNamedDelegate<MyType>(this);
+ * 			@Getter private final transient LanguageTextsWrapper<MyType> _name = LanguageTextsWrapper.atHasLang(this);
  * 
  * 	        @Override
  * 	        public LangDependentNamed asLangDependentNamed() {
- * 	        	return _langDepNamedDelegate;
+ * 	        	return new LangDependentNamedDelegate<MyType>(this);
  * 	        }
- *	        @Override
- *	        public Summarizable asSummarizable() {
- *	        	return SummarizableBuilder.summarizableFrom(SummaryBuilder.languageDependent()
- *	        															  .create(this));
- *	        }
  * 	   }
  * </pre>
  * 
