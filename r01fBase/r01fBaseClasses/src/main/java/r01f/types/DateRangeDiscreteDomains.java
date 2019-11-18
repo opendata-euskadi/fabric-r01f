@@ -27,9 +27,9 @@ public enum DateRangeDiscreteDomains
 													return new DateTime(value).minusDays(1).toDate();
 												}
 												@Override
-												public long distance(final Date start,final  Date end) {													
-													if  ( ( ( end.getTime() - start.getTime() )% 3600000) > 0 ){
-														throw new IllegalArgumentException(" end date and start date are not contigous");
+												public long distance(final Date start,final  Date end) {
+													if  ( ( ( end.getTime() - start.getTime() ) % 86400000) > 0 ){
+														throw new IllegalArgumentException("end date and start date are not day contigous by "+ ( ( end.getTime() - start.getTime() ) % 86400000)+" miliseconds");
 													}													
 													return Days.daysBetween(new DateTime(start), new DateTime(end)).getDays();
 												}
