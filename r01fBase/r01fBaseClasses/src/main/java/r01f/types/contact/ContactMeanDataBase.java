@@ -61,7 +61,7 @@ abstract class ContactMeanDataBase<SELF_TYPE extends ContactMeanDataBase<SELF_TY
 //	                                                                          
 /////////////////////////////////////////////////////////////////////////////////////////
 	public void updateFrom(final SELF_TYPE other) {
-		super.updateFrom(other);
+		super.updateFrom(other); 
 		_usage = other.getUsage();
 		_usageDetails = other.getUsageDetails();
 		_default = other.isDefault();

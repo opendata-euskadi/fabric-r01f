@@ -1,6 +1,7 @@
 package r01f.types.contact;
 
 import com.google.common.annotations.GwtIncompatible;
+import com.google.common.base.Objects;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -74,9 +75,40 @@ public class ContactWeb
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	                                                                          
+/////////////////////////////////////////////////////////////////////////////////////////
+	@Override
+	public void updateFrom(final ContactWeb other) {
+		super.updateFrom(other);
+		_language = other.getLanguage();
+		_url = other.getUrl();
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	                                                                          
 /////////////////////////////////////////////////////////////////////////////////////////	
 	@Override
 	public String asString() {
 		return _url != null ? _url.asString() : null;
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	EQUALS & HASHCODE                                                                          
+/////////////////////////////////////////////////////////////////////////////////////////
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == null) return false;
+		if (obj == this) return true;
+		if (!(obj instanceof ContactWeb)) return false;
+		ContactWeb other = (ContactWeb)obj;
+		return super.equals(other)
+			&& Objects.equal(this.getLanguage(),other.getLanguage())
+			&& Objects.equal(this.getUrl(),other.getUrl());
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(_private,
+								_usage,
+							    _usageDetails,
+							    _default,
+							    _language,
+							    _url);
 	}
 }

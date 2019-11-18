@@ -81,7 +81,7 @@ public class ContactInfo
 	/**
 	 * @return true if there are mail address associated with the contact info
 	 */
-	public boolean hasMailAddresses() {
+	public boolean hasMails() {
 		return CollectionUtils.hasData(_contactMails);
 	}
 	/**
@@ -89,7 +89,7 @@ public class ContactInfo
 	 * @param theEmail
 	 * @return
 	 */
-	public boolean hasMmail(final EMail theEmail) {
+	public boolean hasMail(final EMail theEmail) {
 		EMail searchedMail = Iterables.tryFind(this.getMailAddresses(),
 												new Predicate<EMail>() {
 														@Override
@@ -454,7 +454,7 @@ public class ContactInfo
 	 * @param url
 	 * @return
 	 */
-	public ContactWeb getMailFor(final Url url) {
+	public ContactWeb getWebSiteFor(final Url url) {
 		if (CollectionUtils.isNullOrEmpty(_contactWebSites)) return null;
 		return FluentIterable.from(_contactWebSites)
 							 .firstMatch(new Predicate<ContactWeb>() {

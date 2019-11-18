@@ -1,6 +1,7 @@
 package r01f.types.contact;
 
 import com.google.common.annotations.GwtIncompatible;
+import com.google.common.base.Objects;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -97,5 +98,38 @@ public class ContactPhone
 		_availableRangeForCallingStr = null;
 		return this;
 	}
-	
+/////////////////////////////////////////////////////////////////////////////////////////
+//	                                                                          
+/////////////////////////////////////////////////////////////////////////////////////////
+	@Override
+	public void updateFrom(final ContactPhone other) {
+		super.updateFrom(other);
+		_type = other.getType();
+		_number = other.getNumber();
+		_availableRangeForCallingStr = other.getAvailableRangeForCallingStr();
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	EQUALS & HASHCODE                                                                          
+/////////////////////////////////////////////////////////////////////////////////////////
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == null) return false;
+		if (obj == this) return true;
+		if (!(obj instanceof ContactPhone)) return false;
+		ContactPhone other = (ContactPhone)obj;
+		return super.equals(other)
+			&& Objects.equal(this.getType(),other.getType())
+			&& Objects.equal(this.getNumber(),other.getNumber())
+			&& Objects.equal(this.getAvailableRangeForCallingStr(),other.getAvailableRangeForCallingStr());
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(_private,
+								_usage,
+							    _usageDetails,
+							    _default,
+							    _type,
+							    _number,
+							    _availableRangeForCallingStr);
+	}
 }
