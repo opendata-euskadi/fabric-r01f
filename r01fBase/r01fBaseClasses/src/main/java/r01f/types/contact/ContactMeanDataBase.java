@@ -1,5 +1,7 @@
 package r01f.types.contact;
 
+import com.google.common.base.Objects;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -24,19 +26,19 @@ abstract class ContactMeanDataBase<SELF_TYPE extends ContactMeanDataBase<SELF_TY
 	 */
 	@MarshallField(as="usage",
 				   whenXml=@MarshallFieldAsXml(attr=true))	
-	@Getter @Setter private ContactInfoUsage _usage;
+	@Getter @Setter protected ContactInfoUsage _usage;
 	/**
 	 * Usage details (usually used when _usage = OTHER
 	 */
 	@MarshallField(as="usageDetails",
 				   whenXml=@MarshallFieldAsXml(attr=true))
-	@Getter @Setter private String _usageDetails;
+	@Getter @Setter protected String _usageDetails;
 	/**
 	 * true if this media is the default one
 	 */
 	@MarshallField(as="default",
 				   whenXml=@MarshallFieldAsXml(attr=true))
-	@Getter @Setter private boolean _default = false;
+	@Getter @Setter protected boolean _default = false;
 /////////////////////////////////////////////////////////////////////////////////////////
 //  
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -55,4 +57,25 @@ abstract class ContactMeanDataBase<SELF_TYPE extends ContactMeanDataBase<SELF_TY
 		_usageDetails = details;
 		return (SELF_TYPE)this;
 	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	EQUALS & HASHCODE                                                                          
+/////////////////////////////////////////////////////////////////////////////////////////
+	@Override @SuppressWarnings("unchecked")
+	public boolean equals(final Object obj) {
+		if (obj == null) return false;
+		if (obj == this) return true;
+		if (!(obj instanceof ContactMeanDataBase)) return false;
+		ContactMeanDataBase<SELF_TYPE> other = (ContactMeanDataBase<SELF_TYPE>)obj;
+		return super.equals(other)
+			&& Objects.equal(this.getUsage(),other.getUsage())
+			&& Objects.equal(this.getUsageDetails(),other.getUsageDetails())
+			&& Objects.equal(this.isDefault(),other.isDefault());
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(_private,
+								_usage,
+							    _usageDetails,
+							    _default);
+	}	
 }

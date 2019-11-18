@@ -1,5 +1,7 @@
 package r01f.types.contact;
 
+import com.google.common.base.Objects;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -52,5 +54,27 @@ public class ContactMail
 	public ContactMail mailTo(final String mail) {
 		_mail = EMail.create(mail);
 		return this;
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	EQUALS & HASHCODE                                                                          
+/////////////////////////////////////////////////////////////////////////////////////////
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == null) return false;
+		if (obj == this) return true;
+		if (!(obj instanceof ContactMail)) return false;
+		ContactMail other = (ContactMail)obj;
+		return super.equals(other)
+			&& Objects.equal(this.getMail(),other.getMail())
+			&& Objects.equal(this.getUsageDetails(),other.getUsageDetails())
+			&& Objects.equal(this.isDefault(),other.isDefault());
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(_private,
+								_usage,
+							    _usageDetails,
+							    _default,
+							    _mail);
 	}
 }

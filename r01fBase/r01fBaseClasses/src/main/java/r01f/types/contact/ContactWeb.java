@@ -47,7 +47,7 @@ public class ContactWeb
 	 */
 	@MarshallField(as="url",
 				   whenXml=@MarshallFieldAsXml(asParentElementValue=true))
-	@Getter @Setter private Url _web;
+	@Getter @Setter private Url _url;
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR & BUILDER
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -60,12 +60,12 @@ public class ContactWeb
 //  FLUENT-API
 /////////////////////////////////////////////////////////////////////////////////////////
 	public ContactWeb url(final Url web) {
-		_web = web;
+		_url = web;
 		return this;
 	}
 	@GwtIncompatible("Url NOT usable in GWT")
 	public ContactWeb url(final String web) {
-		_web = Url.from(web);
+		_url = Url.from(web);
 		return this;
 	}
 	public ContactWeb in(final Language lang) {
@@ -77,6 +77,6 @@ public class ContactWeb
 /////////////////////////////////////////////////////////////////////////////////////////	
 	@Override
 	public String asString() {
-		return _web != null ? _web.asString() : null;
+		return _url != null ? _url.asString() : null;
 	}
 }

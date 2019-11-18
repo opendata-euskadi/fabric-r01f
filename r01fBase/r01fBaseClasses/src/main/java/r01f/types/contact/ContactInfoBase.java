@@ -2,6 +2,8 @@ package r01f.types.contact;
 
 import java.io.Serializable;
 
+import com.google.common.base.Objects;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -26,7 +28,7 @@ abstract class ContactInfoBase<SELF_TYPE extends ContactInfoBase<SELF_TYPE>>
 	 */
 	@MarshallField(as="private",
 				   whenXml=@MarshallFieldAsXml(attr=true))		
-	@Getter @Setter private boolean _private;
+	@Getter @Setter protected boolean _private;
 /////////////////////////////////////////////////////////////////////////////////////////
 //  
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -37,5 +39,20 @@ abstract class ContactInfoBase<SELF_TYPE extends ContactInfoBase<SELF_TYPE>>
 	public SELF_TYPE doNotExposeData() {
 		_private = true;
 		return (SELF_TYPE)this;
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	EQUALS & HASHCODE                                                                          
+/////////////////////////////////////////////////////////////////////////////////////////
+	@Override @SuppressWarnings("unchecked")
+	public boolean equals(final Object obj) {
+		if (obj == null) return false;
+		if (obj == this) return true;
+		if (!(obj instanceof ContactInfoBase)) return false;
+		ContactInfoBase<SELF_TYPE> other = (ContactInfoBase<SELF_TYPE>)obj;
+		return this.isPrivate() == other.isPrivate();
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(_private);
 	}
 }

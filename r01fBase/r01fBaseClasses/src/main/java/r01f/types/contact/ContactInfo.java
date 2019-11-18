@@ -13,11 +13,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import r01f.aspects.interfaces.dirtytrack.ConvertToDirtyStateTrackable;
+import r01f.guids.CommonOIDs.UserCode;
 import r01f.locale.Language;
 import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallType;
 import r01f.types.geo.GeoFacets.HasGeoPosition;
 import r01f.types.geo.GeoPosition;
+import r01f.types.url.Url;
 import r01f.util.types.collections.CollectionUtils;
 
 /**
@@ -82,6 +84,11 @@ public class ContactInfo
 	public boolean hasMailAddress() {
 		return CollectionUtils.hasData(_mailAddresses);
 	}
+	/**
+	 * Check if there exists a {@link ContactMail} with the given email
+	 * @param theEmail
+	 * @return
+	 */
 	public boolean hasEmail(final EMail theEmail) {
 		EMail searchedMail = Iterables.tryFind(this.getMailAddreses(),
 												new Predicate<EMail>() {
@@ -91,6 +98,23 @@ public class ContactInfo
 												}})
          							   .orNull();
 		return searchedMail != null;
+	}
+	/**
+	 * Returns the first {@link ContactMail} with the given email
+	 * @param email
+	 * @return
+	 */
+	public ContactMail getMailFor(final EMail email) {
+		if (CollectionUtils.isNullOrEmpty(_mailAddresses)) return null;
+		return FluentIterable.from(_mailAddresses)
+							 .firstMatch(new Predicate<ContactMail>() {
+												@Override
+												public boolean apply(final ContactMail mail) {
+													return mail != null
+														&& mail.getMail().equals(email);
+												}
+										 })
+							 .orNull();	
 	}
 	/**
 	 * Returns an email address for an intended usage
@@ -198,6 +222,11 @@ public class ContactInfo
 	public boolean hasPhones() {
 		return CollectionUtils.hasData(_phones);
 	}
+	/**
+	 * Checks if there exists a {@link ContactPhone} with the given number
+	 * @param thePhone
+	 * @return
+	 */
 	public boolean hasPhone(final Phone thePhone) {
 		Phone searchedPhone = Iterables.tryFind(this.getPhoneNumbers(),
 												new Predicate<Phone>() {
@@ -207,6 +236,23 @@ public class ContactInfo
 												}})
          							   .orNull();
 		return searchedPhone != null;
+	}
+	/**
+	 * Returns the first {@link ContactPhone} with the given number
+	 * @param phone
+	 * @return
+	 */
+	public ContactPhone getPhoneFor(final Phone phone) {
+		if (CollectionUtils.isNullOrEmpty(_phones)) return null;
+		return FluentIterable.from(_phones)
+							 .firstMatch(new Predicate<ContactPhone>() {
+												@Override
+												public boolean apply(final ContactPhone aPhone) {
+													return aPhone != null
+														&& aPhone.getNumber().equals(phone);
+												}
+										 })
+							 .orNull();	
 	}
 	/**
 	 * Returns a phone for an intended usage
@@ -297,6 +343,223 @@ public class ContactInfo
 		Collection<Phone> phones = this.getPhoneNumbers();
 		return CollectionUtils.hasData(phones)
 					? CollectionUtils.of(phones)
+									 .toStringSeparatedWith(separator)
+				    : null;
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+// 	SOCIAL NETWORK
+/////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * @return true if there are social network associated with the contact info
+	 */
+	public boolean hasSocialNetworks() {
+		return CollectionUtils.hasData(_socialNetworks);
+	}
+	public boolean hasSocialNetwork(final ContactSocialNetworkType type,
+									final UserCode user) {
+		ContactSocialNetwork searchedNet = Iterables.tryFind(_socialNetworks,
+															 new Predicate<ContactSocialNetwork>() {
+																	@Override
+																	public boolean apply(final ContactSocialNetwork socialNet) {
+																		return socialNet != null
+																			&& socialNet.getType() == type
+																			&& socialNet.getUser().is(user);
+															 }})
+			         							   .orNull();
+		return searchedNet != null;
+	}
+	/**
+	 * Returns the first {@link ContactSocialNetwork} with the given type for the given user
+	 * @param type
+	 * @param user
+	 * @return
+	 */
+	public ContactSocialNetwork getSocialNetworkFor(final ContactSocialNetworkType type,
+													final UserCode user) {
+		if (CollectionUtils.isNullOrEmpty(_socialNetworks)) return null;
+		return FluentIterable.from(_socialNetworks)
+							 .firstMatch(new Predicate<ContactSocialNetwork>() {
+												@Override
+												public boolean apply(final ContactSocialNetwork socialNet) {
+													return socialNet != null
+														&& socialNet.getType() == type
+														&& socialNet.getUser().is(user);
+												}
+										 })
+							 .orNull();	
+	}
+	/**
+	 * Returns a social network for an intended usage
+	 * @param type
+	 * @param usage
+	 * @return
+	 */
+	public ContactSocialNetwork getSocialNetwork(final ContactSocialNetworkType type,
+								  				 final ContactInfoUsage usage) {
+		ContactSocialNetwork net = CollectionUtils.hasData(_socialNetworks) 
+										? CollectionUtils.of(_socialNetworks)
+												     	 .findFirstElementMatching(new Predicate<ContactSocialNetwork>() {
+																							@Override
+																							public boolean apply(final ContactSocialNetwork el) {
+																								return el.getUsage() == usage
+																									&& el.getType() == type;
+																							}
+													  							    })
+										: null;
+		return net;
+	}
+	/**
+	 * Returns the default social network
+	 * @return
+	 */
+	public ContactSocialNetwork getDefaultSocialNetwork() {
+		ContactSocialNetwork net = _findDefault(_socialNetworks);
+		return net;
+	}
+	/**
+	 * Returns the default social network or any of them if any is set as the default one
+	 * @return
+	 */
+	public ContactSocialNetwork getDefaultSocialNetworkOrAny() {
+		ContactSocialNetwork net = _findDefault(_socialNetworks);
+		if (_socialNetworks == null && CollectionUtils.hasData(_socialNetworks)) net = CollectionUtils.pickOneElement(_socialNetworks);
+		return net;
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+// 	WEB
+/////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * @return true if there are web site associated with the contact info
+	 */
+	public boolean hasWebSites() {
+		return CollectionUtils.hasData(_webSites);
+	}
+	/**
+	 * Check if there exists a {@link ContactWeb} with the given email
+	 * @param theSiteUrl
+	 * @return
+	 */
+	public boolean hasWebSite(final Url theSiteUrl) {
+		Url searchedUrl = Iterables.tryFind(this.getWebUrls(),
+												new Predicate<Url>() {
+														@Override
+														public boolean apply(final Url url) {
+															return url.equals(theSiteUrl);
+												}})
+         							   .orNull();
+		return searchedUrl != null;
+	}
+	/**
+	 * Returns the first {@link ContactWeb} with the given url
+	 * @param url
+	 * @return
+	 */
+	public ContactWeb getMailFor(final Url url) {
+		if (CollectionUtils.isNullOrEmpty(_webSites)) return null;
+		return FluentIterable.from(_webSites)
+							 .firstMatch(new Predicate<ContactWeb>() {
+												@Override
+												public boolean apply(final ContactWeb web) {
+													return web != null
+														&& web.getUrl().equals(url);
+												}
+										 })
+							 .orNull();	
+	}
+	/**
+	 * Returns an url for an intended usage
+	 * @param usage
+	 * @return
+	 */
+	public Url getWebUrl(final ContactInfoUsage usage) {
+		ContactWeb web = _find(_webSites,usage);
+		return web != null ? web.getUrl() : null;
+	}
+	/**
+	 * Returns an url for an intended usage or any if the requested one
+	 * does not exists
+	 * @param usage
+	 * @return
+	 */
+	public Url getWebUrlOrAny(final ContactInfoUsage usage) {
+		Url outUrl = this.getWebUrl(usage);
+		if (outUrl == null && CollectionUtils.hasData(_webSites)) {
+			ContactWeb url = CollectionUtils.pickOneElement(_webSites);
+			if (url != null) outUrl = url.getUrl();
+		}
+		return outUrl;
+	}
+	/**
+	 * Returns the default url address
+	 * @return
+	 */
+	public Url getDefaultWebUrl() {
+		ContactWeb web = _findDefault(_webSites);
+		return web != null ? web.getUrl() : null;
+	}
+	/**
+	 * Returns the default url or any of them if none is set as default one
+	 * @return
+	 */
+	public Url getDefaultWebUrlOrAny() {
+		ContactWeb web = _findDefault(_webSites);
+		if (web == null && CollectionUtils.hasData(_webSites)) web = CollectionUtils.pickOneElement(_webSites);
+		return web != null ? web.getUrl() : null;
+	}
+	/**
+	 * Returns a web url other than default
+	 * @return
+	 */
+	public Url getWebUrlOtherThanDefaul() {
+		ContactWeb web = _findOtherThanDefault(_webSites);
+		return web != null ? web.getUrl() : null;
+	}
+	/**
+	 * Returns a web url (if there is more than one it returns one of them randomly)
+	 * @return
+	 */
+	public Url getWebUrl() {
+		// Try to find the default
+		Url defUrl = this.getDefaultWebUrl();
+		// ... if there's NO default, return any of them
+		if (defUrl == null) {
+			ContactWeb contactWeb = _findOne(_webSites);
+			defUrl = contactWeb != null ? contactWeb.getUrl() : null;
+		}
+		return defUrl;
+	}
+	/**
+	 * Returns a {@link Collection} of {@link Url}s
+	 * @return
+	 */
+	public Collection<Url> getWebUrls() {
+		Collection<Url> urls = CollectionUtils.hasData(_webSites)
+										? FluentIterable.from(_webSites)
+														.filter(new Predicate<ContactWeb>() {
+																	@Override
+																	public boolean apply(final ContactWeb web) {
+																		return web.getUrl() != null;
+																	}
+																})
+														.transform(new Function<ContactWeb,Url>() {
+																		@Override
+																		public Url apply(final ContactWeb web) {
+																			return web.getUrl();
+																		}
+															     })
+														.toList()
+										 : null;
+		return urls;
+	}
+	/**
+	 * Returns the web urls as a comma separated list
+	 * @param separator
+	 * @return
+	 */
+	public String getWebUrlsCharSeparated(final char separator) {
+		Collection<Url> urls = this.getWebUrls();
+		return CollectionUtils.hasData(urls)
+					? CollectionUtils.of(urls)
 									 .toStringSeparatedWith(separator)
 				    : null;
 	}
