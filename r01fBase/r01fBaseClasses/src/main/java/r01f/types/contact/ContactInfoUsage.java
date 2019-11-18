@@ -1,5 +1,10 @@
 package r01f.types.contact;
 
+import java.util.Collection;
+
+import com.google.common.base.Function;
+import com.google.common.collect.FluentIterable;
+
 import lombok.RequiredArgsConstructor;
 import r01f.enums.EnumExtended;
 import r01f.enums.EnumExtendedWrapper;
@@ -20,6 +25,19 @@ public enum ContactInfoUsage
 	private final I18NKey _i18nKey;
 	public String nameUsing(final I18NBundleAccess i18n) {
 		return i18n.getMessage(_i18nKey);
+	}
+	public Collection<String> namesUsing(final I18NBundleAccess i18n) {
+//		return Stream.of(ContactInfoUsage.values())
+//					 .map(u -> u.nameUsing(i18n))
+//					 .collect(Collectors.toList());
+		return FluentIterable.from(ContactInfoUsage.values())
+					.transform(new Function<ContactInfoUsage,String>() {
+										@Override
+										public String apply(final ContactInfoUsage u) {
+											return u.nameUsing(i18n);
+										}
+							   })
+					.toList();
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	                                                                          
