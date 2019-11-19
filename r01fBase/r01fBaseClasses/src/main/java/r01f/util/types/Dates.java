@@ -27,6 +27,9 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.experimental.Accessors;
 import r01f.locale.Language;
 import r01f.types.datetime.MonthOfYear;
 import r01f.util.types.locale.Languages;
@@ -303,7 +306,7 @@ public abstract class Dates {
 	@GwtIncompatible
 	public static String format(final Date date,final String fmt,
 								final Locale locale) {
-		Date theDate = date != null ? date : new Date();
+		if (date == null) return null;
 
 		String theFmt = Strings.isNullOrEmpty(fmt) ? DEFAULT_FORMAT : fmt; 		// Dates default format
 		boolean isISO = theFmt.equalsIgnoreCase("iso")
@@ -311,9 +314,9 @@ public abstract class Dates {
 					 || theFmt.equalsIgnoreCase("utc");
 
 		if (theFmt.equalsIgnoreCase("millis") || theFmt.equalsIgnoreCase("milis")) {	// millis bug WTF!
-			return Long.toString(theDate.getTime());
+			return Long.toString(date.getTime());
 		} else if (theFmt.equalsIgnoreCase("seconds")) {
-			return Long.toString(theDate.getTime() / 1000L);
+			return Long.toString(date.getTime() / 1000L);
 		} else if (theFmt.equalsIgnoreCase("epoch")) {
 			theFmt = Dates.EPOCH;		// "MMM dd yyyy HH:mm:ss.SSS zzz"
 		} else if (isISO) {
@@ -329,12 +332,12 @@ public abstract class Dates {
 			TimeZone zone = formatter.getTimeZone();
 			final int msInMin = 60000;
 			final int minInHr = 60;
-			int minutes = zone.getOffset( theDate.getTime() ) / msInMin;
+			int minutes = zone.getOffset(date.getTime()) / msInMin;
 			int hours = minutes / minInHr;
 			zone = TimeZone.getTimeZone( "GMT Time" + (hours >= 0 ? "+" : "") + hours + ":" + minutes);
 			formatter.setTimeZone( zone );
 		}
-		return formatter.format(theDate);
+		return formatter.format(date);
 	}
 	/**
 	 * Gets the date formated depending on the language
@@ -348,6 +351,52 @@ public abstract class Dates {
 								final Map<Language,String> langFormats) {
 		String fmt = Dates.langFormat(lang,langFormats);
 		return Dates.format(date,fmt);
+	}
+	public static DateLangFormat formatterFor(final Language lang) {
+		DateLangFormat outFormat = DateLangFormat.DEFAULT;
+		switch (lang) {
+		case SPANISH:
+			outFormat = DateLangFormat.SPANISH;
+			break;
+		case BASQUE:
+			outFormat = DateLangFormat.BASQUE;
+			break;
+		case ENGLISH:
+			outFormat = DateLangFormat.ENGLISH;
+			break;
+		default:
+			outFormat = DateLangFormat.DEFAULT;
+		}
+		return outFormat;
+	}
+	/**
+	 * Language-dependent formats
+	 */
+	@Accessors(prefix="_")
+	@AllArgsConstructor
+	public enum DateLangFormat {
+		DEFAULT	(Language.DEFAULT,"dd/MM/yyyy"),
+		SPANISH	(Language.SPANISH,"dd/MM/yyyy"),
+		BASQUE	(Language.BASQUE,"yyyy/MM/dd"),
+		ENGLISH	(Language.ENGLISH,"yyyy/MM/dd");
+		
+		@Getter private final Language _lang;
+		@Getter private final String _dateFormat;
+		@Getter private final String _timeToMinFormat = "HH:mm";
+		@Getter private final String _timeTimeToSecFormat = "HH:mm:ss";
+		
+		public String formatDate(final Date date) {
+			return Dates.format(date,
+								_dateFormat);
+		}
+		public String formatDateWithTimeToMinutes(final Date date) {
+			return Dates.format(date,
+								_dateFormat + " " + _timeToMinFormat);
+		}
+		public String formatDateWithTimeToSeconds(final Date date) {
+			return Dates.format(date,
+								_dateFormat + " " + _timeTimeToSecFormat);		
+		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 // 	FORMAT METHODS
