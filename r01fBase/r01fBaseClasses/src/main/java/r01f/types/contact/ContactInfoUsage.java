@@ -17,10 +17,10 @@ import r01f.locale.I18NKey;
 @RequiredArgsConstructor
 public enum ContactInfoUsage
  implements EnumExtended<ContactInfoUsage> {
-	WORK		(I18NKey.named("contactInfo.usge.work")),			// Work personal Phone
-	PERSONAL	(I18NKey.named("contactInfo.usge.personal")),		// Personal Phone
-	COMPANY		(I18NKey.named("contactInfo.usge.company")),		// Company's phone
-	OTHER		(I18NKey.named("contactInfo.usge.other"));			// Other usage
+	WORK		(I18NKey.named("contact.usge.work")),			// Work personal Phone
+	PERSONAL	(I18NKey.named("contact.usge.personal")),		// Personal Phone
+	COMPANY		(I18NKey.named("contact.usge.company")),		// Company's phone
+	OTHER		(I18NKey.named("contact.usge.other"));			// Other usage
 
 	private final I18NKey _i18nKey;
 	public String nameUsing(final I18NBundleAccess i18n) {
