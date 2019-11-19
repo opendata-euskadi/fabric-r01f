@@ -89,7 +89,7 @@ public class SearchResults<F extends SearchFilter,
 						 final int requestedNumberOfItems,
 						 final Collection<I> newPageItems) {
 		_filter = newFilter;
-		if (CollectionUtils.hasData(newPageItems)) _pageItems = newPageItems; 
+		_pageItems = newPageItems; 
 		_totalItemsCount = newTotalItemsCount;
 		_startPosition = newStartPosition;
 		_requestedNumberOfItems = requestedNumberOfItems;
