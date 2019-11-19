@@ -24,12 +24,17 @@ public final class LanguageTextsAccessWrapper {
 /////////////////////////////////////////////////////////////////////////////////////////
 	public Optional<String> getIn(final Language lang) {
 		if (_hasLangTexts == null) return Optional.fromNullable(null);
-		return Optional.fromNullable(_hasLangTexts != null 
-											? _hasLangTexts.get() != null
+		String outText = null;
+		try {
+			outText = _hasLangTexts != null ? _hasLangTexts.get() != null
 													? _hasLangTexts.get()
 											  			   		   .get(lang)
 											  		: null
-											: null);
+										 : null;
+		} catch (IllegalStateException illEx) {
+			// no text for for lang			
+		}
+		return Optional.fromNullable(outText);
 	}
 	public String getInOrNull(final Language lang) {
 		return this.getIn(lang)

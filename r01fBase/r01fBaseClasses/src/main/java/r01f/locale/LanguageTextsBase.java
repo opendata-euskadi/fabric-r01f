@@ -127,6 +127,7 @@ public abstract class LanguageTextsBase<SELF_TYPE extends LanguageTextsBase<SELF
 	}
 	@Override
 	public String getFor(final Language lang) {
+		if (lang == null) throw new IllegalArgumentException("lang cannot be null to get a " + LanguageTexts.class.getSimpleName() + " text");
 		String outText = _retrieve(lang);
 		if (outText == null && _langTextNotFoundBehabior == LangTextNotFoundBehabior.RETURN_NULL) {
 			/* outText is yet null */
@@ -135,7 +136,7 @@ public abstract class LanguageTextsBase<SELF_TYPE extends LanguageTextsBase<SELF
 											: null;
 		} else if (outText == null && _langTextNotFoundBehabior == LangTextNotFoundBehabior.THROW_EXCEPTION) {
 			String msg = Strings.customized(_defaultValue,lang);
-			throw new IllegalArgumentException(msg);
+			throw new IllegalStateException(msg);
 		}
 		return outText;
 	}
