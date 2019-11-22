@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 
 import com.fasterxml.jackson.annotation.JacksonInject;
 import com.fasterxml.jackson.annotation.JsonCreator.Mode;
@@ -234,10 +235,18 @@ public class MarshallerAnnotationIntrospector
 					switch(dateFormat) {
 					case CUSTOM:
 						String pattern = mf.dateFormat().format();
+						String timezone = mf.dateFormat().timezone();
 						if (MarshallField.MARKER_FOR_DEFAULT.equals(pattern)) throw new AnnotationFormatError(String.format("Field %s of %s is a Date field with CUSTOM format: the pattern is mandatory",
 																															annF.getName(),annF.getDeclaringClass().getName()));
-						outFormat = JsonFormat.Value.forShape(Shape.STRING)
-													.withPattern(pattern);
+						if (!"".equals(timezone)) {
+							TimeZone tz = TimeZone.getTimeZone(timezone);
+							outFormat = JsonFormat.Value.forShape(Shape.STRING)
+														.withTimeZone(tz)
+														.withPattern(pattern);
+						} else {
+							outFormat = JsonFormat.Value.forShape(Shape.STRING)
+														.withPattern(pattern);
+						}
 						break;
 					case EPOCH:
 						outFormat = JsonFormat.Value.forShape(Shape.STRING)

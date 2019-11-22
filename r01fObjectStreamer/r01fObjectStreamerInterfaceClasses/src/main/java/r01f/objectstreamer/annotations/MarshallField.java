@@ -63,6 +63,7 @@ public @interface MarshallField {
     public @interface MarshallDateFormat {
     	public DateFormat use() default DateFormat.TIMESTAMP;
     	public String format() default MARKER_FOR_DEFAULT;
+    	public String timezone() default "";
     }
 	public enum DateFormat {
 		EPOCH,
