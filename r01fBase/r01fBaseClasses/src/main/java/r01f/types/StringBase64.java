@@ -26,6 +26,11 @@ public class StringBase64
 		return StringEncodeUtils.decodeBase64(_stringBase64)
 								.toString();
 	}
+	public byte[] decodeAsBytes() {
+		return StringEncodeUtils.decodeBase64(_stringBase64.getBytes());
+								
+	}
+	
 	public static StringBase64 encode(final String rawString) {
 		if (rawString == null) throw new IllegalArgumentException();
 		return StringBase64.encode(rawString,
