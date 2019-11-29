@@ -72,6 +72,9 @@ public class GeoCounty
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
+	public GeoCounty(final GeoCountyID oid) {
+		super(oid);
+	}
 	public GeoCounty(final GeoCountyID oid,
 					   final String officialName,final LanguageTexts nameByLang,
 					  final GeoPosition2D position2D) {

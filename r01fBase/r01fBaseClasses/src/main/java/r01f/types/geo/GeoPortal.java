@@ -45,6 +45,9 @@ public class GeoPortal
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
+	public GeoPortal(final GeoPortalID oid) {
+		super(oid);
+	}
 	public GeoPortal(final GeoPortalID oid,
 					 final String officialName,final LanguageTexts nameByLang,
 					 final GeoPosition2D position2D) {

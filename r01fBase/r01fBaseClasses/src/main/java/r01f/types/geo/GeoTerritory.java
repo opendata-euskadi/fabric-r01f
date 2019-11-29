@@ -58,6 +58,9 @@ public class GeoTerritory
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
+	public GeoTerritory(final GeoTerritoryID oid) {
+		super(oid);
+	}
 	public GeoTerritory(final GeoTerritoryID oid,
 						final String officialName,final LanguageTexts nameByLang,
 					    final GeoPosition2D position2D) {

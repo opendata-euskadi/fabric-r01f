@@ -43,6 +43,9 @@ public class GeoLocality
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
+	public GeoLocality(final GeoLocalityID oid) {
+		super(oid);
+	}
 	public GeoLocality(final GeoLocalityID oid,
 					   final String officialName,final LanguageTexts nameByLang,
 					   final GeoPosition2D position2D) {

@@ -55,6 +55,9 @@ public class GeoStreet
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
+	public GeoStreet(final GeoStreetID oid) {
+		super(oid);
+	}
 	public GeoStreet(final GeoStreetID oid,
 					 final String officialName,final LanguageTexts nameByLang,
 					 final GeoPosition2D position2D) {

@@ -79,7 +79,7 @@ public class GeoOIDs {
 		}
 	}
 	/**
-	 * Territory
+	 * Territory: historic territory
 	 */
 	@Immutable
 	@MarshallType(as="geoTerritoryId")
@@ -105,7 +105,7 @@ public class GeoOIDs {
 		}
 	}
 	/**
-	 * State
+	 * State: historic territory
 	 */
 	@Immutable
 	@MarshallType(as="geoStateId")
@@ -131,7 +131,7 @@ public class GeoOIDs {
 		}
 	}
 	/**
-	 * State
+	 * County: provincia
 	 */
 	@Immutable
 	@MarshallType(as="geoCountyId")
@@ -157,7 +157,7 @@ public class GeoOIDs {
 		}
 	}
 	/**
-	 * Region / comarca
+	 * Region: comarca
 	 */
 	@Immutable
 	@MarshallType(as="geoRegionId")

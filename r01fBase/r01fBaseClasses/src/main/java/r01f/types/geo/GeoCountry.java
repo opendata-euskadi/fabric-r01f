@@ -45,6 +45,9 @@ public class GeoCountry
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
+	public GeoCountry(final GeoCountryID oid) {
+		super(oid);
+	}
 	public GeoCountry(final GeoCountryID oid,
 					  final String officialName,final LanguageTexts nameByLang,
 					  final GeoPosition2D position2D) {

@@ -79,6 +79,9 @@ public class GeoRegion
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
+	public GeoRegion(final GeoRegionID oid) {
+		super(oid);
+	}
 	public GeoRegion(final GeoRegionID oid,
 				     final String officialName,final LanguageTexts nameByLang,
 					 final GeoPosition2D position2D) {

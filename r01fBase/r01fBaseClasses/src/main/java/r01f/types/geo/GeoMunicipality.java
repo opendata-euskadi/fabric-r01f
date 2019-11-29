@@ -83,6 +83,9 @@ public class GeoMunicipality
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
+	public GeoMunicipality(final GeoMunicipalityID oid) {
+		super(oid);
+	}
 	public GeoMunicipality(final GeoMunicipalityID oid,
 						   final String officialName,final LanguageTexts nameByLang,
 						   final GeoPosition2D position2D) {

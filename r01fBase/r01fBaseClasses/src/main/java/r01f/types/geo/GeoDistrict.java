@@ -43,6 +43,9 @@ public class GeoDistrict
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
+	public GeoDistrict(final GeoDistrictID oid) {
+		super(oid);
+	}
 	public GeoDistrict(final GeoDistrictID oid,
 					   final String officialName,final LanguageTexts nameByLang,
 					   final GeoPosition2D position2D) {
