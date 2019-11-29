@@ -37,9 +37,15 @@ public enum PersistenceRequestedOperation
 	public boolean isIn(final PersistenceRequestedOperation... els) {
 		return WRAPPER.isIn(this,els);
 	}
+	public boolean isNOTIn(final PersistenceRequestedOperation... els) {
+		return WRAPPER.isNOTIn(this,els);
+	}
 	@Override
 	public boolean is(final PersistenceRequestedOperation el) {
 		return WRAPPER.is(this,el);
+	}
+	public boolean isNOT(final PersistenceRequestedOperation el) {
+		return WRAPPER.isNOT(this,el);
 	}
 	public static boolean canBe(final String name) {
 		return WRAPPER.canBe(name);
