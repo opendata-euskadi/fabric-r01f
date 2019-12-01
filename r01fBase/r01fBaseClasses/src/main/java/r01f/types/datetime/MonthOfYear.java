@@ -56,11 +56,11 @@ public class MonthOfYear
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 	public MonthOfYear(final int month) {
-		this._set(month);
+		_set(month);
 	}
 	public MonthOfYear(final String month) {
 		int m = Integer.parseInt(month);
-		this._set(m);
+		_set(m);
 	}
 	public static MonthOfYear of(final String monthOfYear) {
 		return new MonthOfYear(monthOfYear);
