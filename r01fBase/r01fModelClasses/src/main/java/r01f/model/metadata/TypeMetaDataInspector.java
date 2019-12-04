@@ -162,7 +162,13 @@ public class TypeMetaDataInspector
 	@Override
 	public <M extends MetaDataDescribable> TypeMetaData<M> getTypeMetaDataFor(final Class<M> hasMetaData) {
 		TypeMetaData<M> outTypeMetaData = this.inspect(hasMetaData);
-		if (outTypeMetaData == null) throw new IllegalStateException("There's NO type metadata info for type " + hasMetaData);
+		if (outTypeMetaData == null) {
+//			log.warn("There's NO type metadata info for type {}; returning metadata info for {}",
+//					 hasMetaData,
+//					 HasMetaDataForPersistableModelObject.class.getSimpleName());
+//			outTypeMetaData = this.inspect(HasMetaDataForPersistableModelObject.class);
+			throw new IllegalStateException("There's NO type metadata info for type " + hasMetaData);
+		}
 		return outTypeMetaData;
 	}
 
