@@ -32,6 +32,24 @@
 			<artifactId>jackson-annotations</artifactId>
 			<version>2.9.0</version>
 		</dependency>
+		
+		<!-- ///////////////////////////////////////// -->
+		<!-- JAXB                                      -->
+		<!-- ///////////////////////////////////////// -->
+		<!-- 
+		Starting on jdk9 JAXB is NOT a part of the JDK
+		... so it MUST be referenced as a dependency
+		BEWARE that this is dep contains ONLY the interfaces
+		(which is needed by jackson)
+		... since R01F does NOT use JAXB no impl is needed,
+			anyway, if needed there are many JAXB implementations
+			(see https://www.jesperdj.com/2018/09/30/jaxb-on-java-9-10-11-and-beyond/)
+		-->
+		<dependency>
+		    <groupId>javax.xml.bind</groupId>
+		    <artifactId>jaxb-api</artifactId>
+		    <version>2.3.1</version>
+		</dependency>
 	</dependencies>
 	
 <!-- ====================================================================== -->
