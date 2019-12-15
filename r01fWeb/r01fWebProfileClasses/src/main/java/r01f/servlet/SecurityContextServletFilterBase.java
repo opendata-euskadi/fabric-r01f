@@ -96,7 +96,6 @@ public abstract class SecurityContextServletFilterBase
 						 final FilterChain chain) throws IOException,
 											  			 ServletException {
 		try {
-		
 			HttpServletRequest req = (HttpServletRequest)request;
 			HttpServletResponse res = (HttpServletResponse)response;
 
