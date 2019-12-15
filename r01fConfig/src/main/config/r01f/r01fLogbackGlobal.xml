@@ -1,17 +1,17 @@
-<!-- 
-================================================================================ 
+<!--
+================================================================================
 	 LOGBACK CONFIG
 ================================================================================
 Every project will have it's own logback.xml file like:
 	<configuration debug="false">
-	
+
 		<property name="appName" value="THE_APP_NAME" />
 		<jmxConfigurator contextName="THE_APP_NAME" />
-	
+
 		Global
 		<include resource="r01f/r01fLogbackGlobal.xml"/>
 		<include resource="r01f/r01fLogback.xml"/>
-	
+
 		Specific
 		<include resource="r01t/r01tLogback.xml"/>
 	</configuration>
@@ -20,11 +20,11 @@ IMPORTANT: LOG LOCATION
 =====================================================
 Logs location is determined using an ENVIRONMNET variable named R01_HOME
 This environment variable is usually set at JVM env property like:
-	-DR01_HOME=/data/r01  
-If the R01_HOME environment var is NOT found, logs are located at /log folder 
+	-DR01_HOME=/data/r01
+If the R01_HOME environment var is NOT found, logs are located at /log folder
 
 
-This GLOBAL logback.xml is NOT ENVIRONMENT DEPENDENT 
+This GLOBAL logback.xml is NOT ENVIRONMENT DEPENDENT
 In order to set environment-dependent values, the included r01fEnvironment file is used
 -->
 <included>
@@ -32,12 +32,12 @@ In order to set environment-dependent values, the included r01fEnvironment file 
 	<statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener" />
 
 	<!-- <property name="USER_HOME" value="${user.home}" />  -->
-	
-	<!-- 
+
+	<!--
 		local (see [Conditional processing of configuration files at http://logback.qos.ch/manual/configuration.html)
-		-requires Janino dependency- 
+		-requires Janino dependency-
 	 -->
-	<!-- 
+	<!--
 	<if condition='isNull("LOG_HOME")'>
 		<then>
 			<if condition='property("os.name").contains("win")'>
@@ -48,7 +48,7 @@ In order to set environment-dependent values, the included r01fEnvironment file 
 		</then>
 	</if>
 	-->
-	<property name="logPath" value="${R01_Home:-/datos}/${appName}/log/" />
+	<property name="logPath" value="${R01_Home:-/pci}/logs/${appName}/" />
 
 	<!-- 1 por día. Nivel DEBUG. 10 días de historia
 		 logger{10} líneas de stacktrace para las excepciones
@@ -57,14 +57,14 @@ In order to set environment-dependent values, the included r01fEnvironment file 
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>TRACE</level>
 		</filter>
-		<!-- When in a weblogic cluster and logs located in a NAS, if the log file name does NOT include something 
+		<!-- When in a weblogic cluster and logs located in a NAS, if the log file name does NOT include something
 			 for each cluster node (like the server's name), N JVMs will be writing at the same file; this is a performance botlenect.
 			 To avoid this problem, the log file name includes an environmental variable that each weblogic server sets with it's own name: weblogic.Name
 			 When in a NOT-weblogic environmente (ie Tomcat), the default value is used $(weblogic.Name:-[defaultValue])
 			 see http://logback.qos.ch/manual/configuration.html#variableSubstitution
-			 <file>${logPath}/${appName}_${weblogic.Name:-default}.log</file> 	 
+			 <file>${logPath}/${appName}_${weblogic.Name:-default}.log</file>
 		-->
-		<file>${logPath}/${appName}.log</file>	
+		<file>${logPath}/${appName}.log</file>
 		<encoder>
 			<pattern>%date %-5level %logger{0} [%method - %line] - %message%n %exception{30}</pattern>
 		</encoder>
@@ -75,7 +75,7 @@ In order to set environment-dependent values, the included r01fEnvironment file 
 			<maxHistory>10</maxHistory>
 		</rollingPolicy>
 	</appender>
-	
+
 	<!-- sends logs to logback-beagle -->
 	<!-- <consolePlugin /> -->
 
