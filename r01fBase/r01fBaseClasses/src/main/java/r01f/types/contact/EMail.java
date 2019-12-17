@@ -1,11 +1,18 @@
 package r01f.types.contact;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.google.common.base.Function;
 
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import r01f.annotations.Immutable;
+import r01f.guids.CommonOIDs.UserCode;
 import r01f.objectstreamer.annotations.MarshallType;
+import r01f.patterns.Memoized;
+import r01f.patterns.Supplier;
+import r01f.types.url.Host;
 import r01f.util.types.Strings;
 
 
@@ -18,7 +25,10 @@ public class EMail
      extends ValidatedContactMeanBase {
 
 	private static final long serialVersionUID = -6976066522439926427L;
-
+/////////////////////////////////////////////////////////////////////////////////////////
+//	                                                                          
+/////////////////////////////////////////////////////////////////////////////////////////
+	private static final Pattern EMAIL_MATCH_PATTERN = Pattern.compile("([^@]+)@(.+)");
 /////////////////////////////////////////////////////////////////////////////////////////
 //  BUILDERS
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -47,6 +57,29 @@ public class EMail
 	@Override
 	public boolean isValid() {
 		return EMail.validate(this.asString());
+	}
+	private Memoized<String[]> _parts = Memoized.using(new Supplier<String[]>() {
+																@Override
+																public String[] supply() {
+																	if (!EMail.this.isValid()) throw new IllegalArgumentException(EMail.this + " is NOT a valid email!");
+																	Matcher m = EMAIL_MATCH_PATTERN.matcher(EMail.this.toString());
+																	if (!m.find()) throw new IllegalArgumentException(EMail.this + " is NOT a valid email!");	// this should NOT happen
+																	String user = m.group(1);
+																	String domain = m.group(2);
+																	return new String[] { user,domain };
+																}
+													   });
+	public UserCode getUser() {
+		String userCodeStr = _parts.get()[0];
+		return UserCode.forId(userCodeStr);
+	}
+	public Host getDomain() {
+		String domainStr = _parts.get()[1];
+		return Host.from(domainStr);
+	}
+	public boolean isGoogleEMail() {
+		return _parts.get()[1]					// the domain
+					 .startsWith("gmail");		// is gmail
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //

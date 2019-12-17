@@ -116,6 +116,22 @@ public class ContactInfo
 										 })
 							 .orNull();	
 	}
+	public ContactMail getGoogleMail() {
+		if (CollectionUtils.isNullOrEmpty(_contactMails)) return null;
+		return FluentIterable.from(_contactMails)
+							 .firstMatch(new Predicate<ContactMail>() {
+												@Override
+												public boolean apply(final ContactMail mail) {
+													return mail != null
+														&& mail.getMail().isGoogleEMail();
+												}
+							 			 })
+							 .orNull();
+	}
+	public EMail getGoogleMailAddress() {
+		ContactMail mail = this.getGoogleMail();
+		return mail != null ? mail.getMail() : null;
+	}
 	/**
 	 * Returns an email address for an intended usage
 	 * @param id
