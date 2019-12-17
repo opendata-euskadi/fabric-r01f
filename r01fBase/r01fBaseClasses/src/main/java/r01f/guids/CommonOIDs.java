@@ -145,6 +145,14 @@ public abstract class CommonOIDs {
 			return AppComponent.forId(Strings.customized("{}.{}",
 														 one,other));
 		}
+		public static AppComponent compose(final AppComponent one,final String other) {
+			return AppComponent.forId(Strings.customized("{}.{}",
+														 one,other));
+		}
+		public static AppComponent compose(final String one,final String other) {
+			return AppComponent.forId(Strings.customized("{}.{}",
+														 one,other));
+		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	ROLE
