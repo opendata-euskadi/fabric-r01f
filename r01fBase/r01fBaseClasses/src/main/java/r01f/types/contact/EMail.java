@@ -58,17 +58,17 @@ public class EMail
 	public boolean isValid() {
 		return EMail.validate(this.asString());
 	}
-	private Memoized<String[]> _parts = Memoized.using(new Supplier<String[]>() {
-																@Override
-																public String[] supply() {
-																	if (!EMail.this.isValid()) throw new IllegalArgumentException(EMail.this + " is NOT a valid email!");
-																	Matcher m = EMAIL_MATCH_PATTERN.matcher(EMail.this.toString());
-																	if (!m.find()) throw new IllegalArgumentException(EMail.this + " is NOT a valid email!");	// this should NOT happen
-																	String user = m.group(1);
-																	String domain = m.group(2);
-																	return new String[] { user,domain };
-																}
-													   });
+	private final transient Memoized<String[]> _parts = Memoized.using(new Supplier<String[]>() {
+																				@Override
+																				public String[] supply() {
+																					if (!EMail.this.isValid()) throw new IllegalArgumentException(EMail.this + " is NOT a valid email!");
+																					Matcher m = EMAIL_MATCH_PATTERN.matcher(EMail.this.toString());
+																					if (!m.find()) throw new IllegalArgumentException(EMail.this + " is NOT a valid email!");	// this should NOT happen
+																					String user = m.group(1);
+																					String domain = m.group(2);
+																					return new String[] { user,domain };
+																				}
+																	   });
 	public UserCode getUser() {
 		String userCodeStr = _parts.get()[0];
 		return UserCode.forId(userCodeStr);
