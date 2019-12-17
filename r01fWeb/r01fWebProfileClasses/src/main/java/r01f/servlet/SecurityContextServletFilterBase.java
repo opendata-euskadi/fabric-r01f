@@ -102,23 +102,8 @@ public abstract class SecurityContextServletFilterBase
 			// [0] Get the requested url and see if it matches one of the patterns defined at the auth config
 //			Url url = _fullURI(req);
 //			UrlPath urlPath = url.getUrlPath();
-
-			// [1] - Get the [securityContext] from the web session (set at the login page)
-			//		 ... the user MUST have pass through the login page and authenticate
-			HttpSession webSession = req.getSession(false);	// false = do not create session
-			SecurityContext securityContext = webSession != null
-												  ? (SecurityContext)webSession.getAttribute(SECURITY_CONTEXT_WEBSESSION_PARAM_NAME)
-												  : null;
-			// [2] - Attach the security context to the local thread
-			// 		 (the security context provider will look after the [user context] at the local thread)
-			if (securityContext != null) {
-				// attath the security context to the thread local storage
-				// (the security context provider will look after that [security context] at the thread local storage)
-				SecurityContextStoreAtThreadLocalStorage.set(securityContext);
-				log.debug("[SecurityContextServletFilter] security context available at [web session] for uri={}: store at thread-local storage",
-						  req.getRequestURI());
-			} 
-			// [3] - not filtered resources
+			
+			// [1] - not filtered resources
 			//		 beware!! do NOT move... always filter AFTER setting the security context at thread local
 			if (CollectionUtils.hasData(_notFilteredResourcesPatterns)) {
 				String reqUri = req.getRequestURI();
@@ -135,6 +120,22 @@ public abstract class SecurityContextServletFilterBase
 					}
 				}
 			}
+
+			// [2] - Get the [securityContext] from the web session (set at the login page)
+			//		 ... the user MUST have pass through the login page and authenticate
+			HttpSession webSession = req.getSession(false);	// false = do not create session
+			SecurityContext securityContext = webSession != null
+												  ? (SecurityContext)webSession.getAttribute(SECURITY_CONTEXT_WEBSESSION_PARAM_NAME)
+												  : null;
+			// [3] - Attach the security context to the local thread
+			// 		 (the security context provider will look after the [user context] at the local thread)
+			if (securityContext != null) {
+				// attath the security context to the thread local storage
+				// (the security context provider will look after that [security context] at the thread local storage)
+				SecurityContextStoreAtThreadLocalStorage.set(securityContext);
+				log.debug("[SecurityContextServletFilter] security context available at [web session] for uri={}: store at thread-local storage",
+						  req.getRequestURI());
+			} 
 			
 			// [4] - redir to login page if security context is not present
 			if (securityContext == null) {

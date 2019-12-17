@@ -3,7 +3,6 @@ package r01f.securitycontext;
 import java.util.Date;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import r01f.guids.CommonOIDs.AppCode;
@@ -19,7 +18,6 @@ import r01f.types.url.Url;
  * R01M API {@link SecurityContext} implementation
  */
 @Accessors(prefix="_")
-@NoArgsConstructor
 public abstract class SecurityContextBase 
            implements SecurityContext {
 
@@ -69,6 +67,9 @@ public abstract class SecurityContextBase
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
+	public SecurityContextBase() {
+		_createDate = new Date();
+	}
 	public SecurityContextBase(final AppCode appCode) {
 		this(AuthenticatedActorID.forApp(appCode));
 	}
@@ -138,6 +139,7 @@ public abstract class SecurityContextBase
 	}
 	public SecurityContextBase(final SecurityToken securityToken,final boolean master,
 							   final TenantID tenantId) {
+		this();
 		_securityToken = securityToken;
 		_masterUser = master;
 		_tenantId = tenantId;
