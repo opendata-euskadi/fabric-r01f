@@ -49,8 +49,8 @@ public class ContactPhone
 	/**
 	 * Hour range when could be contacted
 	 * 
-	 * It is stored like a String but internaly is used like a Range<Integer>. That is to avoid GWT incompatibility.
-	 * The lombok Getter and Setter are necesary because the explicit methods have the @GWTIncompatible annotation
+	 * It is stored like a String but internally is used like a Range<Integer>. That is to avoid GWT incompatibility.
+	 * The lombok Getter and Setter are necessary because the explicit methods have the @GWTIncompatible annotation
 	 * and wont be generated in the GWT compilation.
 	 */
 	@MarshallField(as="availability",

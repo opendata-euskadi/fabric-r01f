@@ -132,15 +132,27 @@ public class HourOfDay
 //	ITERABLE
 /////////////////////////////////////////////////////////////////////////////////////////
 	public static Iterable<HourOfDay> dayHoursIterable() {
+		return _dayHoursIterableWithin(0,24);
+	}
+	public static Iterable<HourOfDay> dayHoursIterableFrom(final HourOfDay start) {
+		return _dayHoursIterableWithin(start.asInteger(),24);
+	}
+	public static Iterable<HourOfDay> dayHoursIterableTo(final HourOfDay end) {
+		return _dayHoursIterableWithin(0,end.asInteger());
+	}
+	public static Iterable<HourOfDay> dayHoursIterableWithin(final HourOfDay start,final HourOfDay end) {
+		return _dayHoursIterableWithin(start.asInteger(),end.asInteger());
+	}
+	private static Iterable<HourOfDay> _dayHoursIterableWithin(final int start,final int end) {
 		return new Iterable<HourOfDay>() {
 						@Override
 						public Iterator<HourOfDay> iterator() {
 							return new Iterator<HourOfDay>() {
-											private int _curr = -1;
+											private int _curr = start - 1;
 
 											@Override
 											public boolean hasNext() {
-												return _curr < 23;
+												return _curr < (end - 1);
 											}
 											@Override
 											public HourOfDay next() {
