@@ -312,7 +312,7 @@ public class RESTResponseTypeMappersForBasicTypes {
 	public static abstract class XMLMarshalledObjectResponseTypeMapper<T>
 						 extends MarshalledObjectResultTypeMapperBase<T>{
 		
-		public XMLMarshalledObjectResponseTypeMapper(Class<?> mappedType, Marshaller marshaller){
+		public XMLMarshalledObjectResponseTypeMapper(Class<?> mappedType, Marshaller marshaller) {
 			super(mappedType, MediaType.APPLICATION_XML_TYPE, marshaller);
 		}
 	}
