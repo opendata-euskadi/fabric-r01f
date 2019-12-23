@@ -4,7 +4,9 @@ import java.util.Date;
 
 import com.google.common.annotations.GwtIncompatible;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import r01f.types.Range;
 
@@ -13,7 +15,44 @@ import r01f.types.Range;
  * to build the @PathParam mapped resource function parameters
  */
 @GwtIncompatible("Range NOT usable in GWT")
-public class Ranges {
+@NoArgsConstructor(access=AccessLevel.PRIVATE)
+public abstract class Ranges {
+/////////////////////////////////////////////////////////////////////////////////////////
+//	                                                                          
+/////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Creates a default closed range within the given bounds
+	 * @param <T>
+	 * @param low
+	 * @param up
+	 * @return
+	 */
+	public static <T extends Comparable<? super T>> Range<T> rangeFrom(final T low,final T up) {
+		Range<T> outRange = null;
+		if (low != null && up != null) {
+			outRange = Range.closed(low,up);
+		} else if (low != null && up == null) {
+			outRange = Range.atLeast(low);
+		} else if (low == null && up != null) {
+			outRange = Range.atMost(up);
+		} else {
+			outRange = Range.all();
+		}
+		return outRange;
+	}
+	public static <T extends Comparable<? super T>> com.google.common.collect.Range<T> guavaRangeFrom(final T low,final T up) {
+		com.google.common.collect.Range<T> outRange = null;
+		if (low != null && up != null) {
+			outRange = com.google.common.collect.Range.closed(low,up);
+		} else if (low != null && up == null) {
+			outRange = com.google.common.collect.Range.atLeast(low);
+		} else if (low == null && up != null) {
+			outRange = com.google.common.collect.Range.atMost(up);
+		} else {
+			outRange = com.google.common.collect.Range.all();
+		}
+		return outRange;
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  DATE RANGE
 /////////////////////////////////////////////////////////////////////////////////////////
