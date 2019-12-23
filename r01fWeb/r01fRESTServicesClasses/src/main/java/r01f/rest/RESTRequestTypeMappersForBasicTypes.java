@@ -119,9 +119,9 @@ public class RESTRequestTypeMappersForBasicTypes {
 			String xml = StringPersistenceUtils.load(entityStream);
 			T outObj = null;
 			if (Strings.isNOTNullOrEmpty(xml)) {
-				if(mediaType.isCompatible(MediaType.APPLICATION_JSON_TYPE)) {
+				if (mediaType.isCompatible(MediaType.APPLICATION_JSON_TYPE)) {
 					outObj = this.getObjectsMarshaller().forReading().fromJson(xml, type);
-				} else if(mediaType.isCompatible(MediaType.APPLICATION_XML_TYPE)) {
+				} else if (mediaType.isCompatible(MediaType.APPLICATION_XML_TYPE)) {
 					outObj = this.getObjectsMarshaller().forReading().fromXml(xml, type);
 				} else {
 					throw new IllegalArgumentException("Received media type is not compatible");

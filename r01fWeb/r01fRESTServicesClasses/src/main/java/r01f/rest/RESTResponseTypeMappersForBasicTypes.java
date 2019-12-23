@@ -294,7 +294,7 @@ public class RESTResponseTypeMappersForBasicTypes {
 			log.trace("writing {} type",type.getName());
 			String outString = null;
 
-			if(_mediaType.isCompatible(MediaType.APPLICATION_JSON_TYPE)) {
+			if (_mediaType.isCompatible(MediaType.APPLICATION_JSON_TYPE)) {
 				outString = obj != null ? this.getModelObjectsMarshaller().forWriting().toJson(obj)
 							  		 	   : null;
 			} else if (_mediaType.isCompatible(MediaType.APPLICATION_XML_TYPE)) {
