@@ -4,14 +4,18 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Set;
 
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ContiguousSet;
+import com.google.common.collect.DiscreteDomain;
 
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import r01f.objectstreamer.annotations.MarshallType;
 import r01f.types.CanBeRepresentedAsString;
+import r01f.types.Range;
 import r01f.util.types.Dates;
 import r01f.util.types.Numbers;
 import r01f.util.types.Strings;
@@ -142,6 +146,17 @@ public class SecondOfMinute
 			   };
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
+//	                                                                          
+/////////////////////////////////////////////////////////////////////////////////////////
+	public SecondOfMinute nextSecondOfMinute() {
+		if (_secondOfMinute == 59) return SecondOfMinute.of(0);
+		return SecondOfMinute.of(_secondOfMinute + 1);
+	}
+	public SecondOfMinute prevSecondOfMinute() {
+		if (_secondOfMinute == 0) return SecondOfMinute.of(59);
+		return SecondOfMinute.of(_secondOfMinute - 1);
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
 //  EQUALS & HASHCODE
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
@@ -159,5 +174,40 @@ public class SecondOfMinute
 	public int compareTo(final SecondOfMinute other) {
 		return Integer.valueOf(this.asInteger())
 						.compareTo(Integer.valueOf(other.asInteger()));
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	GUAVA DISCRETE DOMAIN                                                                          
+/////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Guava's {@link DiscreteDomain} used to create a {@link Set} of {@link Year}s
+	 * <pre class='brush:java'>
+	 * 		ContiguousSet<Year> years = ContiguousSet.create(Range.closed(Year.of(1960),Year.now()),
+															 Year.DISCRETE_DOMAIN);
+	 * </pre>
+	 */
+	public static DiscreteDomain<SecondOfMinute> DISCRETE_DOMAIN = new DiscreteDomain<SecondOfMinute>() {
+																		@Override
+																		public SecondOfMinute next(final SecondOfMinute val) {
+																			if (val.is(SecondOfMinute.of(59))) throw new IllegalArgumentException();
+																			return val.nextSecondOfMinute();
+																		}
+																		@Override
+																		public SecondOfMinute previous(final SecondOfMinute val) {
+																			if (val.is(SecondOfMinute.of(0))) throw new IllegalArgumentException();
+																			return val.prevSecondOfMinute();
+																		}
+																		@Override
+																		public long distance(final SecondOfMinute start,final SecondOfMinute end) {
+																			return end.asInteger() - start.asInteger();
+																		}
+																 };
+	public static ContiguousSet<SecondOfMinute> createContiguousSetOf(final Range<SecondOfMinute> range) {
+		return SecondOfMinute.createContiguousSetOf(range.asGuavaRange());
+	}
+	public static ContiguousSet<SecondOfMinute> createContiguousSetOf(final com.google.common.collect.Range<SecondOfMinute> range) {
+		if (!range.hasLowerBound() || !range.hasUpperBound()) throw new IllegalArgumentException("range MUST be a CLOSED range (it MUST have upper and lower bounds)!");
+		if (range.upperEndpoint().isBefore(range.lowerEndpoint())) throw new IllegalArgumentException("range upper bound is AFTER the lower bound!!");
+		return ContiguousSet.create(range,
+								    DISCRETE_DOMAIN);		
 	}
 }

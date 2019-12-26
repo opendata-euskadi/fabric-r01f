@@ -4,14 +4,18 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Set;
 
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ContiguousSet;
+import com.google.common.collect.DiscreteDomain;
 
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import r01f.objectstreamer.annotations.MarshallType;
 import r01f.types.CanBeRepresentedAsString;
+import r01f.types.Range;
 import r01f.util.types.Dates;
 import r01f.util.types.Numbers;
 import r01f.util.types.Strings;
@@ -151,6 +155,24 @@ public class DayOfWeek
 						}
 			   };
 	}
+	public DayOfWeek minus(final int num) {
+		int newVal = _dayOfWeek - num;
+		if (newVal <= 0) newVal = 7 - Math.abs(newVal);
+		return DayOfWeek.of(newVal);
+	}
+	public DayOfWeek plus(final int months) {
+		int newVal = _dayOfWeek + months;
+		if (newVal > 7) newVal = 7 - newVal;
+		return DayOfWeek.of(newVal);
+	}
+	public DayOfWeek nextDayOfWeek() {
+		return _dayOfWeek < 7 ? DayOfWeek.of(_dayOfWeek+1)
+							  : DayOfWeek.of(1);
+	}
+	public DayOfWeek prevDayOfWeek() {
+		return _dayOfWeek > 1 ? DayOfWeek.of(_dayOfWeek-1)
+							  : DayOfWeek.of(7);
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  EQUALS & HASHCODE
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -180,4 +202,39 @@ public class DayOfWeek
 	public static final DayOfWeek THURSDAY = new DayOfWeek(5);
 	public static final DayOfWeek FRIDAY = new DayOfWeek(6);
 	public static final DayOfWeek SATURDAY = new DayOfWeek(7);
+/////////////////////////////////////////////////////////////////////////////////////////
+//	GUAVA DISCRETE DOMAIN                                                                          
+/////////////////////////////////////////////////////////////////////////////////////////	
+	/**
+	 * Guava's {@link DiscreteDomain} used to create a {@link Set} of {@link Year}s
+	 * <pre class='brush:java'>
+	 * 		ContiguousSet<Year> years = ContiguousSet.create(Range.closed(Year.of(1960),Year.now()),
+															 Year.DISCRETE_DOMAIN);
+	 * </pre>
+	 */
+	public static DiscreteDomain<DayOfWeek> DISCRETE_DOMAIN = new DiscreteDomain<DayOfWeek>() {
+																		@Override
+																		public DayOfWeek next(final DayOfWeek val) {
+																			if (val.is(DayOfWeek.SATURDAY)) throw new IllegalArgumentException();
+																			return val.nextMonth();
+																		}
+																		@Override
+																		public DayOfWeek previous(final DayOfWeek val) {
+																			if (val.is(DayOfWeek.SUNDAY)) throw new IllegalArgumentException();
+																			return val.nextMonth();
+																		}
+																		@Override
+																		public long distance(final DayOfWeek start,final DayOfWeek end) {
+																			return end.asInteger() - start.asInteger();
+																		}
+																 };
+	public static ContiguousSet<DayOfWeek> createContiguousSetOf(final Range<DayOfWeek> range) {
+		return DayOfWeek.createContiguousSetOf(range.asGuavaRange());
+	}
+	public static ContiguousSet<DayOfWeek> createContiguousSetOf(final com.google.common.collect.Range<DayOfWeek> range) {
+		if (!range.hasLowerBound() || !range.hasUpperBound()) throw new IllegalArgumentException("range MUST be a CLOSED range (it MUST have upper and lower bounds)!");
+		if (range.upperEndpoint().isBefore(range.lowerEndpoint())) throw new IllegalArgumentException("range upper bound is AFTER the lower bound!!");
+		return ContiguousSet.create(range,
+								    DISCRETE_DOMAIN);		
+	}
 }

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -11,11 +12,14 @@ import org.joda.time.LocalTime;
 
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ContiguousSet;
+import com.google.common.collect.DiscreteDomain;
 
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import r01f.objectstreamer.annotations.MarshallType;
 import r01f.types.CanBeRepresentedAsString;
+import r01f.types.Range;
 import r01f.util.types.Dates;
 import r01f.util.types.Numbers;
 import r01f.util.types.Strings;
@@ -55,8 +59,8 @@ public class HourOfDay
 	public HourOfDay(final Integer hourOfDay) {
 		_set(hourOfDay);
 	}
-	public HourOfDay(final String month) {
-		int m = Integer.parseInt(month);
+	public HourOfDay(final String hourOfDay) {
+		int m = Integer.parseInt(hourOfDay);
 		_set(m);
 	}
 	public static HourOfDay of(final String hourOfDay) {
@@ -170,6 +174,17 @@ public class HourOfDay
 			   };
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
+//	                                                                          
+/////////////////////////////////////////////////////////////////////////////////////////
+	public HourOfDay nextHourOfDay() {
+		if (_hourOfDay == 23) return HourOfDay.of(0);
+		return HourOfDay.of(_hourOfDay + 1);
+	}
+	public HourOfDay prevHourOfDay() {
+		if (_hourOfDay == 0) return HourOfDay.of(23);
+		return HourOfDay.of(_hourOfDay - 1);
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
 //  EQUALS & HASHCODE
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
@@ -187,5 +202,40 @@ public class HourOfDay
 	public int compareTo(final HourOfDay other) {
 		return Integer.valueOf(this.asInteger())
 						.compareTo(Integer.valueOf(other.asInteger()));
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	GUAVA DISCRETE DOMAIN                                                                          
+/////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Guava's {@link DiscreteDomain} used to create a {@link Set} of {@link Year}s
+	 * <pre class='brush:java'>
+	 * 		ContiguousSet<Year> years = ContiguousSet.create(Range.closed(Year.of(1960),Year.now()),
+															 Year.DISCRETE_DOMAIN);
+	 * </pre>
+	 */
+	public static DiscreteDomain<HourOfDay> DISCRETE_DOMAIN = new DiscreteDomain<HourOfDay>() {
+																		@Override
+																		public HourOfDay next(final HourOfDay val) {
+																			if (val.is(HourOfDay.of(23))) throw new IllegalArgumentException();
+																			return val.nextHourOfDay();
+																		}
+																		@Override
+																		public HourOfDay previous(final HourOfDay val) {
+																			if (val.is(HourOfDay.of(0))) throw new IllegalArgumentException();
+																			return val.prevHourOfDay();
+																		}
+																		@Override
+																		public long distance(final HourOfDay start,final HourOfDay end) {
+																			return end.asInteger() - start.asInteger();
+																		}
+																 };
+	public static ContiguousSet<HourOfDay> createContiguousSetOf(final Range<HourOfDay> range) {
+		return HourOfDay.createContiguousSetOf(range.asGuavaRange());
+	}
+	public static ContiguousSet<HourOfDay> createContiguousSetOf(final com.google.common.collect.Range<HourOfDay> range) {
+		if (!range.hasLowerBound() || !range.hasUpperBound()) throw new IllegalArgumentException("range MUST be a CLOSED range (it MUST have upper and lower bounds)!");
+		if (range.upperEndpoint().isBefore(range.lowerEndpoint())) throw new IllegalArgumentException("range upper bound is AFTER the lower bound!!");
+		return ContiguousSet.create(range,
+								    DISCRETE_DOMAIN);		
 	}
 }

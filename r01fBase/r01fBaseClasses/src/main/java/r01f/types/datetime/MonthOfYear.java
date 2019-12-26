@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -13,6 +14,8 @@ import org.joda.time.LocalDate;
 
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ContiguousSet;
+import com.google.common.collect.DiscreteDomain;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -134,14 +137,6 @@ public class MonthOfYear
 	public boolean isAfterOrEqual(final MonthOfYear other) {
 		return _monthOfYear >= other.asInteger();
 	}
-	public MonthOfYear nextMonth() {
-		return _monthOfYear < 12 ? MonthOfYear.of(_monthOfYear+1)
-								 : MonthOfYear.of(1);
-	}
-	public MonthOfYear prevMonth() {
-		return _monthOfYear > 1 ? MonthOfYear.of(_monthOfYear-1)
-								: MonthOfYear.of(12);
-	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	ITERABLE
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -193,25 +188,23 @@ public class MonthOfYear
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-	/**
-	 * Creates a new MonthOfYear from this month minus the given number of months
-	 * @param months
-	 * @return
-	 */
-	public MonthOfYear minus(final int months) {
-		int newMonth = _monthOfYear - months;
-		if (newMonth <= 0) newMonth = 12 - Math.abs(newMonth);
-		return MonthOfYear.of(newMonth);
+	public MonthOfYear minus(final int num) {
+		int newVal = _monthOfYear - num;
+		if (newVal <= 0) newVal = 12 - Math.abs(newVal);
+		return MonthOfYear.of(newVal);
 	}
-	/**
-	 * Creates a new MonthOfYear from this month plus the given number of months
-	 * @param months
-	 * @return
-	 */
-	public MonthOfYear plus(final int months) {
-		int newMonth = _monthOfYear + months;
-		if (newMonth > 12) newMonth = 12 - newMonth;
-		return MonthOfYear.of(newMonth);
+	public MonthOfYear plus(final int num) {
+		int newVal = _monthOfYear + num;
+		if (newVal > 12) newVal = 12 - newVal;
+		return MonthOfYear.of(newVal);
+	}
+	public MonthOfYear nextMonth() {
+		return _monthOfYear < 12 ? MonthOfYear.of(_monthOfYear+1)
+								 : MonthOfYear.of(1);
+	}
+	public MonthOfYear prevMonth() {
+		return _monthOfYear > 1 ? MonthOfYear.of(_monthOfYear-1)
+								: MonthOfYear.of(12);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -245,7 +238,7 @@ public class MonthOfYear
 	public static final MonthOfYear MONTH12 = DECEMBER;
 
 /////////////////////////////////////////////////////////////////////////////////////////
-//	                                                                          
+//	GUAVA DISCRETE DOMAIN                                                                          
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Returns the months within the given range
@@ -253,8 +246,8 @@ public class MonthOfYear
 	 * @return
 	 */
 	public static Collection<MonthOfYear> monthsOfYearWithin(final Range<MonthOfYear> range) {
-		if (!range.hasLowerBound() || !range.hasUpperBound()) throw new IllegalArgumentException("Year range MUST be a CLOSED range (it MUST have upper and lower bounds)!");
-		if (range.getUpperBound().isBefore(range.getUpperBound())) throw new IllegalArgumentException("range upper bound is AFTER the lower bound!!");
+		if (!range.hasLowerBound() || !range.hasUpperBound()) throw new IllegalArgumentException("range MUST be a CLOSED range (it MUST have upper and lower bounds)!");
+		if (range.upperEndpoint().isBefore(range.lowerEndpoint())) throw new IllegalArgumentException("range upper bound is AFTER the lower bound!!");
 		
 		Collection<MonthOfYear> monthsOfYear = new ArrayList<>(); 
 		MonthOfYear currMonthOfYear = range.upperEndpoint();
@@ -264,5 +257,37 @@ public class MonthOfYear
 			currMonthOfYear = currMonthOfYear.minus(1);
 		}
 		return monthsOfYear;
+	}
+	/**
+	 * Guava's {@link DiscreteDomain} used to create a {@link Set} of {@link Year}s
+	 * <pre class='brush:java'>
+	 * 		ContiguousSet<Year> years = ContiguousSet.create(Range.closed(Year.of(1960),Year.now()),
+															 Year.DISCRETE_DOMAIN);
+	 * </pre>
+	 */
+	public static DiscreteDomain<MonthOfYear> DISCRETE_DOMAIN = new DiscreteDomain<MonthOfYear>() {
+																		@Override
+																		public MonthOfYear next(final MonthOfYear val) {
+																			if (val.is(MonthOfYear.DECEMBER)) throw new IllegalArgumentException();
+																			return val.nextMonth();
+																		}
+																		@Override
+																		public MonthOfYear previous(final MonthOfYear val) {
+																			if (val.is(MonthOfYear.JANUARY)) throw new IllegalArgumentException();
+																			return val.nextMonth();
+																		}
+																		@Override
+																		public long distance(final MonthOfYear start,final MonthOfYear end) {
+																			return end.asInteger() - start.asInteger();
+																		}
+																 };
+	public static ContiguousSet<MonthOfYear> createContiguousSetOf(final Range<MonthOfYear> range) {
+		return MonthOfYear.createContiguousSetOf(range.asGuavaRange());
+	}
+	public static ContiguousSet<MonthOfYear> createContiguousSetOf(final com.google.common.collect.Range<MonthOfYear> range) {
+		if (!range.hasLowerBound() || !range.hasUpperBound()) throw new IllegalArgumentException("range MUST be a CLOSED range (it MUST have upper and lower bounds)!");
+		if (range.upperEndpoint().isBefore(range.lowerEndpoint())) throw new IllegalArgumentException("range upper bound is AFTER the lower bound!!");
+		return ContiguousSet.create(range,
+								    DISCRETE_DOMAIN);		
 	}
 }

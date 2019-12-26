@@ -5,12 +5,15 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Set;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ContiguousSet;
+import com.google.common.collect.DiscreteDomain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -88,12 +91,6 @@ public class Year
 	public static Year fromString(final String year) {
 		return new Year(year);
 	}
-	public Year nextYear() {
-		return Year.of(_year+1);
-	}
-	public Year prevYear() {
-		return Year.of(_year-1);
-	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -162,21 +159,17 @@ public class Year
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-	/**
-	 * Creates a new Year from this year minus the given number of years
-	 * @param years
-	 * @return
-	 */
 	public Year minus(final int years) {
 		return Year.of(_year - years);
 	}
-	/**
-	 * Creates a new Year from this year plus the given number of years
-	 * @param years
-	 * @return
-	 */
 	public Year plus(final int years) {
 		return Year.of(_year + years);
+	}
+	public Year nextYear() {
+		return this.plus(1);
+	}
+	public Year prevYear() {
+		return this.minus(1);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	                                                                          
@@ -187,7 +180,7 @@ public class Year
 	 * @return
 	 */
 	public static Collection<Year> yearsWithin(final Range<Year> range) {
-		if (!range.hasLowerBound() || !range.hasUpperBound()) throw new IllegalArgumentException("Year range MUST be a CLOSED range (it MUST have upper and lower bounds)!");
+		if (!range.hasLowerBound() || !range.hasUpperBound()) throw new IllegalArgumentException("range MUST be a CLOSED range (it MUST have upper and lower bounds)!");
 		if (range.getUpperBound().isBefore(range.getUpperBound())) throw new IllegalArgumentException("range upper bound is AFTER the lower bound!!");
 		
 		Collection<Year> years = new ArrayList<>(); 
@@ -199,4 +192,35 @@ public class Year
 		}
 		return years;
 	}
-}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	GUAVA DISCRETE DOMAIN                                                                          
+/////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Guava's {@link DiscreteDomain} used to create a {@link Set} of {@link Year}s
+	 * <pre class='brush:java'>
+	 * 		ContiguousSet<Year> years = ContiguousSet.create(Range.closed(Year.of(1960),Year.now()),
+															 Year.DISCRETE_DOMAIN);
+	 * </pre>
+	 */
+	public static DiscreteDomain<Year> DISCRETE_DOMAIN = new DiscreteDomain<Year>() {
+																@Override
+																public Year next(final Year val) {
+																	return val.nextYear();
+																}
+																@Override
+																public Year previous(final Year val) {
+																	return val.prevYear();
+																}
+																@Override
+																public long distance(final Year start,final Year end) {
+																	return end.asInteger() - start.asInteger();
+																}
+														 };
+	public static ContiguousSet<Year> createContiguousSetOf(final Range<Year> range) {
+		return Year.createContiguousSetOf(range.asGuavaRange());
+	}
+	public static ContiguousSet<Year> createContiguousSetOf(final com.google.common.collect.Range<Year> range) {
+		return ContiguousSet.create(range,
+								    DISCRETE_DOMAIN);		
+	}
+} 
