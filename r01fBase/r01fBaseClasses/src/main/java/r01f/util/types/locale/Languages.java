@@ -11,8 +11,11 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Maps;
 
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import r01f.exceptions.Throwables;
 import r01f.facets.HasLanguage;
+import r01f.locale.I18NBundleAccess;
 import r01f.locale.Language;
 import r01f.locale.LanguageTexts;
 import r01f.locale.LanguageTexts.LangTextNotFoundBehabior;
@@ -77,6 +80,26 @@ public class Languages {
 									.add(Language.BASQUE,"[eu] Frances")
 									.add(Language.ENGLISH,"French"));
 		// TODO completar
+	}
+	/**
+	 * Use a I18N bundle to get a language name
+	 * <pre class='brush:java'>	
+	 * 		String name = Languages.nameUsing(i18n)
+	 * 							   .of(lang);
+	 * </pre>
+	 * @param i18n
+	 * @return
+	 */
+	public static LanguageNameUsingI18N nameUsing(final I18NBundleAccess i18n) {
+		return new LanguageNameUsingI18N(i18n);
+	}
+	@RequiredArgsConstructor(access=AccessLevel.PRIVATE)
+	public static class LanguageNameUsingI18N {
+		private final I18NBundleAccess _i18n;
+		public String of(final Language lang) {
+			String outName = _i18n.getMessage("language." + lang.getIso639_1());
+			return outName;
+		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  BUILDERS
