@@ -121,7 +121,7 @@ b) **Eclipse GIT plugins** (from eclipse update site) (install Git Client https:
 
 ```
 
-c) **Eclipse WTP tools** (from eclipse update site)
+c) **Eclipse WTP tools** (from eclipse update site http://download.eclipse.org/releases/latest)
 
 ```
 		  Web, XML, Java EE and OSGi Enterprise Development
