@@ -121,7 +121,7 @@ b) **Eclipse GIT plugins** (from eclipse update site) (install Git Client https:
 
 ```
 
-c) **Eclipse WTP tools** (from eclipse update site)
+c) **Eclipse WTP tools** (from eclipse update site http://download.eclipse.org/releases/latest)
 
 ```
 		  Web, XML, Java EE and OSGi Enterprise Development
@@ -171,7 +171,7 @@ b) **[Maven]**
 
 By default, EGit automatically adds resources marked as "Derived" to .gitignore
 ... if `[Maven > Hide folders of physically nested modules` is **enabled** (true), eclipse adds nested modules' folders to .gitignore
-This behavior an be disabled at `[Team] > [Git] > [Projects]` and **deselect** _"Automatically ignore derived resources by adding them to .gitignore"_
+This behavior can be disabled at `[Team] > [Git] > [Projects]` and **deselect** _"Automatically ignore derived resources by adding them to .gitignore"_
 
 *BEWARE*:
 * Ensure that `[Local Repository] (from merged user and global settings)` is `{dev_home}/maven_libs`
