@@ -1,5 +1,6 @@
 package r01f.locale;
 
+import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +11,8 @@ import r01f.guids.OID;
 /**
  * An interface for I18NBundleAccess
  */
-public interface I18NBundleAccess {
+public interface I18NBundleAccess 
+		 extends Serializable {
 	/**
 	 * Checks if there exists a message in this bundle
 	 * @param key 

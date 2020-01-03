@@ -278,6 +278,8 @@ public class I18NService {
 	public class I18NBundleAccessImpl
 	  implements I18NBundleAccess {
 		
+		private static final long serialVersionUID = -2598252820377106207L;
+		
 		private final Locale _locale;
 		
 		private I18NBundleAccessImpl(final Locale locale) {
