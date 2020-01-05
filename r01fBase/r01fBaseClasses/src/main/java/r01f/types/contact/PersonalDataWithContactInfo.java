@@ -44,9 +44,8 @@ public class PersonalDataWithContactInfo
 	@Override
 	public Summarizable asSummarizable() {
 		Summary summary = _personalData != null ? _personalData.asSummarizable()
-															.getSummary()
+															   .getSummary()
 										  : null;
 		return SummarizableBuilder.summarizableFrom(summary);
 	}
-
 }

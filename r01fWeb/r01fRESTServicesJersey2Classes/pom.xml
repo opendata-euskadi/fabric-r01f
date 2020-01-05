@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+<!-- ====================================================================== -->
+<!-- PARENT                                                                 -->
+<!-- ====================================================================== -->
+	<parent>
+		<groupId>r01.r01f.web</groupId>
+		<artifactId>r01fWeb</artifactId>
+		<version>${revision}</version>
+	</parent>
+
+<!-- ====================================================================== -->
+<!-- ARTIFACT                                                               -->
+<!-- ====================================================================== -->
+	<name>r01fRESTServicesJersey2Classes</name>
+	<artifactId>r01fRESTServicesJersey2Classes</artifactId>
+<!-- ====================================================================== -->
+<!-- DEPENDENCIES                                                           -->
+<!-- ====================================================================== -->
+	<dependencies>
+		
+		<!-- ///////////////////////////////////////// -->
+		<!-- REST Service  , must be inherited from r01fRESTServicesClasses,  but...
+		         Notes:
+		            1. [ JSR311 ]     JSR 2.0 cannot be used with Jersey 1
+		            2. [ Jersey 2 ]   Jersey 2  implements JSR 2.0 ...BUT, important!  has no integration with Guice ...]
+		            3.  ... Also [ check it ] , maybe,  another issues could be be caused by using   javax.servlet 3...
+		     When possible include/enable javax.ws.rs-api  and disable jsr311-api dependency into r01fRESTServicesClasses   
+		             -->		       
+		<!-- /////////////////////////////////////////  -->
+		<dependency>
+			<groupId>r01.r01f.web</groupId>
+			<artifactId>r01fRESTServicesClasses</artifactId>
+			<version>${revision}</version>
+			<exclusions>
+		        <exclusion>
+		           <groupId>javax.ws.rs</groupId>
+		           <artifactId>jsr311-api</artifactId>		 
+		        </exclusion>
+             </exclusions>
+		</dependency>
+		 <dependency>
+		    <groupId>javax.ws.rs</groupId>
+		    <artifactId>javax.ws.rs-api</artifactId>
+		    <version>2.0.1</version>
+		</dependency> 
+		<!-- ///////////////////////////////////////// -->
+		<!-- ServletAPI                                -->
+		<!-- ///////////////////////////////////////// -->
+		<!-- [r01fWebProfileClasses] has SevletAPI as a dependency, 
+			 ... BUT it's SCOPE is PROVIDED so it has to be defined
+			     here again -->
+		<dependency>
+		    <groupId>javax.servlet</groupId>
+		    <artifactId>javax.servlet-api</artifactId>
+		    <version>4.0.1</version>
+		    <scope>provided</scope>		<!-- BEWARE!!! -->
+		</dependency>
+		
+		<!-- ///////////////////////////////////////// -->
+		<!-- Jersey 2                                   -->
+		<!-- ///////////////////////////////////////// -->		 
+		<dependency>
+		    <groupId>org.glassfish.jersey.core</groupId>
+		    <artifactId>jersey-server</artifactId>
+		    <version>2.29.1</version>
+		</dependency>
+</dependencies>
+<!-- ====================================================================== -->
+<!-- BUILD                                                                  -->
+<!-- ====================================================================== -->
+	<build>
+		<pluginManagement>
+			<plugins>
+				<!--
+				ECLIPSE (see main pom.xml for further info) ===================
+				This plugin has NO effects in maven build:
+					m2e ONLY runs some 'standard' goals of the maven pom.xml since the aim of m2e is NOT to be a complete CI tool
+					... in order to include 'non-standard' goals in m2e execution and avoid [plugin execution not covered by the eclipse m2e plugin project build lifecycle mapping]
+						the 'non-standard' plugin MUST be explicitly included in m2e execution
+				-->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration> 
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<!-- flatten plugin -->
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.codehaus.mojo</groupId>
+										<artifactId>flatten-maven-plugin</artifactId>
+										<versionRange>[1.1.0,)</versionRange>
+										<goals>
+											<goal>flatten</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+</project>

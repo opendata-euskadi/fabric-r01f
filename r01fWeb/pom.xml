@@ -27,6 +27,7 @@
 		<module>r01fWebProfileClasses</module>
 		<module>r01fRESTServicesClasses</module>
 		<module>r01fRESTServicesJerseyClasses</module>
+		<module>r01fRESTServicesJersey2Classes</module>
 	</modules>
   
 <!-- ====================================================================== -->
