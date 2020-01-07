@@ -14,6 +14,8 @@ import r01f.objectstreamer.annotations.MarshallPolymorphicTypeInfo.MarshallTypeI
 public interface FindSummariesResult<M extends ModelObject> 
        	 extends PersistenceOperationOnObjectResult<Collection<? extends SummarizedModelObject<M>>>,
        	 		 HasModelObjectTypeInfo<M> {
+	
+	
 /////////////////////////////////////////////////////////////////////////////////////////
 //	                                                                          
 /////////////////////////////////////////////////////////////////////////////////////////
