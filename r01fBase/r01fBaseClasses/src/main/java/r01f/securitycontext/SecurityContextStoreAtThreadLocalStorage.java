@@ -26,6 +26,6 @@ public abstract class SecurityContextStoreAtThreadLocalStorage {
 	}
 	@SuppressWarnings("unchecked")
 	public static <S extends SecurityContext> S get() {
-	  return (S)SECURITY_CONTEXT.get();
+		return (S)SECURITY_CONTEXT.get();
 	}
 }
