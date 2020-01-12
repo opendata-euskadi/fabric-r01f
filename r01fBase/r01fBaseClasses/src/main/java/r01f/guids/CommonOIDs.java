@@ -289,6 +289,10 @@ public abstract class CommonOIDs {
 		public boolean isAdmin() {
 			return this.is(ADMIN);
 		}
+		public static final UserCode TEST = UserCode.forId("test");
+		public boolean isTest() {
+			return this.is(TEST);
+		}
 	}
 	@Immutable
 	@MarshallType(as="userRole")
