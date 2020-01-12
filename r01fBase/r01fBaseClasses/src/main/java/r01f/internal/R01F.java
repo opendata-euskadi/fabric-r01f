@@ -5,6 +5,8 @@ import java.nio.charset.Charset;
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Charsets;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import r01f.guids.CommonOIDs.AppCode;
 
@@ -14,20 +16,27 @@ import r01f.guids.CommonOIDs.AppCode;
  */
 @Slf4j
 @GwtIncompatible
-public class R01F {
+@NoArgsConstructor(access=AccessLevel.PRIVATE)
+public abstract class R01F {
 ///////////////////////////////////////////////////////////////////////////////
 // CONSTANTES
 ///////////////////////////////////////////////////////////////////////////////
-	public static String ENCODING_UTF_8 = "UTF-8";
-	public static String ENCODING_ISO_8859_1 = "ISO-8859-1";
+	public static final String ENCODING_UTF_8 = "UTF-8";
+	public static final String ENCODING_ISO_8859_1 = "ISO-8859-1";
 	
-	public static Charset DEFAULT_CHARSET = Charsets.UTF_8; 
+	public static final Charset DEFAULT_CHARSET = Charsets.UTF_8; 
 	
-	public static int CORE_GROUP = 0;
+	public static final int CORE_GROUP = 0;
 	
-	public static AppCode R01_APP_CODE = AppCode.forId("r01");
-	public static AppCode APP_CODE = AppCode.forId("r01f");
-	public static AppCode LEGACY_APP_CODE = AppCode.forId("r01ft");
+	@Deprecated
+	public static final AppCode R01_APP_CODE = R01FAppCodes.R01_APP_CODE;
+	
+	@Deprecated
+	public static final AppCode APP_CODE = R01_APP_CODE;
+	
+	@Deprecated
+	public static final AppCode LEGACY_APP_CODE = R01FAppCodes.LEGACY_APP_CODE;
+	
 /////////////////////////////////////////////////////////////////////////////////////////
 //  
 /////////////////////////////////////////////////////////////////////////////////////////
