@@ -41,16 +41,14 @@ public abstract class RESTResourceConfigBase
                                                  register(r);
                                               });
         }
-
         // Request received objects mappers: transforms Java->XML for REST methods param types
         Set<Class<? extends MessageBodyReader<?>>> reqReceivedTypesMappers = this.getRequestReceivedTypesMappers();
         if (CollectionUtils.hasData(reqReceivedTypesMappers)) {
-              restResourceTypes.stream()
-                                .forEach(r -> {  log.warn("Registering [ Jersey 2 Req Type ] {} ]", r.getCanonicalName());
+              reqReceivedTypesMappers.stream()
+                                		.forEach(r -> {  log.warn("Registering [ Jersey 2 Reequest Type ] {} ]", r.getCanonicalName());
                                                  register(r);
                                               });
         }
-
         // Response sent objects mappers: transforms Java->XML for REST methods return types
         Set<Class<? extends MessageBodyWriter<?>>> respSentTypesMappers = this.getResponseSentTypesMappers();
         if (CollectionUtils.hasData(respSentTypesMappers)) {
@@ -59,7 +57,6 @@ public abstract class RESTResourceConfigBase
                                                  register(r);
                                               });
         }
-
         // Exception Mappers
         Set<Class<? extends ExceptionMapper<?>>> expsMappers = this.getExceptionsMappers();
         if (CollectionUtils.hasData(expsMappers)) {
@@ -67,27 +64,12 @@ public abstract class RESTResourceConfigBase
                				.forEach(r -> {  log.warn("Registering [ Jersey 2  Exception Mapper Type  {} ]", r.getCanonicalName());
                                                  register(r);
                                       });
-        }
-        
-        
-        
-      //   _injector=  _bootstrapGuiceInjector();            
-       //  initGuiceIntoHK2Bridge
-       // initGuiceIntoHK2Bridge(serviceLocator, _injector);
+        }  
     }
 
 /////////////////////////////////////////////////////////////////////////////////////////
 //  METHODS TO IMPLEMENT
 /////////////////////////////////////////////////////////////////////////////////////////
-    //protected abstract Injector _bootstrapGuiceInjector();
-/////////////////////////////////////////////////////////////////////////////////////////
-//
-/////////////////////////////////////////////////////////////////////////////////////////
-   /* private void initGuiceIntoHK2Bridge(final ServiceLocator serviceLocator, final Injector injector) {
-        GuiceBridge.getGuiceBridge().initializeGuiceBridge(serviceLocator);
-        GuiceIntoHK2Bridge guiceBridge = serviceLocator.getService(GuiceIntoHK2Bridge.class);
-        guiceBridge.bridgeGuiceInjector(injector);
-    }*/
     /**
      * @return the {@link RESTResource} implementing types
      */

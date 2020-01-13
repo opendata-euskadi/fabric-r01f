@@ -10,7 +10,7 @@ import r01f.model.facets.HasNumericID;
 
 
 /**
- * interface for model objects that can be persisted in some kind of storage
+ * Interface for model objects that can be persisted in some kind of storage
  */
 public interface PersistableModelObject<O extends PersistableObjectOID>
 		 extends PersistableObject,			// can have facets (it's persistable)
