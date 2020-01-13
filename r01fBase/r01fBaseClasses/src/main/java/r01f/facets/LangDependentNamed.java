@@ -21,7 +21,7 @@ import r01f.locale.LanguageTextsWrapper;
  *
  *			@Override
  *			public LangDependentNamed asLangDependentNamed() {
- *				return new LangDependentNamedDelegate<MT01WeatherForecastTown>(this);
+ *				return new LangDependentNamedDelegate<MyLangDepNamedType>(this);
  *			}
  *		}
  * </pre>
