@@ -13,11 +13,23 @@ import r01f.enums.EnumWithCodeWrapper;
 @RequiredArgsConstructor
 public enum AscendingDescending
  implements EnumWithCode<String,AscendingDescending> {
-	ASCENDING("ASC"),
-	DESCENDING("DESC");
+	ASCENDING("ASC") {
+		@Override
+		public AscendingDescending getOpposite() {
+			return DESCENDING;
+		}
+	},
+	DESCENDING("DESC") {
+		@Override
+		public AscendingDescending getOpposite() {
+			return ASCENDING;
+		}
+	};
 	
 	@Getter private final String _code;
 	@Getter private final Class<String> _codeType = String.class;
+	
+	public abstract AscendingDescending getOpposite();
 	
 	private static EnumWithCodeWrapper<String,AscendingDescending> WRAPPER = EnumWithCodeWrapper.wrapEnumWithCode(AscendingDescending.class);
 /////////////////////////////////////////////////////////////////////////////////////////
