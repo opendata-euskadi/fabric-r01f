@@ -42,8 +42,11 @@ public final class LanguageTextsAccessWrapper {
 	}
 	public String getInOrDefault(final Language lang,
 								 final String def) {
-		return this.getIn(lang)
-				   .or(def);
+		return def != null
+				? this.getIn(lang)
+					  .or(def)
+				: this.getIn(lang)
+					  .orNull();
 	}
 	public Optional<String> getInAnyLanguage() {
 		if (_hasLangTexts == null) return Optional.fromNullable(null);
