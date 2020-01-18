@@ -12,6 +12,7 @@ import org.joda.time.DateTime;
 
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Objects;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import lombok.AccessLevel;
@@ -385,6 +386,12 @@ public class BooleanQueryClause
 		return new BooleanQueryClauseStep0Builder(id,
 												  new LinkedHashSet<QualifiedQueryClause<? extends QueryClause>>());
 	}
+	public static BooleanQueryClause of(final QualifiedQueryClause<? extends QueryClause>... clauses) {
+		return BooleanQueryClause.of(Sets.newLinkedHashSet(Lists.newArrayList(clauses)));
+	}
+	public static BooleanQueryClause of(final Set<QualifiedQueryClause<? extends QueryClause>> clauses) {
+		return new BooleanQueryClause(clauses);
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  BUILDER
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -395,6 +402,13 @@ public class BooleanQueryClause
 		
 		public BooleanQueryClauseStep1Builder field(final FieldID fieldId) {
 			return new BooleanQueryClauseStep1Builder(_id,_clauses,fieldId);
+		}
+		public BooleanQueryClause of(final QualifiedQueryClause<? extends QueryClause>... clauses) {
+			return this.of(Sets.newLinkedHashSet(Lists.newArrayList(clauses)));
+		}
+		public BooleanQueryClause of(final Set<QualifiedQueryClause<? extends QueryClause>> clauses) {
+			return new BooleanQueryClause(_id,
+										  clauses);
 		}
 		public BooleanQueryClause build() {
 			return new BooleanQueryClause(_id,

@@ -151,6 +151,7 @@ public class EqualsQueryClause<T>
 		private final FieldID _fieldId;
 		
 		public <T> EqualsQueryClause<T> of(final T value) {
+			if (value == null) throw new IllegalArgumentException("invalid equals value");
 			return new EqualsQueryClause<T>(_fieldId,
 											value);	
 		}
