@@ -42,8 +42,13 @@ public interface SecurityContext
 	 */
 	public boolean isAnonymousUser();
 	/**
-	 * @return true if the security context is for the MASTER user (an internal user will all privileges)
+	 * @return true if the security context is for the SYSTEM user (an internal user will all privileges)
 	 */
+	public boolean isSystemUser();
+	/**
+	 * use isSystemUser
+	 */
+	@Deprecated
 	public boolean isMasterUser();
 	/**
 	 * @return the Date when this user context was created

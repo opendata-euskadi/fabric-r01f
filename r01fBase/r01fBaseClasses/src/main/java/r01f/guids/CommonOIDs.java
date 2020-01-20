@@ -281,17 +281,24 @@ public abstract class CommonOIDs {
 		public boolean isAnonymous() {
 			return this.is(ANONYMOUS);
 		}
-		public static final UserCode MASTER = UserCode.forId("master");
-		public boolean isMaster() {
-			return this.is(MASTER);
+		public static final UserCode SYSTEM = UserCode.forId("system");
+		public boolean isSystem() {
+			return this.is(SYSTEM);
 		}
-		public static final UserCode ADMIN = MASTER;
+		public static final UserCode ADMIN = UserCode.forId("admin");
 		public boolean isAdmin() {
 			return this.is(ADMIN);
-		}
+		}		
 		public static final UserCode TEST = UserCode.forId("test");
 		public boolean isTest() {
 			return this.is(TEST);
+		}
+		// Use [system] for operations performed internally by the system
+		@Deprecated
+		public static final UserCode MASTER = UserCode.forId("master");
+		@Deprecated
+		public boolean isMaster() {
+			return this.is(MASTER);
 		}
 	}
 	@Immutable
@@ -416,7 +423,10 @@ public abstract class CommonOIDs {
 
 		private static final long serialVersionUID = -7186228864961079493L;
 
-		public static final AuthenticatedActorID MASTER = AuthenticatedActorID.forId("master",false);	// it's an app
+		@Deprecated	// use SYSTEM
+		public static final AuthenticatedActorID MASTER = AuthenticatedActorID.forUser(UserCode.MASTER,false);	// it's an app
+		
+		public static final AuthenticatedActorID SYSTEM = AuthenticatedActorID.forUser(UserCode.SYSTEM,false);	// it's an app
 		
 		private boolean _app;	// sets if the auth actor is a physical user or an app
 
@@ -428,7 +438,8 @@ public abstract class CommonOIDs {
 			super(id);
 			_app = !isUser;
 		}
-		public static AuthenticatedActorID forId(final String id,final boolean isUser) {
+		public static AuthenticatedActorID forId(final String id,
+												 final boolean isUser) {
 			return new AuthenticatedActorID(id,isUser);
 		}
 		public static AuthenticatedActorID valueOf(final String id) {
@@ -437,6 +448,11 @@ public abstract class CommonOIDs {
 		public static AuthenticatedActorID forUser(final UserCode userCode) {
 			return new AuthenticatedActorID(userCode.asString(),
 											true);		// phisical user
+		}
+		public static AuthenticatedActorID forUser(final UserCode userCode,
+												   final boolean isUser) {
+			return new AuthenticatedActorID(userCode.asString(),
+											isUser);	
 		}
 		public static AuthenticatedActorID forApp(final AppCode appCode) {
 			return new AuthenticatedActorID(appCode.asString(),

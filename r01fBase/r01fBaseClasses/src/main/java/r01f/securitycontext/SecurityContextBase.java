@@ -53,12 +53,12 @@ public abstract class SecurityContextBase
 	@MarshallField(as="securityToken",escape=true)
 	@Getter @Setter protected SecurityToken _securityToken;
 	/**
-	 * True if this token is for a MASTER user (a one with all privileges)
+	 * True if this token is for a SYSTEN user (a system internal one with all privileges)
 	 * Usually, when true, a [token] is provided 
 	 */
-	@MarshallField(as="masterUser",
+	@MarshallField(as="systemUser",
 				   whenXml=@MarshallFieldAsXml(attr=true))	
-	@Getter @Setter protected boolean _masterUser;
+	@Getter @Setter protected boolean _systemUser;
 	/**
 	 * The login page url
 	 */
@@ -141,7 +141,7 @@ public abstract class SecurityContextBase
 							   final TenantID tenantId) {
 		this();
 		_securityToken = securityToken;
-		_masterUser = master;
+		_systemUser = master;
 		_tenantId = tenantId;
 		_createDate = new Date();
 	}
@@ -180,6 +180,14 @@ public abstract class SecurityContextBase
 	public boolean isAnonymousUser() {
 		return this.isForUser()							// it's an user login 
 		    && this.getUserCode().isAnonymous();		// and it's anonymous
+	}
+	@Override @Deprecated	// use isSystemUser()
+	public boolean isMasterUser() {
+		return this.isSystemUser();
+	}
+	@Deprecated	// use setSystemUser()
+	public void setMasterUser(final boolean master) {
+		this.setSystemUser(master);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  
