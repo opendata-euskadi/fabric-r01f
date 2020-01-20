@@ -48,9 +48,9 @@ import r01f.guids.CommonOIDs.SecurityToken;
  * 				@Provides					// provides a client api 
  * 				@ClientAPIForSystemUser		// for SYSTEM system usage
  * 				@Singleton		// BEWARE!!!
- *				private MyClientApi _provideMasterClientAPI(@SecurityContextProviderForSystemUser MyMasterSecurityContextProvider securityContextProvider,
- *														    @ModelObjectsMarshaller final Marshaller modelObjectsMarshaller,
- *			   							  				    @Named("appCode") final Map<Class,ServiceInterface> srvcIfaceMappings) {
+ *				private MyClientApi _provideMasterClientAPI(@SecurityContextProviderForSystemUser final Provider<SecurityContext> securityContextProvider,
+ *														                  @ModelObjectsMarshaller final Marshaller modelObjectsMarshaller,
+ *			   							  				                        @Named("appCode") final Map<Class,ServiceInterface> srvcIfaceMappings) {
  *					// This creates an ad-hoc client api that uses a 
  *					// legitimated SecurityContext provider 
  *					return new MyClientApi(securityContextProvider,
@@ -95,6 +95,13 @@ import r01f.guids.CommonOIDs.SecurityToken;
  * 				_service.doSomething(masterSecurityContext);
  * 			}
  * 		}
+ * </pre>
+ * 
+ * Finally if the SecurityContext provider is needed:
+ * <pre class='brush:java'>
+ * 		TypeLiteral<Provider<SecurityContext>> securityContextProviderTypeLiteral = new TypeLiteral<Provider<SecurityContext>>() { };
+ * 		Provider<SecurityContext> securityContextProvider = injector.getInstance(Key.get(securityContextProviderTypeLiteral,
+ *																		   			 	 SecurityContextProviderForSystemUser.class));
  * </pre>
  *  
  * @param <C>
