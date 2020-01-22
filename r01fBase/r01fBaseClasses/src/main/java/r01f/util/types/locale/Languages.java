@@ -32,7 +32,7 @@ public class Languages {
 /////////////////////////////////////////////////////////////////////////////////////////
 //  http://www.w3.org/International/articles/language-tags/
 //	http://download1.parallels.com/SiteBuilder/Windows/docs/3.2/en_US/sitebulder-3.2-win-sdk-localization-pack-creation-guide/30801.htm
-/////////////////////////////////////////////////////////////////////////////////////////	
+/////////////////////////////////////////////////////////////////////////////////////////
 	public static final Locale SPANISH = new Locale("es","ES");
 	public static final Locale BASQUE = new Locale("eu","ES");
 	public static final Locale ENGLISH = new Locale("en","EN");
@@ -46,9 +46,9 @@ public class Languages {
 	public static final Locale ROMANIAN = new Locale("ro","RO");
 	public static final Locale JAPANESE = new Locale("ja","JP");
 	public static final Locale RUSSIAN = new Locale("ru","RU");
-	public static final Locale ITALIAN = new Locale("it","IT"); 
+	public static final Locale ITALIAN = new Locale("it","IT");
 	public static final Locale PORTUGUESE = new Locale("pt","PT");
-	
+
 /////////////////////////////////////////////////////////////////////////////////////////
 //  LANGUAGE NAME TRANSLATIONS
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -72,18 +72,18 @@ public class Languages {
 		LANGUAGE_NAMES.put(Language.DEUTCH,
 						   new LanguageTextsMapBacked(LangTextNotFoundBehabior.RETURN_NULL)
 									.add(Language.SPANISH,"Alemán")
-									.add(Language.BASQUE,"[eu] Alemán")
+									.add(Language.BASQUE,"Alemaniera")
 									.add(Language.ENGLISH,"Deutch"));
 		LANGUAGE_NAMES.put(Language.FRENCH,
 						   new LanguageTextsMapBacked(LangTextNotFoundBehabior.THROW_EXCEPTION)
 									.add(Language.SPANISH,"Francés")
-									.add(Language.BASQUE,"[eu] Frances")
+									.add(Language.BASQUE,"Frantsesa")
 									.add(Language.ENGLISH,"French"));
 		// TODO completar
 	}
 	/**
 	 * Use a I18N bundle to get a language name
-	 * <pre class='brush:java'>	
+	 * <pre class='brush:java'>
 	 * 		String name = Languages.nameUsing(i18n)
 	 * 							   .of(lang);
 	 * </pre>
@@ -130,15 +130,15 @@ public class Languages {
 		Language outLang = null;
 		for (Language lang : Language.values()) {
 			if (lang == Language.ANY) continue;
-			if (theLang.equals("cz")) theLang = "cs";	// bug: czech republic was incorrectly represented as cz BUT really it's cs-CZ  
+			if (theLang.equals("cz")) theLang = "cs";	// bug: czech republic was incorrectly represented as cz BUT really it's cs-CZ
 			if (Languages.getLocale(lang).getLanguage().equals(theLang)) {
 				outLang = lang;
 				break;
 			}
 		}
-		if (outLang == null 
-		 && (theLang.equalsIgnoreCase("--") 
-				|| theLang.equalsIgnoreCase("any") 
+		if (outLang == null
+		 && (theLang.equalsIgnoreCase("--")
+				|| theLang.equalsIgnoreCase("any")
 				|| theLang.equalsIgnoreCase("all"))) outLang = Language.ANY;
 		return outLang;
 	}
@@ -154,7 +154,7 @@ public class Languages {
 		Language outLang = null;
 		for (Language lang : Language.values()) {
 			if (lang == Language.ANY) continue;
-			
+
 			Locale loc = Languages.getLocale(lang);
 			if (loc.getLanguage().equals(theLang)
 			 && loc.getCountry().equals(country)) {
@@ -182,7 +182,7 @@ public class Languages {
 		return Languages.fromLanguageCode(folder);
 	}
 	public static Language fromCountryCodeLowercase(final String langCode) {
-		return Languages.fromLanguageCode(langCode); 
+		return Languages.fromLanguageCode(langCode);
 	}
 	public static Language fromLanguage(final String lang) {
 		return Languages.fromLanguageCode(lang);
@@ -193,14 +193,14 @@ public class Languages {
 	public static Language fromLanguageCode(final String langCode) {
 		if (langCode == null) throw new IllegalArgumentException("Not a valid lang code (null)");
 		Language outLang = Languages.of(langCode.substring(0,2));
-		if (outLang == null 
-		 && (langCode.equalsIgnoreCase("--") 
-				|| langCode.equalsIgnoreCase("any") 
+		if (outLang == null
+		 && (langCode.equalsIgnoreCase("--")
+				|| langCode.equalsIgnoreCase("any")
 				|| langCode.equalsIgnoreCase("all"))) outLang = Language.ANY;
 		return outLang;
 	}
 	/**
-	 * Builds a {@link Language} from the iso 639_1 code 
+	 * Builds a {@link Language} from the iso 639_1 code
 	 * @param language
 	 * @return
 	 */
@@ -217,7 +217,7 @@ public class Languages {
 		return outLang;
 	}
 	/**
-	 * Builds a {@link Language} from the iso 639_2 code 
+	 * Builds a {@link Language} from the iso 639_2 code
 	 * @param language
 	 * @return
 	 */
@@ -240,7 +240,7 @@ public class Languages {
 //  METHODS
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
-	 * Gets a locale 
+	 * Gets a locale
 	 * @param lang
 	 * @return
 	 */
@@ -269,10 +269,10 @@ public class Languages {
 			break;
 		case POLISH:
 			outLocale = Languages.POLISH;
-			break;	
+			break;
 		case SWEDISH:
 			outLocale = Languages.SWEDISH;
-			break;	
+			break;
 		case HUNGARIAN:
 			outLocale = Languages.HUNGARIAN;
 			break;
@@ -281,10 +281,10 @@ public class Languages {
 			break;
 		case ROMANIAN:
 			outLocale = Languages.ROMANIAN;
-			break;	
+			break;
 		case JAPANESE:
 			outLocale = Languages.JAPANESE;
-			break;	
+			break;
 		case RUSSIAN:
 			outLocale = Languages.RUSSIAN;
 			break;
@@ -299,7 +299,7 @@ public class Languages {
 			break;
 		}
 		return outLocale;
-		
+
 	}
 	/**
 	 * A var that represents a language
@@ -318,7 +318,7 @@ public class Languages {
 		} else {
 			outCountry = Languages.getLocale(lang)
 								  .getCountry();
-		} 
+		}
 		return outCountry;
 	}
 	/**
@@ -358,7 +358,7 @@ public class Languages {
 						.toUpperCase();
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Returns a list of the countries
@@ -374,7 +374,7 @@ public class Languages {
 	}
 	/**THROW_EXCEPTION
 	 * Returns a regular expression to match the countries
-	 * @param captureGroup if the regular expression conforms a capture group 
+	 * @param captureGroup if the regular expression conforms a capture group
 	 * @return (es|eu|en|fr...) if captureGroup=true and (?:es|eu|en|fr...) if captureGroup=false
 	 */
 	public static String countryMatchRegEx(final boolean captureGroup) {
@@ -409,7 +409,7 @@ public class Languages {
 	}
 	/**
 	 * Returns a regular expression to match the language
-	 * @param captureGroup if the regular expression conforms a capture group 
+	 * @param captureGroup if the regular expression conforms a capture group
 	 * @return (es|eu|en|fr...) if captureGroup=true and (?:es|eu|en|fr...) if captureGroup=false
 	 */
 	public static String languageMatchRegEx(final boolean captureGroup) {
@@ -438,11 +438,11 @@ public class Languages {
 		return sb.toString();
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Fakes a translation
-	 * If the provided text is for example 'my text' and the language is ENGLISH, 
+	 * If the provided text is for example 'my text' and the language is ENGLISH,
 	 * the returned fake translation is '(en) my text'
 	 * @param text
 	 * @param lang
@@ -467,7 +467,7 @@ public class Languages {
 		// use a collator to compare the names taking the locale into account
 		final Collator collator = Collator.getInstance(Languages.getLocale(lang));
 		collator.setStrength(Collator.PRIMARY);
-		
+
 		return new Comparator<String>() {
 						@Override
 						public int compare(final String arg0,final String arg1) {
@@ -479,7 +479,7 @@ public class Languages {
 		return new Comparator<Language>() {
 						@Override
 						public int compare(final Language o1,final Language o2) {
-							return o1.ordinal() == o2.ordinal() 
+							return o1.ordinal() == o2.ordinal()
 										? 0
 										: o1.ordinal() > o2.ordinal() ? 1
 																	  : -1;
@@ -490,7 +490,7 @@ public class Languages {
 //  UTILS
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
-	 * Filter a collection of objects extending HasLanguage so it return only 
+	 * Filter a collection of objects extending HasLanguage so it return only
 	 * the objects with the given language
 	 * @param links
 	 * @return
@@ -508,5 +508,5 @@ public class Languages {
 									.toList()
 					: null;
 	}
-	
+
 }
