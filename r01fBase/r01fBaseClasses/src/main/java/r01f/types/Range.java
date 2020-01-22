@@ -105,6 +105,9 @@ public class Range<T extends Comparable<? super T>>
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR & BUILDER
 /////////////////////////////////////////////////////////////////////////////////////////
+	public static <T extends Comparable<? super T>> Range<T> wrap(final com.google.common.collect.Range<T> range) {
+		return new Range<T>(range);
+	}
 	public Range(final com.google.common.collect.Range<T> range) {
 		_range = range;
 		_upperBound = range.hasUpperBound() ? range.upperEndpoint() : null;
