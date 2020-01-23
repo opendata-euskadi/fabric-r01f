@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.FluentIterable;
@@ -137,7 +138,15 @@ public abstract class ParametersWrapperBase<SELF_TYPE extends ParametersWrapperB
 																								&& entry.getKey() != null
 																								&& entry.getValue() != null;
 																						}
-																	   			})
+																				})
+																	   .transform(new Function<Map.Entry<String,String>,Map.Entry<String,String>>() {
+																						@Override
+																						public Entry<String, String> apply(Entry<String, String> t) {
+																							t.setValue(t.getValue().replaceAll(String.valueOf(DEFAULT_PARAM_SPLIT_CHAR),
+																															   _paramsParser.getParamValueEncoderDecoder().encodeValue(String.valueOf(DEFAULT_PARAM_SPLIT_CHAR))));
+																							return t;
+																						}
+																	   })
 																	   .toList());
 		} else {
 			_params = null;
