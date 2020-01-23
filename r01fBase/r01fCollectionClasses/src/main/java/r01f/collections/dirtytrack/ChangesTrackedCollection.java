@@ -37,11 +37,11 @@ public class ChangesTrackedCollection<V>
 	
 	@Override public int size() { 			return _currentEntries.size(); 			}
 	@Override public boolean isEmpty() {	return _currentEntries.isEmpty();		}	
-	@Override public boolean contains(Object o) {			return _currentEntries.contains(o);			}
-	@Override public boolean containsAll(Collection<?> c) {	return _currentEntries.containsAll(c);		}
+	@Override public boolean contains(final Object o) {			return _currentEntries.contains(o);			}
+	@Override public boolean containsAll(final Collection<?> c) {	return _currentEntries.containsAll(c);		}
 	@Override public Iterator<V> iterator() {		return _currentEntries.iterator();		}
 	@Override public Object[] toArray() {			return _currentEntries.toArray();		}
-	@Override public <T> T[] toArray(T[] a) {		return _currentEntries.toArray(a);		}
+	@Override public <T> T[] toArray(final T[] a) {		return _currentEntries.toArray(a);		}
 	
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CHANGES TRACKER
