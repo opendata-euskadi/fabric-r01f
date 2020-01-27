@@ -115,7 +115,7 @@ public abstract class SearchFilterForModelObjectBase<SELF_TYPE extends SearchFil
 																  .transform(new Function<Class<? extends M>,Class<? extends ModelObject>>() {
 																					@Override @SuppressWarnings("cast")
 																					public Class<? extends ModelObject> apply(final Class<? extends M> type) {
-																						return (Class<? extends ModelObject>)type;
+																						return type;
 																					}
 																  			 })
 																  .toList();
@@ -200,8 +200,8 @@ public abstract class SearchFilterForModelObjectBase<SELF_TYPE extends SearchFil
 		QueryClause clause = _accessorWrapper.queryClauses()
 											 .find(fieldId);
 		if (clause != null) {
-			@SuppressWarnings({ "unchecked","cast" })
-			ContainedInQueryClause<Long> typeContainedIn = (ContainedInQueryClause<Long>)clause.as(ContainedInQueryClause.class);
+			@SuppressWarnings({ "unchecked" })
+			ContainedInQueryClause<Long> typeContainedIn = clause.as(ContainedInQueryClause.class);
 			typeContainedIn.setSpectrumFrom(typesCodes,
 											Long.class);
 		} else {
