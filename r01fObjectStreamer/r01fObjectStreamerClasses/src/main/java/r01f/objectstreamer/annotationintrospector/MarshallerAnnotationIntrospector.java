@@ -372,22 +372,26 @@ public class MarshallerAnnotationIntrospector
     			log.trace("{} has {} subtypes",
     					  keyType,(subTypes != null ? subTypes.size() : 0));
 
-    			if (CollectionUtils.hasData(subTypes)) {
+    			if (subTypes != null && CollectionUtils.hasData(subTypes)) {
     				outTypes = Lists.newArrayListWithExpectedSize(subTypes.size());
     			} else {
     				outTypes = Lists.newArrayListWithExpectedSize(0);
     			}
-    			for (Object subTypeObj : subTypes) {
-    				Class<?> subType = (Class<?>)subTypeObj;
 
-    				// find the typeId from the @TypeMarshall annotation or @JsonRootName
-    				// ... if none of these annotations is present, use the full class name
-    				String typeId = _findTypeIdFor(subType);
+    			if (subTypes != null) {
+	    			for (Object subTypeObj : subTypes) {
+	    				Class<?> subType = (Class<?>)subTypeObj;
 
-    				// register the type with it's id
-    				outTypes.add(new NamedType(subType,
-    										   typeId));
+	    				// find the typeId from the @TypeMarshall annotation or @JsonRootName
+	    				// ... if none of these annotations is present, use the full class name
+	    				String typeId = _findTypeIdFor(subType);
+
+	    				// register the type with it's id
+	    				outTypes.add(new NamedType(subType,
+	    										   typeId));
+	    			}
     			}
+
 	    		// cache
 	    		_subTypesByAbstractType.put(keyType,outTypes);
 
