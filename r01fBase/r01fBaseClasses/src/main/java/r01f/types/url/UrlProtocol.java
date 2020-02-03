@@ -146,20 +146,20 @@ public class UrlProtocol
 	 * @return
 	 */
 	public static UrlProtocol of(final String str) {
-		if (Strings.isNullOrEmpty(str)) return null;
-
-		String strNormalized = _normalize(str);
-
+		if (Strings.isNullOrEmpty(str)) {
+			return null;
+		}
 		// [1] - Maybe it's a complete url like http://xxxx
-		int p = strNormalized.indexOf("://");
-		UrlProtocol outProto = p > 0 ? new UrlProtocol(strNormalized.substring(0,p))
+		int p = str.indexOf("://");
+		UrlProtocol outProto = p > 0 ? new UrlProtocol(str.substring(0,p).toLowerCase())
 					 				 : null;
 		// [2] - Maybe it's just the protocol as http or https
+		String strNormalized = _normalize(str);
 		if (outProto == null) {
 			// try an standard protocol
 			StandardUrlProtocol stdProto = null;
 			for (StandardUrlProtocol std : StandardUrlProtocol.values()) {
-				if (std.getCode().equals(str)) {
+				if (std.getCode().equals(strNormalized)) {
 					stdProto = std;
 					break;
 				}
@@ -197,10 +197,10 @@ public class UrlProtocol
 					 : strNormalized;
 	}
 	private static String _normalize(final String str) {
-		// ServletRequest's getProtocol() method returns HTTP/1.1 
+		// ServletRequest's getProtocol() method returns HTTP/1.1
 		int slashPos = str.indexOf("/");
-		return slashPos > 0 ? str.substring(0,slashPos).trim()
-							: str.trim();
+		return slashPos > 0 ? str.substring(0,slashPos).trim().toLowerCase()
+							: str.trim().toLowerCase();
 	}
 	public static boolean is(final String str,final StandardUrlProtocol proto) {
 		UrlProtocol p = UrlProtocol.of(str);
