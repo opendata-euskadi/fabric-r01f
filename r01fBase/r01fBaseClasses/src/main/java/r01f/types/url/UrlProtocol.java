@@ -15,7 +15,9 @@ import r01f.util.types.Strings;
 @RequiredArgsConstructor
 public class UrlProtocol
   implements CanBeRepresentedAsString {
-/////////////////////////////////////////////////////////////////////////////////////////
+
+	private static final long serialVersionUID = 4733528269894276864L;
+	/////////////////////////////////////////////////////////////////////////////////////////
 //	CONSTANTS
 /////////////////////////////////////////////////////////////////////////////////////////
 	public static final UrlProtocol HTTP = StandardUrlProtocol.HTTP.toUrlProtocol();
@@ -26,7 +28,6 @@ public class UrlProtocol
 //	FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
 	private final String _asString;
-
 /////////////////////////////////////////////////////////////////////////////////////////
 //	METHODS
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -154,7 +155,7 @@ public class UrlProtocol
 		UrlProtocol outProto = p > 0 ? new UrlProtocol(str.substring(0,p).toLowerCase())
 					 				 : null;
 		// [2] - Maybe it's just the protocol as http or https
-		String strNormalized = _normalize(str);
+		String strNormalized = _normalizeJustProtocolString(str);
 		if (outProto == null) {
 			// try an standard protocol
 			StandardUrlProtocol stdProto = null;
@@ -189,14 +190,18 @@ public class UrlProtocol
 		return out != null ? out : def;
 	}
 	public static String removeFrom(final String str) {
-		if (Strings.isNullOrEmpty(str)) return null;
-
-		String strNormalized = _normalize(str);
-		int p = strNormalized.indexOf("://");
-		return p > 0 ? strNormalized.substring(p + "://".length())
-					 : strNormalized;
+		if (Strings.isNullOrEmpty(str)) {
+			return null;
+		}
+		int p = str.indexOf("://");
+		return p > 0 ? str.substring(p + "://".length())
+					 : str;
 	}
-	private static String _normalize(final String str) {
+	/**
+	 * @param str  A protocol in different ways..but just the protocol, http, HTTPS, HTTP/1.1
+	 * @return
+	 */
+	private static String _normalizeJustProtocolString(final String str) {
 		// ServletRequest's getProtocol() method returns HTTP/1.1
 		int slashPos = str.indexOf("/");
 		return slashPos > 0 ? str.substring(0,slashPos).trim().toLowerCase()
