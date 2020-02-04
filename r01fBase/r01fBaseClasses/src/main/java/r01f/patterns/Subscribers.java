@@ -39,6 +39,19 @@ public abstract class Subscribers {
 						}
 			   };
 	}
+	public static <T> Subscriber<T> from(final OnSuccessSubscriber<T> onSuccess) {
+		// Create a subscriber delegating to the onSuccess & onError subscribers
+		return new Subscriber<T>() {
+						@Override
+						public void onSuccess(final T result) {
+							onSuccess.onSuccess(result);
+						}
+						@Override
+						public void onError(final Throwable th) {
+							// do nothing on error
+						}
+			   };
+	}
 	public static <T> Subscriber<T> nop() {
 		return Subscribers.from(new OnSuccessSubscriber<T>() {
 										@Override
