@@ -56,8 +56,13 @@ Start apache in a DOS box:
 
 
 
+WINDOWS 10 NOTE
+===============
+Sometimes w10 has another process listening on port 80
 
-
+see: 
+https://serverfault.com/questions/65717/port-80-is-being-used-by-system-pid-4-what-is-that
+http://www.devside.net/wamp-server/opening-up-port-80-for-apache-to-use-on-windows
 
 
 Build with:
