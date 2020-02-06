@@ -54,6 +54,7 @@ Start apache in a DOS box:
 
 - Clone: https://src1.alm02.itbatera.euskadi.eus/opendata/meteo/met01webtest.git
 
+- Test: http://meteo.localhost/index_es.shtml
 
 
 WINDOWS 10 NOTE
