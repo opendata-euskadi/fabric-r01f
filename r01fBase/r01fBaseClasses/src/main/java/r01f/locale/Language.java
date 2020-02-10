@@ -38,7 +38,7 @@ public enum Language
 
 	KOREAN		(50,"ko","kor"),
 	POLISH		(51,"pl","pol"),
-	SWEDISH		(52,"sw","swe"),
+	SWEDISH		(52,"sv","swe"),
 	HUNGARIAN	(53,"hu","hun"),
 	CZECH		(54,"cs","ces"),
 	ROMANIAN	(55,"ro","ron"),
