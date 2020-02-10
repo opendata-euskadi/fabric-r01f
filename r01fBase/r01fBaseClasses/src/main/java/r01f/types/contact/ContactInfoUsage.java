@@ -17,9 +17,10 @@ import r01f.locale.I18NKey;
 @RequiredArgsConstructor
 public enum ContactInfoUsage
  implements EnumExtended<ContactInfoUsage> {
-	WORK		(I18NKey.named("contact.usge.work")),			// Work personal Phone
-	PERSONAL	(I18NKey.named("contact.usge.personal")),		// Personal Phone
-	COMPANY		(I18NKey.named("contact.usge.company")),		// Company's phone
+	ANY			(I18NKey.named("contact.usge.any")),			// any usage
+	WORK		(I18NKey.named("contact.usge.work")),			// Work usage
+	PERSONAL	(I18NKey.named("contact.usge.personal")),		// Personal
+	COMPANY		(I18NKey.named("contact.usge.company")),		// Company's
 	OTHER		(I18NKey.named("contact.usge.other"));			// Other usage
 
 	private final I18NKey _i18nKey;
@@ -40,8 +41,8 @@ public enum ContactInfoUsage
 					.toList();
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//	                                                                          
-/////////////////////////////////////////////////////////////////////////////////////////	
+//
+/////////////////////////////////////////////////////////////////////////////////////////
 	private static final transient EnumExtendedWrapper<ContactInfoUsage> DELEGATE = EnumExtendedWrapper.wrapEnumExtended(ContactInfoUsage.class);
 
 	@Override
@@ -57,5 +58,5 @@ public enum ContactInfoUsage
 	}
 	public boolean isNOT(final ContactInfoUsage el) {
 		return DELEGATE.isNOT(this,el);
-	}	
+	}
 }

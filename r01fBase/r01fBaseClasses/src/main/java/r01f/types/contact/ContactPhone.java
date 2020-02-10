@@ -26,11 +26,11 @@ import r01f.objectstreamer.annotations.MarshallType;
 @MarshallType(as="phoneChannel")
 @Accessors(prefix="_")
 @NoArgsConstructor
-public class ContactPhone 
+public class ContactPhone
 	 extends ContactMeanDataBase<ContactPhone> {
-	
+
 	private static final long serialVersionUID = 6677974112128068298L;
-	
+
 /////////////////////////////////////////////////////////////////////////////////////////
 //  FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -48,7 +48,7 @@ public class ContactPhone
 	@Getter @Setter private Phone _number;
 	/**
 	 * Hour range when could be contacted
-	 * 
+	 *
 	 * It is stored like a String but internally is used like a Range<Integer>. That is to avoid GWT incompatibility.
 	 * The lombok Getter and Setter are necessary because the explicit methods have the @GWTIncompatible annotation
 	 * and wont be generated in the GWT compilation.
@@ -64,7 +64,6 @@ public class ContactPhone
 	public void setAvailableRangeForCalling(final r01f.types.Range<Integer> _availableRangeForCalling) {
 		_availableRangeForCallingStr = _availableRangeForCalling.asString();
 	}
-	
 /////////////////////////////////////////////////////////////////////////////////////////
 //  FLUENT-API: CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -88,7 +87,7 @@ public class ContactPhone
 		_number = Phone.create(number);
 		return this;
 	}
-	
+
 	@GwtIncompatible("uses Range")
 	public ContactPhone availableRangeForCalling(final r01f.types.Range<Integer> range) {
 		_availableRangeForCallingStr = range.asString();
@@ -99,7 +98,7 @@ public class ContactPhone
 		return this;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//	                                                                          
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public void updateFrom(final ContactPhone other) {
@@ -109,7 +108,7 @@ public class ContactPhone
 		_availableRangeForCallingStr = other.getAvailableRangeForCallingStr();
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//	EQUALS & HASHCODE                                                                          
+//	EQUALS & HASHCODE
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public boolean equals(final Object obj) {
