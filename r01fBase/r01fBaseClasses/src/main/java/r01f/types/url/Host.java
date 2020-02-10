@@ -9,7 +9,7 @@ import r01f.objectstreamer.annotations.MarshallType;
 @Accessors(prefix="_")
 public class Host
 	 extends OIDBaseMutable<String> {
-	
+
 	private static final long serialVersionUID = -3712825671090881670L;
 /////////////////////////////////////////////////////////////////////////////////////////
 //  FIELDS
@@ -23,7 +23,7 @@ public class Host
 	private final transient UrlComponents _urlComponents;
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR
-/////////////////////////////////////////////////////////////////////////////////////////	
+/////////////////////////////////////////////////////////////////////////////////////////
 	public Host() {
 		/* default no args constructor for serialization purposes */
 		_urlComponents = null;
@@ -46,7 +46,7 @@ public class Host
 		return new Host(host);
 	}
 	public static Host strict(final Host other) {
-		return Host.strict(other.getId());  
+		return Host.strict(other.getId());
 	}
 	public static Host strict(final String host) {
 		if (host.indexOf("/") > 0 || host.indexOf(":") > 0) throw new IllegalArgumentException(host + " does NOT seem to be strictly a host!!");
@@ -61,7 +61,7 @@ public class Host
 		return new Host("localhost");
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * @return the host as an url

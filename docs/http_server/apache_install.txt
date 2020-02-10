@@ -1,0 +1,87 @@
+11 October 2015 
+
+httpd.apache.org 
+Download from: www.apachelounge.com
+
+
+Install
+-------
+- Unzip the apache24 folder to d:/develop/http_server/apache24 (that is the ServerRoot in the config).
+- Windows Service (http://httpd.apache.org/docs/2.4/platform/windows.html#winsvc)
+  ---------------
+	Install as a service with name: pci_httpd
+			>httpd.exe -k install -n "pci_httpd" -f "d:\develop\http_server\apache24\conf\httpd.conf"
+	Uninstall service:
+			httpd -k uninstall -n "pci_httpd"
+
+	ApacheMonitor: (optional)
+			Double click ApacheMonitor.exe, or put it in your Startup folder.
+
+Start apache in a DOS box: 
+        > httpd.exe
+
+
+- In conf/httpd.conf
+        * Change 
+			Define SRVROOT "c:/Apache24"  >   Define SRVROOT "d:/develop/http_server/apache24"  
+		* At the end of the file include the pci conf:
+			Include conf/pci/pci.conf
+			
+			This file contains 
+				# Local config
+				# =============================================================================
+				# The dir where apache is installed (the dir which contains the [modules] dir)
+				Define apache-server-root "${SRVROOT}"
+
+				# The os type: win | linux
+				Define r01-os win
+
+				# The Listen port
+				Define r01-listen-port
+
+				# The environment: local | sb-des | des | pru | prod
+				Define r01-env local
+
+				# The location of [r01] projects root
+				Define r01-projects-root d:/develop/projects/
+
+				# The location of [r01] apache config
+				Define r01-config-root ${r01-projects-root}/opendata/meteo/met01webtest/apache/conf
+
+				# =============================================================================
+				# Call the [r01] config
+				Include ${r01-config-root}/main.conf
+
+- Clone: https://src1.alm02.itbatera.euskadi.eus/opendata/meteo/met01webtest.git
+
+- Test: http://meteo.localhost/index_es.shtml
+
+
+WINDOWS 10 NOTE
+===============
+Sometimes w10 has another process listening on port 80
+
+see: 
+https://serverfault.com/questions/65717/port-80-is-being-used-by-system-pid-4-what-is-that
+http://www.devside.net/wamp-server/opening-up-port-80-for-apache-to-use-on-windows
+
+
+Build with:
+-----------
+nghttp2 1.3.4
+apr 1.5.2  with IPv6 enabled 
+apr-util 1.5.4  with Crypto OpenSSL enabled
+apr-iconv 1.2.1
+openssl 1.0.2d +asm
+zlib 1.2.8 +asm
+pcre 8.37 with JIT, SUPPORT_UTF8 and REBUILD_CHARTABLES enabled
+httpd.exe with OPENSSL_Applink and SupportedOS Manifest
+libxml2 2.9.2
+lua 5.1.5
+expat 2.1.0
+
+Minimum system required
+-----------------------
+Windows Vista SP2 / 7 SP1 - 8 / 8.1 / 10 / Server 2016 / 2008 R2 SP1 / Server 2012 R2
+
+
