@@ -164,12 +164,14 @@ under the License.
   <!--IMPORTANT!!!!!!!!!!!!!!!!!-->
   <!--AT LOCALHOST WHILE CREATING A NEW MAVEN PROJECT, IT CAN'T DOWNLOAD THE ARCHETYPE QUICKSTART 1.1 SETTINGS FROM DEFAULT REPOSITORY-->
   <!--CREATING A NEW MIRROR SOLVES THIS PROBLEM-->
+  <!-- 
     <mirror>
       <id>UK</id>
       <name>UK Central</name>
       <url>http://uk.maven.org/maven2</url>
       <mirrorOf>central</mirrorOf>
     </mirror>
+   -->
   </mirrors>
 
   <!-- profiles
