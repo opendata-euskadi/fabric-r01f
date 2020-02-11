@@ -59,6 +59,27 @@ public abstract class CommonOIDs {
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
+	@Immutable
+	@MarshallType(as="systemId")
+	@EqualsAndHashCode(callSuper=true)
+	@NoArgsConstructor
+	public static final class SystemID
+	     		      extends OIDBaseMutable<String> {
+		private static final long serialVersionUID = -6056892755877680637L;
+
+		public SystemID(final String oid) {
+			super(oid);
+		}
+		public static SystemID from(final String id) {
+			return new SystemID(id);
+		}
+		public static SystemID forId(final String id) {
+			return new SystemID(id);
+		}
+		public static SystemID valueOf(final String id) {
+			return new SystemID(id);
+		}
+	}
 	/**
 	 * AppCode
 	 */
@@ -107,7 +128,7 @@ public abstract class CommonOIDs {
 	public static abstract class AppComponentBase
 	                     extends OIDBaseMutable<String> {
 		private static final long serialVersionUID = 2884200091000668089L;
-		
+
 		public static final AppComponent DEFAULT = AppComponent.forId("default");
 		public static final AppComponent NO_COMPONENT = AppComponent.forId("_no_component_");
 
@@ -157,7 +178,7 @@ public abstract class CommonOIDs {
 /////////////////////////////////////////////////////////////////////////////////////////
 //	ROLE
 /////////////////////////////////////////////////////////////////////////////////////////
-	public static interface IsRole 
+	public static interface IsRole
 					extends OID {
 		// just a marker interface
 	}
@@ -166,7 +187,7 @@ public abstract class CommonOIDs {
 	@EqualsAndHashCode(callSuper=true)
 	@NoArgsConstructor
 	public static final class Role
-	     		      extends OIDBaseMutable<String> 
+	     		      extends OIDBaseMutable<String>
 				   implements IsRole {
 		private static final long serialVersionUID = 7547259948658810158L;
 		public Role(final String oid) {
@@ -179,7 +200,7 @@ public abstract class CommonOIDs {
 			return new Role(id);
 		}
 	}
-	
+
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -190,7 +211,7 @@ public abstract class CommonOIDs {
 	public static final class WorkPlaceCode
 	     		      extends OIDBaseMutable<String> {
 		private static final long serialVersionUID = -9005995212776716044L;
-		
+
 		public WorkPlaceCode(final String oid) {
 			super(oid);
 		}
@@ -217,9 +238,9 @@ public abstract class CommonOIDs {
 	@NoArgsConstructor
 	public static final class BuildingCode
 	     		      extends OIDBaseMutable<String> {
-		
+
 		private static final long serialVersionUID = -2459745121499121940L;
-		
+
 		public BuildingCode(final String oid) {
 			super(oid);
 		}
@@ -288,7 +309,7 @@ public abstract class CommonOIDs {
 		public static final UserCode ADMIN = UserCode.forId("admin");
 		public boolean isAdmin() {
 			return this.is(ADMIN);
-		}		
+		}
 		public static final UserCode TEST = UserCode.forId("test");
 		public boolean isTest() {
 			return this.is(TEST);
@@ -318,7 +339,7 @@ public abstract class CommonOIDs {
 		public static UserRole valueOf(final String id) {
 			return new UserRole(id);
 		}
-	}			
+	}
 	@Immutable
 	@MarshallType(as="password")
 	@EqualsAndHashCode(callSuper=true)
@@ -336,7 +357,7 @@ public abstract class CommonOIDs {
 																		}
 															   };
 		public Password(final String pwd) {
-			super(pwd);	
+			super(pwd);
 		}
 		public static Password forId(final String id) {
 			return new Password(id);
@@ -363,7 +384,7 @@ public abstract class CommonOIDs {
 	public static final class PasswordHash
 	     		      extends OIDBaseMutable<String> {
 		private static final long serialVersionUID = -4102923783713904433L;
-		
+
 		public PasswordHash(final String oid) {
 			super(oid);
 		}
@@ -425,9 +446,9 @@ public abstract class CommonOIDs {
 
 		@Deprecated	// use SYSTEM
 		public static final AuthenticatedActorID MASTER = AuthenticatedActorID.forUser(UserCode.MASTER,false);	// it's an app
-		
+
 		public static final AuthenticatedActorID SYSTEM = AuthenticatedActorID.forUser(UserCode.SYSTEM,false);	// it's an app
-		
+
 		private boolean _app;	// sets if the auth actor is a physical user or an app
 
 		public AuthenticatedActorID(final String id) {
@@ -452,7 +473,7 @@ public abstract class CommonOIDs {
 		public static AuthenticatedActorID forUser(final UserCode userCode,
 												   final boolean isUser) {
 			return new AuthenticatedActorID(userCode.asString(),
-											isUser);	
+											isUser);
 		}
 		public static AuthenticatedActorID forApp(final AppCode appCode) {
 			return new AuthenticatedActorID(appCode.asString(),
@@ -490,7 +511,7 @@ public abstract class CommonOIDs {
 	public static final class SecurityToken
 	     		      extends OIDBaseMutable<String> {
 		private static final long serialVersionUID = -6056892755877680637L;
-		
+
 		public SecurityToken(final String oid) {
 			super(oid);
 		}
@@ -549,7 +570,7 @@ public abstract class CommonOIDs {
 		private static final long serialVersionUID = -2820663417050382971L;
 
 		public static Environment DEFAULT = Environment.forId("default");
-		
+
 		public Environment(final String oid) {
 			super(oid);
 		}

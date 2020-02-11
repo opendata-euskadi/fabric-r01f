@@ -1,31 +1,38 @@
 package r01f.types.contact;
 
+import java.util.Collection;
+
 import com.google.common.base.Objects;
+import com.google.common.base.Predicate;
+import com.google.common.collect.FluentIterable;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import r01f.guids.CommonOIDs.SecurityToken;
+import r01f.guids.CommonOIDs.SystemID;
 import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
+import r01f.util.types.collections.CollectionUtils;
 
 /**
  * Base type for every {@link ContactInfo} media related object: {@link ContactMail}, {@link ContactPhone}, {@link ContactSocialNetwork}, etc
  * @param <SELF_TYPE>
  */
 @Accessors(prefix="_")
-abstract class ContactMeanDataBase<SELF_TYPE extends ContactMeanDataBase<SELF_TYPE>>   
+abstract class ContactMeanDataBase<SELF_TYPE extends ContactMeanDataBase<SELF_TYPE>>
        extends ContactInfoBase<ContactMeanDataBase<SELF_TYPE>>
 	implements ContactMeanData {
 
 	private static final long serialVersionUID = 8474784639738421690L;
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * usage of the contact media
 	 */
 	@MarshallField(as="usage",
-				   whenXml=@MarshallFieldAsXml(attr=true))	
+				   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter @Setter protected ContactInfoUsage _usage;
 	/**
 	 * Usage details (usually used when _usage = OTHER
@@ -39,8 +46,31 @@ abstract class ContactMeanDataBase<SELF_TYPE extends ContactMeanDataBase<SELF_TY
 	@MarshallField(as="default",
 				   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter @Setter protected boolean _default = false;
+	/**
+	 * Security tokens for any system
+	 */
+	@MarshallField(as="securityTokens",
+				   whenXml=@MarshallFieldAsXml(collectionElementName="token"))
+	@Getter @Setter protected Collection<ContactMeanToken> _securityTokens;
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//	SECURITY TOKENS BY SYSTEM (ie Firebase / AWS, etc)
+/////////////////////////////////////////////////////////////////////////////////////////
+	public SecurityToken getSecurityTokenFor(final SystemID sysId) {
+		ContactMeanToken token = CollectionUtils.hasData(_securityTokens)
+									? FluentIterable.from(_securityTokens)
+													.filter(new Predicate<ContactMeanToken>() {
+																	@Override
+																	public boolean apply(final ContactMeanToken token) {
+																		return token.getSystem().is(sysId);
+																	}
+															})
+													.first().orNull()
+									: null;
+		return token != null ? token.getToken()
+							 : null;
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	@SuppressWarnings("unchecked")
 	public SELF_TYPE useAsDefault() {
@@ -58,16 +88,16 @@ abstract class ContactMeanDataBase<SELF_TYPE extends ContactMeanDataBase<SELF_TY
 		return (SELF_TYPE)this;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//	                                                                          
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	public void updateFrom(final SELF_TYPE other) {
-		super.updateFrom(other); 
+		super.updateFrom(other);
 		_usage = other.getUsage();
 		_usageDetails = other.getUsageDetails();
 		_default = other.isDefault();
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//	EQUALS & HASHCODE                                                                          
+//	EQUALS & HASHCODE
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override @SuppressWarnings("unchecked")
 	public boolean equals(final Object obj) {
@@ -86,5 +116,5 @@ abstract class ContactMeanDataBase<SELF_TYPE extends ContactMeanDataBase<SELF_TY
 								_usage,
 							    _usageDetails,
 							    _default);
-	}	
+	}
 }
