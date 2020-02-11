@@ -12,6 +12,7 @@ import r01f.aspects.interfaces.dirtytrack.ConvertToDirtyStateTrackable;
 import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 import r01f.objectstreamer.annotations.MarshallType;
+import r01f.util.types.Strings;
 
 /**
  * Contact person's phone
@@ -58,11 +59,13 @@ public class ContactPhone
 	@Getter(AccessLevel.PROTECTED) @Setter(AccessLevel.PROTECTED) private String _availableRangeForCallingStr = null;
 	@GwtIncompatible("uses Range")
 	public r01f.types.Range<Integer> getAvailableRangeForCalling() {
+		if (Strings.isNullOrEmpty(_availableRangeForCallingStr)) return null;
 		return r01f.types.Range.parse(_availableRangeForCallingStr,Integer.class);
 	}
 	@GwtIncompatible("uses Range")
-	public void setAvailableRangeForCalling(final r01f.types.Range<Integer> _availableRangeForCalling) {
-		_availableRangeForCallingStr = _availableRangeForCalling.asString();
+	public void setAvailableRangeForCalling(final r01f.types.Range<Integer> availableRangeForCalling) {
+		if (availableRangeForCalling == null) _availableRangeForCallingStr = null;
+		_availableRangeForCallingStr = availableRangeForCalling.asString();
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  FLUENT-API: CONSTRUCTOR
