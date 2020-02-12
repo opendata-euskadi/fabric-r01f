@@ -8,10 +8,11 @@ import javax.ws.rs.ext.Provider;
 
 @Provider
 @CORSFilter
-public class CORSServletFilter 
-  implements ContainerResponseFilter {
+public class CORSServletFilter
+  implements ContainerResponseFilter,
+  			 RESTFilter {
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
     @Override
     public void filter(final ContainerRequestContext  req,
@@ -19,6 +20,6 @@ public class CORSServletFilter
         res.getHeaders().add("Access-Control-Allow-Origin", "*");
         res.getHeaders().add("Access-Control-Allow-Headers","origin, content-type, accept, authorization");
         res.getHeaders().add("Access-Control-Allow-Credentials", "true");
-        res.getHeaders().add("Access-Control-Allow-Methods","GET, POST, PUT, DELETE, OPTIONS, HEAD");       
+        res.getHeaders().add("Access-Control-Allow-Methods","GET, POST, PUT, DELETE, OPTIONS, HEAD");
     }
 }
