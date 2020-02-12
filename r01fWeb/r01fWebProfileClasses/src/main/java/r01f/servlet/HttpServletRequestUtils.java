@@ -36,7 +36,7 @@ public abstract class HttpServletRequestUtils {
 	 * @param realHttpReq
 	 * @return
 	 */
-	public static Host clienteRequestedHost(final HttpServletRequest realHttpReq) {
+	public static Host clientRequestedHost(final HttpServletRequest realHttpReq) {
 		// try to get the X-Forwarded-Host request header
         String forwardedHost = realHttpReq.getHeader("X-Forwarded-Host");
         
