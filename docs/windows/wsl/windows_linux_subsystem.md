@@ -1,12 +1,17 @@
 Windows Linux SubSystem
 =============================
+
 PRE: INSTALL POWERSHELL with .net CORE
 ======================================
+
 Install .net CORE SDK (not the runtime): https://dotnet.microsoft.com/download
-	Check the installation: https://docs.microsoft.com/en-us/dotnet/core/
+
+Check the installation: https://docs.microsoft.com/en-us/dotnet/core/
+	
 		cmd> dotnet new console
 
 Install PowerShell CORE:
+
 	https://aka.ms/pscore6
 	https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-core-on-windows?view=powershell-7
 
@@ -16,11 +21,16 @@ Install PowerShell CORE:
 
 INSTALL WINDOWS LINUX SUBSYSTEM
 ================================
+
 https://adamtheautomator.com/windows-subsystem-for-linux/#updating-to-windows-subsystem-for-linux-2
 [1] - Install Windows SubSystem for Linux
+
 			PowerShell > Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
+			
 [2] - Update to Windows Subsystem for Linux 2:
+
 			PowerShell > Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform
+			
 [3] -   1) Option 1:
 
 			In [windows store] app
