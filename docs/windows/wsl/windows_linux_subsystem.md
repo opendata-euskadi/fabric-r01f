@@ -1,0 +1,67 @@
+Windows Linux SubSystem
+=============================
+
+PRE: INSTALL POWERSHELL with .net CORE
+======================================
+
+Install .net CORE SDK (not the runtime): https://dotnet.microsoft.com/download
+
+Check the installation: https://docs.microsoft.com/en-us/dotnet/core/
+	
+		cmd> dotnet new console
+
+Install PowerShell CORE:
+
+	https://aka.ms/pscore6
+	https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-core-on-windows?view=powershell-7
+
+	cmd> dotnet tool install --global PowerShell
+
+	Update powershell to use [powershell core]: https://github.com/PowerShell/PowerShell/releases
+
+INSTALL WINDOWS LINUX SUBSYSTEM
+================================
+
+https://adamtheautomator.com/windows-subsystem-for-linux/#updating-to-windows-subsystem-for-linux-2
+[1] - Install Windows SubSystem for Linux
+
+			PowerShell > Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
+			
+[2] - Update to Windows Subsystem for Linux 2:
+
+			PowerShell > Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform
+			
+[3] -   1) Option 1:
+
+			In [windows store] app
+				Search for wsl or wsl ubuntu
+				Intall
+				Launch
+
+		2) Option 2:
+
+			Important!!!   See this !!  " Install WSL Manually on NON System Drive"  https://damsteen.nl/blog/2018/08/29/installing-wsl-manually-on-non-system-drive
+			                                                                         https://docs.microsoft.com/es-es/windows/wsl/install-manual
+
+			PowerShell > Invoke-WebRequest -Uri https://aka.ms/wsl-ubuntu-1804 -OutFile Ubuntu.appx -UseBasicParsing
+
+		3) Option 3:
+
+				https://chocolatey.org/packages/wsl-ubuntu-1804
+
+				PowerShell> Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+				PowerShell> choco install wsl-ubuntu-1804
+
+				...Linux will be installed to..
+
+				C:\ProgramData\chocolatey\lib
+
+
+				New-Item c:\store\ubuntu -ItemType Directory
+				Set-Location c:\store\ubuntu\ubuntu1804
+
+
+				Invoke-WebRequest -Uri https://aka.ms/wsl-ubuntu-1804 -OutFile Ubuntu.appx -UseBasicParsing
+
+
+

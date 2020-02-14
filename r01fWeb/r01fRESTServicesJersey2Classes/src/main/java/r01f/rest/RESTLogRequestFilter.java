@@ -25,19 +25,20 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Provider
 @RESTLogFilter
-public class RESTLogRequestFilter 
-  implements ContainerRequestFilter {
+public class RESTLogRequestFilter
+  implements ContainerRequestFilter,
+  			 RESTFilter {
 	@Override
 	public void filter(final ContainerRequestContext requestContext) throws IOException {
 		String baseUri = requestContext.getUriInfo().getBaseUri().toString();
 		String method = requestContext.getMethod();
 		String path = requestContext.getUriInfo().getAbsolutePath().toString();
-		MediaType mediaType = requestContext.getMediaType();		
+		MediaType mediaType = requestContext.getMediaType();
 		String dbg = Strings.customized("\r\n"
-										+"\r\nLog FILTER RESTEndPoint : {}"  +														
-				  						"\r\n---------------------------------------------------------------------"  +				
+										+"\r\nLog FILTER RESTEndPoint : {}"  +
+				  						"\r\n---------------------------------------------------------------------"  +
 				  						"\r\n       Method: {}"  +
-				  						"\r\n        Path: {}" + 
+				  						"\r\n        Path: {}" +
 				  						"\r\nContent-Type: {}" +
 				  					"\r\n---------------------------------------------------------------------",
 						  					baseUri,
@@ -45,6 +46,6 @@ public class RESTLogRequestFilter
 						  					path,
 						  					mediaType != null ? mediaType
 						  						   			  : "not specified");
-		log.warn(dbg);		
+		log.warn(dbg);
 	}
 }

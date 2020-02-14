@@ -48,6 +48,12 @@ public class ContactPhone
 				   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter @Setter private Phone _number;
 	/**
+	 * Extension
+	 */
+	@MarshallField(as="extension",
+				   whenXml=@MarshallFieldAsXml(attr=true))	
+	@Getter @Setter private PhoneExtension _extension;
+	/**
 	 * Hour range when could be contacted
 	 *
 	 * It is stored like a String but internally is used like a Range<Integer>. That is to avoid GWT incompatibility.
@@ -88,6 +94,14 @@ public class ContactPhone
 	}
 	public ContactPhone withNumber(final String number) {
 		_number = Phone.create(number);
+		return this;
+	}
+	public ContactPhone withExtension(final PhoneExtension extension) {
+		_extension = extension;
+		return this;
+	}
+	public ContactPhone withExtension(final String extension) {
+		_extension = PhoneExtension.create(extension);
 		return this;
 	}
 

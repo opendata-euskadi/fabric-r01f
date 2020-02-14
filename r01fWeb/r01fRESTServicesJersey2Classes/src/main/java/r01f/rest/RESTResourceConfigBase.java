@@ -27,10 +27,10 @@ import r01f.util.types.collections.CollectionUtils;
  */
 @Slf4j
 @Singleton
-public abstract class RESTResourceConfigBase						
+public abstract class RESTResourceConfigBase
                extends ResourceConfig {
 /////////////////////////////////////////////////////////////////////////////////////////
-//  CONSTRUCTOR 
+//  CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
     public RESTResourceConfigBase() {
         // rest Resources
@@ -49,7 +49,7 @@ public abstract class RESTResourceConfigBase
                                                  register(r);
                                               });
         }
-        // Response sent objects mappers: transforms Java->XML for REST methods return types
+        // Response sent objects mappers: transforms Java->XML,JSON, etx... for REST methods return types
         Set<Class<? extends MessageBodyWriter<?>>> respSentTypesMappers = this.getResponseSentTypesMappers();
         if (CollectionUtils.hasData(respSentTypesMappers)) {
              respSentTypesMappers.stream()
@@ -64,9 +64,17 @@ public abstract class RESTResourceConfigBase
                				.forEach(r -> {  log.warn("Registering [ Jersey 2  Exception Mapper Type  {} ]", r.getCanonicalName());
                                                  register(r);
                                       });
-        }  
-    }
+        }
 
+        // Filters
+        Set<Class<? extends RESTFilter>> filters = this.getFilterTypes();
+        if (CollectionUtils.hasData(filters)) {
+    			filters.stream()
+               				.forEach(r -> {  log.warn("Registering [ Jersey 2  Filter  {} ]", r.getCanonicalName());
+                                                 register(r);
+                                      });
+        }
+    }
 /////////////////////////////////////////////////////////////////////////////////////////
 //  METHODS TO IMPLEMENT
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -83,25 +91,25 @@ public abstract class RESTResourceConfigBase
     }
     /**
      * @return the {@link MessageBodyWriter} types that maps response sent objects
-     */  
+     */
     public Set<Class<? extends MessageBodyWriter<?>>> getResponseSentTypesMappers() {
         Set<Class<? extends MessageBodyWriter<?>>> outMappers = Sets.newHashSet();
         return outMappers;
     }
     /**
      * @return the {@link ExceptionMapper} types that maps exceptions
-     */   
+     */
     public Set<Class<? extends ExceptionMapper<?>>> getExceptionsMappers() {
         Set<Class<? extends ExceptionMapper<?>>> outMappers = Sets.newHashSet();
         return outMappers;
     }
       /**
-     * @return the {@link ExceptionMapper} types that maps exceptions
-     */   
-   /* public Set<Class<? extends ExceptionMapper<?>>> getFilterTypes() {
-        Set<Class<? extends ExceptionMapper<?>>> outMappers = Sets.newHashSet();
+     * @return the {@link RESTFilter} types that maps exceptions
+     */
+    public Set<Class<? extends RESTFilter >> getFilterTypes() {
+        Set<Class<? extends RESTFilter>> outMappers = Sets.newHashSet();
         return outMappers;
-    } */  
+    }
 ///////////////////////////////////////////////////////////////////////////////
 // METHODS
 ///////////////////////////////////////////////////////////////////////////////
