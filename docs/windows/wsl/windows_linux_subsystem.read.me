@@ -1,5 +1,5 @@
 Windows Linux SubSystem
-=============================
+======================================
 PRE: INSTALL POWERSHELL with .net CORE
 ======================================
 Install .net CORE SDK (not the runtime): https://dotnet.microsoft.com/download
@@ -14,13 +14,18 @@ Install PowerShell CORE:
 
 	Update powershell to use [powershell core]: https://github.com/PowerShell/PowerShell/releases
 
+================================
 INSTALL WINDOWS LINUX SUBSYSTEM
 ================================
 https://adamtheautomator.com/windows-subsystem-for-linux/#updating-to-windows-subsystem-for-linux-2
 [1] - Install Windows SubSystem for Linux
 			PowerShell > Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
-[2] - Update to Windows Subsystem for Linux 2:
-			PowerShell > Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform
+			
+			
+====> NOT FOUND and not needed [2] - Update to Windows Subsystem for Linux 2:
+										PowerShell > Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform
+										
+										
 [3] -   1) Option 1:
 
 			In [windows store] app
@@ -28,13 +33,50 @@ https://adamtheautomator.com/windows-subsystem-for-linux/#updating-to-windows-su
 				Intall
 				Launch
 
-		2) Option 2:
+======>	2) Option 2:
 
 			Important!!!   See this !!  " Install WSL Manually on NON System Drive"  https://damsteen.nl/blog/2018/08/29/installing-wsl-manually-on-non-system-drive
 			                                                                         https://docs.microsoft.com/es-es/windows/wsl/install-manual
-
+			
+			
+			------------------------------------------------------------------------------------------
+			Install https://damsteen.nl/blog/2018/08/29/installing-wsl-manually-on-non-system-drive
+			------------------------------------------------------------------------------------------
+			Windows > Create directory C:\store\ubuntu\ubuntu1804
+			
+			PowerShell > Set-Location C:\store\ubuntu\ubuntu1804
 			PowerShell > Invoke-WebRequest -Uri https://aka.ms/wsl-ubuntu-1804 -OutFile Ubuntu.appx -UseBasicParsing
+			PowerShell > Rename-Item .\Ubuntu.appx Ubuntu.zip
+			PowerShell > Expand-Archive .\Ubuntu.zip -Verbose
+			
+			Windows > Run C:\store\ubuntu\ubuntu1804\Ubuntu\ubuntu1804.exe as an Administrator
+				Installing, this may take a few minutes...
+				Please create a default UNIX user account. The username does not need to match your Windows username.
+				For more information visit: https://aka.ms/wslusers
+				Enter new UNIX username: ubuntu
+				Enter new UNIX password: ubuntu
+				Retype new UNIX password: ubuntu
+				passwd: password updated successfully
+				Installation successful!
+				To run a command as administrator (user "root"), use "sudo <command>".
+				See "man sudo_root" for details.
+						
+			Windows > Run C:\store\ubuntu\ubuntu1804\Ubuntu\ubuntu1804.exe
+			
+			
+			----------------------------------------------------------
+			Uninstall https://github.com/Microsoft/WSL/issues/3817
+			----------------------------------------------------------
+			PowerShell >  wslconfig /list
+				Distribuciones del subsistema de Windows para Linux:
+				Ubuntu-18.04 (predet.)
+				Ubuntu-16.04
+				
+			PowerShell > wslconfig /unregister Ubuntu-18.04
+				Eliminando del registro...
 
+			Windows > Delete dir C:\store\ubuntu\ubuntu1804\Ubuntu\
+			
 		3) Option 3:
 
 				https://chocolatey.org/packages/wsl-ubuntu-1804
@@ -54,4 +96,53 @@ https://adamtheautomator.com/windows-subsystem-for-linux/#updating-to-windows-su
 				Invoke-WebRequest -Uri https://aka.ms/wsl-ubuntu-1804 -OutFile Ubuntu.appx -UseBasicParsing
 
 
+Ubuntu root FileSystem : C:\store\ubuntu\ubuntu1804\Ubuntu\rootfs\
+User ubuntu home dir : C:\store\ubuntu\ubuntu1804\Ubuntu\rootfs\home\ubuntu
+	
+[2] - Install multiple instances of ubuntu in the same WSL: 
+	https://stackoverflow.com/questions/51584765/how-do-you-install-multiple-separate-instances-of-ubuntu-in-wsl
+
+================================
+INSTALL Azkaban
+================================
+https://azkaban.github.io/azkaban/docs/latest/
+https://azkaban.github.io/azkaban/docs/latest/#solo-setup
+
+Follow these steps to get started:
+
+	[1] - Install java (jre 8): 
+		$ java
+			Command 'java' not found, but can be installed with:
+
+			sudo apt install default-jre
+			sudo apt install openjdk-11-jre-headless
+			sudo apt install openjdk-8-jre-headless
+			
+		$ sudo apt-get update
+		$ sudo apt install openjdk-8-jre-headless
+		$ java -version
+		
+		
+	[2] - Clone the repo: 
+		$ git clone https://github.com/azkaban/azkaban.git
+		
+	[3] - Build Azkaban and create an installation: 
+		$ cd /home/ubuntu/azkaban/
+		$ ./gradlew build installDist -x test
+		
+	[4] - Start the server: 
+		$ cd azkaban-solo-server/build/install/azkaban-solo-server
+		$ sh ./bin/start-solo.sh
+		
+	[5] Test server
+		Open Navigator and access to http://localhost:8081/ user:azkaban pwd:azkaban
+		
+		OR
+		& ps -feaH | grep azkaban
+		
+		OR see log file at C:\store\ubuntu\ubuntu1804\Ubuntu\rootfs\home\ubuntu\azkaban\azkaban-solo-server\build\install\azkaban-solo-server\soloServerLog__2020-02-13+17#003A26#003A32.out
+				
+
+	[6] - Stop server: 
+		$ sh ./bin/shutdown-solo.sh
 
