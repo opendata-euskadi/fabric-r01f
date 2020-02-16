@@ -12,6 +12,7 @@ import com.google.common.collect.Sets;
 
 import r01f.guids.OID;
 import r01f.internal.R01F;
+import r01f.internal.R01FAppCodes;
 import r01f.locale.LanguageTexts;
 import r01f.locale.LanguageTextsMapBacked;
 import r01f.mime.MimeType;
@@ -75,7 +76,7 @@ abstract class MarshallerModuleBase
 		// ....ensure that r01f is listed
 		Set<JavaPackage> theJavaPackages = CollectionUtils.hasData(javaPackages) ? javaPackages
 																  	 			 : Sets.<JavaPackage>newLinkedHashSet();
-		if (!theJavaPackages.contains(JavaPackage.of(R01F.APP_CODE))) theJavaPackages.add(JavaPackage.of(R01F.APP_CODE));
+		if (!theJavaPackages.contains(JavaPackage.of(R01FAppCodes.R01_APP_CODE))) theJavaPackages.add(JavaPackage.of(R01FAppCodes.R01_APP_CODE));
 		_javaPackages = theJavaPackages;
 
 		// naming strategy
