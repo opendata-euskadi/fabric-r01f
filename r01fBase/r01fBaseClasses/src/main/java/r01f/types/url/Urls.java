@@ -233,9 +233,8 @@ public class Urls {
 		return Url.from(null,	// protocol
 						null,	// host
 						-1,		// port
-					    path,
-					    qryString,
-					    anchor);
+					    path,anchor,
+					    qryString);
 	}
 	/**
 	 * Joins a query string with the new one
