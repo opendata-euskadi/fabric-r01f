@@ -13,6 +13,7 @@ public enum QueryClauseType
 	CONTAINED_IN,	// a,b,c...
 	CONTAINS_TEXT,	// text*
 	RANGE,			// (..10) / (1..10) (10..)
+	NULL,			// a IS NULL / b IS NOT NULL
 	HAS_DATA;
 /////////////////////////////////////////////////////////////////////////////////////////
 //  
