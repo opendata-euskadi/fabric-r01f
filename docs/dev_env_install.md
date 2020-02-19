@@ -76,12 +76,17 @@
 [1] - Download java8 from https://download.oracle.com/otn/java/jdk/8u221-b11/230deb18db3e4014bb8e3e8324f81b43/jdk-8u221-windows-x64.exe
 
 [2] - Open the downloaded file with 7-Zip
+
 [3] - Go inside [temp_folder]\.rsrc\1033\JAVA_CAB10
 	  ...there'll be a file named 111
+	  
 [4] - Open the 111 file with 7-zip, it'll contain the tools.zip file
+
 [5] - Open the tools.zip with 7-Zip and extract its contents to {develop}\java\jdk8
+
 [6] - From within this directory, search for all .pack files and extract them into .jar files, using unpack2000.exe command line tool found in the bin subdirectory.
-      The following windows prompt command does the trick when executed from within the extracted directory:
+
+The following windows prompt command does the trick when executed from within the extracted directory:
 
 		c:\>cd {develop}\java\jdk8
 		for /r %i in (*.pack) do .\bin\unpack200.exe %i %~pi%~ni.jar
