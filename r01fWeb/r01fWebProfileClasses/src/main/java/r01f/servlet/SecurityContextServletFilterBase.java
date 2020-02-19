@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.google.common.base.Predicate;
+
 import lombok.extern.slf4j.Slf4j;
 import r01f.securitycontext.SecurityContext;
 import r01f.securitycontext.SecurityContextStoreAtThreadLocalStorage;
@@ -68,17 +70,39 @@ public abstract class SecurityContextServletFilterBase
 /////////////////////////////////////////////////////////////////////////////////////////
 //  FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
-	private final String _loginUrlPath;
-	private final Collection<Pattern> _notFilteredResourcesPatterns;
+	protected final String _loginUrlPath;
+	protected final Predicate<ServletRequest> _notFilteredResourcePredicate;
 
-	private FilterConfig _servletFilterConfig = null;
+	protected FilterConfig _servletFilterConfig = null;
 /////////////////////////////////////////////////////////////////////////////////////////
 //	CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
 	public SecurityContextServletFilterBase(final String loginUrlPath,
 											final Collection<Pattern> notFilteredResourcesPatterns) {
+		this(loginUrlPath,
+			 new Predicate<ServletRequest>() {
+					@Override
+					public boolean apply(final ServletRequest req) {
+						boolean outNotFiltered = false;	// not filtered by default
+						
+						HttpServletRequest request = (HttpServletRequest)req;
+						String reqUri = request.getRequestURI();
+						if (CollectionUtils.hasData(notFilteredResourcesPatterns)) {
+							for (Pattern notFilteredPattern : notFilteredResourcesPatterns) {
+								if (notFilteredPattern.matcher(reqUri).matches()) {
+									outNotFiltered = true;	// not filter
+									break;
+								}
+							}
+						}
+						return outNotFiltered;
+					}
+			 });
+	}
+	public SecurityContextServletFilterBase(final String loginUrlPath,
+											final Predicate<ServletRequest> notFilteredResourcePredicate) {
 		_loginUrlPath = loginUrlPath;
-	   _notFilteredResourcesPatterns = notFilteredResourcesPatterns;
+	   _notFilteredResourcePredicate = notFilteredResourcePredicate;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  METHODS
@@ -106,20 +130,12 @@ public abstract class SecurityContextServletFilterBase
 
 			// [1] - not filtered resources
 			//		 beware!! do NOT move... always filter AFTER setting the security context at thread local
-			if (CollectionUtils.hasData(_notFilteredResourcesPatterns)) {
-				String reqUri = req.getRequestURI();
-				for (Pattern notFilteredPattern : _notFilteredResourcesPatterns) {
-					if (notFilteredPattern.matcher(reqUri).matches()) {
-						log.debug("[SecurityContextServletFilter] uri {} is NOT filtered",
-							   	  reqUri);
-						chain.doFilter(request,response);
-						return;
-					}
-					else {
-						log.trace("[SecurityContextServletFilter] uri {} is filtered",
-								  reqUri);
-					}
-				}
+			if (_notFilteredResourcePredicate != null
+			 && _notFilteredResourcePredicate.apply(req)) {
+				if (log.isTraceEnabled()) log.trace("[SecurityContextServletFilter][NOT FILTERED]: {} >>>>>>>>>>",
+													req.getRequestURI());
+				chain.doFilter(request,response);
+				return;
 			}
 
 			// [2] - Get the [securityContext] from the web session (set at the login page)
