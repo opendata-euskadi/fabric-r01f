@@ -12,7 +12,18 @@ import r01f.objectstreamer.annotations.MarshallFrom;
 import r01f.objectstreamer.annotations.MarshallType;
 
 /**
- * Object dimensions (ie: an image)
+ * Object dimensions (ie: an image).
+ *
+ * Example of use:
+ * BufferedImage image = null;
+ * if (is != null) {
+ *	image = ImageIO.read(is);
+ * }
+ * if(image != null) {
+ *		int height = image.getHeight();
+ *		int width = image.getWidth();
+ *		return new Dimensions2D(width, height);
+ * }
  */
 @ConvertToDirtyStateTrackable
 @MarshallType(as="dimensions2D")
