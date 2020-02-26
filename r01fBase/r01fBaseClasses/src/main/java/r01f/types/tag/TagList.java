@@ -20,10 +20,10 @@ import r01f.util.types.collections.CollectionUtils;
  */
 @ConvertToDirtyStateTrackable
 @Accessors(prefix="_")
-public class TagList<T extends Comparable<T>> 
+public class TagList<T extends Comparable<T>>
      extends LinkedHashSet<T>
   implements Taggeable<T> {
-	
+
 	private static final long serialVersionUID = 8637238076951337091L;
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -85,15 +85,15 @@ public class TagList<T extends Comparable<T>>
 	}
 	@Override
 	public void clearTags() {
-		this.clear(); 
+		this.clear();
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//	
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public String asStringSeparatedWith(final char sep) {
 		if (this.isEmpty()) return "";
-		
+
 		StringBuilder outSb = new StringBuilder(this.size() * 30);	// try to estimate the initial size
 		Iterator<T> tagIt = FluentIterable.from(this)
 										  .toSortedSet(Ordering.natural())	// order the tags
@@ -108,7 +108,7 @@ public class TagList<T extends Comparable<T>>
 	public String asStringQuotedAndSeparatedWith(final char startQuote,final char endQuote,
 												 final char sep) {
 		if (this.isEmpty()) return "";
-		
+
 		StringBuilder outSb = new StringBuilder(this.size() * 32);	// try to estimate the initial size
 		Iterator<T> tagIt = FluentIterable.from(this)
 										  .toSortedSet(Ordering.natural())	// order the tags
