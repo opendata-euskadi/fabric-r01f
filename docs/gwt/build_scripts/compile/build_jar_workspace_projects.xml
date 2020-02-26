@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:ivy="antlib:org.apache.ivy.ant">
+<!-- ================================================================== -->
+<!-- Create local projects jars using the eclipse compiled classes      -->
+<!-- (does NOT compiles the eclipse projects)                           -->
+<!-- the directory structure is like                                    -->
+<!-- + projects_{module.group.name}                                     -->
+<!--	  + {module.group}                                              -->
+<!--          + {module}                                                -->
+<!--                + build_scripts                                     -->
+<!--                + build                                             -->
+<!--                     + classes (where eclipse compiles source code  -->
+<!--					 + work (temp work dir)                         -->
+<!--						This is where [jar-project] target puts the -->
+<!--						generated jars from each project's eclipse  -->
+<!--						compiled code as {module}-{revision}.jar    -->
+<!--  where                                                             -->
+<!--		module.group.name = {group name}   = liburutegiak           -->
+<!--		module.group      = {app code}     = ab72  					-->
+<!--		module		      = {project name} = eclipse projet's name	-->
+<!--		revision	      = {revision}     = 1 					    -->
+<!-- ================================================================== -->
+	<import file="build_jar_r01fb_projects.xml"
+		    as="jar-r01fb-projects"/>
+
+	<import file="build_jar_p01_projects.xml"
+		    as="jar-ab72-projects"/>
+
+	<!--
+	Creates a jar for each workspace project using the generic [jar-project] target
+	(see build_jar_r01fb_projects.xml and build_jar_ab72_projects.xml)
+	-->
+	<target name="jar-workspace-projects"
+		    depends="jar-r01fb-projects.create-r01fb-project-jars,jar-ab72-projects.create-p01-projects-jars" />
+
+	<!--
+	Create application's JAR file: called to compile a project
+	This is a generic task is called from targets at
+	build_jar_r01fb_projects.xml and create-ab72-projects-jars.xml
+	The calling target sets the params:
+		- module group: the folder containing the project
+		- module      : the project's name
+		- revision	  : the jar's rev
+	-->
+	<target name="jar-project">
+		<jar destfile="${workdir}/${module}-${revision}.jar"
+			 basedir="../../../projects_${module.group.name}/${module.group}/${module}/build/classes" >
+		</jar>
+	</target>
+</project>

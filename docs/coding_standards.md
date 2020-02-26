@@ -244,3 +244,34 @@ Right:
 Use functional style programming if possible
 -------------------------------------------------
 Avoid traditional `for`, `while`... loops if possible: *use java's stream API* (_or Guava_)
+
+Avoid checked exceptions
+-------------------------------------------------
+If possible DO NOT use or create checked exceptions
+
+ie: DO NOT create exception types like
+
+	public class MyException
+		  extends Exception {
+		...		
+	}
+	public class MyType {
+		public void myMethod() throws MyException {
+			...
+		}
+	}
+
+If possible use UNCHECKED exceptions instead:
+
+	public class MyUncheckedExceptions
+		  extends RuntimeException {
+		...
+	}
+	public class MyType {
+		public void myMethod() {		// no throws clause
+			...
+		}
+	}
+	
+... BUT it's better to avoid creating custom exception types and reuse common types like
+`IllegalArgumentException`, `UnsupportedOperationException`, etc

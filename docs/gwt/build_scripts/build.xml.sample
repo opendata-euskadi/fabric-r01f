@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:ivy="antlib:org.apache.ivy.ant"
+         name="XXX"
+	     basedir="../"
+         default="build.all">
+<!-- ================================================================== -->
+<!-- BUID                                                               -->
+<!-- ================================================================== -->
+	<import file="../../../../projects_r01fb/r01fb/r01fbGWTClasses/build_scripts/build-main-vaadin7.xml"
+		    as="build_main"/>
+
+
+	<!-- build all -->
+    <target name="build_main.build.all"
+    		depends="compile-widgetsets,compile-themes">
+	</target>
+
+    <!-- Widget sets to compile -->
+    <target name="compile-widgetsets">
+        <antcall target="build_main.compile-widgetsets">
+			<param name="app-name" value="xxx"/>
+			<param name="compiled-webroot" value="../xxxWebContent/xxxWebContent"/>
+        </antcall>
+    </target>
+
+    <!-- Themes to compile -->
+    <target name="compile-themes">
+        <antcall target="build_main.compile-themes">
+			<param name="app-name" value="xxx"/>
+			<param name="theme-name" value="xxx"/>
+			<param name="compiled-webroot" value="../xxxWebContent/xxxWebContent"/>
+        </antcall>
+    </target>
+</project>

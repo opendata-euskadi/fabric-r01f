@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:ivy="antlib:org.apache.ivy.ant">
+	<!-- ================================================================== -->
+	<!-- Create local p01 projects jars                                     -->
+	<!-- ================================================================== -->	
+	<target name="create-p01-projects-jars">
+		<antcall target="jar-project">
+			<param name="module.group.name" value="p01"/>
+			<param name="module.group" value="p01"/>
+			<param name="module" value="p01fModelClasses"/>
+			<param name="revision" value="1.0"/>
+		</antcall>
+		<antcall target="jar-project">
+			<param name="module.group.name" value="p01"/>
+			<param name="module.group" value="p01"/>
+			<param name="module" value="p01fClientAPIClasses"/>
+			<param name="revision" value="1.0"/>
+		</antcall>
+		<antcall target="jar-project">
+			<param name="module.group.name" value="p01"/>
+			<param name="module.group" value="p01"/>
+			<param name="module" value="p01bServicesClasses"/>
+			<param name="revision" value="1.0"/>
+		</antcall>
+	</target>
+</project>

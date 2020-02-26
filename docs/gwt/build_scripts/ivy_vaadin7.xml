@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ivy-module [
+	<!ENTITY vaadin.version "7.7.11">
+	<!ENTITY gwt.version "2.7.0.vaadin2">
+]>
+<ivy-module version="2.0"
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+			xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd" 
+			xmlns:m="http://ant.apache.org/ivy/maven">
+			
+	<info organisation="com.vaadin" 
+		  module="vaadin-gwt" 
+		  revision="&vaadin.version;" />
+		  
+	<configurations>
+		<conf name="default" description="shortcut to runtime and master dependencies"/>
+		<conf name="compile" description="Used ONLY at compile time" />
+		<conf name="runtime" description="Not required at compile time BUT required for execution and so deployed to a server"/>
+		
+		<!-- gwt -->
+		<conf name="gwt-dev" />
+		<conf name="gwt-user" />
+		<conf name="gwt-codeserver" />
+		<conf name="gwt-elemental" />
+		
+		<!-- vaadin -->
+		<conf name="widgetset-compile" />
+		<conf name="theme-compile" />		
+	</configurations>
+	
+	<dependencies defaultconf="default->default">
+		<dependency org="javax.validation" name="validation-api" rev="1.0.0.GA">
+			<artifact name="validation-api"/>
+			<artifact name="validation-api" m:classifier="sources"/>
+		</dependency>
+		
+		<!-- ============================================================================================================================== -->
+		<!-- Vaadin GWT compiler                                                                                                            -->
+		<!-- ============================================================================================================================== -->
+		
+		<dependency org="com.vaadin.external.gwt" name="gwt-dev" rev="&gwt.version;" />
+		<dependency org="com.vaadin.external.gwt" name="gwt-user" rev="&gwt.version;" />
+		<dependency org="com.vaadin.external.gwt" name="gwt-codeserver" rev="&gwt.version;"  />
+		<dependency org="com.vaadin.external.gwt" name="gwt-elemental" rev="&gwt.version;" />
+		
+		<!-- The core server part of Vaadin -->
+		<dependency org="com.vaadin" name="vaadin-server" rev="&vaadin.version;" />
+
+
+		<!-- ============================================================================================================================== -->
+		<!-- Vaadin                                                                                                                         -->
+		<!-- ============================================================================================================================== -->
+		<!-- Push support -->
+		<dependency org="com.vaadin" name="vaadin-push" rev="&vaadin.version;" />
+		
+		<!-- Vaadin themes -->
+		<dependency org="com.vaadin" name="vaadin-themes" rev="&vaadin.version;" 
+					conf="theme-compile->default"/>
+
+		<!-- Precompiled DefaultWidgetSet -->
+		<dependency org="com.vaadin" name="vaadin-client-compiled" rev="&vaadin.version;" 
+					conf="widgetset-compile->default"/>
+
+		<!-- Vaadin client side, needed for widget set compilation -->
+		<dependency org="com.vaadin" name="vaadin-client" rev="&vaadin.version;"
+			        conf="widgetset-compile->default" />
+
+		<!-- Compiler for custom widget sets. Should not be deployed -->
+		<dependency org="com.vaadin" name="vaadin-client-compiler" rev="&vaadin.version;" 
+					conf="widgetset-compile->default" />	
+		
+	</dependencies>
+</ivy-module>
