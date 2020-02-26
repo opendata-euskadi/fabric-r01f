@@ -13,8 +13,8 @@ import r01f.util.types.collections.CollectionUtils;
 /**
  * {@link Future} implementation based on https://code.google.com/p/gwt-async-future/
  * @param <T>
- * 
- * As stated at the javadoc for the {@link Future} interface, it represents the result of an asynchronous computation, 
+ *
+ * As stated at the javadoc for the {@link Future} interface, it represents the result of an asynchronous computation,
  * providing methods to:
  * <ul>
  * 		<li>Check if the computation is complete</li>
@@ -23,7 +23,7 @@ import r01f.util.types.collections.CollectionUtils;
  * </ul>
  * The only method to get the computation result is the <b>get</b> method: if the result is ready it returns it, BUT if it's not
  * jet ready, the <b>get</b> method blocks until it's available.
- * 
+ *
  * This type complements the {@link Future} making possible to subscribe a call-able object implementing the {@link AsyncCallBack} interface
  * so the <b>onSuccess</b> is get called when the result is ready
  * The normal usage is:
@@ -39,7 +39,7 @@ import r01f.util.types.collections.CollectionUtils;
  * 						}
  * 		}
  * </pre>
- * The {@link FutureResult}'s succeeded(result) simply notifies every subscribed callback object that the result is ready 
+ * The {@link FutureResult}'s succeeded(result) simply notifies every subscribed callback object that the result is ready
  * calling it's <b>onSuccess</b> method so the normal usage is;
  * <pre class='brush:java'>
  * 		FutureResult<T> futureResult = doSomeBackgroundComputation();
@@ -49,7 +49,7 @@ import r01f.util.types.collections.CollectionUtils;
  *												// do something interesting with the result
  *											}
  * </pre>
- * The above is NOT the normal usage for the {@link Future}'s interface... normally it's:
+ * The above is NOT the normal usage for the {@link Future}'s interface... usually it's used like:
  * <pre class='brush:java'>
  * 		FutureResult<T> futureResult = doSomeBackgroundComputation();
  * 		while (!futureResult.isDone()) {
@@ -65,16 +65,16 @@ public class FutureResult<T>
 
 	private static final long serialVersionUID = -6062729611318957337L;
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	private enum State {
-		SUCCEEDED, 
-		FAILED, 
-		INCOMPLETE, 
+		SUCCEEDED,
+		FAILED,
+		INCOMPLETE,
 		CANCELLED;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	private String _name;
 	private T _value = null;
@@ -82,7 +82,7 @@ public class FutureResult<T>
 	private Throwable _exception = null;
 	private LinkedHashSet<AsyncCallBack<T>> _listeners = new LinkedHashSet<AsyncCallBack<T>>();
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	public FutureResult() {
 		// default constructor
@@ -90,6 +90,7 @@ public class FutureResult<T>
 	public FutureResult(final String name) {
 		_name = name;
 	}
+	@SuppressWarnings("unchecked")
 	public FutureResult(final AsyncCallBack<T>... callBacks) {
 		this();
 		if (CollectionUtils.hasData(callBacks)) {
@@ -99,7 +100,7 @@ public class FutureResult<T>
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Blocks until the result is complete
@@ -120,7 +121,7 @@ public class FutureResult<T>
 		switch (_state) {
 		case INCOMPLETE:
 			throw FutureExecutionException.becauseOfIncompleteResult();
-		case FAILED: 
+		case FAILED:
 			throw FutureExecutionException.becauseOfExecutionException(_exception);
 		case CANCELLED:
 			throw FutureExecutionException.becauseOfRequestCancellation();
@@ -149,13 +150,13 @@ public class FutureResult<T>
 		return _state == State.FAILED;
 	}
 	/**
-	 * @return true if the request was cancelled 
+	 * @return true if the request was cancelled
 	 */
 	public boolean wasCancelled() {
 		return _state == State.CANCELLED;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	public void addCallback(final AsyncCallBack<T> callback) {
 		if (callback == null) return;
@@ -164,14 +165,14 @@ public class FutureResult<T>
 			if (this.wasSuccessful()) {
 				callback.onSuccess(_value);
 			} else {
-				callback.onFailure(_exception);
+				callback.onError(_exception);
 			}
 			return;
 		}
 		_listeners.add(callback);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Set the state of this result to SUCCEEDED;
@@ -196,7 +197,7 @@ public class FutureResult<T>
 		_exception = th;
 		// Notify listeners implementing AsyncCallBack interface
 		for (AsyncCallBack<T> callback : _copyCallbacksThenClear()) {
-			callback.onFailure(_exception);
+			callback.onError(_exception);
 		}
 	}
 	/**
@@ -204,16 +205,17 @@ public class FutureResult<T>
 	 */
 	protected void cancel() {
 		if (this.isComplete()) return;		// you're late man...
+
 		_state = State.CANCELLED;
 		_exception = FutureExecutionException.becauseOfRequestCancellation();
 		// Notify listeners implementing CancellableAsyncCallBack interface
-		// note that if listenes do not implement CancellableAsyncCallBack BUT they implement AsyncCallBack,
+		// note that if listens do not implement CancellableAsyncCallBack BUT they implement AsyncCallBack,
 		// the cancellation is notified as an exception
 		for (AsyncCallBack<T> callback : _copyCallbacksThenClear()) {
 			if (callback instanceof CancellableAsyncCallBack<?>) {
 				((CancellableAsyncCallBack<?>)callback).onCancel();
 			} else {
-				callback.onFailure(_exception);		// _exception should be an ExecutionException because of request cancellation
+				callback.onError(_exception);		// _exception should be an ExecutionException because of request cancellation
 			}
 		}
 	}
@@ -222,19 +224,19 @@ public class FutureResult<T>
 		_listeners.clear();
 		return callbacks;
 	}
-	
+
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	public String getName() {
-		return (_name != null && !_name.isEmpty()) ? _name 
+		return (_name != null && !_name.isEmpty()) ? _name
 												   : new StringBuilder("FutureResult")
 												   			.append("<")
 												   			.append(_value != null ? _composeSimpleName(_value.getClass()) : "?")
 												   			.append(">")
 												   			.toString();
 	}
-	public void setName(String name) {
+	public void setName(final String name) {
 		_name = name;
 	}
 	private static String _composeSimpleName(final Class<?> type) {
