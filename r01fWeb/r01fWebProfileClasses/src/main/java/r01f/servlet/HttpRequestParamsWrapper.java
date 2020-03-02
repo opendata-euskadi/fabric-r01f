@@ -80,8 +80,7 @@ public class HttpRequestParamsWrapper {
 				throw new IllegalArgumentException("Request param with name='" + name + "' has more than a single value!");
 			}
 		} 
-		if (paramValue != null) {
-			paramValue = (String)paramValue;
+		if (paramValue != null) {			
 			if (paramValue.equals("null")
 			 || paramValue.equals("undefined")) paramValue = null;
 		}
