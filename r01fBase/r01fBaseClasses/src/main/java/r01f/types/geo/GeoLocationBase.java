@@ -112,7 +112,7 @@ public abstract class GeoLocationBase<GID extends GeoID,
 //  
 /////////////////////////////////////////////////////////////////////////////////////////
 	@SuppressWarnings("unchecked")
-	@Getter private final transient LanguageTextsWrapper<SELF_TYPE> _name = LanguageTextsWrapper.atHasLang((SELF_TYPE)this);
+	@Getter private final transient LanguageTextsWrapper<SELF_TYPE> _name = LanguageTextsWrapper.atHasLangDependentNamedFacet((SELF_TYPE)this);
 	
 	@SuppressWarnings("unchecked")
 	private final transient LangDependentNamed _langDepNamedDelegate = new LangDependentNamedDelegate<SELF_TYPE>((SELF_TYPE)this);

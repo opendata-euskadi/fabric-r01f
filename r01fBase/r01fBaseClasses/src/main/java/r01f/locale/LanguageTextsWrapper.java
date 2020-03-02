@@ -76,7 +76,11 @@ public class LanguageTextsWrapper<T> {
 	public static <T> LanguageTextsWrapperBuildStep<T> at(final T langTextsContainer) {
 		return new LanguageTextsWrapperBuildStep<T>(langTextsContainer);
 	}
+	@Deprecated
 	public static <T extends HasLangDependentNamedFacet> LanguageTextsWrapper<T> atHasLang(final T langTextsContainer) {
+		return LanguageTextsWrapper.atHasLangDependentNamedFacet(langTextsContainer);
+	}
+	public static <T extends HasLangDependentNamedFacet> LanguageTextsWrapper<T> atHasLangDependentNamedFacet(final T langTextsContainer) {
 		return new LanguageTextsWrapper<T>(langTextsContainer,
 										   new HasLanguageTexts() {
 													@Override
