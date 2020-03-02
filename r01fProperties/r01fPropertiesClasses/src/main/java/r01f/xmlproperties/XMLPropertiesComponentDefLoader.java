@@ -63,12 +63,12 @@ class XMLPropertiesComponentDefLoader {
 		try {
 			// a) - Try the env-independent file
 			Path compDefEnvIndepFilePath = XMLPropertiesComponentDefLoader.componentDefFilePath(appCode,component);
-			
-			log.warn("Loading ENV-INDEP xml properties component DEFINITION for appCode/component={}.{} (env={}) from CLASSPATH at {} (BEWARE that the file name DOES NOT ends with properties.xml!)",
+
+			log.info("Loading ENV-INDEP xml properties component DEFINITION for appCode/component={}.{} (env={}) from CLASSPATH at {} (BEWARE that the file name DOES NOT ends with properties.xml!)",
 					 appCode,component,
 					 env,
 					 compDefEnvIndepFilePath);
-			
+
 			defXmlIS = resourcesLoader.getInputStream(Path.from(compDefEnvIndepFilePath),
 													  true);	// true: use cache
 		} catch (IOException ioEx) {
@@ -78,12 +78,12 @@ class XMLPropertiesComponentDefLoader {
 				try {
 					Path compDefEnvDepFilePath = XMLPropertiesComponentDefLoader.componentDefFilePath(env,
 																   									  appCode,component);
-					
-					log.warn("Loading ENV-DEP xml properties component DEFINITION for appCode/component={}.{} (env={}) from CLASSPATH at {}",
+
+					log.info("Loading ENV-DEP xml properties component DEFINITION for appCode/component={}.{} (env={}) from CLASSPATH at {}",
 							 appCode,component,
 							 env,
 							 compDefEnvDepFilePath);
-					
+
 					defXmlIS = resourcesLoader.getInputStream(Path.from(compDefEnvDepFilePath),
 															  true);
 				} catch (IOException ioEx2) {
@@ -134,13 +134,13 @@ class XMLPropertiesComponentDefLoader {
 			if (xmlPropsEx.is(XMLPropertiesErrorType.COMPONENTDEF_NOT_FOUND)) {
 				// warn
 				if (env != null) {
-					log.warn("\t... Could NOT find the xml properties component definition for appCode/component={}.{} for env={} at {} or {}",
+					log.info("\t... Could NOT find the xml properties component definition for appCode/component={}.{} for env={} at {} or {}",
 							 appCode,component,env,
 							 XMLPropertiesComponentDefLoader.componentDefFilePath(appCode,component),
 							 XMLPropertiesComponentDefLoader.componentDefFilePath(env,
 									 				   							  appCode,component));
 				} else {
-					log.warn("\t... Could NOT find the xml properties component definition for appCode/component={}.{} for env={} at {}",
+					log.info("\t... Could NOT find the xml properties component definition for appCode/component={}.{} for env={} at {}",
 							 appCode,component,env,
 							 XMLPropertiesComponentDefLoader.componentDefFilePath(appCode,component));
 				}
@@ -158,7 +158,7 @@ class XMLPropertiesComponentDefLoader {
 																		 appCode,appCode)));
 				}
 				compDef.setLoaderDef(ResourcesLoaderDef.DEFAULT);
-				log.warn("\t... The properties file will be loaded using {} loader from path {}",
+				log.info("\t... The properties file will be loaded using {} loader from path {}",
 						 compDef.getLoaderDef().getLoader(),compDef.getPropertiesFileURI());
 			} else {
 				throw xmlPropsEx;
