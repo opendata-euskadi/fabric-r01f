@@ -64,11 +64,7 @@ class XMLPropertiesComponentDefLoader {
 			// a) - Try the env-independent file
 			Path compDefEnvIndepFilePath = XMLPropertiesComponentDefLoader.componentDefFilePath(appCode,component);
 
-<<<<<<< HEAD
-			log.debug("Loading ENV-INDEP xml properties component DEFINITION for appCode/component={}.{} (env={}) from CLASSPATH at {} (BEWARE that the file name DOES NOT ends with properties.xml!)",
-=======
-			log.info("Loading ENV-INDEP xml properties component DEFINITION for appCode/component={}.{} (env={}) from CLASSPATH at {} (BEWARE that the file name DOES NOT ends with properties.xml!)",
->>>>>>> branch 'master' of https://src1.alm02.itbatera.euskadi.eus/fabric/r01f.git
+			log.warn("Loading ENV-INDEP xml properties component DEFINITION for appCode/component={}.{} (env={}) from CLASSPATH at {} (BEWARE that the file name DOES NOT ends with properties.xml!)",
 					 appCode,component,
 					 env,
 					 compDefEnvIndepFilePath);
@@ -83,11 +79,7 @@ class XMLPropertiesComponentDefLoader {
 					Path compDefEnvDepFilePath = XMLPropertiesComponentDefLoader.componentDefFilePath(env,
 																   									  appCode,component);
 
-<<<<<<< HEAD
-					log.debug("Loading ENV-DEP xml properties component DEFINITION for appCode/component={}.{} (env={}) from CLASSPATH at {}",
-=======
-					log.info("Loading ENV-DEP xml properties component DEFINITION for appCode/component={}.{} (env={}) from CLASSPATH at {}",
->>>>>>> branch 'master' of https://src1.alm02.itbatera.euskadi.eus/fabric/r01f.git
+					log.warn("Loading ENV-DEP xml properties component DEFINITION for appCode/component={}.{} (env={}) from CLASSPATH at {}",
 							 appCode,component,
 							 env,
 							 compDefEnvDepFilePath);
@@ -142,21 +134,13 @@ class XMLPropertiesComponentDefLoader {
 			if (xmlPropsEx.is(XMLPropertiesErrorType.COMPONENTDEF_NOT_FOUND)) {
 				// warn
 				if (env != null) {
-<<<<<<< HEAD
-					log.debug("\t... Could NOT find the xml properties component definition for appCode/component={}.{} for env={} at {} or {}",
-=======
-					log.info("\t... Could NOT find the xml properties component definition for appCode/component={}.{} for env={} at {} or {}",
->>>>>>> branch 'master' of https://src1.alm02.itbatera.euskadi.eus/fabric/r01f.git
+					log.warn("\t... Could NOT find the xml properties component definition for appCode/component={}.{} for env={} at {} or {}",
 							 appCode,component,env,
 							 XMLPropertiesComponentDefLoader.componentDefFilePath(appCode,component),
 							 XMLPropertiesComponentDefLoader.componentDefFilePath(env,
 									 				   							  appCode,component));
 				} else {
-<<<<<<< HEAD
-					log.debug("\t... Could NOT find the xml properties component definition for appCode/component={}.{} for env={} at {}",
-=======
-					log.info("\t... Could NOT find the xml properties component definition for appCode/component={}.{} for env={} at {}",
->>>>>>> branch 'master' of https://src1.alm02.itbatera.euskadi.eus/fabric/r01f.git
+					log.warn("\t... Could NOT find the xml properties component definition for appCode/component={}.{} for env={} at {}",
 							 appCode,component,env,
 							 XMLPropertiesComponentDefLoader.componentDefFilePath(appCode,component));
 				}
@@ -174,17 +158,13 @@ class XMLPropertiesComponentDefLoader {
 																		 appCode,appCode)));
 				}
 				compDef.setLoaderDef(ResourcesLoaderDef.DEFAULT);
-<<<<<<< HEAD
-				log.debug("\t... The properties file will be loaded using {} loader from path {}",
-=======
-				log.info("\t... The properties file will be loaded using {} loader from path {}",
->>>>>>> branch 'master' of https://src1.alm02.itbatera.euskadi.eus/fabric/r01f.git
+				log.warn("\t... The properties file will be loaded using {} loader from path {}",
 						 compDef.getLoaderDef().getLoader(),compDef.getPropertiesFileURI());
 			} else {
 				throw xmlPropsEx;
 			}
 		}
-		log.debug("xml properties component loader definition for appCode/component={}/{} (env={}):\n{}",
+		log.warn("xml properties component loader definition for appCode/component={}/{} (env={}):\n{}",
 				  appCode,component,
 				  env,
 				  component,compDef.debugInfo());
