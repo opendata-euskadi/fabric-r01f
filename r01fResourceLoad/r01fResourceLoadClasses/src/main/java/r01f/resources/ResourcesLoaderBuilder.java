@@ -9,7 +9,7 @@ import r01f.patterns.IsBuilder;
 /**
  * Factory of {@link ResourcesLoader} instances
  */
-public class ResourcesLoaderBuilder 
+public class ResourcesLoaderBuilder
   implements IsBuilder {
 ///////////////////////////////////////////////////////////////////////////////
 // 	Default ResourcesLoader
@@ -25,7 +25,7 @@ public class ResourcesLoaderBuilder
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	CONSTANTS
-/////////////////////////////////////////////////////////////////////////////////////////	
+/////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * default {@link ResourcesLoader} (uses classPath loader and NO reloading).
 	 */
@@ -45,7 +45,7 @@ public class ResourcesLoaderBuilder
 	 * <pre class='brush:java'>
 	 * 		ResourcesLoader loader = ResourcesLoaderBuilder.createResourcesLoaderFor(ResourcesLoaderDefBuilder.create("myResLoader")
      * 														  												  .usingClassPathResourcesLoader()
-     * 														  												  .reloadingAs(ResourcesReloadControlDefBuilder.createForVoidReloading())
+     * 														  												  .reloadingAsDefinedAt(ResourcesReloadControlDefBuilder.createForVoidReloading()))
 	 * </pre>
 	 * @param def
 	 * @return

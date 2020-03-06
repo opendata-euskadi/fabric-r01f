@@ -24,7 +24,7 @@ public final class XMLPropertiesErrorType
 	private static EnrichedThrowableTypeBuilder<XMLPropertiesErrorType>.EnrichedThrowableTypeBuilderCodesStep<XMLPropertiesErrorType> withName(final String name) {		
 		return new EnrichedThrowableTypeBuilder<XMLPropertiesErrorType>() {
 						@Override
-						protected XMLPropertiesErrorType _build(final String name, 
+						protected XMLPropertiesErrorType _build(@SuppressWarnings("hiding") final String name, 
 															  	final int group,final int code,
 															  	final ExceptionSeverity severity) {
 							return new XMLPropertiesErrorType(name,

@@ -1,0 +1,175 @@
+[SuperDev mode]
+	- GWT embeded Jetty server	<-- static assets
+			+ gwt code server	<-- gwt code
+	- Tomcat 					<-- server side logic
+====================================================================================
+
+                                |------Browser--------|
+                                |   [Client Code]     |			
+                                |       |   |   |     |
+                                |-------|---|---|-----|
+                                        |   |   |
+                                        |   | code
+                                        |   |   |
+                                        |gwt-rpc|
+                                        |   |   |
+                                     static |   |
+                                        |   |   |
+            GWTEmbedded Jetty    |------|---|---|----|
+                                 |      v   |   |    |
+                                 |    [res] |   +----|--------->  [Code Server] (see gwtSuperDevMode.READ.me at r01fbGWTClasses project)
+                                 |          |        |              (java App)
+                                 |-------[proxy]-----|
+                                            |
+                                            |
+                  Tomcat Server  |----------|------------|
+                                 | [FrontEndServicesWar] |
+                                 |-----------------------|
+                                 
+As it can be seen in the previous figure:
+	- The client-side GWT code is pulled from the [Code Server] (a java stand-alone process started as a java App) -see gwtSuperDevMode.READ.me at r01fbGWTClasses project-
+	  by the gwt's embedded jetty server
+	- The client static resources (html, scripts, styles, images, etc) are pulled from the embedded jetty server
+	- The server side code is executed on a TomcatServer 
+	- The gwt-rpc client calls are proxied across the embedded jetty server to the tomcat server
+	
+
+Start the embedded Jetty Server
+---------------------------------------------------
+Right-click at the [client gwt] project at select [run as] (or [debug as]) > [GWT development mode]
+(do NOT select [GWT legacy development mode with jetty])
+    
+BEWARE!!!!! Check the [VM arguments] of the run configuration:
+	a.- Goto [Run]->[Run Configurations...]
+	b.- Select the created config and check:
+			[VM Arguments]
+				-Xmx1024m -javaagent:D:/eclipse/instances/master_photonM2-gwt/lombok.jar=ECJ	<--- BEWARE!!!!
+	
+Alternatively if eclipse's GWT plugin is NOT installed
+	a.- Goto [Run]->[Run Configurations...]
+	b.- Right click on [Java Applications] and select [New] to create a new run configuration
+ 	c.- Set the following parameters for the new configuration:
+		[Name]: GWTDEV For XXX
+		[Main Class]
+			com.google.gwt.dev.DevMode
+		[Program Arguments]
+			-remoteUI "${gwt_remote_ui_server_port}:${unique_id}" 		<--- if GWT plug-in is NOT installed set the vars directly
+			-workDir d:/eclipse/temp_dev/gwt_compile 
+			-startupUrl r01vTestTreeGWTWebContent/r01vTestTreeGWT.html 	
+			-logLevel INFO 
+			-codeServerPort 9997 -port 8888 							<--- see gwtSuperDevMode.read.me
+			-war D:\eclipse\projects_platea\r01v\r01vTestTreeGWT\war 	
+			r01v.R01VTestTreeGWT
+		[VM Arguments]
+			-Xmx1024m -javaagent:D:/eclipse/instances/master_photonM2-gwt/lombok.jar=ECJ	<--- BEWARE!!!!
+		[Class Path]
+			Ensure that these libraries are present in the (compile) classpath:
+				gwt-dev.jar
+				gwt-user.jar
+				gwt-codeserver.jar
+				guava-gwt.jar
+
+	
+How to configure gwt's embedded jetty server
+to proxy requests to Tomcat
+---------------------------------------------------
+1.- At the [client GWT] project, add the dependency to [r01fbWebProfileClasses] that adds the [r01f.servlet.GenericHttpProxyServlet]
+    ... if using ivy add to ivy.xml
+        <dependency org="com.ejie.r01.r01fb" name="r01fbWebProfileClasses" rev="latest.integration" 
+        			conf="default->default;compile->compile;runtime->runtime" />
+        			 
+2.- Edit the embedded jetty web.xml file to add the proxy servlet
+			[GWTClient]	
+				+ src
+				+ resources
+				+ gwt-unitCache
+				+ war
+					+ WEB-INF
+						web.xml
+	add:
+			<!-- REST Services proxy -->
+			<servlet>
+		        <servlet-name>r01yStructuresGWTFrontEndServicesWarPROXY</servlet-name>
+		        <servlet-class>r01f.servlet.GenericHttpProxyServlet</servlet-class>
+		        
+				<!-- the local app server (Tomcat / Weblogic / etc) server host / port -->
+		        <init-param>
+		            <param-name>TargetAppServerHost</param-name>
+		            <param-value>127.0.0.1</param-value>
+		        </init-param>
+		        <init-param>
+		            <param-name>TargetAppServerPort</param-name>
+		            <param-value>8080</param-value>
+		        </init-param>
+		    </servlet>
+		
+		    <servlet-mapping>
+		        <servlet-name>r01yStructuresGWTFrontEndServicesWarPROXY</servlet-name>
+		        <url-pattern>/r01yStructuresGWTFrontEndServicesWar/*</url-pattern>		<!-- every request to r01yGWTFrontEndServicesWar -->
+		    </servlet-mapping>
+
+
+How to configure gwt's embedded jetty server
+to deliver static resources
+---------------------------------------------------
+Static assets (js, css, html, etc) are delivered by the embedded jetty; the ROOT of the server is at the 
+[war] folder so, the static assets folder MUST be copied to:
+			[GWTClient]	
+				+ src
+				+ resources
+				+ gwt-unitCache
+				+ war
+					+ r01vTestTreeGWTWebContent <-- static assets
+							+ styles
+							+ scripts
+							html	
+	
+	
+How to configure gwt-rpc policy
+-------------------------------
+GWT uses a custom http header X-gwtCodeRelPath that the GWT's RemoteServiceServlet uses to locate the gwt-rpc policy file
+at the server side
+The gwt-rpc policy file MUST be at the SAME location at client code and at the server side
+... so if the compiled client-side code is at:
+		[GWTClient]	
+			+ src
+			+ resources
+			+ gwt-unitCache
+			+ war					<----- this is where the code server looks after the code
+				+ r01vTestTreeGWT	<----- this is where the compiled code is left
+						XXX.gwt.rpc	<----- the generated gwt-rpc policy file
+... then the SAME policy file MUST be at the SAME location at the server side
+		[ServerSideWAR]
+			+ src
+			+ resources
+			+ WebContent
+				+ r01vTestTreeGWT
+					XXX.gwt.rpc		<---- the SAME generated gwt-rpc policy file
+										  (copy manually from the [GWTClient] project every time it changes
+The servlet extending GWT's server-side [RemoteServiceServlet] can override 
+a method that tells GWT where the gwt.rpc file is located:
+		@Override
+		protected SerializationPolicy doGetSerializationPolicy(final HttpServletRequest request,
+															   final String moduleBaseURL,final String strongName) {
+			String theModuleBaseUrl = "http://localhost/r01yStructuresGWTFrontEndServicesWar/r01vTestTreeGWT/";
+			System.out.println("\n\n\n===>doGetSerializationPolicy: " + theModuleBaseUrl + strongName + ".gwt.rpc\n\n\n");
+			return super.doGetSerializationPolicy(request,theModuleBaseUrl,strongName);
+		}
+		@Override
+		protected String getCodeServerPolicyUrl(final String strongName) {
+			// When the proxied-request is a GWT client-to-RemoteServlet request, a header called X-gwtCodeRelPath
+			// is appended to the proxied request including the GWT-compiled code path relative to the destination WAR
+			//
+			// OVERRIDE the doGetSerializationPolicy in order to "inject" the WAR to the moduleBaseURL param
+			String outServerPolicyUrl = super.getCodeServerPolicyUrl(strongName);
+			if (outServerPolicyUrl == null) outServerPolicyUrl = "http://localhost:9876/r01vTestTreeGWT/" + strongName + ".gwt.rpc";	// load from the gwt super-dev-mode code server
+			System.out.println("\n\n\n===>getCodeServerPolicyUrl: " + strongName + " :: " + outServerPolicyUrl  + "\n\n\n");
+			return outServerPolicyUrl;
+		} 
+		@Override
+		protected SerializationPolicy loadPolicyFromCodeServer(final String url) {
+			System.out.println("\n\n\n===>loadPolicyFromCodeServer: " + url  + "\n\n\n");
+			return super.loadPolicyFromCodeServer(url);
+		}
+	
+	

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- =================================================================================== -->
+<!-- Usage:                                                                              -->
+<!-- [0]: Common param:                                                                  -->
+<!--			- sources          = the folder where the sources resides                -->
+<!--                                 sources=src                                         -->
+<!--			- compiled-webroot = the folder where the compiled code will be          -->
+<!--								 generated (usually another static-content           -->
+<!--							     eclipse project                                     -->
+<!--                                 compiled-webroot = ../xxWebContent/xxWebContent     -->
+<!--			- workdir          = A folder for temporal files                         -->
+<!--                                 workdir=build/work                                  -->
+<!-- [1]: Compile widgetset                                                              -->
+<!--		- widgetset.name = the widgetset name                                        -->
+<!--                                                                                     -->			
+<!-- <target name="compile-widgetsets"                                                   --> 
+<!--   		 depends="init">                                                             -->
+<!--    <antcall target="build_vaadin.compile-single-widgetset">                         -->
+<!--		<param name="widgetset.name" value="p01a.ui.widgetset.P01auiwarWidgetset"/>  -->
+<!--		<param name="theme.name" value="p01"/>                                       -->
+<!--		<param name="sources" value="${sources}"/>                                   -->
+<!--		<param name="compiled-webroot" value="${compiled-webroot}"/>                 -->
+<!--		<param name="workdir" value="${workdir}"/>                                   -->
+<!--    </antcall>                                                                       -->
+<!-- </target>                                                                           -->
+<!--                                                                                     -->
+<!-- [2]: Compile theme                                                                  -->
+<!--		- theme.name = xx                                                            -->
+<!--                                                                                     -->			
+<!-- <target name="compile-themes"                                                       --> 
+<!--   		 depends="init">                                                             -->
+<!--    <antcall target="build_vaadin.compile-single-widgetset">                         -->
+<!--		<param name="theme.name" value="xxx"/>                                       -->
+<!--		<param name="theme.name" value="p01"/>                                       -->
+<!--		<param name="sources" value="${sources}"/>                                   -->
+<!--		<param name="compiled-webroot" value="${compiled-webroot}"/>                 -->
+<!--		<param name="workdir" value="${workdir}"/>                                   -->
+<!--    </antcall>                                                                       -->
+<!-- </target>                                                                           -->
+<project xmlns:ivy="antlib:org.apache.ivy.ant">
+<!-- ================================================================== -->
+<!-- Retrieve vaadin deps and set classpath vars                        -->
+<!-- ================================================================== -->
+    <target name="resolve_vaadin">
+    	
+    	
+    	<setproxy nonproxyhosts="repository.ejiedes.net" proxyhost="proxyejgv.ejgvdns" proxyport="8080" proxyuser="jgonzacr" proxypassword="72723590Ej" />
+    	
+    	<!-- Vaadin/gwt classpath dependencies: resolve and put every config in a cachepath -->
+		<ivy:resolve file="../../../projects_r01fb/r01fb/r01fbGWTClasses/build_scripts/ivy_vaadin7.xml" 
+					 log="quiet" />
+
+        <ivy:cachepath pathid="vaadin.deps.widgetset.compile" 
+        			   conf="widgetset-compile" />
+    	<ivy:cachepath pathid="vaadin.deps.theme.compile" 
+    				   conf="theme-compile" />
+    </target>
+    <target name="resolve" 
+    		depends="resolve_vaadin">
+    	<echo>Ivy deps WIDGETSET_COMPILE: ${ant.refid:vaadin.deps.widgetset.compile}</echo>
+    	<echo>Ivy deps THEME_COMPILE: ${ant.refid:vaadin.deps.theme.compile}</echo>
+    </target>
+
+
+<!-- ================================================================== -->
+<!-- Widgetset Compilation                                              -->
+<!-- ================================================================== -->
+    <target name="compile-single-widgetset" 
+    		depends="resolve_vaadin">
+    	
+        <java classname="com.google.gwt.dev.Compiler"
+              failonerror="yes" fork="yes">
+            <arg value="-war" />
+            <arg value="${compiled-webroot}/VAADIN/widgetsets" />
+            <arg value="${widgetset.name}" />
+            <arg value="-logLevel"/>
+            <arg value="INFO"/>
+            <!-- <arg value="-strict"/> -->
+            <jvmarg value="-Xmx1024M"/>
+            <jvmarg value="-Xss512M"/>
+            <jvmarg value="-Djava.awt.headless=true"/>
+
+            <classpath>
+                <pathelement path="${sources}" />				<!-- Location of source code -->
+                <pathelement path="${workdir}/build/classes" />	<!-- Compiled server-side classes -->
+                <path refid="vaadin.deps.widgetset.compile"/>	<!-- widgetsets deps -->
+            </classpath>
+            <sysproperty key="vFailIfNotSerializable" value="${failifnotserializable}" />
+        </java>
+
+        <!-- Cleanup -->
+        <delete dir="${compiled-webroot}/VAADIN/gwt-unitCache"/>
+        <delete dir="${compiled-webroot}/VAADIN/widgetsets/WEB-INF"/>
+    </target>
+
+<!-- ================================================================== -->
+<!-- Theme compilation                                                  -->
+<!-- ================================================================== -->
+    <target name="compile-single-theme" 
+    		depends="resolve_vaadin">
+    	
+        <!-- Prepare work directory -->
+        <delete dir="${workdir}/VAADIN/themes/${theme.name}"/>
+        <mkdir dir="${workdir}/VAADIN/themes/${theme.name}"/>
+
+        <!-- Compile theme in-place, as compilation can be used for development -->
+        <java classname="com.vaadin.sass.SassCompiler"
+              fork="true">
+            <classpath>
+            	<path refid="vaadin.deps.widgetset.compile"/>	<!-- Vaadin dependencies -->
+                <path refid="vaadin.deps.theme.compile"/>		<!-- theme deps -->
+            </classpath>
+            <arg value="${compiled-webroot}/VAADIN/themes/${theme.name}/styles.scss"/>
+            <arg value="${workdir}/VAADIN/themes/${theme.name}/styles.css"/>
+        </java>
+
+        <!-- Copy theme resources -->
+        <copy todir="${compiled-webroot}/VAADIN/themes/${theme.name}">
+            <fileset dir="${workdir}/VAADIN/themes/${theme.name}">
+                <include name="**/*"/>
+                <exclude name="**/.sass-cache"/>
+                <exclude name="**/.sass-cache/*"/>
+                <exclude name="**/.sass-cache/**/*"/>
+            </fileset>
+        </copy>
+
+        <!-- Cleanup work directory -->
+        <delete dir="${workdir}/VAADIN"/>
+    </target>
+</project>

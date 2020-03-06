@@ -1,0 +1,46 @@
+Pre-requisites
+=================================
+The eclipse projects structure at disk MUST be like:
+	[ some where ]
+	    + projects_r01fb
+	         + r01fb
+	              + r01fbGWTClasses
+	              + (all other r01fb projects)
+	    + projects_xxx
+	         + xxx
+	              + [eclipse_project]						<-- this is the eclipse project that contains the vaadin client code
+	              + [eclipse project for static content]	<-- this is the eclipse project where 
+	              													- the generated static content will be left
+	              													- the theme to be compiled resides
+
+
+Compile Vaadin
+=================================
+[0] - Create a [build_scripts] folder at the [eclipse_project] folder
+		[eclipse_project]
+		    + src
+		    + build
+		    + build_scripts		<------
+		    + ivy.xml
+		    
+[1] - Copy ivysettings.xml file to [eclipse_project]'s root folder
+		[eclipse_project]
+		    + src
+		    + build
+		    + build_scripts
+		    + ivysettings.xml	<-----
+		    + ivy.xml
+		    
+[2] - Create a build.xml file at [build_scripts] folder
+		[eclipse_project]
+		    + src
+		    + build
+		    + build_scripts
+		    	+ build.xml		<-----
+		    + ivysettings.xml
+		    + ivy.xml
+	   Use the build.xml.sample file to create the build.xml file
+	   
+[3] - Launch the [build_widgetsets] or [build_themes] tasks 
+		
+	

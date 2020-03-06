@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:ivy="antlib:org.apache.ivy.ant">
+
+<!-- ================================================================== -->
+<!-- Configuration / initialization / cleanup / refresh eclipse         -->
+<!-- IMPORTANT:                                                         -->
+<!--     set Run in the same JRE as workspace" at the Ant run  config   -->
+<!--		 [Run As] > [Ant Build...]                                  -->
+<!-- ================================================================== -->
+	<!-- Add a task definition for ivy ant tasks to the current project,
+		 such that this new task can be used in the current project -->
+	<taskdef resource="org/apache/ivy/ant/antlib.xml"
+			 uri="antlib:org.apache.ivy.ant" />
+
+
+    <!-- Initialize build -->
+    <target name="init">
+        <property name="sources" value="src" />							<!-- Where project source files are located -->
+    	<property name="widgetset-name" value="${app-name}.ui.widgetset.${app-name}Widgetset"/>
+        <property name="workdir" value="build/work"/>					<!-- Compilation work directory -->
+        <property name="artifacts" value="build/artifacts"/>			<!-- Compilation result artifacts directory -->
+    	<property name="src-webroot" value="WebContent" />				<!-- Path to root of web application folder -->
+
+        <mkdir dir="${workdir}"/>
+    </target>
+
+	<!-- clean workdir -->
+    <target name="clean"
+    		depends="init">
+        <delete dir="${workdir}"/>
+        <delete dir="${result}"/>
+    </target>
+
+    <!-- Refresh the project in a locally running Eclipse. -->
+    <target name="refresh-eclipse" if="eclipse.running">
+        <echo>Refreshing project folder</echo>
+        <eclipse.refreshLocal resource="${compiled-webroot}"
+        					  depth="infinite" />
+    </target>
+
+<!-- ================================================================== -->
+<!-- BUID                                                               -->
+<!-- ================================================================== -->
+	<import file="../../../../projects_r01fb/r01fb/r01fbGWTClasses/build_scripts/build_vaadin7.xml"
+		    as="build_vaadin"/>
+
+
+	<!-- build all -->
+    <target name="build.all"
+    		depends="compile-widgetsets,compile-themes">
+	</target>
+
+
+    <!-- Widget sets to compile -->
+    <target name="compile-widgetsets"
+    		depends="init">
+        <antcall target="build_vaadin.compile-single-widgetset">
+			<param name="widgetset.name" value="${widgetset-name}"/>
+			<param name="theme.name" value="${theme-name}"/>
+			<param name="sources" value="${sources}"/>
+			<param name="compiled-webroot" value="${compiled-webroot}"/>
+			<param name="workdir" value="${workdir}"/>
+        </antcall>
+    </target>
+
+    <!-- Themes to compile -->
+    <target name="compile-themes"
+    		depends="init">
+        <antcall target="build_vaadin.compile-single-theme">
+        	<param name="theme.name" value="${theme-name}"/>
+			<param name="sources" value="${sources}"/>
+			<param name="compiled-webroot" value="${compiled-webroot}"/>
+			<param name="workdir" value="${workdir}"/>
+        </antcall>
+    </target>
+</project>

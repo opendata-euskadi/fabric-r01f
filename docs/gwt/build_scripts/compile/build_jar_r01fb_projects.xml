@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:ivy="antlib:org.apache.ivy.ant">
+	<!-- ================================================================== -->
+	<!-- Create local r01fb projects jars using the eclipse compiled code   -->
+	<!-- (does NOT compile the projects)                                    -->
+	<!-- ================================================================== -->
+	<target name="create-r01fb-project-jars">
+		<!-- BASE -->
+		<antcall target="jar-project">
+			<param name="module.group.name" value="r01fb"/>
+			<param name="module.group" value="r01fb"/>
+			<param name="module" value="r01fbBaseClasses"/>
+			<param name="revision" value="1.0"/>
+		</antcall>
+		<antcall target="jar-project">
+			<param name="module.group.name" value="r01fb"/>
+			<param name="module.group" value="r01fb"/>
+			<param name="module" value="r01fbCollectionClasses"/>
+			<param name="revision" value="1.0"/>
+		</antcall>
+
+		<!-- Business Services -->
+		<antcall target="jar-project">
+			<param name="module.group.name" value="r01fb"/>
+			<param name="module.group" value="r01fb"/>
+			<param name="module" value="r01fbBusinessServicesClasses"/>
+			<param name="revision" value="1.0"/>
+		</antcall>
+		<antcall target="jar-project">
+			<param name="module.group.name" value="r01fb"/>
+			<param name="module.group" value="r01fb"/>
+			<param name="module" value="r01fbModelClasses"/>
+			<param name="revision" value="1.0"/>
+		</antcall>
+
+		<!-- Streamer / Marshaller -->
+		<antcall target="jar-project">
+			<param name="module.group.name" value="r01fb"/>
+			<param name="module.group" value="r01fb"/>
+			<param name="module" value="r01fbObjectStreamerInterfaceClasses"/>
+			<param name="revision" value="1.0"/>
+		</antcall>
+
+		<!-- Properties -->
+		<antcall target="jar-project">
+			<param name="module.group.name" value="r01fb"/>
+			<param name="module.group" value="r01fb"/>
+			<param name="module" value="r01fbPropertiesInterfaceClasses"/>
+			<param name="revision" value="1.0"/>
+		</antcall>
+
+		<!-- Aspects (just interface classes) -->
+		<antcall target="jar-project">
+			<param name="module.group.name" value="r01fb"/>
+			<param name="module.group" value="r01fb"/>
+			<param name="module" value="r01fbDirtyTrackInterfaceClasses"/>
+			<param name="revision" value="1.0"/>
+		</antcall>
+		<antcall target="jar-project">
+			<param name="module.group.name" value="r01fb"/>
+			<param name="module.group" value="r01fb"/>
+			<param name="module" value="r01fbFreezableInterfaceClasses"/>
+			<param name="revision" value="1.0"/>
+		</antcall>
+		<antcall target="jar-project">
+			<param name="module.group.name" value="r01fb"/>
+			<param name="module.group" value="r01fb"/>
+			<param name="module" value="r01fbLazyLoadInterfaceClasses"/>
+			<param name="revision" value="1.0"/>
+		</antcall>
+		<antcall target="jar-project">
+			<param name="module.group.name" value="r01fb"/>
+			<param name="module.group" value="r01fb"/>
+			<param name="module" value="r01fbLoggingInterfaceClasses"/>
+			<param name="revision" value="1.0"/>
+		</antcall>
+	</target>
+</project>

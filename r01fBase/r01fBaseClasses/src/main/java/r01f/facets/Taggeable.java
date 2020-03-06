@@ -22,7 +22,7 @@ public interface Taggeable<T> {
 	 * @param tags
 	 * @return 
 	 */
-	public boolean containsAllTags(final T... tags);
+	public boolean containsAllTags(@SuppressWarnings("unchecked") final T... tags);
 	/**
 	 * Returns true if the tag list contains ALL provided tags
 	 * @param tags

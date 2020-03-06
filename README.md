@@ -1,6 +1,11 @@
 # RO1F: Fabric
 
+## Java coding standards
+
+[Java coding standards](docs/coding_standards.md)
+
 ## development environment (no IDE)
+
 [Installation guide (no ide)](docs/dev_env_install.md)
 
 ## Java

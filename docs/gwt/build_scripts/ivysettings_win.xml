@@ -1,0 +1,55 @@
+<!--
+   Licensed to the Apache Software Foundation (ASF) under one
+   or more contributor license agreements.  See the NOTICE file
+   distributed with this work for additional information
+   regarding copyright ownership.  The ASF licenses this file
+   to you under the Apache License, Version 2.0 (the
+   "License"); you may not use this file except in compliance
+   with the License.  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing,
+   software distributed under the License is distributed on an
+   "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+   KIND, either express or implied.  See the License for the
+   specific language governing permissions and limitations
+   under the License.    
+-->
+<ivysettings>
+	<caches defaultCacheDir="d:/eclipse/ivy_libs/cache" />
+	<property name="ivy.local.default.root" value="d:/eclipse/ivy_libs/cache" override="false"/>
+	
+	<settings defaultResolver="default"/>
+	<include url="${ivy.default.settings.dir}/ivysettings-public.xml"/>
+	<include url="${ivy.default.settings.dir}/ivysettings-shared.xml"/>
+	<include url="${ivy.default.settings.dir}/ivysettings-local.xml"/>
+	<include url="${ivy.default.settings.dir}/ivysettings-main-chain.xml"/>
+	<include url="${ivy.default.settings.dir}/ivysettings-default-chain.xml"/>
+	
+	<!--
+	<resolvers>
+		<filesystem name='workspace_p01_projects_resolver'>
+			<artifact pattern='/work/eclipse/projects_default/p01/build/[artifact]' />
+		</filesystem>
+		<filesystem name='workspace_r01fb_projects_resolver'>
+			<artifact pattern='/work/eclipse/projects_default/r01fb/build/[artifact]' />
+		</filesystem>
+		<chain name='workspace_projects_resolver_chain'>
+			<resolver ref="workspace_p01_projects_resolver"/>
+			<resolver ref="workspace_r01fb_projects_resolver"/>
+		</chain>
+	</resolvers>
+	
+	<modules>
+		<module organisation='com.ejie.r01.p01b' name='p01fModelClasses.jar' resolver='workspace_projects_resolver_chain' />
+		<module organisation='com.ejie.r01.p01b' name='p01fClientAPIClasses.jar' resolver='workspace_projects_resolver_chain' />
+		<module organisation='com.ejie.r01.p01b' name='p01bServicesClasses.jar' resolver='workspace_projects_resolver_chain' />
+		
+		<module organisation='com.ejie.r01.r01fb' name='r01fbAspectInterfaceClasses.jar' resolver='workspace_projects_resolver_chain' />
+		<module organisation='com.ejie.r01.r01fb' name='r01fbClasses.jar' resolver='workspace_projects_resolver_chain' />
+		<module organisation='com.ejie.r01.r01fb' name='r01fbPersistenceClasses.jar' resolver='workspace_projects_resolver_chain' />
+		<module organisation='com.ejie.r01.r01fb' name='r01fbWebProfileClasses.jar' resolver='workspace_projects_resolver_chain' />
+	</modules>
+	-->
+</ivysettings>

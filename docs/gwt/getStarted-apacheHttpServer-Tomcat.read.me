@@ -1,0 +1,112 @@
+[SuperDev mode]
+	- apache http server	<-- static assets
+	- Tomcat 				<-- server side logic
+	- gwt code server		<-- gwt code
+====================================================================================
+
+                                |------Browser------|
+    [Code Server]---------------|-->[Client Code]   |			(see gwtSuperDevMode.READ.me at r01fbGWTClasses project)
+     (java App)                 |       |   |       |
+                                |-------|---|-------|
+                                        |   |
+                                  static|   |gwt-rpc
+                               resources|   |
+                                        |   |
+                                        |   |
+            Apache HTTP Server  |-------|---|--------|
+                                |       v   |        |
+                                |     [res] |        |
+                                |           |        |
+                                |--------[proxy]-----|
+                                            |
+                                            |
+                  Tomcat Server  |----------|------------|
+                                 | [FrontEndServicesWar] |
+                                 |-----------------------|
+                                 
+As it can be seen in the previous figure:
+	- The client-side GWT code is pulled from the [Code Server] (a java stand-alone process started as a java App) -see gwtSuperDevMode.READ.me at r01fbGWTClasses project-
+	- The client static resources (html, scripts, styles, images, etc) are pulled from an apache http server
+	- The server side code is executed on a TomcatServer 
+	- The gwt-rpc client calls are proxied across the web server to the tomcat server
+	
+How to configure Apache to proxy requests to Tomcat
+---------------------------------------------------
+1.- In a new conf file for R01 include the following lines:
+
+	# Apache connector module
+	LoadModule  jk_module  modules/mod_jk.so
+	JkWorkersFile conf/r01/workers.properties
+	
+	# Send everything for context /examples to worker named worker_tomcat_localhost (ajp13) 
+	# and defined at conf/r01/workers.properties
+	JkMount  /r01yGWTFrontEndServicesWar/* worker_tomcat_localhost
+	JkMount  /r01yRESTServicesWar/* tomcat_localhost
+	
+	# JK Logging
+	# =============================================
+	JkLogFile     logs/mod_jk.log
+	# Set the jk log level [debug/error/info]
+	JkLogLevel    info
+	# Select the timestamp log format
+	JkLogStampFormat "[%a %b %d %H:%M:%S %Y] "
+
+2.- Create a workers.properties with the following contents:
+
+	# Define 1 real worker using ajp13
+	worker.list=tomcat_localhost
+	
+	# Set properties for worker1 (ajp13) 
+	# -beaware that port is NOT the tomcat port... usually it's 8009-
+	worker.tomcat_localhost.type=ajp13
+	worker.tomcat_localhost.host=localhost
+	worker.tomcat_localhost.port=8009 
+	
+	
+How to configure gwt-rpc policy
+-------------------------------
+GWT uses a custom http header X-gwtCodeRelPath that the GWT's RemoteServiceServlet uses to locate the gwt-rpc policy file
+at the server side
+The gwt-rpc policy file MUST be at the SAME location at client code and at the server side
+... so if the compiled client-side code is at:
+		[GWTClient]	
+			+ src
+			+ resources
+			+ gwt-unitCache
+			+ war					<----- this is where the code server looks after the code
+				+ r01vTestTreeGWT	<----- this is where the compiled code is left
+						XXX.gwt.rpc	<----- the generated gwt-rpc policy file
+... then the SAME policy file MUST be at the SAME location at the server side
+		[ServerSideWAR]
+			+ src
+			+ resources
+			+ WebContent
+				+ r01vTestTreeGWT
+					XXX.gwt.rpc		<---- the SAME generated gwt-rpc policy file
+										  (copy manually from the [GWTClient] project every time it changes
+The servlet extending GWT's server-side [RemoteServiceServlet] can override 
+a method that tells GWT where the gwt.rpc file is located:
+		@Override
+		protected SerializationPolicy doGetSerializationPolicy(final HttpServletRequest request,
+															   final String moduleBaseURL,final String strongName) {
+			String theModuleBaseUrl = "http://localhost/r01yStructuresGWTFrontEndServicesWar/r01vTestTreeGWT/";
+			System.out.println("\n\n\n===>doGetSerializationPolicy: " + theModuleBaseUrl + strongName + ".gwt.rpc\n\n\n");
+			return super.doGetSerializationPolicy(request,theModuleBaseUrl,strongName);
+		}
+		@Override
+		protected String getCodeServerPolicyUrl(final String strongName) {
+			// When the proxied-request is a GWT client-to-RemoteServlet request, a header called X-gwtCodeRelPath
+			// is appended to the proxied request including the GWT-compiled code path relative to the destination WAR
+			//
+			// OVERRIDE the doGetSerializationPolicy in order to "inject" the WAR to the moduleBaseURL param
+			String outServerPolicyUrl = super.getCodeServerPolicyUrl(strongName);
+			if (outServerPolicyUrl == null) outServerPolicyUrl = "http://localhost:9876/r01vTestTreeGWT/" + strongName + ".gwt.rpc";	// load from the gwt super-dev-mode code server
+			System.out.println("\n\n\n===>getCodeServerPolicyUrl: " + strongName + " :: " + outServerPolicyUrl  + "\n\n\n");
+			return outServerPolicyUrl;
+		} 
+		@Override
+		protected SerializationPolicy loadPolicyFromCodeServer(final String url) {
+			System.out.println("\n\n\n===>loadPolicyFromCodeServer: " + url  + "\n\n\n");
+			return super.loadPolicyFromCodeServer(url);
+		}
+	

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:ivy="antlib:org.apache.ivy.ant">
+	<!-- Add a task definition for ivy ant tasks to the current project, 
+		 such that this new task can be used in the current project -->
+	<taskdef resource="org/apache/ivy/ant/antlib.xml"
+			 uri="antlib:org.apache.ivy.ant" />
+	
+<!-- ================================================================== -->
+<!-- Create a jar for each workspace project usign eclipse-compiled code-->
+<!-- (does NOT compile)                                                 -->
+<!-- ================================================================== -->
+	<import file="build_jar_workspace_projects.xml"
+		    as="jar-workspace-projects"/>
+	
+<!-- ================================================================== -->
+<!-- Retrieve deps and set classpath vars                               -->
+<!-- ================================================================== -->
+    <target name="resolve_r01fb" 
+    		depends="jar-workspace-projects.jar-workspace-projects">
+    	<!-- R01FsB classpath dependencies: resolve and put every config in a cachepath -->
+        <ivy:resolve file="build_scripts/compile/ivy_r01fb.xml" 
+    				 log="download-only"/>
+
+        <ivy:cachepath pathid="r01fb.deps.default" conf="default" />	<!-- r01fb.deps.default contains the [default] deps of ivy_r01fb -->
+        <ivy:cachepath pathid="r01fb.deps.compile" conf="compile" />	<!-- r01fb.deps.compile contains the [complie] deps of ivy_r01fb -->
+        <ivy:cachepath pathid="r01fb.deps.runtime" conf="runtime" />	<!-- r01fb.deps.runtime contains the [runtime] deps of ivy_r01fb -->
+    </target>
+    	
+    <target name="resolve" 
+    		depends="resolve_r01fb">
+    	<!-- Debug -->
+    	<echo>Ivy deps DEFAULT: ${ant.refid:r01fb.deps.default}</echo>
+    	<echo>Ivy deps COMPILE: ${ant.refid:r01fb.deps.compile}</echo>
+    	<echo>Ivy deps RUNTIME: ${ant.refid:r01fb.deps.runtime}</echo>
+
+    	<echo>Ivy deps WIDGETSET_COMPILE: ${ant.refid:vaadin.deps.widgetset.compile}</echo>
+    	<echo>Ivy deps THEME_COMPILE: ${ant.refid:vaadin.deps.theme.compile}</echo>
+    </target>
+<!-- ================================================================== -->
+<!-- Server-Side Compilation                                            -->
+<!-- ================================================================== -->
+    <!-- Compile server-side -->
+    <target name="compile-server-side"
+            depends="resolve">
+    	
+        <delete dir="${workdir}/build/classes"/>
+        <mkdir dir="${workdir}/build/classes"/>
+
+        <javac srcdir="${sources}"
+               destdir="${workdir}/build/classes"
+               includeantruntime="no"
+        	   encoding="8859_1">
+            <classpath>
+                <pathelement path="${sources}" />				<!-- Source code to be compiled -->
+                <path refid="r01fb.deps.default"/>				<!-- r01f default dependencies -->
+                <path refid="r01fb.deps.compile"/>				<!-- r01f compile dependencies -->
+                <path refid="r01fb.deps.runtime"/>				<!-- r01f runtime dependencies -->
+                <path refid="vaadin.deps.widgetset.compile"/>	<!-- Vaadin dependencies -->
+
+            	<!-- add the previously created local workspace projects jars -->
+                <fileset dir="${workdir}">
+                   <include name="*.jar" />
+                </fileset>
+            </classpath>
+        </javac>
+
+        <!-- Copy sources -->
+        <copy todir="${workdir}/build/classes">
+            <fileset dir="${sources}"/>
+        </copy>
+    </target>
+</project>

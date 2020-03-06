@@ -63,27 +63,26 @@ class XMLPropertiesComponentDefLoader {
 		try {
 			// a) - Try the env-independent file
 			Path compDefEnvIndepFilePath = XMLPropertiesComponentDefLoader.componentDefFilePath(appCode,component);
-			
+
 			log.warn("Loading ENV-INDEP xml properties component DEFINITION for appCode/component={}.{} (env={}) from CLASSPATH at {} (BEWARE that the file name DOES NOT ends with properties.xml!)",
 					 appCode,component,
 					 env,
 					 compDefEnvIndepFilePath);
-			
 			defXmlIS = resourcesLoader.getInputStream(Path.from(compDefEnvIndepFilePath),
 													  true);	// true: use cache
-		} catch (IOException ioEx) {
+		} catch (final IOException ioEx) {
 			// b) - Try the env-dependent file
 			if (ioEx instanceof FileNotFoundException
 			 && env != null) {
 				try {
 					Path compDefEnvDepFilePath = XMLPropertiesComponentDefLoader.componentDefFilePath(env,
 																   									  appCode,component);
-					
+
 					log.warn("Loading ENV-DEP xml properties component DEFINITION for appCode/component={}.{} (env={}) from CLASSPATH at {}",
 							 appCode,component,
 							 env,
 							 compDefEnvDepFilePath);
-					
+
 					defXmlIS = resourcesLoader.getInputStream(Path.from(compDefEnvDepFilePath),
 															  true);
 				} catch (IOException ioEx2) {
@@ -93,20 +92,22 @@ class XMLPropertiesComponentDefLoader {
 		}
 
 		// c) - If not found throw
-		if (defXmlIS == null)  throw XMLPropertiesException.componentDefLoadError(env,appCode,component);
+		if (defXmlIS == null) {
+			throw XMLPropertiesException.componentDefLoadError(env,appCode,component);
+		}
 
 		// d) - Return
 		try {
 			outDef = XMLPropertiesComponentDefLoader.load(defXmlIS);
 			outDef.setName(component);		// Add the name  (it's not at the xml)
-		} catch (IOException ioEx) {
+		} catch (final IOException ioEx) {
 			throw XMLPropertiesException.componentDefLoadError(env,appCode,component,
 															   ioEx);
 		} finally {
 			if (defXmlIS != null) {
 				try {
 					defXmlIS.close();
-				} catch (IOException ioEx) {
+				} catch (final IOException ioEx) {
 					/* ignored */
 				}
 			}
@@ -129,7 +130,7 @@ class XMLPropertiesComponentDefLoader {
 		try {
 			compDef = XMLPropertiesComponentDefLoader.load(env,
 														   appCode,component);
-		} catch (XMLPropertiesException xmlPropsEx) {
+		} catch (final XMLPropertiesException xmlPropsEx) {
 			// If the component definition was NOT found, try a default one
 			if (xmlPropsEx.is(XMLPropertiesErrorType.COMPONENTDEF_NOT_FOUND)) {
 				// warn
@@ -164,7 +165,7 @@ class XMLPropertiesComponentDefLoader {
 				throw xmlPropsEx;
 			}
 		}
-		log.debug("xml properties component loader definition for appCode/component={}/{} (env={}):\n{}",
+		log.warn("xml properties component loader definition for appCode/component={}/{} (env={}):\n{}",
 				  appCode,component,
 				  env,
 				  component,compDef.debugInfo());
