@@ -9,7 +9,7 @@ public enum NotificationMedium
 	SMS,
 	VOICE,
 	LOG,
-	PUSH_MESSAGE;
+	PUSH;
 
 	public String asStringLowerCase() {
 		return this.name().toLowerCase();
