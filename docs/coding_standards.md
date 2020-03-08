@@ -28,6 +28,110 @@ Class names MUST start ALWAYS with the `[appCode]` as `{appCode}{Type}`
 
 ie: if [appCode]=TCK01 the a class should be named like `TCK01MyType`
 
+
+Bracing style:
+-------------------------------------------------
+Use this brace style:
+
+	public void doSomenting() {
+	}
+
+**NOT** this:
+
+	public void doSomenting() 
+	{
+		...
+	}
+
+Spacing:
+-------------------------------------------------
+Use **4 character tabs**
+
+The `golden rule`: **PUT AN SPACE AFTER A RESERVED WORD**
+
+Wrong:
+	
+	try {
+		if(something) {
+			for(int i=0; i<0; i++) { 
+				...
+			}
+		}
+	} catch(Throwable th) {
+		...
+	}
+
+Right (beware the space char AFTER the reserved word):
+
+	try {
+		if (something) {
+			for (int i=0; i<0; i++) { 
+				...
+			}
+		}
+	} catch (Throwable th) {
+		...
+	}
+
+Comments:
+-------------------------------------------------
+Leave an space AFTER a line comments:
+
+Wrong:
+
+	//this is a line comment
+	
+Right: 
+
+	// this is a line comment 
+	
+Use `separators` wisely:
+
+	/////////////////////////////////////////////////////////////////////////////////////////
+	//	SECTION NAME
+	/////////////////////////////////////////////////////////////////////////////////////////
+	
+Indentation:
+-------------------------------------------------
+Use indentation wisely:
+
+Wrong:
+
+	public void myLongParamsMethod(final String name,final String surname,final Date birthDate,final Phone phone) {
+		...
+	}
+	public void myOtherMethod() {
+		this.myLongParamsMethod("Evo","Morales",Phone.of("67456732"),new Date());
+	}
+
+Right: try to group params with the same context 
+
+	public void myLongParamsMethod(final String name,final String surname,
+											final Date birthDate,
+											final Phone phone) {
+		...
+	}
+	public void myOtherMethod() {
+		this.myLongParamsMethod("Evo","Morales",
+									  birthDate,
+									  Phone.of("67456732"));
+	}
+
+Wrong indentation of lambda expressions:
+	
+	textField.addChangeListener(changeEvent -> {
+		String val = changeEvent.getValue();
+		...
+	});
+	
+Right indentation of lambda expression:
+
+	textField.addChangeListener(changeEvent -> {
+											String val = changeEvent.getValue();
+											...
+										});
+
+
 Class definitions
 -------------------------------------------------
 Wrong:
