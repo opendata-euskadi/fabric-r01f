@@ -12,7 +12,7 @@ import r01f.model.services.COREServiceMethod;
  * Note that the performed operation is NOT always the same as the requested one
  * (ie: an update could be requested by the client BUT the record didn't exist so a creation is performed)
  */
-public enum PersistencePerformedOperation 
+public enum PersistencePerformedOperation
  implements EnumExtended<PersistencePerformedOperation> {
 	LOADED,
 	CREATED,
@@ -22,12 +22,12 @@ public enum PersistencePerformedOperation
 	NOT_MODIFIED,
 	COUNTED,
 	FOUND;
-	
+
 	public COREServiceMethod getCOREServiceMethod() {
 		return COREServiceMethod.named(this.name());
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//	ENUM EXTENDED 
+//	ENUM EXTENDED
 /////////////////////////////////////////////////////////////////////////////////////////
 	private static final EnumExtendedWrapper<PersistencePerformedOperation> WRAPPER = EnumExtendedWrapper.wrapEnumExtended(PersistencePerformedOperation.class);
 	@Override
@@ -39,7 +39,7 @@ public enum PersistencePerformedOperation
 		return WRAPPER.is(this,el);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	public static PersistencePerformedOperation fromName(final String name) {
 		return WRAPPER.fromName(name);
@@ -49,7 +49,7 @@ public enum PersistencePerformedOperation
 	}
 	/**
 	 * Guess the supposed performed operation based on the requested one
-	 * Usually the performed operation depends on the requested one, BUT some times, it 
+	 * Usually the performed operation depends on the requested one, BUT some times, it
 	 * depends on the server data, ie, if the client request a CREATION but the entity
 	 * already exists at the server, the performed operation can be UPDATED instead of the
 	 * supposed one (CREATED)
@@ -60,27 +60,30 @@ public enum PersistencePerformedOperation
 		PersistencePerformedOperation outPerformedOp = null;
 		if (requestedOp == PersistenceRequestedOperation.LOAD) {
 			outPerformedOp = LOADED;
-		} 
+		}
+		else if (requestedOp == PersistenceRequestedOperation.SAVE) {
+			outPerformedOp = SAVED;
+		}
 		else if (requestedOp == PersistenceRequestedOperation.CREATE) {
 			outPerformedOp = CREATED;
-		} 
+		}
 		else if (requestedOp == PersistenceRequestedOperation.UPDATE) {
 			outPerformedOp = UPDATED;
-		} 
+		}
 		else if (requestedOp == PersistenceRequestedOperation.DELETE) {
 			outPerformedOp = DELETED;
-		} 
+		}
 		else if (requestedOp == PersistenceRequestedOperation.FIND) {
 			outPerformedOp = FOUND;
 		}
 		else if (requestedOp == PersistenceRequestedOperation.COUNT) {
 			outPerformedOp = COUNTED;
-		} 
+		}
 		else {
 			throw new IllegalArgumentException("Illegal combination of PersistenceRequestedOperation and HttpResponseCode. This is a DEVELOPER mistake!");
 		}
 		return outPerformedOp;
- 
+
 	}
 	/**
 	 * Guess the performed operation based on the requested operation and the HTTP response code
@@ -94,24 +97,24 @@ public enum PersistencePerformedOperation
 		PersistencePerformedOperation outPerformedOp = null;
 		if (requestedOp == PersistenceRequestedOperation.LOAD) {
 			outPerformedOp = LOADED;
-		} 
+		}
 		else if (requestedOp == PersistenceRequestedOperation.CREATE) {
 			outPerformedOp = CREATED;
-			
-		} 
+
+		}
 		else if (requestedOp == PersistenceRequestedOperation.UPDATE) {
 			if (httpResponseCode == HttpResponseCode.NOT_MODIFIED) {
 				outPerformedOp = NOT_MODIFIED;
 			} else {
 				outPerformedOp = UPDATED;
 			}
-		} 
+		}
 		else if (requestedOp == PersistenceRequestedOperation.DELETE) {
 			outPerformedOp = DELETED;
-		} 
+		}
 		else if (requestedOp == PersistenceRequestedOperation.FIND) {
 			outPerformedOp = FOUND;
-		} 
+		}
 		else if (requestedOp == PersistenceRequestedOperation.COUNT) {
 			outPerformedOp = COUNTED;
 		}
