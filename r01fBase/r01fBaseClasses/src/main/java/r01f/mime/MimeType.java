@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.experimental.Accessors;
 import r01f.objectstreamer.annotations.MarshallType;
 import r01f.types.CanBeRepresentedAsString;
+import r01f.util.types.collections.CollectionUtils;
 
 /**
  * Encapsulates a {@link MimeType}
@@ -43,6 +44,29 @@ public class MimeType
 	@Override
 	public String toString() {
 		return _name.toString();
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	                                                                          
+/////////////////////////////////////////////////////////////////////////////////////////
+	public boolean is(final MimeType other) {
+		return this.equals(other);
+	}
+	public boolean isNOT(final MimeType other) {
+		return !this.is(other);
+	}
+	public boolean isIn(final MimeType... others) {
+		if (CollectionUtils.isNullOrEmpty(others)) return false;
+		boolean in = false;
+		for (MimeType other : others) {
+			if (other.is(this)) {
+				in = true;
+				break;
+			}
+		}
+		return in;
+	}
+	public boolean isNOTIn(final MimeType... others) {
+		return !this.isIn(others);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //
