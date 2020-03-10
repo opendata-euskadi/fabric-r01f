@@ -34,6 +34,9 @@ public class CRUDOK<T>
 	public boolean hasBeenLoaded() {
 		return this.getPerformedOperation() == PersistencePerformedOperation.LOADED;
 	}
+	public boolean hasBeenSaved() {
+		return this.getPerformedOperation() == PersistencePerformedOperation.SAVED;
+	}
 	public boolean hasBeenCreated() {
 		return this.getPerformedOperation() == PersistencePerformedOperation.CREATED;
 	}
@@ -53,7 +56,7 @@ public class CRUDOK<T>
 		return this.getPerformedOperation() == PersistencePerformedOperation.FOUND;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public CRUDOK<T> asCRUDOK() {
@@ -64,7 +67,7 @@ public class CRUDOK<T>
 		throw new ClassCastException();
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public CharSequence debugInfo() {
