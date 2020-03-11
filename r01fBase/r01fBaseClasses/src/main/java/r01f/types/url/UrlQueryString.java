@@ -8,6 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.google.common.annotations.GwtIncompatible;
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Maps;
@@ -21,6 +22,7 @@ import r01f.patterns.Provider;
 import r01f.types.ParametersParser;
 import r01f.types.ParametersParserRegexBased;
 import r01f.types.ParametersWrapperBase;
+import r01f.util.types.StringConverter.StringConverterFilter;
 import r01f.util.types.collections.CollectionUtils;
 
 
@@ -146,6 +148,38 @@ public class UrlQueryString
 	public static UrlQueryString fromUrlEncodedParamsString(final String paramsStr) {
 		return UrlQueryString.fromUrlEncodedParamsString(paramsStr,
 														 new ParametersParserRegexBased());	// not gwt-compatible by default
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	SANITIZE
+/////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Sanitizes the query string param
+	 * It's usually used with OWASP like:
+	 * <pre class='brush:java'>
+	 *		protected static PolicyFactory policy = Sanitizers.FORMATTING
+	 *											  		.and(Sanitizers.BLOCKS);
+	 *	//										  		.and(Sanitizers.LINKS);		// do NOT escape @ character 
+	 *		protected static StringConverterFilter SANITIZER_FILTER = (untrustedHtml) -> {
+	 *																		String safeHtml = policy.sanitize(untrustedHtml);																					
+	 *																		return safeHtml.replace("&#64;","@");		// mega-ñapa for emails
+	 *																   }
+	 * </pre>
+	 * @param sanitizer
+	 * @return
+	 */
+	public UrlQueryString sanitizeUsing(final StringConverterFilter sanitizer) {
+		if (CollectionUtils.isNullOrEmpty(_params)) return this;		// nothing to sanitize
+		
+		Set<UrlQueryStringParam> unsafeParams = this.getQueryStringParams();
+		Set<UrlQueryStringParam> safeParams = FluentIterable.from(unsafeParams)
+															.transform(new Function<UrlQueryStringParam,UrlQueryStringParam>() {
+																			@Override
+																			public UrlQueryStringParam apply(final UrlQueryStringParam param) {
+																				return param.sanitizeUsing(sanitizer);
+																			}
+																		})
+															.toSet();
+		return UrlQueryString.fromParams(safeParams);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  

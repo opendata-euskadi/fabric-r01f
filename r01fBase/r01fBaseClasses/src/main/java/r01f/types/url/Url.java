@@ -15,6 +15,7 @@ import r01f.objectstreamer.annotations.MarshallType;
 import r01f.patterns.Memoized;
 import r01f.types.CanBeRepresentedAsString;
 import r01f.types.url.UrlProtocol.StandardUrlProtocol;
+import r01f.util.types.StringConverter.StringConverterFilter;
 import r01f.util.types.StringConverterWrapper;
 import r01f.util.types.StringCustomizeUtils;
 import r01f.util.types.Strings;
@@ -439,6 +440,39 @@ public class Url
 												   								  '{','}',
 												   								  varValues);
 		return Url.from(urlAsStringCustomized);
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	SANITIZE
+/////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Sanitizes the url removing potential XSS threats
+	 * It's usually used with OWASP like:
+	 * <pre class='brush:java'>
+	 *		protected static PolicyFactory policy = Sanitizers.FORMATTING
+	 *											  		.and(Sanitizers.BLOCKS);
+	 *	//										  		.and(Sanitizers.LINKS);		// do NOT escape @ character 
+	 *		protected static StringConverterFilter SANITIZER_FILTER = (untrustedHtml) -> {
+	 *																		String safeHtml = policy.sanitize(untrustedHtml);																					
+	 *																		return safeHtml.replace("&#64;","@");		// mega-ñapa for emails
+	 *																   }
+	 * </pre>
+	 * @param sanitizer
+	 * @return
+	 */
+	public Url sanitizeUsing(final StringConverterFilter sanitizer) {
+		// Sanitize the query string 
+		UrlQueryString unsafeQryStr = this.getQueryString();
+		UrlQueryString safeQryStr = unsafeQryStr != null ? unsafeQryStr.sanitizeUsing(sanitizer)
+														 : null;
+		// anchor sanitized
+		String unsafeAnchor = this.getAnchor();
+		String safeAnchor = Strings.isNOTNullOrEmpty(unsafeAnchor) ? sanitizer.filter(unsafeAnchor)
+																   : null;
+		// clone!
+		return Url.from(this.getProtocol(),this.getHost(),this.getPort(),
+						this.getUrlPath(),
+						safeQryStr,
+						safeAnchor);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  ADD

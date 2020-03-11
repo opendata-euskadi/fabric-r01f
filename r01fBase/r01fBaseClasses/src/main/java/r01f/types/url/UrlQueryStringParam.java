@@ -18,6 +18,7 @@ import r01f.objectstreamer.annotations.MarshallType;
 import r01f.types.CanBeRepresentedAsString;
 import r01f.types.Range;
 import r01f.util.types.Dates;
+import r01f.util.types.StringConverter.StringConverterFilter;
 import r01f.util.types.StringConverterWrapper;
 import r01f.util.types.StringEncodeUtils;
 import r01f.util.types.Strings;
@@ -116,6 +117,29 @@ public class UrlQueryStringParam
 		return UrlQueryStringParam.of(paramName,new Range<Date>(dateRange));
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
+//	SANITIZE
+/////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Sanitizes the query string param
+	 * It's usually used with OWASP like:
+	 * <pre class='brush:java'>
+	 *		protected static PolicyFactory policy = Sanitizers.FORMATTING
+	 *											  		.and(Sanitizers.BLOCKS);
+	 *	//										  		.and(Sanitizers.LINKS);		// do NOT escape @ character 
+	 *		protected static StringConverterFilter SANITIZER_FILTER = (untrustedHtml) -> {
+	 *																		String safeHtml = policy.sanitize(untrustedHtml);																					
+	 *																		return safeHtml.replace("&#64;","@");		// mega-ñapa for emails
+	 *																   }
+	 * </pre>
+	 * @param sanitizer
+	 * @return
+	 */
+	public UrlQueryStringParam sanitizeUsing(final StringConverterFilter sanitizer) {
+		if (Strings.isNullOrEmpty(_value)) return this;		// nothing to sanitize
+		String safe = sanitizer.filter(_value);
+		return UrlQueryStringParam.of(_name,safe);
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
@@ -158,7 +182,7 @@ public class UrlQueryStringParam
 	 * @param encodeValues
 	 * @return
 	 */
-	public String asString(boolean encodeValues) {
+	public String asString(final boolean encodeValues) {
 		return encodeValues ? this.asStringUrlEncoded()
 							: this.asString();
 	}
