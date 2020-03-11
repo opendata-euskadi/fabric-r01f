@@ -93,7 +93,8 @@ public class CacheEntry<O,M>
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 	public boolean needsReloadIfLastUpdatedAt(final Date lastUpdatedAt) {
-		return lastUpdatedAt.after(_lastUpdatedAt);
+		return _lastUpdatedAt != null ? lastUpdatedAt.after(_lastUpdatedAt)
+									  : true;
 	}
 	public CacheEntry<O,M> reloadIfLastUpdatedAt(final Date lastUpdatedAt) {
 		if (needsReloadIfLastUpdatedAt(lastUpdatedAt)) {
