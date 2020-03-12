@@ -83,6 +83,7 @@ public class XMLPropertiesComponentDef
 ///////////////////////////////////////////////////////////////////////////////
 	@Override
 	public CharSequence debugInfo() {
+		if (_name == null && _loaderDef == null && _propertiesFileURI == null) return "NO CONFIG AVAILABLE";
 		StringBuilder outSb = new StringBuilder(100);
 		outSb.append(String.format("\r\n           Name: %s",_name.asString()))
 			 .append(String.format("\r\npropsEstimation: %s",Integer.toString(_numberOfPropertiesEstimation)))

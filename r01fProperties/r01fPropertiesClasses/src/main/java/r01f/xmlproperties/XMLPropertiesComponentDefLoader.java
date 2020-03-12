@@ -165,10 +165,10 @@ class XMLPropertiesComponentDefLoader {
 				throw xmlPropsEx;
 			}
 		}
-		log.warn("xml properties component loader definition for appCode/component={}/{} (env={}):\n{}",
+		log.debug("xml properties component loader definition for appCode/component={}/{} (env={}):\n{}",
 				  appCode,component,
 				  env,
-				  component,compDef.debugInfo());
+				  compDef.debugInfo());
 		return compDef;
 	}
 	@SuppressWarnings("static-access")

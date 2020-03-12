@@ -11,7 +11,7 @@ import r01f.util.types.Strings;
 
 @Slf4j
 public class XMLPropertiesException
-     extends EnrichedRuntimeException {
+	 extends EnrichedRuntimeException {
 
 	private static final long serialVersionUID = -285396264237852297L;
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -70,22 +70,22 @@ public class XMLPropertiesException
 		} catch(XMLPropertiesException xmlEx) {
 			/* ignore */
 		}
-        String err = null;
-        if (env == null) {
-        	err = Strings.customized("The XML properties file {} was NOT found for appCode.component={}.{}",
-        				             compDef != null ? Strings.customized("{} ({})",
-        				            		 							  compDef.getPropertiesFileURI(),
-        				            		 							  compDef.getLoaderDef() != null ? compDef.getLoaderDef().getLoader() : "unknown loader type")
-        				            		 		 : "the definition was NOT found",
-        				             appCode,component);
-        } else {
-        	err = Strings.customized("The XML properties file {} was NOT found for env/appCode.component={}/{}.{}",
-        				             compDef != null ? Strings.customized("{} ({})",
-        				            		 							  compDef.getPropertiesFileURI(),
-        				            		 							  compDef.getLoaderDef() != null ? compDef.getLoaderDef().getLoader() : "unknown loader type")
-        				            		 		 : "the definition was NOT found",
-        				  			 env,appCode,component);
-        }
+		String err = null;
+		if (env == null) {
+			err = Strings.customized("The XML properties file {} was NOT found for appCode.component={}.{}",
+									 compDef != null ? Strings.customized("{} ({})",
+											 							  compDef.getPropertiesFileURI(),
+											 							  compDef.getLoaderDef() != null ? compDef.getLoaderDef().getLoader() : "unknown loader type")
+											 		 : "the definition was NOT found",
+									 appCode,component);
+		} else {
+			err = Strings.customized("The XML properties file {} was NOT found for env/appCode.component={}/{}.{}",
+									 compDef != null ? Strings.customized("{} ({})",
+											 							  compDef.getPropertiesFileURI(),
+											 							  compDef.getLoaderDef() != null ? compDef.getLoaderDef().getLoader() : "unknown loader type")
+											 		 : "the definition was NOT found",
+						  			 env,appCode,component);
+		}
 		return new XMLPropertiesException(XMLPropertiesErrorType.PROPERTIES_NOT_FOUND,
 										  err);
 	}
