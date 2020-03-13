@@ -15,12 +15,12 @@ The idea is:
 /{dev_home} = d:\develop in windows or /develop in linux
 	+ develop
 		+ eclipse
-			+ [instance_name]
+			+ [instance-name]
 			+ ...
 		+ maven_libs
 		+ local_libs
 		+ workspaces
-			+ master_[instance_name]
+			+ master-[instance-name]
 			+ ...
 		+ projects
 		+ DB
@@ -33,17 +33,17 @@ a) Download the [eclipse IDE for Java Developers] from http://www.eclipse.org/do
 
 > BEWARE!! do NOT download the [eclipse IDE for Java EE Developers]
 
-b) Extract the contents of the [eclipse] folder inside the previously downloaded eclipse ZIP to the `/{dev_home}/instances/[instance_name]`
+b) Extract the contents of the [eclipse] folder inside the previously downloaded eclipse ZIP to the `/{dev_home}/instances/[instance-name]`
 
-c) Copy the `/{dev_home}/[instance_name]/eclipse.ini` to eclipse.ini.original
+c) Copy the `/{dev_home}/[instance-name]/eclipse.ini` to eclipse.ini.original
 
-d) Edit the `/{dev_home}/[instance_name]/eclipse.ini` file and set this content:
+d) Edit the `/{dev_home}/[instance-name]/eclipse.ini` file and set this content:
 
 > BEWARE!!!
 
 * check that the org.eclipse.equinox.launcher versions still the SAME as those in the eclipse.ini.original file
 
-* replace [instance_name] with it's real value
+* replace [instance-name] with it's real value
 
 > Download lombok.jar from this site https://projectlombok.org/download, and copy to eclipse instance root dir.
 
@@ -98,7 +98,7 @@ d) Edit the `/{dev_home}/[instance_name]/eclipse.ini` file and set this content:
 ## [3]: Launch Eclipse
 
 Launch eclipse.
-When asked for the `[workspace]` location select: `/{dev_home}/workspaces/master_[instance_name]` (do **NOT** set use this workspace as default: don't ask again)
+When asked for the `[workspace]` location select: `/{dev_home}/workspaces/master_[instance-name]` (do **NOT** set use this workspace as default: don't ask again)
 > **BEWARE** this workspace location will later act as a _template_ pre-configured workspace that will be copied when creating a **new** workspace
 
 
@@ -148,6 +148,11 @@ d) **[AnyEdit Tools]** either using the [eclipse marketplace] or from the update
 
 		[X] Eclipse 3.8 - 4.11 plugins
 			[X] AnyEditTools
+
+e) Optional ** Genuitec DevStyle** (darkest dark theme: https://www.genuitec.com/products/devstyle/)
+
+		Use update site: https://www.genuitec.com/updates/devstyle/ci/
+		
 
 ## [5]: Clone R01F Git repository
 
@@ -213,6 +218,17 @@ This excludes .class files from synchronized files.
 
 ## [7]: Create a workspace for a project
 
-Just copy the _template_ workspace folder: `/{dev_home}/workspaces/master_[instance_name]` with a new name id: `/{dev_home}/workspaces/my_project`
+Just copy the _template_ workspace folder: `/{dev_home}/workspaces/master_[instance-name]` with a new name id: `/{dev_home}/workspaces/my_project`
 
-... now simply launch eclipse from  `/{dev_home}/instances/[instance_name]` as usual and when asked, select the workspace folder
+... now simply launch eclipse from  `/{dev_home}/instances/[instance-name]` as usual and when asked, select the workspace folder
+
+
+## [8]: BEWARE antivirus! > https://www.genuitec.com/stop-slow-eclipse-myeclipse-startups/
+
+Exclude folder at the antivirus config:
+ 
+- the ´{dev_home}´ folder 
+- %user_home%/.eclipse
+- %user_home%/.m2e
+- %user_home%/.p2
+
