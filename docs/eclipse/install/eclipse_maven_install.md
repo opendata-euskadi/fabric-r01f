@@ -141,6 +141,9 @@ c) **Eclipse WTP tools** (from eclipse update site http://download.eclipse.org/r
 			[X] JST Server Adapters Extensions
 			[X] JST Server UI
 			[X] WST Server Adapters
+			
+		General Purpouse Tools
+			[X] m2e sl4fj logback
 ```
 If you have compatibility problems uninstall "Eclipse XML Editors and Tools" checking the option "Update my installation to be compatible with the items being installed".
 
