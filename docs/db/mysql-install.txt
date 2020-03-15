@@ -1,0 +1,82 @@
+Windows: Install as service
+============================
+Download the ZIP distribution from: http://dev.mysql.com/downloads/
+Unzip at d:\db_server\
+Set Path=D:\db_server\mysql-5.7.18\bin
+
+change the default location for mysql data
+        -  Create a folder d:/db_server/mysql_data
+        -  Copy the D:/db_server/mysql-5.7.18/my-default.ini as my.ini
+        -  Uncomment the 'datadir' and set:
+                 datadir=d:/db_server/mysql_data
+
+Initialize db: mysqld --initialize-insecure --basedir=D:\db_server\mysql-5.7.18\ --datadir=D:\db_server\mysql_data
+
+Install as a service: (see http://dev.mysql.com/doc/refman/5.7/en/windows-install-archive.html)
+        D:\db_server\mysql-5.7.18\bin\mysqld --install pci_mysql   
+
+Start as windows service: NET START pci_mysql
+Stop as windows service: NET STOP pci_mysql
+
+Start: mysqld --console --defaults-file=D:\db_server\mysql-5.7.8-rc-winx64\my.ini 
+Stop:  mysqladmin -u root -p shutdown
+
+Recover lost root password: https://dev.mysql.com/doc/refman/5.7/en/resetting-permissions.html
+1.- Create a setRootPasswd.pl file with: 
+               ALTER USER 'root'@'localhost' IDENTIFIED BY 'newpass';
+2.- Stop mysql
+3.- use the command line to start again mysql running the previous script
+                mysqld --console --defaults-file=D:\db_server\mysql-5.7.8-rc-winx64\my.ini --init-file=[path to the setRootPasswd.pl file]
+                              
+
+Issue with mySqlWorkbench: cannot connect with a no-root user
+Put at my.ini the following lines: 
+        # MySQL 5.7 compatibility issue: see http://stackoverflow.com/questions/32053655/command-denied-for-table-session-variables
+        show_compatibility_56 = on
+
+
+
+Windows my.ini sample
+
+# [mysqld] section is used by the server
+# ==================================================
+[mysqld]
+basedir = d:/db_server/mysql-5.7.8-rc-winx64
+datadir = d:/db_server/mysql_data
+port = 3306
+socket = d:/temp/mysql/mysqld.sock
+#skip-grant-tables
+#skip-networking
+
+# The size in bytes of the buffer pool, the memory area where InnoDB caches table and index data
+# (70% of total RAM for dedicated server, else 10%)
+innodb_buffer_pool_size = 128M
+
+# size of the buffer used for index blocks
+key_buffer_size = 16M
+max_allowed_packet = 8M
+
+# == options for reporting services
+# join_buffer_size = 128M
+# sort_buffer_size = 2M
+# read_rnd_buffer_size = 2M 
+
+# changes to the binary log between backups.
+# log_bin
+
+sql_mode = NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES 
+
+# [mysqld] section is used by all client programs
+# ==================================================
+[client]
+port = 3306
+socket= d:/temp/mysql/mysql.sock
+password = ""
+
+# [mysqldump] section is used by mysqldump
+# ==================================================
+[mysqldump]
+quick
+
+
+		 

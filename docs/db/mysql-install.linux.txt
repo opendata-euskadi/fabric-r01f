@@ -1,0 +1,110 @@
+Linux: http://dev.mysql.com/doc/refman/5.7/en/linux-installation-debian.html
+=============================
+sudo apt-get install libaio1
+
+Set the directories at the config file: /etc/mysql/conf.d/mysql.cnf
+(see #mysql --help)
+
+[mysqld]
+basedir=/develop/db_server/mysql-5.7
+datadir=/develop/db_server/mysql_data
+
+initialize:
+mysql/bin$ sudo ./mysqld --initialize-insecure --basedir=/develop/db_server/mysql-5.7 --datadir=/develop/db_server/mysql_data
+
+
+Move the datadir: https://www.digitalocean.com/community/tutorials/how-to-move-a-mysql-data-directory-to-a-new-location-on-ubuntu-16-04
+
+
+my.conf location: /etc/mysql/mysql.conf.d/mysqld.cnf
+
+Force lower case table names: https://dev.mysql.com/doc/refman/5.7/en/identifier-case-sensitivity.html
+	Add lower_case_table_names=1 at [mysqld] section of /etc/mysql/mysql.conf.d/mysqld.cnf
+
+
+=================================================================
+Linux Install from generic sources
+=================================================================
+
+Install 
+see https://dev.mysql.com/doc/refman/5.7/en/binary-installation.html
+===========================
+untar & extract at /opt/mysql-version
+Create a symbolic link:
+	ln -s /opt/mysql-5.7.17-linux-glibc2.5-x86_64 /opt/mysql
+	ln -s /opt/mysql-5.7.17-linux-glibc2.5-x86_64 /usr/local/mysql
+
+Create a mysql user & group
+	$groupadd mysql
+	$useradd -r -g mysql -s /bin/false mysql
+
+Create a mysql-files dir under mysql install dir
+	/opt/mysql>mkdir mysql-files
+
+Set the permissions
+	/opt/mysql>chmod 750 mysql-files
+	/opt/mysql>chown -R mysql:mysl .
+
+Create an options file at /etc/mysql/my.cnf
+============================
+	[client]
+	port=3306
+	socket=/tmp/mysql.sock
+
+	[mysqld]
+	basedir=/opt/mysql
+	datadir=/develop/db/mysql-data
+	port=3306
+	socket=/tmp/mysql.sock
+	key_buffer_size=16M
+	max_allowed_packet=8M
+
+	[mysqldump]
+	quick
+
+
+Initialize: 
+see https://dev.mysql.com/doc/refman/5.7/en/data-directory-initialization-mysqld.html
+===========================
+/opt/mysql>bin/mysqld --initialize-insecure --user=mysql --basedir=/opt/mysql --datadir=/develop/db/mysql-data
+or
+/opt/mysql>bin/bin/mysqld --defaults-file=/etc/mysql/my.cnf --initialize
+
+Set back root as owner of /opt/mysql dir except /opt/mysql/mysql-fiels & data dir at /develop/db/mysql-data
+	/opt/mysql>chown -R root -
+	/opt/mysql>chown -R mysql:mysql mysqlfiles
+	/opt/mysql>chown -R mysql:mysql /develop/db/mysql-data/
+
+
+
+
+Managing MySQL Server with systemd
+(see https://dev.mysql.com/doc/refman/5.7/en/using-systemd.html)
+==================================
+Create a file at /etc/systemd/system/mysqld.service with the following content:
+	[Unit]
+	Description=MySQL Server
+	After=network.target
+	After=syslog.target
+
+	[Install]
+	WantedBy=multi-user.target
+
+	[Service]
+	User=mysql
+	Group=mysql
+
+	Type=forking
+
+	PIDFile=/var/run/mysqld/mysqld.pid
+
+	LimitCore=1
+
+	# Start main service
+	ExecStart=/opt/mysql/bin/mysqld --daemonize $MYSQLD_OPTS
+
+	Restart=on-failure
+
+	RestartPreventExitStatus=1
+
+	PrivateTmp=false

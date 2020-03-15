@@ -1,0 +1,21 @@
+Install as service
+===================
+Download the ZIP distribution from: http://www.enterprisedb.com/products-services-training/pgbindownload
+extract at: d:/bbdd_server/pgsql-9.5.0
+Add to the PATH system var: D:\db_server\pgsql-9.5.0\bin;
+Install Windows C++ redistributable packages for Visual Studio 2013: http://www.microsoft.com/en-us/download/details.aspx?id=40784 (file vcredist_x64.exe for wind 64bits)
+
+
+change the default location for mysql data: Create a folder d:/db_server/pgsql_data
+
+Init the db:
+        initdb -D d:/db_server/pgsql_data 
+
+Install as a service: http://www.postgresql.org/docs/9.5/static/app-pg-ctl.html
+
+        pg_ctl register [-N servicename] [-U username] [-P password] [-D datadir] [-S a[uto] | d[emand] ] [-w] [-t seconds] [-s] [-o options]
+        pg_ctl register -N pci_pgsql -D d:/db_server/pgsql_data -S demand 
+
+
+For full quick start info: https://wiki.postgresql.org/wiki/BDR_Quick_Start
+		 
