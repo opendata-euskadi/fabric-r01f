@@ -205,7 +205,11 @@ public class ZipFiles {
 			//   /foo/foo.txt
 			//   /foo/
 			
-			if (zipEntry.isDirectory()) continue;
+			if (zipEntry.isDirectory()) {
+				// next entry
+				zipEntry = zipIS.getNextEntry();
+				continue;
+			}
 			
 			// it's a file...
 			
