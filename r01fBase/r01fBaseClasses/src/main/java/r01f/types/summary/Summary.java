@@ -1,7 +1,5 @@
 package r01f.types.summary;
 
-import java.io.Serializable;
-
 import r01f.objectstreamer.annotations.MarshallPolymorphicTypeInfo;
 import r01f.types.CanBeRepresentedAsString;
 
@@ -17,8 +15,7 @@ import r01f.types.CanBeRepresentedAsString;
  */
 @MarshallPolymorphicTypeInfo
 public interface Summary
-	     extends CanBeRepresentedAsString,
-	     		 Serializable {
+	     extends CanBeRepresentedAsString {
 	/**
 	 * @return true if this a full text summary intended to be indexed
 	 */
