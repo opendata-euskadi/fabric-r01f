@@ -120,7 +120,7 @@ public abstract class BitMap
     @Override
     public String debugInfo() {
         StringBuffer sb = new StringBuffer();
-        sb.append("Mapa de bits: " + _bitMap + " : " + Integer.toBinaryString(this._bitMap) + "\r\n");
+        sb.append("Mapa de bits: " + _bitMap + " : " + Integer.toBinaryString(_bitMap) + "\r\n");
         String currBitStr = "";
         for (int i=0; i <= (Numbers.INTEGER_WIDTH*8-2); i++) {
             currBitStr = "  " + i;

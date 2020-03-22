@@ -252,7 +252,7 @@ public class MonthOfYear
 		Collection<MonthOfYear> monthsOfYear = new ArrayList<>(); 
 		MonthOfYear currMonthOfYear = range.upperEndpoint();
 		MonthOfYear lowerMonthOfYear = range.lowerEndpoint();
-		while(currMonthOfYear.isAfter(lowerMonthOfYear)) {
+		while (currMonthOfYear.isAfter(lowerMonthOfYear)) {
 			monthsOfYear.add(currMonthOfYear);
 			currMonthOfYear = currMonthOfYear.minus(1);
 		}

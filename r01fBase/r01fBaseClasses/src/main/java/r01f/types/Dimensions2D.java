@@ -19,7 +19,7 @@ import r01f.objectstreamer.annotations.MarshallType;
  * if (is != null) {
  *	image = ImageIO.read(is);
  * }
- * if(image != null) {
+ * if (image != null) {
  *		int height = image.getHeight();
  *		int width = image.getWidth();
  *		return new Dimensions2D(width, height);

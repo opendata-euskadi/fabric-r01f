@@ -129,10 +129,10 @@ public class ResourcesLoaderFromURL
 	        
 		} catch(IOException ioEx) {
 			StringBuilder msg = new StringBuilder("Error when loading a resource from the url: " + resourceUrl);
-			if (this._proxyHost != null) {
+			if (_proxyHost != null) {
 				msg.append("(");
-				msg.append(" proxy host:port=" + this._proxyHost + ":" + this._proxyPort);
-				msg.append(" proxy usr/pwd=" + this._proxyUser + "/" + this._proxyPassword);
+				msg.append(" proxy host:port=" + _proxyHost + ":" + _proxyPort);
+				msg.append(" proxy usr/pwd=" + _proxyUser + "/" + _proxyPassword);
 				msg.append(")");
 			}
 			throw new IOException(msg + " > " + ioEx.getMessage());

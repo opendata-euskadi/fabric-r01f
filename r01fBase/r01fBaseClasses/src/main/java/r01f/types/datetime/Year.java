@@ -186,7 +186,7 @@ public class Year
 		Collection<Year> years = new ArrayList<>(); 
 		Year currYear = range.upperEndpoint();
 		Year lowerLimitYear = range.lowerEndpoint();
-		while(currYear.isAfter(lowerLimitYear)) {
+		while (currYear.isAfter(lowerLimitYear)) {
 			years.add(currYear);
 			currYear = currYear.minus(1);
 		}
