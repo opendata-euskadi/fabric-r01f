@@ -379,12 +379,12 @@ public abstract class Dates {
 		SPANISH	(Language.SPANISH,"dd/MM/yyyy"),
 		BASQUE	(Language.BASQUE,"yyyy/MM/dd"),
 		ENGLISH	(Language.ENGLISH,"yyyy/MM/dd");
-		
+
 		@Getter private final Language _lang;
 		@Getter private final String _dateFormat;
 		@Getter private final String _timeToMinFormat = "HH:mm";
 		@Getter private final String _timeTimeToSecFormat = "HH:mm:ss";
-		
+
 		public String formatDate(final Date date) {
 			return Dates.format(date,
 								_dateFormat);
@@ -395,7 +395,7 @@ public abstract class Dates {
 		}
 		public String formatDateWithTimeToSeconds(final Date date) {
 			return Dates.format(date,
-								_dateFormat + " " + _timeTimeToSecFormat);		
+								_dateFormat + " " + _timeTimeToSecFormat);
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -694,10 +694,10 @@ public abstract class Dates {
 //  OTHER
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
-	 * Swift a date to its maximun, ie if the given date is  2197/03/25 11:44:00 
+	 * Swift a date to its maximun, ie if the given date is  2197/03/25 11:44:00
 	 * it'll be swifteed to 2017/03/25 23:59:999
-	 * @param 
-	 * @return 
+	 * @param
+	 * @return
 	 */
 	@GwtIncompatible
 	public static Date rollDateToMaximum(final Date date) {
@@ -706,10 +706,10 @@ public abstract class Dates {
 		return Dates.rollCalendarToMaximum(theCal).getTime();
 	}
 	/**
-	 * Swift a date to its minimum, ie if the given date is  2197/03/25 11:44:00 
+	 * Swift a date to its minimum, ie if the given date is  2197/03/25 11:44:00
 	 * it'll be swifteed to 2017/03/25 00:00:000
-	 * @param date 
-	 * @return 
+	 * @param date
+	 * @return
 	 */
 	@GwtIncompatible
 	public static Date rollDateToMinimum(final Date date) {
@@ -718,7 +718,7 @@ public abstract class Dates {
 		return Dates.rollCalendarToMinimum(theCal).getTime();
 	}
 	/**
-	 * Swift a date to its maximun, ie if the given date is  2197/03/25 11:44:00 
+	 * Swift a date to its maximun, ie if the given date is  2197/03/25 11:44:00
 	 * it'll be swifteed to 2017/03/25 23:59:999
 	 * @param theCal la fecha
 	 * @return otra fecha en el ultimo mili
@@ -733,9 +733,9 @@ public abstract class Dates {
 		return cal;
 	}
 	/**
-	 * Swift a date to its minimum, ie if the given date is  2197/03/25 11:44:00 
+	 * Swift a date to its minimum, ie if the given date is  2197/03/25 11:44:00
 	 * it'll be swifteed to 2017/03/25 23:59:999
-	 * @param theCal 
+	 * @param theCal
 	 * @return
 	 */
 	@GwtIncompatible
