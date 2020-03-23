@@ -18,13 +18,21 @@ import r01f.types.url.Url;
 import r01f.types.url.UrlPath;
 import r01f.util.types.StringConverter.StringConverterFilter;
 
-@RequiredArgsConstructor
 public class StringConverterWrapper {
 /////////////////////////////////////////////////////////////////////////////////////////
 //  FINAL
 /////////////////////////////////////////////////////////////////////////////////////////
 	private final CharSequence _theString;
 	
+/////////////////////////////////////////////////////////////////////////////////////////
+//	CONSTRUCTOR
+/////////////////////////////////////////////////////////////////////////////////////////
+	public StringConverterWrapper(final CharSequence str) {
+		_theString = str;
+	}
+	public static StringConverterWrapper wrap(final CharSequence str) {
+		return new StringConverterWrapper(str);
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -47,7 +55,7 @@ public class StringConverterWrapper {
 		public T orThrow() {
 			return this.orThrow(null);
 		}
-		public T orThrow(final String msg,Object... params) {
+		public T orThrow(final String msg,final Object... params) {
 			if (_value == null) throw new IllegalArgumentException(Strings.isNOTNullOrEmpty(msg) ? Strings.customized(msg,params) 
 																								 : "Null or empty string");
 			return _value;
@@ -395,7 +403,7 @@ public class StringConverterWrapper {
 		public T orThrow() {
 			return this.orThrow(null);
 		}
-		public T orThrow(final String msg,Object... params) {
+		public T orThrow(final String msg,final Object... params) {
 			if (_theString == null) throw new IllegalArgumentException(Strings.isNOTNullOrEmpty(msg) ? Strings.customized(msg,params) 
 																									 : "Null or empty string");
 			return this.orDefault(null);
