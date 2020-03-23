@@ -25,21 +25,21 @@ import r01f.types.annotations.CompositionRelated;
 @Accessors(prefix="_")
 public abstract class PersistableModelObjectBase<O extends PersistableObjectOID,
 												 SELF_TYPE extends PersistableModelObjectBase<O,SELF_TYPE>>
-           implements PersistableModelObject<O>,					// can be persisted
-           			  HasDirtyStateTrackableModelObjectFacet {		// Changes in state can be tracked
+		   implements PersistableModelObject<O>,					// can be persisted
+		   			  HasDirtyStateTrackableModelObjectFacet {		// Changes in state can be tracked
 
 	private static final long serialVersionUID = 6546937946507238664L;
 
 /////////////////////////////////////////////////////////////////////////////////////////
 //  SERIALIZABLE FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
-    /**
-     * Model object unique identifier
-     */
+	/**
+	 * Model object unique identifier
+	 */
 	@MarshallField(as="oid",
 				   whenXml=@MarshallFieldAsXml(attr=true))
 	@OidField
-    @Getter @Setter protected O _oid;
+	@Getter @Setter protected O _oid;
 	/**
 	 * Numeric unique id
 	 */
@@ -55,14 +55,14 @@ public abstract class PersistableModelObjectBase<O extends PersistableObjectOID,
 	 * 		... let's say that initially we have stock=100
 	 * 			----------[100]----------
 	 * 			|						|
-	 * 		  Load                    Load
-	 *          |-1						|-1
-	 *        [99]                     [99]
-	 *          |						|
-	 *        Save                    Save
-	 *          |---------[99]			|
-	 *          		  [99]----------| <---WTF!! the stock should have been 98
-	 *          									but it ends being 99: WRONG!!
+	 * 		  Load					Load
+	 *		  |-1						|-1
+	 *		[99]					 [99]
+	 *		  |						|
+	 *		Save					Save
+	 *		  |---------[99]			|
+	 *		  		  [99]----------| <---WTF!! the stock should have been 98
+	 *		  									but it ends being 99: WRONG!!
 	 * To prevent this situation a last update timestamp or an incrementing version is used
 	 * Every time a process want to update an entity it MUST tell us what the version is so
 	 * if a conflict occurs it could be detected:
@@ -70,17 +70,17 @@ public abstract class PersistableModelObjectBase<O extends PersistableObjectOID,
 	 * 			----------[100]----------
 	 * 			|	   (version=1)		|
 	 * 			|						|
-	 * 	      Load 				       Load
-	 * 	   (version=1) 		       (version=1)
-	 *          |-1						|-1
-	 *        [99]                     [99]
-	 *          |						|
-	 *        Save                      |
-	 *     (version=1)                  |
-	 *          |---------[99]			|
-	 *          	   (version=2)		|
-	 *          			|		   Save
-	 *          		CONFLICT!<--(Version=1)
+	 * 		  Load 					   Load
+	 * 	   (version=1) 			   (version=1)
+	 *		  |-1						|-1
+	 *		[99]					 [99]
+	 *		  |						|
+	 *		Save					  |
+	 *	 (version=1)				  |
+	 *		  |---------[99]			|
+	 *		  	   (version=2)		|
+	 *		  			|		   Save
+	 *		  		CONFLICT!<--(Version=1)
 	 *
 	 * As seen, to be able to detect conflicts:
 	 * 		- A version number (a timestamp) MUST be stored with the record
@@ -91,12 +91,12 @@ public abstract class PersistableModelObjectBase<O extends PersistableObjectOID,
 	@MarshallField(as="entityVersion",
 				   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter @Setter protected long _entityVersion;
-    /**
-     * Create & update info
-     */
+	/**
+	 * Create & update info
+	 */
 	@CompositionRelated @ConvertToDirtyStateTrackable	// force this object trackable
 	@MarshallField(as="trackingInfo")
-    @Getter @Setter protected ModelObjectTracking _trackingInfo;
+	@Getter @Setter protected ModelObjectTracking _trackingInfo;
 /////////////////////////////////////////////////////////////////////////////////////////
 //	CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -113,16 +113,16 @@ public abstract class PersistableModelObjectBase<O extends PersistableObjectOID,
 /////////////////////////////////////////////////////////////////////////////////////////
 //  FLUENT-API
 /////////////////////////////////////////////////////////////////////////////////////////
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	public SELF_TYPE withOid(final O oid) {
-    	_oid = oid;
-    	return (SELF_TYPE)this;
-    }
-    @SuppressWarnings("unchecked")
-    public SELF_TYPE withNumericId(final long id) {
-    	_numericId = id;
-    	return (SELF_TYPE)this;
-    }
+		_oid = oid;
+		return (SELF_TYPE)this;
+	}
+	@SuppressWarnings("unchecked")
+	public SELF_TYPE withNumericId(final long id) {
+		_numericId = id;
+		return (SELF_TYPE)this;
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  HasOid
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -156,32 +156,35 @@ public abstract class PersistableModelObjectBase<O extends PersistableObjectOID,
 		return new TrackableDelegate<SELF_TYPE>((SELF_TYPE)this);
 	}
 	@SuppressWarnings("unchecked") @GwtIncompatible("GWT does NOT suppports TrackableBuilder")
-    public TrackableBuilder<SELF_TYPE,SELF_TYPE> builderForTrackable() {
-    	return new TrackableBuilder<SELF_TYPE,SELF_TYPE>((SELF_TYPE)this,
-    													 (SELF_TYPE)this);
-    }
+	public TrackableBuilder<SELF_TYPE,SELF_TYPE> builderForTrackable() {
+		return new TrackableBuilder<SELF_TYPE,SELF_TYPE>((SELF_TYPE)this,
+														 (SELF_TYPE)this);
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	EQUALS
 /////////////////////////////////////////////////////////////////////////////////////////
-    @Override
-    public boolean equals(final Object obj) {
-    	if (this == obj) return true;
-    	if (obj == null) return false;
-    	if (!(obj instanceof PersistableModelObjectBase)) return false;
-    	
-    	PersistableModelObjectBase<?,?> other = (PersistableModelObjectBase<?,?>)obj;
-    	if (this.getEntityVersion() != other.getEntityVersion()) return false;
-    	if (this.getNumericId() != other.getNumericId()) return false;
-    	if (this.getOid().isNOT(other.getOid())) return false;
-    	if (!Objects.equal(this.getTrackingInfo(),other.getTrackingInfo())) return false;
-    	return true;
-    }
-    @Override
-    public int hashCode() {
-    	return Objects.hashCode(this.getEntityVersion(),
-    							this.getNumericId(),
-    							this.getOid());
-    }
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (!(obj instanceof PersistableModelObjectBase)) return false;
+		
+		PersistableModelObjectBase<?,?> other = (PersistableModelObjectBase<?,?>)obj;
+		if (this.getEntityVersion() != other.getEntityVersion()) return false;
+		if (this.getNumericId() != other.getNumericId()) return false;
+		
+		if (this.getOid() != null && this.getOid().isNOT(other.getOid())) return false;
+		if (other.getOid() != null && other.getOid().isNOT(this.getOid())) return false;
+		
+		if (!Objects.equal(this.getTrackingInfo(),other.getTrackingInfo())) return false;
+		return true;
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(this.getEntityVersion(),
+								this.getNumericId(),
+								this.getOid());
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  STATIC METHODS
 /////////////////////////////////////////////////////////////////////////////////////////
