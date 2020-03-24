@@ -90,7 +90,7 @@ public class EnumWithCodeWrapper<C,E extends EnumWithCode<C,E>>
 		E outT = null;
 		try {
 			outT = this.fromCode(code);
-		} catch(IllegalArgumentException illArgEx) {
+		} catch (IllegalArgumentException illArgEx) {
 			/* Nothing to do */
 		}
 		return outT != null;

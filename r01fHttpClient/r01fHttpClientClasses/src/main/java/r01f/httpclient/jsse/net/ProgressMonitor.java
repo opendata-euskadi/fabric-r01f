@@ -76,7 +76,7 @@ public class ProgressMonitor
                 }
             }
         }
-        catch(CloneNotSupportedException e) {
+        catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
 

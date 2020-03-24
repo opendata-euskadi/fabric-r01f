@@ -239,7 +239,7 @@ public class Throwables {
 	    	return (T)MethodUtils.invokeStaticMethod(type,
 	        		   								 methodName,
 	        		   								 argsValues,argsTypes);
-    	} catch(Throwable th) {
+    	} catch (Throwable th) {
     		th.printStackTrace(System.out);
     	}
     	return null;

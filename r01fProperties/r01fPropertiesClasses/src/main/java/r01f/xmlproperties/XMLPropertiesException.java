@@ -67,7 +67,7 @@ public class XMLPropertiesException
 			log.warn("XMLProperties LOAD ERROR {}.{} ({}): trying to load the component DEFINITION to compose the error message",
 					 appCode,component,env);
 			compDef = XMLPropertiesComponentDefLoader.loadOrDefault(env,appCode,component);		// Load again the definition
-		} catch(XMLPropertiesException xmlEx) {
+		} catch (XMLPropertiesException xmlEx) {
 			/* ignore */
 		}
 		String err = null;

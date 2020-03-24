@@ -697,7 +697,7 @@ public final class XMLPropertyWrapper {
         O outOid = null;
         try {
             outOid = ReflectionUtils.createInstanceFromString(oidType,oidAsString);
-        } catch(Throwable th) {
+        } catch (Throwable th) {
             th.printStackTrace(System.out);
         }
         if (outOid == null) outOid = ReflectionUtils.<O>invokeStaticMethod(oidType,

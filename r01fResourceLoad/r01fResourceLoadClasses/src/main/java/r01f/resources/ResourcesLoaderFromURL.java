@@ -127,7 +127,7 @@ public class ResourcesLoaderFromURL
             }
 	        return outIs;
 	        
-		} catch(IOException ioEx) {
+		} catch (IOException ioEx) {
 			StringBuilder msg = new StringBuilder("Error when loading a resource from the url: " + resourceUrl);
 			if (_proxyHost != null) {
 				msg.append("(");

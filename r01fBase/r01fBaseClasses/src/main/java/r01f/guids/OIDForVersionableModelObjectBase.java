@@ -132,7 +132,7 @@ public abstract class OIDForVersionableModelObjectBase
         try {
             constructor = this.getClass()
             				  .getDeclaredConstructor(new Class<?>[] {versionIndependentOidType,versionOidType}); 	// Constructor
-        } catch(NoSuchMethodException nsmEx) {
+        } catch (NoSuchMethodException nsmEx) {
         	throw new IllegalArgumentException(Strings.customized("Type {} is NOT a valid {}: it does NOT have a {}({},{}) constructor",
         													 	  this.getClass(),OIDForVersionableModelObject.class.getSimpleName(),
         													 	  this.getClass().getSimpleName(),VersionIndependentOID.class,VersionOID.class));        	
@@ -141,7 +141,7 @@ public abstract class OIDForVersionableModelObjectBase
         O outOid = null;
         try {
         	outOid = (O)constructor.newInstance(new Object[] {versionIndependentOid,versionOid});
-        } catch(Throwable th) {
+        } catch (Throwable th) {
         	th.printStackTrace();
         	throw new IllegalStateException(Strings.customized("Could NOT create a {} instance using the {}({},{}) constructor: {}",
         												  	   this.getClass(),

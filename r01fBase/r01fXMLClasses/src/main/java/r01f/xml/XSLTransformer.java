@@ -138,7 +138,7 @@ public class XSLTransformer {
     				xmlOS.flush();
     				xmlOS.close();
     			}
-    		} catch(IOException ioEx) { /* ignore */ }
+    		} catch (IOException ioEx) { /* ignore */ }
     	}
     }
     public void applyToXMLGeneratingStream(final InputStream xmlIS,
@@ -154,7 +154,7 @@ public class XSLTransformer {
     				xmlWriter.flush();
     				xmlWriter.close();
     			}
-    		} catch(IOException ioEx) { /* ignore */ }
+    		} catch (IOException ioEx) { /* ignore */ }
     	}    	
     }    
     public void applyToXMLGeneratingSAXEvents(final InputStream xmlIS,
@@ -166,7 +166,7 @@ public class XSLTransformer {
     	} finally {
     		try {
     			if (xmlIS != null) xmlIS.close();
-    		} catch(IOException ioEx) { /* ignore */ }
+    		} catch (IOException ioEx) { /* ignore */ }
     	} 
     }
     public void applyToXMLGeneratingDOMNode(final InputStream xmlIS,
@@ -178,7 +178,7 @@ public class XSLTransformer {
     	} finally {
     		try {
     			if (xmlIS != null) xmlIS.close();
-    		} catch(IOException ioEx) { /* ignore */ }
+    		} catch (IOException ioEx) { /* ignore */ }
     	} 
     }
     public void applyToXMLGeneratingStream(final Reader xmlReader,
@@ -194,7 +194,7 @@ public class XSLTransformer {
     				xmlOS.flush();
     				xmlOS.close();
     			}
-    		} catch(IOException ioEx) { /* ignore */ }
+    		} catch (IOException ioEx) { /* ignore */ }
     	}
     }
     public void applyToXMLGeneratingStream(final Reader xmlReader,
@@ -210,7 +210,7 @@ public class XSLTransformer {
     				xmlWriter.flush();
     				xmlWriter.close();
     			}
-    		} catch(IOException ioEx) { /* ignore */ }
+    		} catch (IOException ioEx) { /* ignore */ }
     	}    	
     }    
     public void applyToXMLGeneratingSAXEvents(final Reader xmlReader,
@@ -222,7 +222,7 @@ public class XSLTransformer {
     	} finally {
     		try {
     			if (xmlReader != null) xmlReader.close();
-    		} catch(IOException ioEx) { /* ignore */ }
+    		} catch (IOException ioEx) { /* ignore */ }
     	} 
     }
     public void applyToXMLGeneratingDOMNode(final Reader xmlReader,
@@ -234,7 +234,7 @@ public class XSLTransformer {
     	} finally {
     		try {
     			if (xmlReader != null) xmlReader.close();
-    		} catch(IOException ioEx) { /* ignore */ }
+    		} catch (IOException ioEx) { /* ignore */ }
     	} 
     }
     /**

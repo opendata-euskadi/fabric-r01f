@@ -41,7 +41,7 @@ public class LocalFileProperties
 		FileProperties outProps = null;
 		try {
 			outProps = LocalFileProperties.from(file);
-		} catch(IOException ioEx) {
+		} catch (IOException ioEx) {
 			log.error("Error creating a {} from {}: {}",
 					  LocalFileProperties.class,file.getPath(),
 					  ioEx.getMessage(),ioEx);

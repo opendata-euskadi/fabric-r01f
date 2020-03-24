@@ -52,7 +52,7 @@ public class LazyCachedMap<K,V>
 		// Simply ask for a new key to force Guava Cache ask for the value
 		try {
 			return _currentEntries.get(key);
-		} catch(Exception ex) {
+		} catch (Exception ex) {
 			throw new RuntimeException(ex);		// convert to RuntimeException
 		}
 	}

@@ -150,7 +150,7 @@ public class ResourceBundleControl
 		    } else {
 		    	log.debug("{} DOES NOT NEED reloading!",resourceName);
 		    }
-		} catch(Throwable th) {
+		} catch (Throwable th) {
 			log.error("Unknown error when trying to guess if a {} should be reloaded",ResourceBundle.class,th);
 		}
         return outReload;

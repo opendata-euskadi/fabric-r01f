@@ -572,7 +572,7 @@ public abstract class Numbers {
 			try {
 				Integer.parseInt(strInt,radix);
 				isInteger = true;
-			} catch(NumberFormatException nfEx) {/* Ignore */}
+			} catch (NumberFormatException nfEx) {/* Ignore */}
 		}
 		return isInteger;
 	}
@@ -588,7 +588,7 @@ public abstract class Numbers {
 			try {
 				Byte.parseByte(strByte,radix);
 				isByte = true;
-			} catch(NumberFormatException nfEx) {/* Ignore */}
+			} catch (NumberFormatException nfEx) {/* Ignore */}
 		}
 		return isByte;
 	}
@@ -604,7 +604,7 @@ public abstract class Numbers {
 			try {
 				Long.parseLong(strLong,radix);
 				isLong = true;
-			} catch(NumberFormatException nfEx) {/* Ignore */}
+			} catch (NumberFormatException nfEx) {/* Ignore */}
 		}
 		return isLong;
 	}
@@ -620,7 +620,7 @@ public abstract class Numbers {
 			try {
 				Float.parseFloat(strFloat);
 				isFloat = true;
-			} catch(NumberFormatException nfEx) {/* Ignore */}
+			} catch (NumberFormatException nfEx) {/* Ignore */}
 		}
 		return isFloat;
 	}
@@ -633,7 +633,7 @@ public abstract class Numbers {
 			try {
 				Float.parseFloat(strShort);
 				isShort = true;
-			} catch(NumberFormatException nfEx) {/* Ignore */}
+			} catch (NumberFormatException nfEx) {/* Ignore */}
 		}
 		return isShort;
 	}
@@ -646,7 +646,7 @@ public abstract class Numbers {
 			try {
 				Double.parseDouble(strDouble);
 				isDouble = true;
-			} catch(NumberFormatException nfEx) {/* Ignore */}
+			} catch (NumberFormatException nfEx) {/* Ignore */}
 		}
 		return isDouble;
 	}

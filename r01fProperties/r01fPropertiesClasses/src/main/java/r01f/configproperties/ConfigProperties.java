@@ -204,7 +204,7 @@ public class ConfigProperties {
         	ResourceBundle bundle = _retrievePropertiesResource(_bundleSpec);
         	try {
         		outKeyValue = bundle.getString(key);
-        	} catch(MissingResourceException mkEx) {
+        	} catch (MissingResourceException mkEx) {
     			log.warn("the requested key {} could not be found int the bundle {}",
     					 key,_bundleSpec);
         	}

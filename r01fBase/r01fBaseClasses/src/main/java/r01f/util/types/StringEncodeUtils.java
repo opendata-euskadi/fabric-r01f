@@ -233,7 +233,7 @@ public class StringEncodeUtils {
     public static CharSequence urlEncodeNoThrow(final CharSequence str) {
         try {
             return StringEncodeUtils.urlEncode(str);
-        } catch(EncoderException encEx) {
+        } catch (EncoderException encEx) {
             log.error("Could NOT url encode {}",str,encEx);
         }
         return str;	// fall back to the original not-encoded string
@@ -336,7 +336,7 @@ public class StringEncodeUtils {
         CharSequence outDecoded = null;
         try {
             outDecoded = StringEncodeUtils.urlDecode(str);
-        } catch(DecoderException encEx) {
+        } catch (DecoderException encEx) {
             log.error("Could NOT url decode {}",str,encEx);
         }
         return outDecoded;

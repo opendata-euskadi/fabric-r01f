@@ -67,7 +67,7 @@ public class HttpResponse {
 	        outStr = IOUtils.toString(responseIs,
 	        					      Charset.defaultCharset());
 	    	return outStr;
-    	} catch(IOException ioEx) {
+    	} catch (IOException ioEx) {
     		ioEx.printStackTrace(System.out);
     	}
     	return outStr;

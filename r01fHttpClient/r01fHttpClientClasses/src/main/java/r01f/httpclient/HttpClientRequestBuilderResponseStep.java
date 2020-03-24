@@ -105,9 +105,9 @@ public class HttpClientRequestBuilderResponseStep
 																	   		  	 				 RequestMethod.GET,_targetUrl,
 																	   		  	 				 auth);
 				_headers.put("Authorization",authHeaderValue);
-			} catch(AuthenticationException authEx) {
+			} catch (AuthenticationException authEx) {
 				throw new IOException(authEx);
-			} catch(MalformedChallengeException mfcEx) {
+			} catch (MalformedChallengeException mfcEx) {
 				throw new IOException(mfcEx);
 			}
 		}

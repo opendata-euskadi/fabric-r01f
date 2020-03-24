@@ -123,7 +123,7 @@ class NegotiateAuthentication extends AuthenticationInfo {
             // the object is valid and the oneToken inside is not null
             cache.put(hostname, neg);
             return true;
-        } catch(Exception e) {
+        } catch (Exception e) {
             supported.put(hostname, false);
             return false;
         }
@@ -206,7 +206,7 @@ class NegotiateAuthentication extends AuthenticationInfo {
         if (negotiator == null) {
             try {
                 negotiator = Negotiator.getSupported(getHost(), scheme);
-            } catch(Exception e) {
+            } catch (Exception e) {
                 IOException ioe = new IOException("Cannot initialize Negotiator");
                 ioe.initCause(e);
                 throw ioe;

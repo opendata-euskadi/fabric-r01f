@@ -18,11 +18,11 @@ import lombok.experimental.Accessors;
  * 				<pre class='brush:java'>	
  * 				try {
  * 					// database code
- * 				} catch(RecordInsertException riEx) {
+ * 				} catch (RecordInsertException riEx) {
  * 						...
- * 				} catch(RecordDeleteException rdEx) {
+ * 				} catch (RecordDeleteException rdEx) {
  * 						...
- * 				} catch(RecordUpdateException ruEx) {
+ * 				} catch (RecordUpdateException ruEx) {
  * 						...
  * 				}
  * 				</pre><pre>
@@ -31,7 +31,7 @@ import lombok.experimental.Accessors;
  * 				<pre class='brush:java'>
  * 				try {
  * 					// database code
- * 				} catch(DBException dbEx) {
+ * 				} catch (DBException dbEx) {
  * 					... the sub-type can be known
  * 					dbEx.getSubType()
  * 					... and also actions could be taken depending on the sub-type

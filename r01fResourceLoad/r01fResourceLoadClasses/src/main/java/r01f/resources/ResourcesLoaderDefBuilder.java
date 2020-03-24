@@ -115,7 +115,7 @@ public class ResourcesLoaderDefBuilder
 		ResourcesLoaderDef resLoaderDef = null;
 		try {
 			resLoaderDef = ResourcesLoaderDefParser.parse(defXmlIS);
-		} catch(Throwable th) {
+		} catch (Throwable th) {
 			throw new IllegalArgumentException("The ResourcesLoader definition could not be loaded from the provided XML file. Maybe the XML file is not well formed: " + th.getMessage(),
 											   th);
 		}

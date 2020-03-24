@@ -150,7 +150,7 @@ abstract public class URLConnection extends java.net.URLConnection {
             String ct = null;
             try {
                 ct = guessContentTypeFromStream(getInputStream());
-            } catch(java.io.IOException e) {
+            } catch (java.io.IOException e) {
             }
             String ce = properties.findValue("content-encoding");
             if (ct == null) {
@@ -208,7 +208,7 @@ abstract public class URLConnection extends java.net.URLConnection {
             try {
                 l = Integer.parseInt(properties.findValue("content-length"));
                 setContentLength(l);
-            } catch(Exception e) {
+            } catch (Exception e) {
             }
         }
         return l;

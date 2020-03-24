@@ -371,13 +371,13 @@ public class ReflectionUtils {
         if (cl != null) {
             try  {
                 objType = cl.loadClass(typeName);
-            } catch(ClassNotFoundException cnfEx) {
+            } catch (ClassNotFoundException cnfEx) {
                 /* ignorar */
             }
             if (objType == null) {
             	try {
             		objType = Class.forName(typeName);
-            	} catch(ClassNotFoundException cnfEx) {
+            	} catch (ClassNotFoundException cnfEx) {
             		if (throwIfCannotLoad) throw ReflectionException.of(cnfEx);	// wrap the exception
             	}
             }
@@ -719,7 +719,7 @@ public class ReflectionUtils {
 	        } else {
 	        	throw ReflectionException.noConstructorException(type,constructorArgsTypes);
 	        }
-        } catch(Throwable th) {
+        } catch (Throwable th) {
             throw ReflectionException.of(th);
         }
         @SuppressWarnings("unchecked")         
@@ -749,7 +749,7 @@ public class ReflectionUtils {
 	    									 										  new Class<?>[] {String.class});
 	    		if (valueOfMethod != null) return true;
     		} 
-    	} catch(Throwable th) {
+    	} catch (Throwable th) {
     		// ignored
     	}
     	return false;
@@ -775,7 +775,7 @@ public class ReflectionUtils {
 	    	if (constructor != null) {
 	        	newObj = constructor.newInstance(new Object[] {value});
 	    	} 
-    	} catch(Throwable th) {
+    	} catch (Throwable th) {
     		th.printStackTrace(System.out);
     	}
     	// [2] - Try to use a static valueOf method
@@ -791,7 +791,7 @@ public class ReflectionUtils {
 	    		} else {
 	    			throw ReflectionException.instantiationException(type + " from a String because neither the single String param constructor exists, nor the static valueOf(String) method");
 	    		}
-	    	} catch(Throwable th) {
+	    	} catch (Throwable th) {
 	    		th.printStackTrace(System.out);
 	    	}
     	}
@@ -834,7 +834,7 @@ public class ReflectionUtils {
                                                                                        : new Class<?>[] {}); 	// Constructor
                 if (force) ReflectionUtils.makeAccessible(constructor);      // Hacer accesible el constructor vacio
 //            }
-        } catch(NoSuchMethodException nsmEx) {
+        } catch (NoSuchMethodException nsmEx) {
         	/* the constructor does NOT exists */
         }
          return constructor;
@@ -1027,7 +1027,7 @@ public class ReflectionUtils {
         	ReflectionUtils.makeAccessible(method);	// Ensure the method is accessible
             return (T)method.invoke(obj,
             					    (argValues != null ? argValues : new Object[] {}));     // Invocar al metodo sobre el objeto
-        } catch(Throwable th) {
+        } catch (Throwable th) {
         	throw ReflectionException.of(th); 
         }
     }
@@ -1370,7 +1370,7 @@ public class ReflectionUtils {
             	// Usual case: correctly named accessor
                 setter = "set" + StringUtils.capitalize(fieldName);            	
                 outMethod = ReflectionUtils.method(type,setter,memberType);
-            } catch(ReflectionException nsmEx) {
+            } catch (ReflectionException nsmEx) {
                 // Error: the developer has NOT named the setter method
             	//			ie: get[fieldName] (ie setMyBoolean when it should have been setIsMyBoolean)	
             	if (nsmEx.isNoMethodException()) {
@@ -1384,7 +1384,7 @@ public class ReflectionUtils {
         // Return the method (it might have been obtained before)
         try {
         	if (outMethod == null && setter != null) outMethod = ReflectionUtils.method(type,setter,memberType);        	
-        } catch(ReflectionException nsmEx) {
+        } catch (ReflectionException nsmEx) {
         	if (nsmEx.isNoMethodException()) outMethod = null;
         }
         return outMethod;
@@ -1500,7 +1500,7 @@ public class ReflectionUtils {
 	        	}
 		    	if (!setted) throw ReflectionException.noFieldException(obj.getClass(),fieldName); 
 	        }
-        } catch(Throwable th) {
+        } catch (Throwable th) {
         	log.error("Error trying to set a {} object's {} field with a {} value",
         			  obj.getClass(),fieldName,value.getClass());
         	throw ReflectionException.of(th);
@@ -1541,7 +1541,7 @@ public class ReflectionUtils {
             	// Usual case
                 getter = "is" + StringUtils.capitalize(theFieldName); 
                 outMethod = ReflectionUtils.method(type,getter,fieldType);
-            } catch(ReflectionException nsmEx) {
+            } catch (ReflectionException nsmEx) {
             	if (nsmEx.isNoMethodException()) {
 	                // Error, el desarrollador NO ha nombrado el metodo de la forma
 	                // estandar y ha utilizado get[fieldName] (ej: getMyBoolean cuando deber�a ser getIsMyBoolean() o isMyBoolean()
@@ -1565,7 +1565,7 @@ public class ReflectionUtils {
         // Devolver el metodo (puede ser que ya se haya obtenido antes)
         try {
         	if (outMethod == null && getter != null) outMethod = ReflectionUtils.method(type,getter,fieldType);        	
-        } catch(ReflectionException nsmEx) {
+        } catch (ReflectionException nsmEx) {
         	if (log.isTraceEnabled()) log.trace("[R01F.ReflectionUtils WARN] ---->" + (fieldType != null ? fieldType.getName() : "unknown type") + " " + 
         															  				   type.getName() + "." + getter + " NOT FOUND!!!");
         	if (nsmEx.isNoFieldExcepton()) outMethod = null;
@@ -1660,7 +1660,7 @@ public class ReflectionUtils {
             		if (getter == null) throw ReflectionException.noMethodException(obj.getClass(),fieldName + " getter");
 					outObj = getter.invoke(obj,(Object[])null);
             		// outObj = PropertyUtils.getProperty(obj,fieldName);
-            	} catch(Throwable th) {
+            	} catch (Throwable th) {
 	            	_warnFieldAccessException(th,
 	            							  obj,fieldName);
             		// java.lang.NoClassDefFoundError: org/apache/commons/logging/LogFactory 

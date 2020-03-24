@@ -129,7 +129,7 @@ public class GsonMarshaller {
 			Type objType = null;
 			try {
 				objType = ReflectionUtils.getObjectType(type);
-			} catch(ReflectionException refEx) {
+			} catch (ReflectionException refEx) {
 				log.error("The type {} contains a class which could NOT be found in the classPath!",type,refEx);
 			}
 			return objType;

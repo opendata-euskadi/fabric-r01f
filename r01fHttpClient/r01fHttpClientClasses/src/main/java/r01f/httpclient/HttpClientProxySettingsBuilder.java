@@ -116,10 +116,10 @@ public abstract class HttpClientProxySettingsBuilder
 				log.info("There's internet connection without proxy!");
 				outConnection = true;
 			}
-		} catch(final IOException ioEx) {
+		} catch (final IOException ioEx) {
 			// ignore
 			log.warn("There's NO direct internet connection (without proxy!)");
-		} catch(final Throwable thEx) {
+		} catch (final Throwable thEx) {
 			// ignore
 			log.warn("There's NO direct (internet connection without proxy!)");
 		}
@@ -161,11 +161,11 @@ public abstract class HttpClientProxySettingsBuilder
 						 proxySettings.getProxyHost(),proxySettings.getProxyPort());
 				outConnection = true;
 			}
-		} catch(final IOException ioEx) {
+		} catch (final IOException ioEx) {
 			// ignore
 			log.warn("There's NO internet connection using proxy: {}:{}",
 					 proxySettings.getProxyHost(),proxySettings.getProxyPort());
-		} catch(final Throwable thEx) {
+		} catch (final Throwable thEx) {
 			// ignore
 			log.warn("There's NO internet connection using proxy: {}:{}",
 					 proxySettings.getProxyHost(),proxySettings.getProxyPort());

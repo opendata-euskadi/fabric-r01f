@@ -231,7 +231,7 @@ public final class XMLUtils {
         } finally {
         	try {
         		is.close();
-        	} catch(IOException ioEx) {
+        	} catch (IOException ioEx) {
         		ioEx.printStackTrace();
         	}
         }

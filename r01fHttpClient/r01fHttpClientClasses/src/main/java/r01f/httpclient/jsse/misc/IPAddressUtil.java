@@ -118,7 +118,7 @@ public class IPAddressUtil {
             default:
                 return null;
             }
-        } catch(NumberFormatException e) {
+        } catch (NumberFormatException e) {
             return null;
         }
         return res;

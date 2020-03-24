@@ -228,7 +228,7 @@ public class NetworkClient {
         if (serverSocket != null && timeout >= 0) {
             try {
                 serverSocket.setSoTimeout(timeout);
-            } catch(IOException e) {
+            } catch (IOException e) {
                 // We tried...
             }
         }

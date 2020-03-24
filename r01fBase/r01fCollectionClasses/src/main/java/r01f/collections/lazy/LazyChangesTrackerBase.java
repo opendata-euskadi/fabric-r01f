@@ -43,7 +43,7 @@ implements DirtyStateTrackable {
 	protected static DirtyStateTrackable _asDirtyStateTrackable(final Object o) {
 		try {
 			return (DirtyStateTrackable)o;
-		} catch(ClassCastException ccEx) {
+		} catch (ClassCastException ccEx) {
 			log.error("{} canot be cast-ed to {}: maybe it's not annotated as @{} or maybe weaving is not in use, add -javaagent:aspectjweaver.jar to the VM start command",
 					  o.getClass(),DirtyStateTrackable.class,ConvertToDirtyStateTrackable.class.getSimpleName());
 			throw ccEx;

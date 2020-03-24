@@ -93,7 +93,7 @@ public class HttpRequestFormParameterForText
 			}
 			return outSerializedParamBytes != null ? outSerializedParamBytes
 											  	   : null;
-		} catch(EncoderException encEx) {
+		} catch (EncoderException encEx) {
 			throw new IOException(encEx);
 		}
 	}

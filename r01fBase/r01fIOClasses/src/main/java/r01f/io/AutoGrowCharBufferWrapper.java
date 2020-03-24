@@ -80,7 +80,7 @@ public class AutoGrowCharBufferWrapper
         try {
         	// underlying buffer
         	numReaded = source.read(_buf);		// it's sure there's room for the readed chars though the source can send less chars        	
-        } catch(IOException ioEx) {
+        } catch (IOException ioEx) {
         	Throwables.throwUnchecked(ioEx);
         }
 

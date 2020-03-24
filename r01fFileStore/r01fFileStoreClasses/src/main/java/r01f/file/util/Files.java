@@ -190,7 +190,7 @@ public abstract class Files {
 				log.info("Deleting folder at {}",containerFolder.getAbsolutePath());
 				FileUtils.deleteQuietly(containerFolder);		// maybe? FileUtils.deleteDirectory(folder)
 			}
-		} catch(Throwable th) {
+		} catch (Throwable th) {
 			log.error("Error trying to delete the folder with path={}",(containerFolder != null ? containerFolder.getAbsolutePath() : filePath.asAbsoluteString()));
 		}
 	}

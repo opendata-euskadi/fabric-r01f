@@ -146,7 +146,7 @@ public class CharacterStreamSource {
         	if (_source instanceof Closeable) {
         		try {
         			((Closeable)_source).close();
-        		} catch(IOException ioEx) {
+        		} catch (IOException ioEx) {
         			log.error("Could NOT close the underlying stream {}",ioEx.getMessage(),ioEx);
         		}
         	}
@@ -287,7 +287,7 @@ public class CharacterStreamSource {
 			Pattern p = null;
 			try {
 				p = _patternCache.get(regex);	// use a pattern cache instead of Pattern p = Pattern.compile(regex);
-			} catch(ExecutionException exEx) {
+			} catch (ExecutionException exEx) {
 				log.error("Could NOT get pattern {} from regexp pattern cache: {}",
 						  regex,exEx.getMessage(),
 						  exEx);

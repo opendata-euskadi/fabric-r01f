@@ -24,7 +24,7 @@ public abstract class HtmlTokenizerStateHandlerBase<TK extends HtmlTokenizerBase
 						 		final int numChars) throws HtmlParseError {
 		try {
 			charReader.skip(numChars);
-		} catch(IOException ioEx) {
+		} catch (IOException ioEx) {
 			throw new HtmlParseError(charReader.currentPosition(),ioEx.getMessage(),ioEx);
 		}		
 	}

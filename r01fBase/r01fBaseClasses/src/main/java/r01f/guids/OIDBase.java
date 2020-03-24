@@ -153,10 +153,10 @@ public abstract class OIDBase<T>
         	outOid = (O)MethodUtils.invokeStaticMethod(oidType,
         		   								       "forId",
         		   								       new Object[] {oidAsString},new Class<?>[] {String.class});
-        } catch(NoSuchMethodException nsmEx) {
+        } catch (NoSuchMethodException nsmEx) {
         	throw new IllegalArgumentException(String.format("Type %s is NOT a valid OID: it does NOT have a forId(String) static builder method",
         													 oidType));
-        } catch(Throwable th) {
+        } catch (Throwable th) {
         	th.printStackTrace();
         	throw new IllegalStateException(String.format("Could NOT create an OID instance of type %s: %s",oidType,th.getMessage()),
         									th);

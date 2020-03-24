@@ -222,7 +222,7 @@ public abstract class StringConverter {
 		if (!Strings.isNullOrEmpty(value)) {
 			try {
 				outE = Enum.valueOf(enumType,value.toString());
-			} catch(IllegalArgumentException illArgEx) {
+			} catch (IllegalArgumentException illArgEx) {
 				outE = defValue;	// there's NO enum value 
 			}
 		}
@@ -242,7 +242,7 @@ public abstract class StringConverter {
 			try {
 				outE = EnumWithCodeWrapper.<String,E>wrapEnumWithCode(enumType)
 										  .fromCode(value.toString());
-			} catch(IllegalArgumentException illArgEx) {
+			} catch (IllegalArgumentException illArgEx) {
 				outE = defValue;	// there's NO enum value 
 			}
 		}
@@ -262,7 +262,7 @@ public abstract class StringConverter {
 			try {
 				outE = EnumWithCodeWrapper.<Integer,E>wrapEnumWithCode(enumType)
 										  .fromCode(Integer.parseInt(value.toString()));
-			} catch(IllegalArgumentException illArgEx) {
+			} catch (IllegalArgumentException illArgEx) {
 				outE = defValue;	// there's NO enum value 
 			}
 		}
@@ -282,7 +282,7 @@ public abstract class StringConverter {
 			try {
 				outE = EnumWithCodeWrapper.<Long,E>wrapEnumWithCode(enumType)
 										  .fromCode(Long.parseLong(value.toString()));
-			} catch(IllegalArgumentException illArgEx) {
+			} catch (IllegalArgumentException illArgEx) {
 				outE = defValue;	// there's NO enum value 
 			}
 		}

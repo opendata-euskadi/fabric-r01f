@@ -399,7 +399,7 @@ public class I18NService {
 					ResourceBundle bundle = _retrieveBundle(thisBundle);
 					try {
 						outKey = bundle.getString(key);
-					} catch(MissingResourceException mkEx) {
+					} catch (MissingResourceException mkEx) {
 						if (i == _bundleChain.length-1) {
 							log.warn("Could NOT find key {} in any of the bundles at chain {}",
 									 key,_bundleChain);

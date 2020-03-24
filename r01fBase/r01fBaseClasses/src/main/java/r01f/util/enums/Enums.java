@@ -161,7 +161,7 @@ public class Enums {
 			T outT = null;
 			try {
 				outT = this.fromCode(code);
-			} catch(IllegalArgumentException illArgEx) {
+			} catch (IllegalArgumentException illArgEx) {
 				/* nothing to do */
 			}
 			return outT != null;	// if it's different from null, the enum element has been found
@@ -175,7 +175,7 @@ public class Enums {
 			T outT = null;
 			try {
 				outT = this.fromName(name);
-			} catch(IllegalArgumentException illArgEx) {
+			} catch (IllegalArgumentException illArgEx) {
 				/* nothing to do */
 			}
 			return outT != null;	// if it's different from null, the enum element has been found

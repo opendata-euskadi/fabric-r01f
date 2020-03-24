@@ -137,7 +137,7 @@ public abstract class Dates {
 		try {
 			epoch = new SimpleDateFormat(Dates.EPOCH)
 								.parse(epochTimeStampAsString).getTime() / 1000;
-		} catch(ParseException parseEx) {
+		} catch (ParseException parseEx) {
 			parseEx.printStackTrace(System.out);
 		}
 		return epoch;

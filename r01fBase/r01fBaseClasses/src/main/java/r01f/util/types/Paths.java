@@ -55,7 +55,7 @@ public abstract class Paths {
 					CONSTRUCTOR_REF_CACHE.put(_pathType,constructor);
 				}
 				outPathInstance = (P)constructor.newInstance(new Object[] {elements});		// BEWARE!! the path elements are encapsulated in a ImmutableList
-			} catch(Throwable th) {
+			} catch (Throwable th) {
 				log.error("Could NOT create a {} instance: {}",
 						  _pathType.getName(),th.getMessage(),th);
 				// should never happen
@@ -71,7 +71,7 @@ public abstract class Paths {
             constructor = type.getDeclaredConstructor(constructorArgsTypes != null ? constructorArgsTypes
                                                                                    : new Class<?>[] {}); 	// Constructor
             if (force) AccessController.doPrivileged(new SetAccessibleAction(constructor));       //  make the constructor accesible
-        } catch(NoSuchMethodException nsmEx) {
+        } catch (NoSuchMethodException nsmEx) {
         	/* the constructor does NOT exists */
         }
         return constructor;

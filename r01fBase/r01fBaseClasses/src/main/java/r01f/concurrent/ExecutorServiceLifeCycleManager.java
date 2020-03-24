@@ -100,7 +100,7 @@ public class ExecutorServiceLifeCycleManager
 				done = _executor.awaitTermination(secondsPerCycle,TimeUnit.SECONDS);
 				cyclesAwaited++;
 			}
-		} catch(InterruptedException intEx) {
+		} catch (InterruptedException intEx) {
 			intEx.printStackTrace();
 		}
 	}

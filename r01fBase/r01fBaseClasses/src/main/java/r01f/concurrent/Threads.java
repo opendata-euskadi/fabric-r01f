@@ -31,7 +31,7 @@ public class Threads {
 				System.out.println("... still running");
 				Thread.sleep(checkEvery.asMilis());
 			}
-		} catch(Throwable th) {
+		} catch (Throwable th) {
 			log.error("Could not check if the thread pool executor is shouted down: {}",th.getMessage(),th);
 			th.printStackTrace(System.out);
 		}

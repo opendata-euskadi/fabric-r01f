@@ -59,7 +59,7 @@ public class LazyNotCachedMap<K,V>
 		try {
 			outVal = _valuesSupplier.loadValue(key);
 			if (outVal != null) _currentEntries.put(key,outVal);
-		} catch(Exception ex) {
+		} catch (Exception ex) {
 			throw new RuntimeException(ex);		// Transform any exception to a RuntimeException
 		}
 		return outVal;

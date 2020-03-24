@@ -57,7 +57,7 @@ public class XMLDocumentBuilder {
 	    		throw new FileNotFoundException("The XML resource could not be loaded from " + xmlFilePath + ": resource does NOT exists!");
 	    	}
 	    	xmlIS.close();	// do not forget!
-    	} catch(IOException ioEx) {
+    	} catch (IOException ioEx) {
     		throw new SAXException(ioEx);
     	}
     	return outDoc;

@@ -143,7 +143,7 @@ c) **Eclipse WTP tools** (from eclipse update site http://download.eclipse.org/r
 			[X] WST Server Adapters
 			
 		General Purpouse Tools
-			[X] m2e sl4fj logback
+			[X] m2e - slf4j over logback logging (Optional)
 ```
 If you have compatibility problems uninstall "Eclipse XML Editors and Tools" checking the option "Update my installation to be compatible with the items being installed".
 

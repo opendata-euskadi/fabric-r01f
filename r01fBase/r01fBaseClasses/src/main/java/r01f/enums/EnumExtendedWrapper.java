@@ -107,7 +107,7 @@ public class EnumExtendedWrapper<E extends EnumExtended<E>> {
 		E outT = null;
 		try {
 			outT = this.fromName(name);
-		} catch(IllegalArgumentException illArgEx) {
+		} catch (IllegalArgumentException illArgEx) {
 			/* nothing to do */
 		}
 		return outT != null;	// found if not null

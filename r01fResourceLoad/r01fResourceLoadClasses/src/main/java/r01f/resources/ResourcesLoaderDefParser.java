@@ -42,7 +42,7 @@ class ResourcesLoaderDefParser {
 		try {
 			Document doc = _parse(defXmlIs);
 			outDef = ResourcesLoaderDefParser.parse(doc.getDocumentElement());
-		} catch(SAXException saxEx) {
+		} catch (SAXException saxEx) {
 			log.error("Error at the resources loader definition xml: {}",
 				      saxEx.getMessage(),
 				      saxEx);
@@ -83,7 +83,7 @@ class ResourcesLoaderDefParser {
 			if (Strings.isNOTNullOrEmpty(charset)) outDef.setCharsetName(charset);
 			outDef.setReloadControlDef(reloadControlDef);
 			
-		} catch(XPathExpressionException xpathEx) {
+		} catch (XPathExpressionException xpathEx) {
 			log.error("Error at the resources loader definition xml: {}",
 				      xpathEx.getMessage(),
 				      xpathEx);
@@ -141,7 +141,7 @@ class ResourcesLoaderDefParser {
         } finally {
         	try {
         		is.close();
-        	} catch(IOException ioEx) {
+        	} catch (IOException ioEx) {
         		ioEx.printStackTrace();
         	}
         }

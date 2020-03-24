@@ -45,7 +45,7 @@ public enum Env
 		boolean outCanBe = true;
 		try {
 			Env.from(env);
-		} catch(IllegalArgumentException illArgEx) {
+		} catch (IllegalArgumentException illArgEx) {
 			outCanBe = false;
 		}
 		return outCanBe;

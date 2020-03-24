@@ -48,7 +48,7 @@ abstract class ClasspathScannerBase {
 																URL fullUrl = new URL(url.toString() + _resourceName(pckg));
 																log.trace("URL to be scanned: {}",fullUrl);
 														        return fullUrl;
-														    } catch(Throwable th) {
+														    } catch (Throwable th) {
 														    	th.printStackTrace(System.out);
 														    }
 														    return url;

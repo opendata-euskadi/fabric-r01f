@@ -48,7 +48,7 @@ public class HDFSFileProperties
 		FileProperties outProps = null;
 		try {
 			outProps = HDFSFileProperties.from(hdfsStatus);
-		} catch(IOException ioEx) {
+		} catch (IOException ioEx) {
 			log.error("Error creating a {} from {}: {}",
 					  HDFSFileProperties.class,hdfsStatus.getPath(),
 					  ioEx.getMessage(),ioEx);

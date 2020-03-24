@@ -74,7 +74,7 @@ public class RegexpPool {
     public void replace(String re, Object ret) {
         try {
             add(re, ret, true);
-        } catch(Exception e) {
+        } catch (Exception e) {
             // should never occur if replace is true
         }
     }
