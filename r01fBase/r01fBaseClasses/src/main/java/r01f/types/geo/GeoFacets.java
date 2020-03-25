@@ -4,7 +4,9 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import r01f.types.geo.GeoOIDs.GeoCountryID;
 import r01f.types.geo.GeoOIDs.GeoCountyID;
+import r01f.types.geo.GeoOIDs.GeoDistrictID;
 import r01f.types.geo.GeoOIDs.GeoMunicipalityID;
+import r01f.types.geo.GeoOIDs.GeoNeighborhoodID;
 import r01f.types.geo.GeoOIDs.GeoRegionID;
 import r01f.types.geo.GeoOIDs.GeoStateID;
 import r01f.types.geo.GeoOIDs.GeoTerritoryID;
@@ -19,23 +21,24 @@ public abstract class GeoFacets {
 		public void setGeoPosition(final GeoPosition position);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//   Country
-//     |_Territory
-//     	 |_State
-//     		 |_County
-//     		 	|_Region
-//     				|_Municipality
-//     					|_District
-//     						|_Street
-//     							|_portal
+// Territory											Europe
+//  |_Country											Spain
+//  	 |_State										Euskadi
+//  		 |_County									Bizkaia
+//  		 	|_Region								Gran Bilbao / valles alaveses
+//  				|_Municipality						Bilbao
+//  					|_District						01	
+//  						|_Neighborhood 				Abando
+//  							|_Street				General Concha
+//  								|_portal			12
 /////////////////////////////////////////////////////////////////////////////////////////
-	public interface GeoLocationBelongsToCountry {
-		public GeoCountryID getCountryId();
-		public void setCountryId(final GeoCountryID countryId);
-	}
 	public interface GeoLocationBelongsToTerritory {
 		public GeoTerritoryID getTerritoryId();
 		public void setTerritoryId(final GeoTerritoryID territoryId);
+	}
+	public interface GeoLocationBelongsToCountry {
+		public GeoCountryID getCountryId();
+		public void setCountryId(final GeoCountryID countryId);
 	}
 	public interface GeoLocationBelongsToState {
 		public GeoStateID getStateId();
@@ -52,5 +55,13 @@ public abstract class GeoFacets {
 	public interface GeoLocationBelongsToMunicipality {
 		public GeoMunicipalityID getMunicipalityId();
 		public void setMunicipalityId(final GeoMunicipalityID munId);
+	}
+	public interface GeoLocationBelongsToDistrict {
+		public GeoDistrictID getDistrictId();
+		public void setDistrictId(final GeoDistrictID districtId);
+	}
+	public interface GeoLocationBelongsToNeighborhood {
+		public GeoNeighborhoodID getNeighborhoodId();
+		public void setNeighborhoodId(final GeoNeighborhoodID neighborhoodId);
 	}
 }

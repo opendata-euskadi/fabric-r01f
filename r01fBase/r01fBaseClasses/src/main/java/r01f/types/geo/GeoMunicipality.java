@@ -23,15 +23,16 @@ import r01f.types.geo.GeoOIDs.GeoTerritoryID;
 /**
  * Municipality
  * <pre>
- * Country
- *   |_Territory
- *   	 |_State
- *   		 |_County
- *   		 	|_Region
- *   				|_Municipality
- *   					|_District
- *   						|_Street
- *   							|_portal
+ * Territory											Europe
+ *   |_Country											Spain										
+ *   	 |_State										Euskadi
+ *   		 |_County									Bizkaia
+ *   		 	|_Region								Gran Bilbao / valles alaveses
+ *   				|_Municipality						Bilbao
+ *   					|_District						01	
+ *   						|_Neighborhood 				Abando
+ *   							|_Street				General Concha
+ *   								|_portal			12
  * </pre>
  * <pre class='brush:java'>
  *		GeoMunicipality mun = new GeoLocality(GeoMunicipalityID.forId(34),
@@ -61,13 +62,13 @@ public class GeoMunicipality
 /////////////////////////////////////////////////////////////////////////////////////////
 //  FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
-	@MarshallField(as="countryId",
-				   whenXml=@MarshallFieldAsXml(attr=true))
-	@Getter @Setter private GeoCountryID _countryId;
-	
 	@MarshallField(as="territoryId",
 				   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter @Setter private GeoTerritoryID _territoryId;
+	
+	@MarshallField(as="countryId",
+				   whenXml=@MarshallFieldAsXml(attr=true))
+	@Getter @Setter private GeoCountryID _countryId;
 	
 	@MarshallField(as="stateId",
 				   whenXml=@MarshallFieldAsXml(attr=true))

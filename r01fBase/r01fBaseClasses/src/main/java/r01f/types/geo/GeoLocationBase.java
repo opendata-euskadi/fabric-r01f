@@ -19,13 +19,17 @@ import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 import r01f.types.geo.GeoFacets.GeoLocationBelongsToCountry;
 import r01f.types.geo.GeoFacets.GeoLocationBelongsToCounty;
+import r01f.types.geo.GeoFacets.GeoLocationBelongsToDistrict;
 import r01f.types.geo.GeoFacets.GeoLocationBelongsToMunicipality;
+import r01f.types.geo.GeoFacets.GeoLocationBelongsToNeighborhood;
 import r01f.types.geo.GeoFacets.GeoLocationBelongsToRegion;
 import r01f.types.geo.GeoFacets.GeoLocationBelongsToState;
 import r01f.types.geo.GeoFacets.GeoLocationBelongsToTerritory;
 import r01f.types.geo.GeoOIDs.GeoCountryID;
+import r01f.types.geo.GeoOIDs.GeoDistrictID;
 import r01f.types.geo.GeoOIDs.GeoID;
 import r01f.types.geo.GeoOIDs.GeoMunicipalityID;
+import r01f.types.geo.GeoOIDs.GeoNeighborhoodID;
 import r01f.types.geo.GeoOIDs.GeoRegionID;
 import r01f.types.geo.GeoOIDs.GeoStateID;
 import r01f.types.geo.GeoOIDs.GeoTerritoryID;
@@ -136,15 +140,6 @@ public abstract class GeoLocationBase<GID extends GeoID,
 //  FACETS
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
-	public boolean isBelongsToCountry() {
-		return (this instanceof GeoLocationBelongsToCountry);
-	}
-	@Override
-	public GeoLocationBelongsToCountry asBelongsToCountry() {
-		if (!this.isBelongsToCountry()) throw new IllegalStateException();
-		return (GeoLocationBelongsToCountry)this;
-	}
-	@Override
 	public boolean isBelongsToTerritory() {
 		return (this instanceof GeoLocationBelongsToTerritory);
 	}
@@ -152,6 +147,15 @@ public abstract class GeoLocationBase<GID extends GeoID,
 	public GeoLocationBelongsToTerritory asBelongsToTerritory() {
 		if (!this.isBelongsToTerritory()) throw new IllegalStateException();
 		return (GeoLocationBelongsToTerritory)this;
+	}
+	@Override
+	public boolean isBelongsToCountry() {
+		return (this instanceof GeoLocationBelongsToCountry);
+	}
+	@Override
+	public GeoLocationBelongsToCountry asBelongsToCountry() {
+		if (!this.isBelongsToCountry()) throw new IllegalStateException();
+		return (GeoLocationBelongsToCountry)this;
 	}
 	@Override
 	public boolean isBelongsToState() {
@@ -189,12 +193,31 @@ public abstract class GeoLocationBase<GID extends GeoID,
 		if (!this.isBelongsToMunicipality()) throw new IllegalStateException();
 		return (GeoLocationBelongsToMunicipality)this;
 	}
+	@Override
+	public boolean isBelongsToDistrict() {
+		return (this instanceof GeoLocationBelongsToDistrict);
+	}
+	@Override
+	public GeoLocationBelongsToDistrict asBelongsToDistrict() {
+		if (!this.isBelongsToDistrict()) throw new IllegalStateException();
+		return (GeoLocationBelongsToDistrict)this;
+	}
+	@Override
+	public boolean isBelongsToNeighborhood() {
+		return (this instanceof GeoLocationBelongsToNeighborhood);
+	}
+	@Override
+	public GeoLocationBelongsToNeighborhood asBelongsToNeighborhood() {
+		if (!this.isBelongsToNeighborhood()) throw new IllegalStateException();
+		return (GeoLocationBelongsToNeighborhood)this;
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public CharSequence debugInfo() {
 		StringBuilder path = new StringBuilder();
+		// Facets
 		if (this instanceof GeoLocationBelongsToCountry) {
 			GeoCountryID countryId = this.asBelongsToCountry().getCountryId();
 			if (countryId != null) path.append(" country=").append(countryId);
@@ -214,6 +237,32 @@ public abstract class GeoLocationBase<GID extends GeoID,
 		if (this instanceof GeoLocationBelongsToMunicipality) {
 			GeoMunicipalityID munId = this.asBelongsToMunicipality().getMunicipalityId();
 			if (munId != null) path.append(" municipality=").append(munId);
+		}
+		if (this instanceof GeoLocationBelongsToDistrict) {
+			GeoDistrictID districtId = this.asBelongsToDistrict().getDistrictId();
+			if (districtId != null) path.append(" district=").append(districtId);
+		}
+		if (this instanceof GeoLocationBelongsToNeighborhood) {
+			GeoNeighborhoodID neighborhoodId = this.asBelongsToNeighborhood().getNeighborhoodId();
+			if (neighborhoodId != null) path.append(" neighborhood=").append(neighborhoodId);
+		}
+		// particular cases
+		if (this instanceof GeoNeighborhood) {
+			GeoNeighborhood neighborhood = (GeoNeighborhood)this;
+			if (neighborhood.getNeighborhoodCode() != null) path.append(" neighborhood code=").append(neighborhood.getNeighborhoodCode());
+		} else if (this instanceof GeoDistrict) {
+			GeoDistrict district = (GeoDistrict)this;
+			if (district.getDistrictCode() != null) path.append(" district code=").append(district.getDistrictCode());
+		}
+		
+		// location
+		if (this.getPosition2D() != null) {
+			path.append(" ").append(this.getPosition2D().getStandard()).append("=");
+			path.append("(")
+					.append(this.getPosition2D().getX())
+					.append(",")
+					.append(this.getPosition2D().getY())
+				.append(")");
 		}
 		return Strings.customized("{} id={}{} name={}",
 								  this.getClass().getSimpleName(),

@@ -9,22 +9,22 @@ import r01f.locale.LanguageTexts;
 import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 import r01f.objectstreamer.annotations.MarshallType;
-import r01f.types.geo.GeoFacets.GeoLocationBelongsToCountry;
 import r01f.types.geo.GeoOIDs.GeoCountryID;
 import r01f.types.geo.GeoOIDs.GeoTerritoryID;
 
 /**
  * Territory
  * <pre>
- * Country
- *   |_Territory
- *   	 |_State
- *   		 |_County
- *   		 	|_Region
- *   				|_Municipality
- *   					|_District
- *   						|_Street
- *   							|_portal
+ * Territory											Europe
+ *   |_Country											Spain										
+ *   	 |_State										Euskadi
+ *   		 |_County									Bizkaia
+ *   		 	|_Region								Gran Bilbao / valles alaveses
+ *   				|_Municipality						Bilbao
+ *   					|_District						01	
+ *   						|_Neighborhood 				Abando
+ *   							|_Street				General Concha
+ *   								|_portal			12
  * </pre>
  * <pre class='brush:java'>
  *		GeoTerritory territory = new GeoTerritory(GeoTerritoryID.forId(34),
@@ -45,8 +45,7 @@ import r01f.types.geo.GeoOIDs.GeoTerritoryID;
 @Accessors(prefix="_")
 @NoArgsConstructor
 public class GeoTerritory
-     extends GeoLocationBase<GeoTerritoryID,GeoTerritory>
-  implements GeoLocationBelongsToCountry {
+     extends GeoLocationBase<GeoTerritoryID,GeoTerritory> {
 
 	private static final long serialVersionUID = 3765925107420809443L;
 /////////////////////////////////////////////////////////////////////////////////////////

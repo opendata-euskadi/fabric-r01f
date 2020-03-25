@@ -61,13 +61,13 @@ public class GeoRegion
 /////////////////////////////////////////////////////////////////////////////////////////
 //  FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
-	@MarshallField(as="countryId",
-				   whenXml=@MarshallFieldAsXml(attr=true))
-	@Getter @Setter private GeoCountryID _countryId;
-	
 	@MarshallField(as="territoryId",
 				   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter @Setter private GeoTerritoryID _territoryId;
+	
+	@MarshallField(as="countryId",
+				   whenXml=@MarshallFieldAsXml(attr=true))
+	@Getter @Setter private GeoCountryID _countryId;
 	
 	@MarshallField(as="stateId",
 				   whenXml=@MarshallFieldAsXml(attr=true))
