@@ -1,0 +1,1 @@
+call %DEVELOP_HOME%\maven-3.6.3\bin\mvn.cmd --global-settings "%DEVELOP_HOME%\maven-3.6.3\settings.xml" %*
