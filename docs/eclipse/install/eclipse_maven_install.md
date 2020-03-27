@@ -14,7 +14,7 @@ The idea is:
 ```
 /{dev_home} = d:\develop in windows or /develop in linux
 	+ develop
-		+ eclipse
+		+ instances
 			+ [instance-name]
 			+ ...
 		+ maven_libs
