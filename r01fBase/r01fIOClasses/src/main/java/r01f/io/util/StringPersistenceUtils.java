@@ -349,7 +349,8 @@ public abstract class StringPersistenceUtils {
      * @param theString the string
      * @throws IOException
      */
-    public static void save(final Reader reader,final File f) throws IOException {
+    public static void save(final Reader reader,
+    						final File f) throws IOException {
         BufferedReader bufReader = new BufferedReader(reader);
         BufferedWriter bufWriter = new BufferedWriter(new FileWriter(f, false));
         String line = bufReader.readLine();
@@ -367,7 +368,8 @@ public abstract class StringPersistenceUtils {
      * @param theString the string
      * @throws IOException
      */
-    public static void save(final CharSequence theString,final File f) throws IOException {
+    public static void save(final CharSequence theString,
+    						final File f) throws IOException {
     	StringPersistenceUtils.save(new CharSequenceReader(theString),f);
     } 
     /**

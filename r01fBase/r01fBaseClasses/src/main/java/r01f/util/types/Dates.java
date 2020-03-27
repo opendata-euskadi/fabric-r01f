@@ -385,6 +385,24 @@ public abstract class Dates {
 		@Getter private final String _timeToMinFormat = "HH:mm";
 		@Getter private final String _timeTimeToSecFormat = "HH:mm:ss";
 
+		public static DateLangFormat of(final Language lang) {
+			DateLangFormat outFormat = null;
+			switch (lang) {
+			case SPANISH:
+				outFormat = SPANISH;
+				break;
+			case BASQUE:
+				outFormat = BASQUE;
+				break;
+			case ENGLISH:
+				outFormat = ENGLISH;
+				break;
+			default:
+				outFormat = DEFAULT;
+			}
+			return outFormat;
+		}
+		
 		public String formatDate(final Date date) {
 			return Dates.format(date,
 								_dateFormat);
