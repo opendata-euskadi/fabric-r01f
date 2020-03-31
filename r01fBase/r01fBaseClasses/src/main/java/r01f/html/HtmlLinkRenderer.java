@@ -105,7 +105,8 @@ public abstract class HtmlLinkRenderer {
 											   		_link.getUrl().asStringNotUrlEncodingQueryStringParamsValues(),
 											   		_renderPresentationData(_link.getText() != null ? _link.getTitle() : null,
 											   								_link.getPresentation()),
-											   		_link.getText() != null ? _link.getText() : "");
+											   		_link.getText() != null ? _link.getText() 
+											   								: _link.getUrl() != null ? _link.getUrl() : "");
 			}
 			return outLink;
 		}
@@ -141,10 +142,15 @@ public abstract class HtmlLinkRenderer {
 		// >>> [2] - Target resource data
 		Collection<String> targetDataParams = _targetResourceDataParams(data.getTargetResourceData());
 
-		// >>> [3] - window opening features
+		// >>> [3] - Open target: _blank|_self|_parent|_top|frameName
+		String openTarget = data.getOpenTarget() != null ? Strings.customized("target='{}'",
+																			  data.getOpenTarget())
+														 : null;
+		// >>> [4] - window opening features
 		Collection<String> windowOpeningParam = _windowOpeningModeParams(data.getNewWindowOpeningMode());
 
 		Collection<String> allParams = Sets.newHashSet();
+		if (Strings.isNOTNullOrEmpty(openTarget)) allParams.add(openTarget);
 		if (CollectionUtils.hasData(presentationDataParams)) allParams.addAll(presentationDataParams);
 		if (CollectionUtils.hasData(targetDataParams)) allParams.addAll(targetDataParams);
 		if (CollectionUtils.hasData(windowOpeningParam)) allParams.addAll(windowOpeningParam);

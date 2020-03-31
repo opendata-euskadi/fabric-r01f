@@ -92,6 +92,11 @@ public class WebLinkPresentationData
 	 */
 	@MarshallField(as="accessKey")
 	@Getter @Setter private WebLinkAccessKey _accessKey;
+	/**
+	 * Open target: self / parent / blank / frame name
+	 */
+	@MarshallField(as="openTarget")
+	@Getter @Setter private WebLinkOpenTarget _openTarget;
     /**
      * If the link is opened in a new window this object contains this new window properties
      */
@@ -174,6 +179,10 @@ public class WebLinkPresentationData
 	}
 	public WebLinkPresentationData withId(final HtmlElementId id) {
 		_id = id;
+		return this;
+	}
+	public WebLinkPresentationData withOpenTarget(final WebLinkOpenTarget target) {
+		_openTarget = target;
 		return this;
 	}
 	public WebLinkPresentationData forTargetResource(final WebLinkTargetResourceData targetResource) {
