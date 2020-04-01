@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import lombok.extern.slf4j.Slf4j;
+import r01f.locale.Language;
 import r01f.util.types.locale.Languages;
 
 /**
@@ -91,6 +92,9 @@ public abstract class StringToDateWithDayNameConverter {
 /////////////////////////////////////////////////////////////////////////////////////////
 //	CONVERSION METHODS
 /////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Only found for date formatted text in Spanish locale
+	 */
 	public static Date convertToDate(final String dateText,
 							  		 final Locale locale) {
 
