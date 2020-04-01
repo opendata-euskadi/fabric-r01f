@@ -74,7 +74,7 @@ public class WebLinkWindowOpeningMode
     	_appearance = appearance;
     }
     public WebLinkWindowOpeningMode(final String name,final OpeningWindowAppearance appearance,
-    								 final boolean showNewWindowIcon) {
+    								final boolean showNewWindowIcon) {
     	_name = name;
     	_appearance = appearance;
     	_showNewWindowIcon = showNewWindowIcon;

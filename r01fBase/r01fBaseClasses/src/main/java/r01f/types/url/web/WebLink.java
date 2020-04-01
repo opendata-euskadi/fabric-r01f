@@ -84,7 +84,7 @@ public class WebLink
 			 null);	// no presentation data
 	}
 	public WebLink(final Url url,
-					final WebLinkText text) {
+				   final WebLinkText text) {
 		this(url,
 			 text,
 			 null);
@@ -95,6 +95,21 @@ public class WebLink
 		_url = url;
 		_textData = text;
 		_presentation = presentation;
+	}
+	public static WebLink of(final Url url) {
+		return new WebLink(url);
+	}
+	public static WebLink of(final Url url,
+							 final WebLinkText text) {
+		return new WebLink(url,
+						   text);
+	}
+	public static WebLink of(final Url url,
+				   			 final WebLinkText text,
+				   			 final WebLinkPresentationData presentation) {
+		return new WebLink(url,
+						   text,
+						   presentation);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	FACETS
@@ -134,6 +149,13 @@ public class WebLink
 	public void setTitle(final String title) {
 		if (_textData == null) _textData = new WebLinkText();
 		_textData.setTitle(title);
+	}
+	public String getDescription() {
+		return _textData != null ? _textData.getDescription() : null;
+	}
+	public void setDescription(final String description) {
+		if (_textData == null) _textData = new WebLinkText();
+		_textData.setDescription(description);
 	}
 	@Override
 	public Tagged<String> asTaggeable() {

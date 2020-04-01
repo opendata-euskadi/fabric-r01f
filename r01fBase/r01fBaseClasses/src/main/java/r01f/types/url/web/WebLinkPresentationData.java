@@ -132,6 +132,7 @@ public class WebLinkPresentationData
 	}
 	public WebLinkPresentationData(final WebLinkPresentationData other) {
 		_id = other.getId() != null ? HtmlElementId.forId(other.getId().asString()) : null;
+		_openTarget = other.getOpenTarget() != null ? WebLinkOpenTarget.forId(other.getOpenTarget().getId()) : null;
 		_targetResourceData = other.getTargetResourceData() != null ? new WebLinkTargetResourceData(other.getTargetResourceData()) : null;
 		_accessKey = other.getAccessKey() != null ? new WebLinkAccessKey(other.getAccessKey()) : null;
 		_newWindowOpeningMode = other.getNewWindowOpeningMode() != null ? new WebLinkWindowOpeningMode(other.getNewWindowOpeningMode()) : null;
@@ -252,5 +253,14 @@ public class WebLinkPresentationData
 		if (_mediaQueries == null) _mediaQueries = Lists.newArrayList();
 		_mediaQueries.add(qry);
 		return this;
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	
+/////////////////////////////////////////////////////////////////////////////////////////
+	public boolean isOpeningInNewWindow() {
+		return (_openTarget != null && _openTarget.isNOT(WebLinkOpenTarget.SELF))
+				||
+			   _newWindowOpeningMode != null;
+				
 	}
 }

@@ -16,6 +16,7 @@ import r01f.types.html.HtmlElementId;
 import r01f.types.html.HtmlElementJSEvent;
 import r01f.types.url.Url;
 import r01f.types.url.web.WebLink;
+import r01f.types.url.web.WebLinkOpenTarget;
 import r01f.types.url.web.WebLinkPresentationData;
 import r01f.types.url.web.WebLinkTargetResourceData;
 import r01f.types.url.web.WebLinkText;
@@ -105,6 +106,48 @@ public abstract class HtmlLinkRenderer {
 											   		_link.getUrl().asStringNotUrlEncodingQueryStringParamsValues(),
 											   		_renderPresentationData(_link.getText() != null ? _link.getTitle() : null,
 											   								_link.getPresentation()),
+											   		_link.getText() != null ? _link.getText() 
+											   								: _link.getUrl() != null ? _link.getUrl() : "");
+			}
+			return outLink;
+		}
+		public String renderForceProtocol() {
+			String outLink = "<a href=''></a>";
+			if (_link != null) {
+				String urlStr = _link.getUrl().asStringNotUrlEncodingQueryStringParamsValues();
+				if (_link.getUrl().getProtocol() == null) urlStr = "http://" + urlStr;
+				outLink = Strings.customized("<a href='{}' {}>{}</a>",
+											   		urlStr,
+											   		_renderPresentationData(_link.getText() != null ? _link.getTitle() : null,
+											   								_link.getPresentation()),
+											   		_link.getText() != null ? _link.getText() 
+											   								: _link.getUrl() != null ? _link.getUrl() : "");
+			}
+			return outLink;
+		}
+		public String renderForceNewWindow() {
+			String outLink = "<a href=''></a>";
+			if (_link != null) {
+				outLink = Strings.customized("<a href='{}' {}>{}</a>",
+											   		_link.getUrl().asStringNotUrlEncodingQueryStringParamsValues(),
+											   		_renderPresentationData(_link.getText() != null ? _link.getTitle() : null,
+											   								WebLinkPresentationData.create()
+											   													   .withOpenTarget(WebLinkOpenTarget.BLANK)),		// force new win
+											   		_link.getText() != null ? _link.getText() 
+											   								: _link.getUrl() != null ? _link.getUrl() : "");
+			}
+			return outLink;
+		}
+		public String renderForceProtocolAndNewWindow() {
+			String outLink = "<a href=''></a>";
+			if (_link != null) {
+				String urlStr = _link.getUrl().asStringNotUrlEncodingQueryStringParamsValues();
+				if (_link.getUrl().getProtocol() == null) urlStr = "http://" + urlStr;
+				outLink = Strings.customized("<a href='{}' {}>{}</a>",
+											   		urlStr,
+											   		_renderPresentationData(_link.getText() != null ? _link.getTitle() : null,
+											   								WebLinkPresentationData.create()
+											   													   .withOpenTarget(WebLinkOpenTarget.BLANK)),		// force new win
 											   		_link.getText() != null ? _link.getText() 
 											   								: _link.getUrl() != null ? _link.getUrl() : "");
 			}
