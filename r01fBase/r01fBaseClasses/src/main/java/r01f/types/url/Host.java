@@ -78,4 +78,13 @@ public class Host
 									  : new UrlComponents(null,Host.strict(this.getId()),0,		// protocol / host / port
 											  			  null,null,null);						// path / query string / anchor
 	}
+	/**
+	 * Returns the TLD (top level domain)
+	 * @return
+	 */
+	public String getTLD() {
+		if (!this.getId().contains(".")) return null;
+		int lastDotPos = this.getId().lastIndexOf('.');
+		return this.getId().substring(lastDotPos+1);
+	}
 }
