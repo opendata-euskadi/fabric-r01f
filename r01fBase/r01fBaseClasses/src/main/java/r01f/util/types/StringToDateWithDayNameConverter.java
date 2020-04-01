@@ -16,7 +16,7 @@ import r01f.util.types.locale.Languages;
  * 	convertToText:Miércoles, 1 de abril
  * 	convertToText:Apirilaren 1, Osteguna
  *
- * StringToDateWithDayNameConverter.convertToDayOfWeek(Dates.now(), Languages.SPANISH
+ * StringToDateWithDayNameConverter.convertToDayOfWeek(Dates.now(), Languages.SPANISH);
  *  convertToDayOfWeek:Miércoles 1
  *  convertToDayOfWeek:Osteguna 1
  *
