@@ -46,7 +46,7 @@ public class UrlCollection<U extends HasUrl & HasID<?> & HasLanguage & HasTaggea
 		if (CollectionUtils.hasData(items)) this.addAll(items);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  METHODS
+//  MUTATOR METHODS
 /////////////////////////////////////////////////////////////////////////////////////////
 	@SuppressWarnings("unchecked")
 	public UrlCollection<U> addUrls(final U... urls) {
@@ -68,6 +68,28 @@ public class UrlCollection<U extends HasUrl & HasID<?> & HasLanguage & HasTaggea
 		// Effectively remove the items
 		boolean removed = this.removeAll(itemsToBeRemoved);
 		return removed;
+	}
+	/**
+	 * Removes all urls with the given language and returns the replaced urls
+	 * @param urls the new urls
+	 * @return the replaced urls
+	 */
+	public Collection<U> replaceUrlsInLang(final Language lang,
+										   final Collection<U> urls) {
+		// get the EXISTING urls in the given lang
+		Collection<U> outReplacedUrls = this.getUrlsIn(lang);
+		// remove them all
+		for (U replacedUrl : outReplacedUrls) {
+			this.remove(replacedUrl);
+		}
+		// now ADD the new urls
+		for (U url : urls) {
+			if (url.getLanguage() == null || url.getLanguage().isNOT(lang)) throw new IllegalArgumentException(url.getUrl() + " is supposed to be in " + lang + " BUT it's " + url.getLanguage());
+			this.add(url);
+		}
+		// return the replaced urls
+		return outReplacedUrls;
+		
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  GET Urls by tag
