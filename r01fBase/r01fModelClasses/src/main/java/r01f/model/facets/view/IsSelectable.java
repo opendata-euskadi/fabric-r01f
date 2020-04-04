@@ -1,6 +1,6 @@
 package r01f.model.facets.view;
 
-import r01f.model.facets.ModelObjectFacet;
+import r01f.facets.Facet;
 
 
 
@@ -9,7 +9,7 @@ import r01f.model.facets.ModelObjectFacet;
  * It's normally used as the model part of some TreeView
  */
 public interface IsSelectable
-	     extends ModelObjectFacet {
+	     extends Facet {
 	/**
 	 * @return true if it's selected either because it's a primary selection or because it's a secondary selection
 	 */

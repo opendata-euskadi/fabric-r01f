@@ -1,12 +1,12 @@
 package r01f.model.facets.view;
 
-import r01f.model.facets.ModelObjectFacet;
+import r01f.facets.Facet;
 
 /**
  * Models an object that has a caption
  */
 public interface HasCaption 
-		 extends ModelObjectFacet {
+		 extends Facet {
 	/**
 	 * @return the caption
 	 */
