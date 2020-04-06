@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.Reader;
 import java.util.Collection;
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 import r01f.patterns.Memoized;
 import r01f.patterns.Supplier;
@@ -19,7 +19,7 @@ public abstract class TLDs {
 	private static final Memoized<Collection<String>> TLDS = Memoized.using(new Supplier<Collection<String>>() {
 																				@Override
 																				public Collection<String> supply() {
-																					Collection<String> outList = Lists.newArrayListWithExpectedSize(1370);
+																					Collection<String> outList = Sets.newLinkedHashSetWithExpectedSize(1370);
 																					Reader r = null;
 																					BufferedReader br = null;
 																					try {
