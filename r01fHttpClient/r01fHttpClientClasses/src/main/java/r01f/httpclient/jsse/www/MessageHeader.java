@@ -401,7 +401,7 @@ class MessageHeader {
             int c;
             boolean inKey = firstc > ' ';
             s[len++] = (char) firstc;
-    parseloop:{
+    parseloop: {
                 while ((c = is.read()) >= 0) {
                     switch (c) {
                       case ':':

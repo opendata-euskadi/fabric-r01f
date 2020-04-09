@@ -282,7 +282,7 @@ public class HostAddress implements Cloneable {
      */
     public static HostAddress parse(DerInputStream data, byte explicitTag,
                                     boolean optional)
-        throws Asn1Exception, IOException{
+        throws Asn1Exception, IOException {
         if ((optional) &&
             (((byte)data.peekByte() & (byte)0x1F) != explicitTag)) {
             return null;

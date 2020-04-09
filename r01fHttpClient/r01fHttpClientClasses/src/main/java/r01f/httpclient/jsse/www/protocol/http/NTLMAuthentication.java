@@ -433,7 +433,7 @@ class NTLMAuthentication extends AuthenticationInfo {
 }
 
 
-class B64Encoder extends Base64{
+class B64Encoder extends Base64 {
     /* to force it to to the entire encoding in one line */
     protected int bytesPerLine () {
         return 1024;

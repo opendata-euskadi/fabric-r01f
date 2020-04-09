@@ -58,7 +58,7 @@ import lombok.experimental.Accessors;
  *  @Accessors(prefix="_")
  *	@RequiredArgsConstructor
  *		  enum TestExceptionSubTypes 
- *  implements EnrichedThrowableSubType<TestExceptionSubTypes>{
+ *  implements EnrichedThrowableSubType<TestExceptionSubTypes> {
  *			NOT_DELETE(1),
  *			VALIDATION(2);
  *

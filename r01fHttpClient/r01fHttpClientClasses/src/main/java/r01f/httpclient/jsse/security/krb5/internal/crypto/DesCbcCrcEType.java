@@ -80,7 +80,7 @@ public class DesCbcCrcEType extends DesCbcEType {
      * @written by Yanni Zhang, Dec 10, 1999
      */
     public byte[] decrypt(byte[] cipher, byte[] key, int usage)
-         throws KrbApErrException, KrbCryptoException{
+         throws KrbApErrException, KrbCryptoException {
         return decrypt(cipher, key, key, usage);
     }
 

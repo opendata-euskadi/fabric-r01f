@@ -19,7 +19,7 @@ import r01f.types.CanBeRepresentedAsString;
 @NoArgsConstructor @AllArgsConstructor
 public class PhoneExtension
   implements CanBeRepresentedAsString,
-   		   	 Serializable{
+   		   	 Serializable {
 	private static final long serialVersionUID = 4252111531973738528L;
 /////////////////////////////////////////////////////////////////////////////////////////
 //  FIELDS

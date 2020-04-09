@@ -73,7 +73,7 @@ public final class RsaMd5CksumType extends CksumType {
      * @modified by Yanni Zhang, 12/08/99.
      */
 
-    public byte[] calculateChecksum(byte[] data, int size) throws KrbCryptoException{
+    public byte[] calculateChecksum(byte[] data, int size) throws KrbCryptoException {
         MessageDigest md5;
         byte[] result = null;
         try {
