@@ -276,7 +276,6 @@ public abstract class Dates {
 	 */
 	@GwtIncompatible
 	public static String format(final Date date,final String fmt) {
-
 		return Dates.format(date,fmt,Locale.getDefault());
 	}
 	/**

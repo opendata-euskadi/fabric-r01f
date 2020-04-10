@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import r01f.locale.Language;
 import r01f.types.Range;
 
 /**
@@ -80,6 +81,20 @@ public abstract class Ranges {
 		}
 		public DateRange(final Range<Date> range) {
 			_range = range;
+		}
+		public String toStringIn(final Language lang) {
+			return DateRange.toStringInLang(_range,
+											lang);
+		}
+		public static String toStringInLang(final Range<Date> range,
+											final Language lang) {
+			return Strings.customized("{}..{}",
+									  range.hasLowerBound() ? Dates.formatterFor(lang)
+											  						.formatDate(range.lowerEndpoint())
+											  				 : "",
+									  range.hasUpperBound() ? Dates.formatterFor(lang)
+											  						.formatDate(range.upperEndpoint())
+											  				 : "");			
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
