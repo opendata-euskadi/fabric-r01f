@@ -376,6 +376,21 @@ public class Strings {
 		return StringUtils.rightPad(str,size,character);
 	}
 	/**
+	 * Trims the given string so the returned string will be at least 
+	 * of "max" length
+	 * @param str
+	 * @param max
+	 * @return
+	 */
+	public static String trimToLength(final String str,final int max) {
+		if (max <= 0) throw new IllegalArgumentException("trim length MUST be >= 0!");
+		if (str == null) return null;
+		if (str.length() == 0) return str;
+		int currLength = str.length();
+		int trimLength = currLength <= max ? currLength : max;
+		return str.substring(0,trimLength);
+	}
+	/**
 	 * Replaces accentuated chars with their no-accentuated equivalents
 	 * @param str
 	 */
