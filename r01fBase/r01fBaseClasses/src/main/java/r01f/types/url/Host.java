@@ -57,6 +57,9 @@ public class Host
 	public static Host valueOf(final String host) {
 		return new Host(host);
 	}
+	public static Host forId(final String host) {
+		return new Host(host);
+	}
 	public static Host localhost() {
 		return new Host("localhost");
 	}
