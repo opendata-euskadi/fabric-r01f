@@ -14,14 +14,14 @@ The idea is:
 ```
 /{dev_home} = d:\develop in windows or /develop in linux
 	+ develop
-		+ instances
+		+ eclipse
 			+ [instance-name]
+			+ ...
+		+ eclipse_workspaces
+			+ master-[instance-name]
 			+ ...
 		+ maven_libs
 		+ local_libs
-		+ workspaces
-			+ master-[instance-name]
-			+ ...
 		+ projects
 		+ DB
 			+ ddl_scripts
@@ -33,7 +33,7 @@ a) Download the [eclipse IDE for Java Developers] from http://www.eclipse.org/do
 
 > BEWARE!! do NOT download the [eclipse IDE for Java EE Developers]
 
-b) Extract the contents of the [eclipse] folder inside the previously downloaded eclipse ZIP to the `/{dev_home}/instances/[instance-name]`
+b) Extract the contents of the [eclipse] folder inside the previously downloaded eclipse ZIP to the `/{dev_home}/eclipse/[instance-name]`
 
 c) Copy the `/{dev_home}/[instance-name]/eclipse.ini` to eclipse.ini.original
 
@@ -98,7 +98,7 @@ d) Edit the `/{dev_home}/[instance-name]/eclipse.ini` file and set this content:
 ## [3]: Launch Eclipse
 
 Launch eclipse.
-When asked for the `[workspace]` location select: `/{dev_home}/workspaces/master_[instance-name]` (do **NOT** set use this workspace as default: don't ask again)
+When asked for the `[workspace]` location select: `/{dev_home}/eclipse_workspaces/master_[instance-name]` (do **NOT** set use this workspace as default: don't ask again)
 > **BEWARE** this workspace location will later act as a _template_ pre-configured workspace that will be copied when creating a **new** workspace
 
 
@@ -221,9 +221,9 @@ This excludes .class files from synchronized files.
 
 ## [7]: Create a workspace for a project
 
-Just copy the _template_ workspace folder: `/{dev_home}/workspaces/master_[instance-name]` with a new name id: `/{dev_home}/workspaces/my_project`
+Just copy the _template_ workspace folder: `/{dev_home}/eclipse_workspaces/master_[instance-name]` with a new name id: `/{dev_home}/eclipse_workspaces/my_project`
 
-... now simply launch eclipse from  `/{dev_home}/instances/[instance-name]` as usual and when asked, select the workspace folder
+... now simply launch eclipse from  `/{dev_home}/eclipse/[instance-name]` as usual and when asked, select the workspace folder
 
 
 ## [8]: BEWARE antivirus! > https://www.genuitec.com/stop-slow-eclipse-myeclipse-startups/
