@@ -1,7 +1,7 @@
 [PRE]
 ============================================================================
-[1] - Create a DEVELOP folder ie: c:\develop  (now on this folder is refered to as {develop}
-	  NOTE that the final folder structrue upon completing the installation should be:
+[1] - Create a DEVELOP folder. ie: c:\develop  (now on this folder is refered to as {develop}
+	  NOTE: the final folder structure upon completing the installation should be:
 
 
 			+ {develop}
