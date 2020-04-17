@@ -35,9 +35,9 @@ a) Download the [eclipse IDE for Java Developers] from http://www.eclipse.org/do
 
 b) Extract the contents of the [eclipse] folder inside the previously downloaded eclipse ZIP to the `/{dev_home}/eclipse/[instance-name]`
 
-c) Copy the `/{dev_home}/[instance-name]/eclipse.ini` to eclipse.ini.original
+c) Copy the `/{dev_home}/eclipse/[instance-name]/eclipse.ini` to eclipse.ini.original
 
-d) Edit the `/{dev_home}/[instance-name]/eclipse.ini` file and set this content:
+d) Edit the `/{dev_home}/eclipse/[instance-name]/eclipse.ini` file and set this content:
 
 > BEWARE!!!
 
