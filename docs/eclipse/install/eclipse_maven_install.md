@@ -173,7 +173,7 @@ b) **[Maven]**
 
 > `[Maven > Archetypes]` > Add a NEW remote catalog at: http://repo1.maven.org/maven2/archetype-catalog.xml
 
-> `[Maven > User Settings] > Global Settings`: {dev_home}/projects/fabric/r01f/docs/eclipse/maven/settings_{env}.xml
+> `[Maven > User Settings] > Global Settings`: {dev_home}/projects/fabric-r01f/docs/eclipse/maven/settings_{env}.xml
 
 > `[Maven > User Settings] > Error/Warnings > Plugin execution not covered by lifecycle configuration`: change to WARNING!
 
@@ -196,7 +196,7 @@ This behavior can be disabled at `[Team] > [Git] > [Projects]` and **deselect** 
 
 c) **[Java]**
 
-> Import `[compiler preferences]`: `[File] > [Import] > [Preferences]` browse filesystem and select `/{dev_home}/projects/fabric/r01f/docs/eclipse/preferences/pci_compiler_preferences.epf`
+> Import `[compiler preferences]`: `[File] > [Import] > [Preferences]` browse filesystem and select `/{dev_home}/projects/fabric-r01f/docs/eclipse/preferences/pci_compiler_preferences.epf`
 
 > `[Java] > [Editor] > [Templates]` add a NEW **Java** template named **_sep** with the following content
 
