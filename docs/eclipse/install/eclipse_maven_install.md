@@ -182,7 +182,7 @@ By default, EGit automatically adds resources marked as "Derived" to .gitignore
 This behavior can be disabled at `[Team] > [Git] > [Projects]` and **deselect** _"Automatically ignore derived resources by adding them to .gitignore"_
 
 *BEWARE*:
-* Ensure that `[Local Repository] (from merged user and global settings)` is `{dev_home}/maven_libs`
+* Ensure that `[Maven > User Settings][Local Repository] (from merged user and global settings)` is `{dev_home}/maven_libs`
 
 * Some artifacts are NOT published at MAVEN CENTRAL; this is the case of javax.ejb / javax.servlet-api or javax.jms. The only workarround is to put all those artifacts at `{dev_home}/maven_libs/` manually (See fabric\r01f\docs\maven_local_libs\read.me file)
 
