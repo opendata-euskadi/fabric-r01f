@@ -175,7 +175,7 @@ b) **[Maven]**
 
 > `[Maven > User Settings] > Global Settings`: {dev_home}/projects/fabric-r01f/docs/eclipse/maven/settings_{env}.xml
 
-> `[Maven > User Settings] > Error/Warnings > Plugin execution not covered by lifecycle configuration`: change to WARNING!
+> `[Maven > Error/Warnings] > Plugin execution not covered by lifecycle configuration`: change to WARNING!
 
 By default, EGit automatically adds resources marked as "Derived" to .gitignore
 ... if `[Maven > Hide folders of physically nested modules` is **enabled** (true), eclipse adds nested modules' folders to .gitignore
