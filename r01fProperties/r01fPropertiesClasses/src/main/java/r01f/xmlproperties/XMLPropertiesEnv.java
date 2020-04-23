@@ -89,6 +89,18 @@ abstract class XMLPropertiesEnv {
 	}
 	/**
 	 * Used when XMLProperties are loaded inside a docker instance
+	 * The docker instance has a properties file like:
+	 * <pre>
+	 * 		r01Env.properties > R01Env=dev
+	 * 							R01Home=/r01
+	 * 							...
+	 * </pre>
+	 * or
+	 * <pre>
+	 * 		R01_ENV.properties > R01-ENV=dev
+	 * 							 R01Home=/r01
+	 * 							 ...
+	 * </pre>
 	 * @return
 	 */
 	private static String _readEnvPropFrom() {
