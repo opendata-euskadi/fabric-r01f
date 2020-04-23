@@ -87,6 +87,10 @@ abstract class XMLPropertiesEnv {
 		  if (Strings.isNullOrEmpty(envProp)) envProp = propertiesAsMap.get("env");
 		  return envProp;
 	}
+	/**
+	 * Used when XMLProperties are loaded inside a docker instance
+	 * @return
+	 */
 	private static String _readEnvPropFrom() {
 	  	  String envProp = null;
 		  envProp = _readEnvPropFrom("R01ENV");
