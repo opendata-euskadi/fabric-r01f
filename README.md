@@ -22,6 +22,16 @@
 
 [Tomcat hotswap](docs/java/java-hotswap.md)
 
-# Problem resolution
+## [AspectJ Projects] problem resolution in eclipse
 
-[AspectJ Projects] If not compile "r01fDirtyTrackAspectClasses" project, you must select project >> Configure >> Convert to AspectJ
+If any of "r01fXXXAspectClasses" project does NOT compiles:
+
+1. Ensure the `/src/main/aspect` folder is detected as a **source folder** by eclipse; if NOT just select the folder and add it as _source folder_
+2. Ensure the project is detected by eclipse as an [AspectJ] project; if NOT just select project and `>> Configure >> Convert to AspectJ`
+3. Usually after a full rebuild of the workspace projects, [aspectJ] projects do NOT compile: just select each [aspectj] project individually and clean (_rebuild_)
+
+## R01F properties system
+
+[How to use r01f XML properties](docs/r01f/r01f.properties.md)
+
+
