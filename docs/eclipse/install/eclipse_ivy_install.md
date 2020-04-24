@@ -239,3 +239,35 @@ b) **Local User Libraries**
 Just copy the _template_ workspace folde: `/{dev_home}/eclipse/workspaces/master_[instance_name]` with a new name id: `/{dev_home}/eclipse/workspaces/my_project`
 
 ... now simply launch eclipse from  `/{dev_home}/eclipse/instances/[instance_name]` as usual and when asked, select the workspace folder
+
+## [8]: Import SVN repos
+
+Import preferences from [fabric/r01fEjie]/docs/eclipse/preferences
+
+## [9]: Import SVN projects
+
+    [r01fb]
+        + code
+            + trunk
+                -- import ALL projects to {dev_home}/projects/legacy/r01f
+        + config
+            + trunk
+                + r01fb
+                    -- import ALL projects to {dev_home}/projects/legacy/r01f
+        + docs
+            + trunk
+                + r01fb
+                    -- import ALL projects to {dev_home}/projects/legacy/r01f
+                    
+## [10]: Ivy local libs
+
+Since some internal deps are NOT published in public repos they MUST be copied manually into `{dev_home}/ivy-libs/local` from `{dev_home}/projects/legacy/r01f/r01fDocs/ivy/ivy-local.7z`
+
+## [11]: Import eclipse workging-set
+
+AnyEdit tools have a feature that allows importing eclipse's [workingsets]
+    [preferences] > [import] > [working-sets]  and select file at `{dev_home}/projects/legacy/r01f/r01fDocs/eclipse/working-sets
+    
+
+
+
