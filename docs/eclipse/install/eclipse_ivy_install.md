@@ -266,6 +266,7 @@ Since some internal deps are NOT published in public repos they MUST be copied m
 ## [11]: Import eclipse workging-set
 
 AnyEdit tools have a feature that allows importing eclipse's [workingsets]
+
     [preferences] > [import] > [working-sets]  and select file at `{dev_home}/projects/legacy/r01f/r01fDocs/eclipse/working-sets`
     
 
