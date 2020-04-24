@@ -143,6 +143,7 @@ c) **Eclipse WTP tools** (from eclipse update site http://download.eclipse.org/r
 			[X] JST Server Adapters
 			[X] JST Server Adapters Extensions
 			[X] JST Server UI
+			[x] Wild Web Developer
 			[X] WST Server Adapters
 			
 		General Purpouse Tools
