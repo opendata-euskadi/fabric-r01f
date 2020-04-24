@@ -77,7 +77,10 @@ d) Edit the `/{dev_home}/eclipse/[instance-name]/eclipse.ini` file and set this 
 	-vmargs
 	--add-modules=ALL-SYSTEM
 
-
+    # by default eclipse stores some plugin config at {USER_HOME}/.eclipse (ie c:/users/{user}/.eclipse in windows)
+    # this vm argument CHANGES the location of these eclipse config
+    -Duser.home={dev_home}/eclipse/.eclipse-legacy
+    
 	# see [Runtime Options] http://help.eclipse.org/mars/topic/org.eclipse.platform.doc.isv/reference/misc/index.html
 	# see http://stackoverflow.com/questions/316265/how-can-you-speed-up-eclipse/316535#316535
 	-Dosgi.requiredJavaVersion=1.8
