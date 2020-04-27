@@ -154,7 +154,7 @@ If you have compatibility problems uninstall "Eclipse XML Editors and Tools" che
 
 d) **[AnyEdit Tools]** either using the [eclipse marketplace] or from the update site at: http://andrei.gmxhome.de/eclipse/
 
-		[X] Eclipse 3.8 - 4.11 plugins
+		[X] Eclipse 4.10-4.14 plugins
 			[X] AnyEditTools
 
 e) Optional ** Genuitec DevStyle** (darkest dark theme: https://www.genuitec.com/products/devstyle/)
