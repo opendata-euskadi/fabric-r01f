@@ -110,7 +110,7 @@ When asked for the `[workspace]` location select: `/{dev_home}/eclipse_workspace
 
 a) **AJDT: AspectJ Development Tools** > 	http://download.eclipse.org/tools/ajdt/410/dev/update
 
-b) **Eclipse GIT plugins** (from eclipse update site) (install Git Client https://git-scm.com/download/gui/windows)
+b) **Eclipse GIT plugins** (from eclipse update site https://download.eclipse.org/egit/updates) (install Git Client https://git-scm.com/download/gui/windows)
 
 ```
         Collaboration
@@ -138,9 +138,9 @@ c) **Eclipse WTP tools** (from eclipse update site http://download.eclipse.org/r
 			[X] JavaScript Development Tools
 			[X] JavaScript Development Tools Chromium/V8 Remote Debugger
 			[X] m2e connector for mavenarchiver pom properties
-			[X] m2e-wtp JAX-RS project configurator for Eclipse WTP.
-			[X] m2e-wtp JPA project configurator for Eclipse WTP.
-			[X] m2e-wtp project configurators for Eclipse WTP.
+			[X] m2e-wtp - JAX-RS configurator for WTP.
+			[X] m2e-wtp - JPA configurator for WTP.
+			[X] m2e-wtp - Maven Integration for WTP.
 			[X] JST Server Adapters
 			[X] JST Server Adapters Extensions
 			[X] JST Server UI
@@ -154,7 +154,7 @@ If you have compatibility problems uninstall "Eclipse XML Editors and Tools" che
 
 d) **[AnyEdit Tools]** either using the [eclipse marketplace] or from the update site at: http://andrei.gmxhome.de/eclipse/
 
-		[X] Eclipse 3.8 - 4.11 plugins
+		[X] Eclipse 4.10-4.14 plugins
 			[X] AnyEditTools
 
 e) Optional ** Genuitec DevStyle** (darkest dark theme: https://www.genuitec.com/products/devstyle/)
