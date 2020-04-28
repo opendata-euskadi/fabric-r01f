@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workingSets>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1467675698702_8" label="X47BCommon" name="X47BCommon">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/x47bDocumentation" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/x47bConfig" type="4"/>
+<item elementID="=x47bWebProfileClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/x47bEAR" type="4"/>
+<item elementID="=x47bClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSet>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1467675655034_7" label="X47BInteractionTyping" name="X47BInteractionTyping">
+<item elementID="=x47bInteractionTypingRESTServicesWar" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=x47bInteractionTypingClientAPIClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=x47bInteractionTypingTest" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=x47bInteractionTypingServicesClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=x47bInteractionTypingUIWar" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=x47bInteractionTypingClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSet>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1467675731604_10" label="X47BPanicButton" name="X47BPanicButton">
+<item elementID="=x47bPanicButtonServicesClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=x47bPanicButtonClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=x47bPanicButtonUIWar" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=x47bPanicButtonRESTServicesWar" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=x47bPanicButtonTest" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=x47bPanicButtonClientAPIClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSet>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1467675752124_11" label="X47BZuzenean" name="X47BZuzenean">
+<item elementID="=x47bBackEndClientAPIClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=x47bFrontEndGWTServicesAPIClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=x47bFrontEndGWTUIClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=x47bBackEndRESTServicesWar" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=x47bFrontEndGWTServicesWar" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=x47bSharedClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/x47bEtxebideConfig" type="4"/>
+</workingSet>
+</workingSets>
