@@ -96,11 +96,4 @@ public class CacheEntry<O,M>
 		return _lastUpdatedAt != null ? lastUpdatedAt.after(_lastUpdatedAt)
 									  : true;
 	}
-	public CacheEntry<O,M> reloadIfLastUpdatedAt(final Date lastUpdatedAt) {
-		if (needsReloadIfLastUpdatedAt(lastUpdatedAt)) {
-			return new CacheEntry<O,M>(_oid,_object,
-										 lastUpdatedAt);
-		}
-		return this;
-	}
 }
