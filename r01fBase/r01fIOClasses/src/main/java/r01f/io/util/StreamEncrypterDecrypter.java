@@ -2,7 +2,6 @@ package r01f.io.util;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.security.SecureRandom;
 import java.security.spec.KeySpec;
 
 import javax.crypto.Cipher;
