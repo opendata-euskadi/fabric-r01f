@@ -58,6 +58,14 @@ public class Path
 //	FACTORIES
 ///////////////////////////////////////////////////////////////////////////////
 	/**
+	 * Factory fromId {@link String}
+	 * @param id
+	 * @return
+	 */
+	public static Path forId(final String id) {
+		return Path.from(id);
+	}
+	/**
 	 * Factory from {@link String}
 	 * @param path
 	 * @return

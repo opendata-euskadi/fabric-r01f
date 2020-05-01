@@ -78,6 +78,9 @@ public abstract class ServiceIDs {
 		public static ClientApiAppCode valueOf(final String id) {
 			return ClientApiAppCode.forId(id);
 		}
+		public static ClientApiAppCode named(final String id) {
+			return ClientApiAppCode.forId(id);
+		}
 		public AppCode asAppCode() {
 			return AppCode.forId(this.getId());
 		}
@@ -106,6 +109,9 @@ public abstract class ServiceIDs {
 		public static CoreAppCode valueOf(final String id) {
 			return CoreAppCode.forId(id);
 		}
+		public static CoreAppCode named(final String id) {
+			return CoreAppCode.forId(id);
+		}
 		public AppCode asAppCode() {
 			return AppCode.forId(this.getId());
 		}
@@ -129,6 +135,9 @@ public abstract class ServiceIDs {
 			return new CoreModule(id);
 		}
 		public static CoreModule valueOf(final String id) {
+			return CoreModule.forId(id);
+		}
+		public static CoreModule named(final String id) {
 			return CoreModule.forId(id);
 		}
 		public AppComponent asAppComponent() {

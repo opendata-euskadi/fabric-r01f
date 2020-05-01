@@ -5,27 +5,34 @@
 Every project will have it's own logback.xml file like:
 	<configuration debug="false">
 
-		<property name="appName" value="THE_APP_NAME" />
-		<jmxConfigurator contextName="THE_APP_NAME" />
+		<property name="appName" value="{appCode}" />
+		<jmxConfigurator contextName="{appCode}" />
 
 		Global
 		<include resource="r01f/r01fLogbackGlobal.xml"/>
 		<include resource="r01f/r01fLogback.xml"/>
 
 		Specific
-		<include resource="r01t/r01tLogback.xml"/>
+		<include resource="{appCode}/{appCode}Logback.xml"/>
 	</configuration>
 
 IMPORTANT: LOG LOCATION
 =====================================================
 Logs location is determined using an ENVIRONMNET variable named R01_HOME
-This environment variable is usually set at JVM env property like:
-	-DR01_HOME=/data/r01
+This environment variable can be set:
+
+[1] - At a JVM env property like:
+		-DR01_HOME=/data/r01
+
+[2] - Using an environment-dependent file named {appCode}LogEnvironment.xml 
+	  included in the main logback.xml file that contain env-dependent config
+			<included>
+				<property name="R01_HOME" value="c:/develop/log" />	
+			</included>
+		
 If the R01_HOME environment var is NOT found, logs are located at /log folder
 
-
 This GLOBAL logback.xml is NOT ENVIRONMENT DEPENDENT
-In order to set environment-dependent values, the included r01fEnvironment file is used
 -->
 <included>
 	<!-- To indicate that any configuration changes to occur is displayed on console -->

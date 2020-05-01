@@ -75,7 +75,7 @@ public class Languages {
 									.add(Language.BASQUE,"Alemaniera")
 									.add(Language.ENGLISH,"Deutch"));
 		LANGUAGE_NAMES.put(Language.FRENCH,
-						   new LanguageTextsMapBacked(LangTextNotFoundBehabior.THROW_EXCEPTION)
+						   new LanguageTextsMapBacked(LangTextNotFoundBehabior.RETURN_NULL)
 									.add(Language.SPANISH,"Francés")
 									.add(Language.BASQUE,"Frantsesa")
 									.add(Language.ENGLISH,"French"));
