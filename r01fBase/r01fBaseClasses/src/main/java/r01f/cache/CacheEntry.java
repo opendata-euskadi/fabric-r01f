@@ -96,4 +96,20 @@ public class CacheEntry<O,M>
 		return _lastUpdatedAt != null ? lastUpdatedAt.after(_lastUpdatedAt)
 									  : true;
 	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	EQUALS & HASHCODE
+/////////////////////////////////////////////////////////////////////////////////////////
+	@Override @SuppressWarnings("unchecked")
+	public boolean equals(final Object obj) {
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (!(obj instanceof CacheEntry)) return false;
+		
+		CacheEntry<O,M> otherEntry = (CacheEntry<O,M>)obj;
+		return this.getOid().equals(otherEntry.getOid());
+	}
+	@Override
+	public int hashCode() {
+		return _oid.hashCode();
+	}
 }
