@@ -278,6 +278,18 @@ public abstract class Dates {
 	public static String format(final Date date,final String fmt) {
 		return Dates.format(date,fmt,Locale.getDefault());
 	}
+	@GwtIncompatible
+	public static String format(final Range<Date> dateRange,final String fmt) {
+		if (dateRange == null) return ".. - ..";
+		return Strings.customized("{} - {}",
+								  dateRange.hasLowerBound() ? Dates.format(dateRange.lowerEndpoint(),fmt) : "..",
+								  dateRange.hasUpperBound() ? Dates.format(dateRange.upperEndpoint(),fmt) : "..");
+	}
+	@GwtIncompatible
+	public static String format(final r01f.types.Range<Date> dateRange,final String fmt) {
+		return Dates.format(dateRange != null ? dateRange.asGuavaRange() : null,
+							fmt);
+	}
 	/**
 	 * Formats a milis given date
 	 * @param milis
@@ -405,6 +417,13 @@ public abstract class Dates {
 		public String formatDate(final Date date) {
 			return Dates.format(date,
 								_dateFormat);
+		}
+		public String formatDateRange(final Range<Date> dateRange) {
+			return Dates.format(dateRange,
+								_dateFormat);
+		}
+		public String formatDateRange(final r01f.types.Range<Date> dateRange) {
+			return this.formatDateRange(dateRange != null ? dateRange.asGuavaRange() : null);
 		}
 		public String formatDateWithTimeToMinutes(final Date date) {
 			return Dates.format(date,
