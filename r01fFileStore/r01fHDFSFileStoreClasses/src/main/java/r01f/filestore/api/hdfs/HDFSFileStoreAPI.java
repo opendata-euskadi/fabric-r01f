@@ -44,7 +44,7 @@ import r01f.util.types.Strings;
  * 	[2] Set at core-site.xml
  * 			<pre class='brush:xml'>
  * 				   <property>
- * 				      <name>fs.defaultFS</name>
+ * 					  <name>fs.defaultFS</name>
  *	   				  <value>file:///</value>
  *				   </property>
  *			</pre>
@@ -75,7 +75,7 @@ import r01f.util.types.Strings;
  *
  * HDFS's directory structure is similar to TeamSite's one:
  * INTERWOVEN: /iwmnt/{serverOid}/{dataStore}/main/{area}/WORKAREA/{workArea}/{tipology}/{contentName}/{documentName}/..........
- * HADOOP:     /r01/content/{serverOid}/{dataStore}/main/{area}/WORKAREA{workArea}/{tipology}/{contentName}/{documentName}/..........
+ * HADOOP:	 /r01/content/{serverOid}/{dataStore}/main/{area}/WORKAREA{workArea}/{tipology}/{contentName}/{documentName}/..........
  *
  * /r01/content/ejld003/euskadiplus/r01_euskadi_cont/wr0ecg1/noticia/20160414_noticia/es_def/index.shtml (contents area)
  * /r01/staging/ejld003/euskadiplus/r01_euskadi_cont/wr0ecg1/noticia/20160414_noticia/es_def/index.shtml (consolidate area)
@@ -113,7 +113,7 @@ public class HDFSFileStoreAPI
 	private r01f.types.Path _fileIdToPath(final FileID fileId) {
 		if (fileId == null) throw new IllegalArgumentException("fileId MUST NOT be null!");
 		if (!(fileId instanceof r01f.types.Path)) throw new IllegalArgumentException(Strings.customized("The {} instance MUST be a {} instance",
-																									    FileID.class,r01f.types.Path.class));
+																										FileID.class,r01f.types.Path.class));
 		return (r01f.types.Path)fileId;
 	}
 	private Path _fileIdToHDFSPath(final FileID fileId) {
@@ -123,14 +123,14 @@ public class HDFSFileStoreAPI
 //  EXISTS
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
-    public boolean existsFile(final FileID fileId) throws IOException {
+	public boolean existsFile(final FileID fileId) throws IOException {
 		// check
 		_check.checkFileId(fileId);
 
 		// exists?
-    	Path theHDFSFilePath = new Path(_fileIdToPath(fileId).asAbsoluteString());
+		Path theHDFSFilePath = new Path(_fileIdToPath(fileId).asAbsoluteString());
 		return _fs.exists(theHDFSFilePath) && _fs.isFile(theHDFSFilePath);
-    }
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  COPY & RENAME
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -143,12 +143,12 @@ public class HDFSFileStoreAPI
 								   overwrite);
 
 		// copy
-        boolean copyFileStateOK = FileUtil.copy(_fs,_fileIdToHDFSPath(srcFileId),
-        										_fs,_fileIdToHDFSPath(dstFileId),
-        										false, 		// delete source
-        										overwrite,	// overwrite
-        										_conf);
-        return copyFileStateOK;
+		boolean copyFileStateOK = FileUtil.copy(_fs,_fileIdToHDFSPath(srcFileId),
+												_fs,_fileIdToHDFSPath(dstFileId),
+												false, 		// delete source
+												overwrite,	// overwrite
+												_conf);
+		return copyFileStateOK;
 	}
 	@Override
 	public boolean renameFile(final FileID srcFileId,final FileID dstFileId) throws IOException {
@@ -166,12 +166,12 @@ public class HDFSFileStoreAPI
 //  WRITE
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
-    public OutputStream getFileOutputStreamForWriting(final FileID dstFileId,
-    												  final boolean overwrite) throws IOException {
-    	return this.getFileOutputStreamForWriting(dstFileId,
-    											  0,	// start at the beginning of the file
-    											  overwrite);
-    }
+	public OutputStream getFileOutputStreamForWriting(final FileID dstFileId,
+													  final boolean overwrite) throws IOException {
+		return this.getFileOutputStreamForWriting(dstFileId,
+												  0,	// start at the beginning of the file
+												  overwrite);
+	}
 	@Override
 	public OutputStream getFileOutputStreamForWriting(final FileID dstFileId,final long offset,
 													  final boolean overwrite) throws IOException {
@@ -186,30 +186,31 @@ public class HDFSFileStoreAPI
 
 		// write
 		FSDataOutputStream out = _prepareFileOutputStream(dstFileId,
-    													  false,		// append
-    													  overwrite);
+														  false,		// append
+														  overwrite);
 		return out;
 	}
 	@Override
-    public void writeToFile(final InputStream srcIS,
-    						final FileID dstFileId,
-    					    final boolean overwrite) throws IOException {
-        Preconditions.checkArgument(srcIS != null,"The source input stream cannot be null");
+	public void writeToFile(final InputStream srcIS,
+							final FileID dstFileId,
+							final boolean overwrite) throws IOException {
+		Preconditions.checkArgument(srcIS != null,"The source input stream cannot be null");
 
-        // prepare source & destination
-    	InputStream in = new BufferedInputStream(srcIS);
-    	OutputStream out = this.getFileOutputStreamForWriting(dstFileId,0,		// offset = 0 > start writing at the beginning of the file
-    											 			  overwrite);
+		// prepare source & destination
+		InputStream in = new BufferedInputStream(srcIS);
+		OutputStream out = this.getFileOutputStreamForWriting(dstFileId,0,		// offset = 0 > start writing at the beginning of the file
+												 			  overwrite);
 		// IOUtils.copyBytes close input and output streams
 		IOUtils.copyBytes(in,out,
-						  _conf);
-    }
+						  _conf,
+						  false);	// DO NOT close the streams after writing
+	}
 	@Override
-    public void writeChunkToFile(final byte[] data,
-    							 final FileID dstFileId,final long offset,
-    							 final boolean overwrite) throws IOException {
-    	throw new UnsupportedOperationException("HDFS does NOT supports random writes (only sequential writing from the beginning of the file or appending are supported)");
-    }
+	public void writeChunkToFile(final byte[] data,
+								 final FileID dstFileId,final long offset,
+								 final boolean overwrite) throws IOException {
+		throw new UnsupportedOperationException("HDFS does NOT supports random writes (only sequential writing from the beginning of the file or appending are supported)");
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -222,60 +223,62 @@ public class HDFSFileStoreAPI
 
 		// write
 		OutputStream dstFOS = _prepareFileOutputStream(dstFileId,
-    												   true,			// append
-    												   false);			// overwrite
+													   true,			// append
+													   false);			// overwrite
 		return dstFOS;
 	}
 	@Override
-    public void appendToFile(final InputStream srcIS,
-    						 final FileID dstFileId) throws IOException {
-        Preconditions.checkArgument(srcIS != null,"The source input stream cannot be null");
+	public void appendToFile(final InputStream srcIS,
+							 final FileID dstFileId) throws IOException {
+		Preconditions.checkArgument(srcIS != null,"The source input stream cannot be null");
 
-        // prepare source & destination
-    	InputStream in = new BufferedInputStream(srcIS);
-    	OutputStream out = this.getFileOutputStreamForAppending(dstFileId);
+		// prepare source & destination
+		InputStream in = new BufferedInputStream(srcIS);
+		OutputStream out = this.getFileOutputStreamForAppending(dstFileId);
 
 		// write
-    	// IOUtils.copyBytes close input and output streams
+		// IOUtils.copyBytes close input and output streams
 		IOUtils.copyBytes(in,out,
-						  _conf);
-    
-    }
-    @Override
-    public void appendChunkToFile(final byte[] srcDataChunk,
-    							  final FileID dstFileId) throws IOException {
-    	Preconditions.checkArgument(dstFileId != null,"The path cannot be null");
-    	log.debug("Append chunk to file");
-        if (srcDataChunk == null || srcDataChunk.length == 0) {
-            log.warn("The data to write in file is NULL!!!");
-            return;
-        }
+						  _conf,
+						  false);	// do NOT close after write
+	
+	}
+	@Override
+	public void appendChunkToFile(final byte[] srcDataChunk,
+								  final FileID dstFileId) throws IOException {
+		Preconditions.checkArgument(dstFileId != null,"The path cannot be null");
+		log.debug("Append chunk to file");
+		if (srcDataChunk == null || srcDataChunk.length == 0) {
+			log.warn("The data to write in file is NULL!!!");
+			return;
+		}
 
-    	// Prepare source and destination
-        InputStream srcIS = new BufferedInputStream(new ByteArrayInputStream(srcDataChunk));
-    	OutputStream out = this.getFileOutputStreamForAppending(dstFileId);
-    	
-    	// write
-    	// IOUtils.copyBytes close input and output streams
-        IOUtils.copyBytes(srcIS,out,
-        				  _conf);
-    	
-    }
-    private FSDataOutputStream _prepareFileOutputStream(final FileID dstFileId,
-    												    final boolean appendToFile,
-    												    final boolean overwrite) throws IOException {
-    	FSDataOutputStream out = null;
+		// Prepare source and destination
+		InputStream srcIS = new BufferedInputStream(new ByteArrayInputStream(srcDataChunk));
+		OutputStream out = this.getFileOutputStreamForAppending(dstFileId);
+		
+		// write
+		// IOUtils.copyBytes close input and output streams
+		IOUtils.copyBytes(srcIS,out,
+						  _conf,
+						  false);	// do NOT close after write
+		
+	}
+	private FSDataOutputStream _prepareFileOutputStream(final FileID dstFileId,
+														final boolean appendToFile,
+														final boolean overwrite) throws IOException {
+		FSDataOutputStream out = null;
 
-    	Path theFilePath = _fileIdToHDFSPath(dstFileId);
+		Path theFilePath = _fileIdToHDFSPath(dstFileId);
 
-    	log.trace("\tPrepare file {} to be written (append={}, overwrite={})",
-    			  dstFileId,appendToFile,overwrite);
+		log.trace("\tPrepare file {} to be written (append={}, overwrite={})",
+				  dstFileId,appendToFile,overwrite);
 
-    	// check if the file exists
-    	boolean prevExists = _fs.exists(theFilePath);
+		// check if the file exists
+		boolean prevExists = _fs.exists(theFilePath);
 
 		if (prevExists) {
-	    	log.debug("\tFile {} already exists",dstFileId);
+			log.debug("\tFile {} already exists",dstFileId);
 			if (appendToFile) {
 				log.trace("Appending to file {}...",dstFileId);
 				out = _fs.append(theFilePath);
@@ -291,7 +294,7 @@ public class HDFSFileStoreAPI
 			out = _fs.create(theFilePath);
 		}
 		return out;
-    }
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  READ
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -300,8 +303,8 @@ public class HDFSFileStoreAPI
 		return this.readFromFile(fileId,
 								 0); 		// starting at the beginning of the file
 	}
-    @Override
-    public InputStream readFromFile(final FileID fileId,final long offset) throws IOException {
+	@Override
+	public InputStream readFromFile(final FileID fileId,final long offset) throws IOException {
 		log.trace("Reading file {}",fileId);
 
 		// check
@@ -309,7 +312,7 @@ public class HDFSFileStoreAPI
 		_check.checkBeforeReadingFromFile(fileId);
 
 		// read
-    	Path theFilePath = new Path(_fileIdToPath(fileId).asAbsoluteString());
+		Path theFilePath = new Path(_fileIdToPath(fileId).asAbsoluteString());
 		FSDataInputStream outIS = _fs.open(theFilePath);
 		if (offset > 0) {
 			outIS.seek(offset);
@@ -317,9 +320,9 @@ public class HDFSFileStoreAPI
 			throw new IllegalArgumentException("file offset MUST be > 0");
 		}
 		return outIS;
-    }
-    @Override
-    public byte[] readChunkFromFile(final FileID fileId,
+	}
+	@Override
+	public byte[] readChunkFromFile(final FileID fileId,
 			  		   				final long offset,final int len) throws IOException {
 		log.trace("Chunked reading {} bytes starting at {} from file at {}",len,offset,fileId);
 
@@ -332,20 +335,20 @@ public class HDFSFileStoreAPI
 		byte[] btbuffer = null;
 		
 		try {
-	    	Path theFilePath = _fileIdToHDFSPath(fileId);
+			Path theFilePath = _fileIdToHDFSPath(fileId);
 			in = _fs.open(theFilePath); //FSDataInputStream implements Seekable interface
 	
 			// Adjust num of bytes to read
 			FileStatus[] fstatus = _fs.listStatus(theFilePath);
-		    long size = fstatus[0].getLen();
-		    log.trace("\tfile size={},offset={},len={}",size,offset,len);
+			long size = fstatus[0].getLen();
+			log.trace("\tfile size={},offset={},len={}",size,offset,len);
 	
-		    if (offset >= size) return null; // End of file
+			if (offset >= size) return null; // End of file
 	
-		    int theLen = len;
-		    if (theLen > ((size-offset) + 1)) {
-		    	theLen = (int)(size - offset);
-		    }
+			int theLen = len;
+			if (theLen > ((size-offset) + 1)) {
+				theLen = (int)(size - offset);
+			}
 			btbuffer = new byte[theLen];
 			/*in.readFully(btbuffer,
 						 (int)offset,theLen);*/
@@ -355,36 +358,36 @@ public class HDFSFileStoreAPI
 			if (in != null) in.close();			
 		}
 		return btbuffer;
-    }
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  DELETE
 /////////////////////////////////////////////////////////////////////////////////////////
-    @Override
-    public boolean deleteFile(final FileID fileId) throws IOException {
+	@Override
+	public boolean deleteFile(final FileID fileId) throws IOException {
 		log.trace("Deleting file {}",fileId);
 
-    	// check
-    	_check.checkFileId(fileId);
+		// check
+		_check.checkFileId(fileId);
 		_check.checkBeforeDeleteFile(fileId);
 
 		// delete
 		boolean opState = _fs.delete(_fileIdToHDFSPath(fileId),
 									 false);		// recursive=false (it's NOT a folder)
 		return opState;
-    }
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-    @Override
-    public FileProperties getFileProperties(final FileID fileId) throws IOException {
-    	Path theFilePath = new Path(_fileIdToPath(fileId).asAbsoluteString());
+	@Override
+	public FileProperties getFileProperties(final FileID fileId) throws IOException {
+		Path theFilePath = new Path(_fileIdToPath(fileId).asAbsoluteString());
 
 		if (!_fs.exists(theFilePath)) throw new IOException(Strings.customized("The file {} does not exists!",fileId.asString()));
 
 		// return the status as FileProperties
 		FileStatus hdfsStatus = _fs.getFileStatus(theFilePath);
 		return HDFSFileProperties.from(hdfsStatus);
-    }
+	}
 	@Override
 	public void setFileModifiedDate(final FileID fileId, final long modifiedTimeInMillis) throws IOException {
 		Path theFilePath = new Path(_fileIdToPath(fileId).asAbsoluteString());
@@ -392,8 +395,8 @@ public class HDFSFileStoreAPI
 		if (!_fs.exists(theFilePath)) throw new IOException(Strings.customized("The file {} does not exists!",fileId.asString()));
 
 		_fs.setTimes(theFilePath,
-				     modifiedTimeInMillis, 
-				     -1); // A value of -1 means that this call should not set access time.
+					 modifiedTimeInMillis, 
+					 -1); // A value of -1 means that this call should not set access time.
 	}
 }
 
