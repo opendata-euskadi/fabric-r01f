@@ -200,10 +200,11 @@ public class HDFSFileStoreAPI
 		InputStream in = new BufferedInputStream(srcIS);
 		OutputStream out = this.getFileOutputStreamForWriting(dstFileId,0,		// offset = 0 > start writing at the beginning of the file
 												 			  overwrite);
-		// IOUtils.copyBytes close input and output streams
+		// IOUtils.copyBytes close input and output streams unless it was tell to
 		IOUtils.copyBytes(in,out,
 						  _conf,
 						  false);	// DO NOT close the streams after writing
+		out.flush();
 	}
 	@Override
 	public void writeChunkToFile(final byte[] data,
@@ -237,11 +238,11 @@ public class HDFSFileStoreAPI
 		OutputStream out = this.getFileOutputStreamForAppending(dstFileId);
 
 		// write
-		// IOUtils.copyBytes close input and output streams
+		// IOUtils.copyBytes close input and output streams unless it was tell to
 		IOUtils.copyBytes(in,out,
 						  _conf,
 						  false);	// do NOT close after write
-	
+		out.flush();
 	}
 	@Override
 	public void appendChunkToFile(final byte[] srcDataChunk,
@@ -258,11 +259,11 @@ public class HDFSFileStoreAPI
 		OutputStream out = this.getFileOutputStreamForAppending(dstFileId);
 		
 		// write
-		// IOUtils.copyBytes close input and output streams
+		// IOUtils.copyBytes close input and output streams unless it was tell to
 		IOUtils.copyBytes(srcIS,out,
 						  _conf,
 						  false);	// do NOT close after write
-		
+		out.flush();
 	}
 	private FSDataOutputStream _prepareFileOutputStream(final FileID dstFileId,
 														final boolean appendToFile,
