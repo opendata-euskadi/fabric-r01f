@@ -203,7 +203,7 @@ public class HDFSFileStoreAPI
 		// IOUtils.copyBytes close input and output streams unless it was tell to
 		IOUtils.copyBytes(in,out,
 						  _conf,
-						  false);	// DO NOT close the streams after writing
+						  true);	// close the streams after writing
 		out.flush();
 	}
 	@Override
@@ -241,7 +241,7 @@ public class HDFSFileStoreAPI
 		// IOUtils.copyBytes close input and output streams unless it was tell to
 		IOUtils.copyBytes(in,out,
 						  _conf,
-						  false);	// do NOT close after write
+						  true);	// close after write
 		out.flush();
 	}
 	@Override
@@ -262,7 +262,7 @@ public class HDFSFileStoreAPI
 		// IOUtils.copyBytes close input and output streams unless it was tell to
 		IOUtils.copyBytes(srcIS,out,
 						  _conf,
-						  false);	// do NOT close after write
+						  true);	// close after write
 		out.flush();
 	}
 	private FSDataOutputStream _prepareFileOutputStream(final FileID dstFileId,
