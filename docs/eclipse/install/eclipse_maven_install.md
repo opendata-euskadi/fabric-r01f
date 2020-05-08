@@ -14,14 +14,15 @@ The idea is:
 ```
 /{dev_home} = d:\develop in windows or /develop in linux
 	+ develop
-		+ instances
+		+ eclipse
+		    + .eclipse <-- will contain eclipse plugin config that usually is located at {user-home}/.eclipse
 			+ [instance-name]
+			+ ...
+		+ eclipse_workspaces
+			+ master-[instance-name]
 			+ ...
 		+ maven_libs
 		+ local_libs
-		+ workspaces
-			+ master-[instance-name]
-			+ ...
 		+ projects
 		+ DB
 			+ ddl_scripts
@@ -33,11 +34,11 @@ a) Download the [eclipse IDE for Java Developers] from http://www.eclipse.org/do
 
 > BEWARE!! do NOT download the [eclipse IDE for Java EE Developers]
 
-b) Extract the contents of the [eclipse] folder inside the previously downloaded eclipse ZIP to the `/{dev_home}/instances/[instance-name]`
+b) Extract the contents of the [eclipse] folder inside the previously downloaded eclipse ZIP to the `/{dev_home}/eclipse/[instance-name]`
 
-c) Copy the `/{dev_home}/[instance-name]/eclipse.ini` to eclipse.ini.original
+c) Copy the `/{dev_home}/eclipse/[instance-name]/eclipse.ini` to eclipse.ini.original
 
-d) Edit the `/{dev_home}/[instance-name]/eclipse.ini` file and set this content:
+d) Edit the `/{dev_home}/eclipse/[instance-name]/eclipse.ini` file and set this content:
 
 > BEWARE!!!
 
@@ -77,7 +78,10 @@ d) Edit the `/{dev_home}/[instance-name]/eclipse.ini` file and set this content:
 	-vmargs
 	--add-modules=ALL-SYSTEM
 
-
+    # by default eclipse stores some plugin config at {USER_HOME}/.eclipse (ie c:/users/{user}/.eclipse in windows)
+    # this vm argument CHANGES the location of these eclipse config
+    -Duser.home={dev_home}/eclipse/.eclipse
+    
 	# see [Runtime Options] http://help.eclipse.org/mars/topic/org.eclipse.platform.doc.isv/reference/misc/index.html
 	# see http://stackoverflow.com/questions/316265/how-can-you-speed-up-eclipse/316535#316535
 	-Dosgi.requiredJavaVersion=1.8
@@ -98,7 +102,7 @@ d) Edit the `/{dev_home}/[instance-name]/eclipse.ini` file and set this content:
 ## [3]: Launch Eclipse
 
 Launch eclipse.
-When asked for the `[workspace]` location select: `/{dev_home}/workspaces/master_[instance-name]` (do **NOT** set use this workspace as default: don't ask again)
+When asked for the `[workspace]` location select: `/{dev_home}/eclipse_workspaces/master_[instance-name]` (do **NOT** set use this workspace as default: don't ask again)
 > **BEWARE** this workspace location will later act as a _template_ pre-configured workspace that will be copied when creating a **new** workspace
 
 
@@ -106,7 +110,7 @@ When asked for the `[workspace]` location select: `/{dev_home}/workspaces/master
 
 a) **AJDT: AspectJ Development Tools** > 	http://download.eclipse.org/tools/ajdt/410/dev/update
 
-b) **Eclipse GIT plugins** (from eclipse update site) (install Git Client https://git-scm.com/download/gui/windows)
+b) **Eclipse GIT plugins** (from eclipse update site https://download.eclipse.org/egit/updates) (install Git Client https://git-scm.com/download/gui/windows)
 
 ```
         Collaboration
@@ -134,12 +138,13 @@ c) **Eclipse WTP tools** (from eclipse update site http://download.eclipse.org/r
 			[X] JavaScript Development Tools
 			[X] JavaScript Development Tools Chromium/V8 Remote Debugger
 			[X] m2e connector for mavenarchiver pom properties
-			[X] m2e-wtp JAX-RS project configurator for Eclipse WTP.
-			[X] m2e-wtp JPA project configurator for Eclipse WTP.
-			[X] m2e-wtp project configurators for Eclipse WTP.
+			[X] m2e-wtp - JAX-RS configurator for WTP.
+			[X] m2e-wtp - JPA configurator for WTP.
+			[X] m2e-wtp - Maven Integration for WTP.
 			[X] JST Server Adapters
 			[X] JST Server Adapters Extensions
 			[X] JST Server UI
+			[x] Wild Web Developer
 			[X] WST Server Adapters
 			
 		General Purpouse Tools
@@ -149,7 +154,7 @@ If you have compatibility problems uninstall "Eclipse XML Editors and Tools" che
 
 d) **[AnyEdit Tools]** either using the [eclipse marketplace] or from the update site at: http://andrei.gmxhome.de/eclipse/
 
-		[X] Eclipse 3.8 - 4.11 plugins
+		[X] Eclipse 4.10-4.14 plugins
 			[X] AnyEditTools
 
 e) Optional ** Genuitec DevStyle** (darkest dark theme: https://www.genuitec.com/products/devstyle/)
@@ -173,18 +178,18 @@ b) **[Maven]**
 
 > `[Maven > Archetypes]` > Add a NEW remote catalog at: http://repo1.maven.org/maven2/archetype-catalog.xml
 
-> `[Maven > User Settings] > Global Settings`: {dev_home}/projects/fabric/r01f/docs/eclipse/maven/settings_{env}.xml
+> `[Maven > User Settings] > Global Settings`: {dev_home}/projects/fabric-r01f/docs/eclipse/maven/settings_{env}.xml
 
-> `[Maven > User Settings] > Error/Warnings > Plugin execution not covered by lifecycle configuration`: change to WARNING!
+> `[Maven > Error/Warnings] > Plugin execution not covered by lifecycle configuration`: change to WARNING!
 
 By default, EGit automatically adds resources marked as "Derived" to .gitignore
 ... if `[Maven > Hide folders of physically nested modules` is **enabled** (true), eclipse adds nested modules' folders to .gitignore
 This behavior can be disabled at `[Team] > [Git] > [Projects]` and **deselect** _"Automatically ignore derived resources by adding them to .gitignore"_
 
 *BEWARE*:
-* Ensure that `[Local Repository] (from merged user and global settings)` is `{dev_home}/maven_libs`
+* Ensure that `[Maven > User Settings][Local Repository] (from merged user and global settings)` is `{dev_home}/maven_libs`
 
-* Some artifacts are NOT published at MAVEN CENTRAL; this is the case of javax.ejb / javax.servlet-api or javax.jms. The only workarround is to put all those artifacts at `{dev_home}/maven_libs/` manually (See fabric\r01f\docs\maven_local_libs\read.me file)
+* Some artifacts are NOT published at MAVEN CENTRAL; this is the case of javax.ejb / javax.servlet-api or javax.jms. The only workarround is to put all those artifacts at `{dev_home}/maven_libs/` manually (See fabric-r01f\docs\maven_local_libs\read.me file)
 
 * create a weblogic fullclient jar to be used as external dependency:
 
@@ -196,7 +201,7 @@ This behavior can be disabled at `[Team] > [Git] > [Projects]` and **deselect** 
 
 c) **[Java]**
 
-> Import `[compiler preferences]`: `[File] > [Import] > [Preferences]` browse filesystem and select `/{dev_home}/projects/fabric/r01f/docs/eclipse/preferences/pci_compiler_preferences.epf`
+> Import `[compiler preferences]`: `[File] > [Import] > [Preferences]` browse filesystem and select `/{dev_home}/projects/fabric-r01f/docs/eclipse/preferences/pci_compiler_preferences.epf`
 
 > `[Java] > [Editor] > [Templates]` add a NEW **Java** template named **_sep** with the following content
 
@@ -221,9 +226,9 @@ This excludes .class files from synchronized files.
 
 ## [7]: Create a workspace for a project
 
-Just copy the _template_ workspace folder: `/{dev_home}/workspaces/master_[instance-name]` with a new name id: `/{dev_home}/workspaces/my_project`
+Just copy the _template_ workspace folder: `/{dev_home}/eclipse_workspaces/master_[instance-name]` with a new name id: `/{dev_home}/eclipse_workspaces/my_project`
 
-... now simply launch eclipse from  `/{dev_home}/instances/[instance-name]` as usual and when asked, select the workspace folder
+... now simply launch eclipse from  `/{dev_home}/eclipse/[instance-name]` as usual and when asked, select the workspace folder
 
 
 ## [8]: BEWARE antivirus! > https://www.genuitec.com/stop-slow-eclipse-myeclipse-startups/

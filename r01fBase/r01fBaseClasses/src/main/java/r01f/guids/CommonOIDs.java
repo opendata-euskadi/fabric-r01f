@@ -116,6 +116,9 @@ public abstract class CommonOIDs {
 			if (id == null) return null;
 			return new AppCode(id);
 		}
+		public static AppCode named(final String id) {
+			return AppCode.forId(id);
+		}
 		public static AppCode forAuthenticatedUserId(final AuthenticatedActorID authActorId) {
 			return new AppCode(authActorId.asString());
 		}
@@ -161,6 +164,9 @@ public abstract class CommonOIDs {
 		public static AppComponent forIdOrNull(final String id) {
 			if (id == null) return null;
 			return new AppComponent(id);
+		}
+		public static AppComponent named(final String id) {
+			return AppComponent.forId(id);
 		}
 		public static AppComponent compose(final AppComponent one,final AppComponent other) {
 			return AppComponent.forId(Strings.customized("{}.{}",

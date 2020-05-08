@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workingSets>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1552398678482_4" label="R01DI - Gestor de contenidos" name="R01DI - Gestor de contenidos">
+<item elementID="=r01diApplicationWAR" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01diEARClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01diConfig" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01diEAR" type="4"/>
+<item elementID="=r01diLegesareaLinkedHTMLGeneratorWAR" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSet>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1552398703419_5" label="R01LI - Interfaces auxiliares" name="R01LI - Interfaces auxiliares">
+<item elementID="=r01liDatasetsSearchEngineWAR" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01liSamplerWAR" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01liCatalogingClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01liEARClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01liEAR" type="4"/>
+<item elementID="=r01liComponentsWAR" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01liDatasetsSearchEngineClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01liFileHandlerClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01liReferencerClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSet>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1552398577438_1" label="R01M - Configuraciones" name="R01M - Configuraciones">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01API" type="4"/>
+</workingSet>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1552399306643_22" label="R01O - Addons" name="R01O - Addons"/>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1552398601610_2" label="R01O - API" name="R01O - API">
+<item elementID="=r01oTinyMCE" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01oClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01oCheckedTree" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01oTabSheet" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01oTipComponent" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01oMaskedTextfield" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01oGeoClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01oCoreClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01oHelpTip" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01oBeanClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSet>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1552399291306_21" label="R01V - Addons" name="R01V - Addons"/>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1552398652914_3" label="R01V - API Vaadin 7" name="R01V - API Vaadin 7"/>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1552399262147_20" label="R39 - Estáticos" name="R39 - Estáticos"/>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1552398826331_9" label="X46D - Galerías" name="X46D - Galerías">
+<item elementID="=x46dContentGeneratorWAR" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/x46dEAR" type="4"/>
+<item elementID="=x46dEARClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=x46dApplicationWAR" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSet>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1552398871810_10" label="X46E - Anuncios Administración" name="X46E - Anuncios Administración">
+<item elementID="=x46eEARClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=x46eApplicationWAR" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/x46eEAR" type="4"/>
+<item elementID="=x46eContentGeneratorWAR" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSet>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1552398893973_11" label="X46F - Opendata" name="X46F - Opendata">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/x46fEAR" type="4"/>
+<item elementID="=x46fApplicationWAR" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=x46fContentGeneratorWAR" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=x46fEARClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSet>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1552398923777_12" label="X46G - Avisos técnicos" name="X46G - Avisos técnicos">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/x46gEAR" type="4"/>
+<item elementID="=x46gContentGeneratorWAR" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=x46gEARClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=x46gApplicationWAR" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSet>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1552398950562_13" label="X46H - Eventos" name="X46H - Eventos"/>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1552398996426_14" label="X46I - Información" name="X46I - Información">
+<item elementID="=x46iContentGeneratorWAR" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/x46iEAR" type="4"/>
+<item elementID="=x46iApplicationWAR" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=x46iEARClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSet>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1552399024419_15" label="X46J - Noticias" name="X46J - Noticias">
+<item elementID="=x46jContentGeneratorWAR" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=x46jApplicationWAR" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=x46jEARClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/x46jEAR" type="4"/>
+</workingSet>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1552399111627_17" label="X46L - Libro" name="X46L - Libro"/>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1552399071666_16" label="X46M - Enlace" name="X46M - Enlace">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/x46mEAR" type="4"/>
+<item elementID="=x46mApplicationWAR" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=x46mContentGeneratorWAR" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=x46mEARClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSet>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1552399135123_18" label="X46O - Documentación" name="X46O - Documentación">
+<item elementID="=x46oEARClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=x46oContentGeneratorWAR" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/x46oEAR" type="4"/>
+<item elementID="=x46oApplicationWAR" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSet>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1552399225811_19" label="X46P - Plan/Programa/Proyecto" name="X46P - Plan/Programa/Proyecto">
+<item elementID="=x46pContentGeneratorWAR" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=x46pApplicationWAR" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/x46pEAR" type="4"/>
+<item elementID="=x46pEARClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSet>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1552398727010_6" label="X86A - Normativa" name="X86A - Normativa">
+<item elementID="=x46aEARClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=x46aApplicationWAR" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=x46aContentGeneratorWAR" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/x46aEAR" type="4"/>
+</workingSet>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1552398766034_7" label="X86B - Documentación de Relevancia Jurídica" name="X86B - Documentación de Relevancia Jurídica">
+<item elementID="=x46bEARClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=x46bContentGeneratorWAR" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/x46bEAR" type="4"/>
+<item elementID="=x46bApplicationWAR" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSet>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1552398802138_8" label="X86C - Competencias y transferencias" name="X86C - Competencias y transferencias">
+<item elementID="=x46cContentGeneratorWAR" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=x46cApplicationWAR" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=x46cEARClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/x46cEAR" type="4"/>
+</workingSet>
+</workingSets>

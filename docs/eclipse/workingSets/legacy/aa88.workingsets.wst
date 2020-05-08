@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workingSets>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1490249871468_5" label="AA88Api" name="AA88Api">
+<item elementID="=aa88fClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/aa88fConfig" type="4"/>
+<item elementID="=aa88fClientAPIClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSet>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1490249827303_4" label="AA88Common" name="AA88Common">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/aa88bDocs" type="4"/>
+<item elementID="=aa88bTest" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/aa88fDocs" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/aa88bEAR" type="4"/>
+</workingSet>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1490249916489_6" label="AA88Core" name="AA88Core">
+<item elementID="=aa88bPersistenceRESTServicesWar" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=aa88bServicesClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=aa88bNotaryServicesClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=aa88bDBPersistenceServicesClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=aa88bFSPersistenceServicesClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/aa88bConfig" type="4"/>
+<item elementID="=aa88bDataRetrieveServicesClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSet>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1490253654852_7" label="AA88Web" name="AA88Web">
+<item elementID="=aa88bPersistenceRESTServicesWar" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=aa88fWebProfileClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=aa88bLifeCycleRESTServicesWar" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/aa88bWebContent" type="4"/>
+</workingSet>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1490249405196_2" label="R01FB" name="R01FB">
+<item elementID="=r01fbHTMLProcessorsClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01fbTest" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01fbAspectClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01fbGWTClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01fbHDFSFileStoreClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01fbTestClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01fbEJIEClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01fbTeamSiteFileStoreClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/r01fbConfig" type="4"/>
+<item elementID="=r01fbClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01fbEEClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01fbAspectInterfaceClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01fbFileStoreTest" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01fbFileStoreClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01fbAspectCoreClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01fbPersistenceClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=r01fbWebProfileClasses" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSet>
+</workingSets>

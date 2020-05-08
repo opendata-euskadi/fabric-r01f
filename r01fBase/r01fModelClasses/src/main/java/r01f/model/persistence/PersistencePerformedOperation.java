@@ -44,6 +44,9 @@ public enum PersistencePerformedOperation
 	public static PersistencePerformedOperation fromName(final String name) {
 		return WRAPPER.fromName(name);
 	}
+	public static PersistencePerformedOperation named(final String name) {
+		return WRAPPER.fromName(name);
+	}
 	public static PersistencePerformedOperation from(final COREServiceMethod method) {
 		return PersistencePerformedOperation.fromName(method.asString());
 	}

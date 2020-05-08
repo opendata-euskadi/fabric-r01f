@@ -30,6 +30,9 @@ public enum PersistenceRequestedOperation
 	public static PersistenceRequestedOperation fromName(final String name) {
 		return WRAPPER.fromName(name);
 	}
+	public static PersistenceRequestedOperation named(final String name) {
+		return WRAPPER.fromName(name);
+	}
 	public static PersistenceRequestedOperation from(final COREServiceMethod method) {
 		return PersistenceRequestedOperation.fromName(method.asString());
 	}

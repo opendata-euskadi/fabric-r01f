@@ -122,7 +122,6 @@ class XMLPropertiesComponentDefLoader {
 	 * @return
 	 * @throws XMLPropertiesException
 	 */
-	@SuppressWarnings("static-access")
 	public static XMLPropertiesComponentDef loadOrDefault(final Environment env,
 												 		  final AppCode appCode,final AppComponent component) throws XMLPropertiesException {
 		// Load the component definition
@@ -179,7 +178,7 @@ class XMLPropertiesComponentDefLoader {
 			filePath = XMLPropertiesComponentDefLoader.componentDefFilePath(appCode,component);
 		} else if (component != null && component.isNOT(AppComponent.NO_COMPONENT)) {
 			// component set (the most usual case)
-			filePath = Path.from(Strings.customized("{}/{}/components/{}.{}.xml",			// ie: /components/loc/r01.default.xml
+			filePath = Path.from(Strings.customized("{}/{}/components/{}.{}.xml",		// ie: /components/loc/r01.default.xml
 							   			  			env,appCode,appCode,component));
 		} else {
 			// no component

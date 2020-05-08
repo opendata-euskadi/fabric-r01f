@@ -40,6 +40,7 @@ public class ZipFiles {
 		this(new LocalFileStoreAPI(),
 			 new LocalFileStoreFilerAPI());
 	}
+	@SuppressWarnings("unused")
 	public ZipFiles(final FileStoreAPI fsApi,final FileStoreFilerAPI fsFilerApi) throws IOException {
 		_fsApi = fsApi;
 		_fsFilerApi = fsFilerApi;
@@ -178,8 +179,8 @@ public class ZipFiles {
      * @return the filtered list of files
      * @throws IOException if an I/O Error occurs
      */
-    protected FileProperties[] _filterFolderContents(final FileProperties folderProps,final int depth,
-    										  	     final FileProperties[] files) throws IOException {
+    protected static FileProperties[] _filterFolderContents(final FileProperties folderProps,final int depth,
+    										  	     		final FileProperties[] files) throws IOException {
         return files;	// returns the files unchanged
     }
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -204,7 +205,6 @@ public class ZipFiles {
 			// i.e.:
 			//   /foo/foo.txt
 			//   /foo/
-			
 			if (zipEntry.isDirectory()) {
 				// next entry
 				zipEntry = zipIS.getNextEntry();
@@ -218,9 +218,12 @@ public class ZipFiles {
 			Path fileDstPath = dstPath.joinedWith(filePathInsideZip);
 			
 			// b) Extract the file
-			_fsApi.writeToFile(zipIS,
+			NonCloseableInputStreamWrapper nonCloseableZipIS = new NonCloseableInputStreamWrapper(zIS);
+			_fsApi.writeToFile(nonCloseableZipIS,
 							   fileDstPath,
 							   true);		// overwrite
+			nonCloseableZipIS.close();		
+			
 			// next entry
 			zipEntry = zipIS.getNextEntry();
 		}
