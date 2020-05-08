@@ -19,8 +19,12 @@ public abstract class EnrichedThrowableTypeBuilder<T extends EnrichedThrowableTy
     	
 	    public EnrichedThrowableTypeBuilderSeverityStep<T> coded(final int group,final int code) {
 	    	return new EnrichedThrowableTypeBuilderSeverityStep<T>(_name,
-	    														  group,code);
+	    														   group,code);
 	    } 
+	    public EnrichedThrowableTypeBuilderSeverityStep<T> noCodes() {
+	    	return new EnrichedThrowableTypeBuilderSeverityStep<T>(_name,
+	    														   0,0);
+	    }
     }
     @RequiredArgsConstructor(access=AccessLevel.PRIVATE)
     public class EnrichedThrowableTypeBuilderSeverityStep<T2 extends EnrichedThrowableType> {
