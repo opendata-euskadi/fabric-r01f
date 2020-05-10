@@ -12,6 +12,7 @@ import r01f.aspects.interfaces.dirtytrack.ConvertToDirtyStateTrackable;
 import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 import r01f.objectstreamer.annotations.MarshallType;
+import r01f.types.datetime.HourOfDay;
 import r01f.util.types.Strings;
 
 /**
@@ -51,7 +52,7 @@ public class ContactPhone
 	 * Extension
 	 */
 	@MarshallField(as="extension",
-				   whenXml=@MarshallFieldAsXml(attr=true))	
+				   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter @Setter private PhoneExtension _extension;
 	/**
 	 * Hour range when could be contacted
@@ -123,6 +124,18 @@ public class ContactPhone
 		_type = other.getType();
 		_number = other.getNumber();
 		_availableRangeForCallingStr = other.getAvailableRangeForCallingStr();
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////////////////
+	public boolean isAvailableNow() {
+		return isAvailable(HourOfDay.now());
+	}
+
+	public boolean isAvailable(HourOfDay hourOfDay) {
+		r01f.types.Range<Integer> availableRange = this.getAvailableRangeForCalling();
+		int hour = hourOfDay.asInteger();
+		return availableRange.getLowerBound() <= hour && availableRange.getUpperBound() > hour;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	EQUALS & HASHCODE
