@@ -1,9 +1,6 @@
 package r01f.types.contact;
 
-import java.io.Serializable;
-
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 import r01f.types.CanBeRepresentedAsString;
 
@@ -13,10 +10,8 @@ import r01f.types.CanBeRepresentedAsString;
  * @param <M>
  */
 @Accessors(prefix="_")
-@RequiredArgsConstructor
 public class OwnedContactMean<M extends ContactMean>
-  implements CanBeRepresentedAsString,
-  			 Serializable {
+  implements CanBeRepresentedAsString {
 
 	private static final long serialVersionUID = -1135076268050723452L;
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -24,7 +19,19 @@ public class OwnedContactMean<M extends ContactMean>
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Getter private final M _id;
 	@Getter private final String _owner;
-
+/////////////////////////////////////////////////////////////////////////////////////////
+//	CONSTRUCTOR & BUILDER
+/////////////////////////////////////////////////////////////////////////////////////////
+	public OwnedContactMean(final M id,final String owner) {
+		_id = id;
+		_owner = owner;
+	}
+	public static <M extends ContactMean> OwnedContactMean<M> from(final M id,final String owner) {
+		return new OwnedContactMean<M>(id,owner);
+	}
+	public static <M extends ContactMean> OwnedContactMean<M> from(final M id) {
+		return new OwnedContactMean<M>(id,id.asString());
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
