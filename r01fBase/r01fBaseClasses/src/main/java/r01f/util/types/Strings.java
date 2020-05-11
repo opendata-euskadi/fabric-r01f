@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.helpers.MessageFormatter;
 
 import com.google.common.annotations.GwtIncompatible;
@@ -524,4 +525,18 @@ public class Strings {
 			return outContains;
 		}
 	}
+	/**
+	 * Returns the n first characters of a String with three dots,
+	 * if String´s length lower than n return the String and if null returns an empty String
+	 * @param str String
+	 * @param n int
+	 * @return String
+	 */
+	public static String getfirstNCharacters(final String str,
+									 		 final int n) {
+			return isNullOrEmpty(str) ? ""
+									  : str.length() > n ? StringUtils.left(str,
+															  			    n) + "..."
+													     : str;
+		}
 }
