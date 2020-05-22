@@ -24,7 +24,7 @@ public class WeightedLangDependentTags
 	 * @param tags
 	 */
 	public WeightedLangDependentTags(final Collection<WeightedLangDependentTag> tags) {
-		this.addAll(Sets.newHashSet(tags));
+		this.addAll(tags != null ? Sets.newHashSet(tags) : Sets.newHashSet());
 	}
 	/**
 	 * @param tags
