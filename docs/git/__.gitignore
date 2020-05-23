@@ -28,6 +28,7 @@ bin/
 
 # Maven
 # ===============================
+!maven-wrapper.jar
 target/
 
 # Misc
@@ -46,6 +47,7 @@ pom.xml.tag
 .metadata
 .loadpath
 .recommenders
+workingCopy*
 # Java annotation processor (APT)
 .factorypath
 .apt_generated/
@@ -67,6 +69,30 @@ pom.xml.tag
 *.iml
 *.ipr
 
+# STS
+# ===============================
+.apt_generated
+.factorypath
+.springBeans
+.sts4-cache
+
+# NetBeans
+# ===============================
+nbproject/private/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+build/
+
+# VSCode
+# ===============================
+.vscode/
+
 # AppServer
 # ===============================
 tomcat
+
+# Node Modules 
+node_modules
+.externalToolBuilders
