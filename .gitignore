@@ -46,6 +46,7 @@ pom.xml.tag
 .metadata
 .loadpath
 .recommenders
+workingCopy*
 # Java annotation processor (APT)
 .factorypath
 .apt_generated/
