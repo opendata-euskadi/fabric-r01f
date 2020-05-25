@@ -210,7 +210,7 @@ public class MarshallerAnnotationIntrospector
 		// return
 		return propertyName;
 	}
-	private String _normalizeField(final String name) {
+	private static String _normalizeField(final String name) {
 		if (name.startsWith("_")) return name.substring(1);
 		return name;
 	}
@@ -219,7 +219,9 @@ public class MarshallerAnnotationIntrospector
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public JsonFormat.Value findFormat(final Annotated ann) {
-		JsonFormat.Value outFormat = null;
+		if (!ann.hasAnnotation(MarshallField.class)) return _delegatedJacksonAnnotationIntrospector.findFormat(ann);	// not annotated
+			
+		MarshallField mf = ann.getAnnotation(MarshallField.class);
 
 		// [0] - Do NOT mind annotated getters
 		if ( !(ann instanceof AnnotatedField) ) return null;
@@ -227,57 +229,65 @@ public class MarshallerAnnotationIntrospector
 		// [1] - Check MarshallField annotation
 		AnnotatedField annF = (AnnotatedField)ann;
 
-		if (_isDateType(annF.getRawType())) {
-			if (ann.hasAnnotation(MarshallField.class)) {
-				MarshallField mf = ann.getAnnotation(MarshallField.class);
-				if (mf.dateFormat() != null) {
-					DateFormat dateFormat = mf.dateFormat().use();
-					switch(dateFormat) {
-					case CUSTOM:
-						String pattern = mf.dateFormat().format();
-						String timezone = mf.dateFormat().timezone();
-						if (MarshallField.MARKER_FOR_DEFAULT.equals(pattern)) throw new AnnotationFormatError(String.format("Field %s of %s is a Date field with CUSTOM format: the pattern is mandatory",
-																															annF.getName(),annF.getDeclaringClass().getName()));
-						if (!"".equals(timezone)) {
-							TimeZone tz = TimeZone.getTimeZone(timezone);
-							outFormat = JsonFormat.Value.forShape(Shape.STRING)
-														.withTimeZone(tz)
-														.withPattern(pattern);
-						} else {
-							outFormat = JsonFormat.Value.forShape(Shape.STRING)
-														.withPattern(pattern);
-						}
-						break;
-					case EPOCH:
-						outFormat = JsonFormat.Value.forShape(Shape.STRING)
-													.withPattern(Dates.EPOCH);
-						break;
-					case ISO8601:
-						outFormat = JsonFormat.Value.forShape(Shape.STRING)
-													.withPattern(Dates.ISO8601);
-						break;
-					case TIMESTAMP:
-					default:
-						outFormat = JsonFormat.Value.forShape(Shape.NUMBER);
-						break;
-					}
-				}
-			}
+		// [2] - Find the format
+		JsonFormat.Value outFormat = null;
+		// a date
+		if (_isDateType(annF.getRawType())
+		 && mf.dateFormat() != null) { 
+			outFormat = _dateFormatOf(annF,mf);
+		}
+		// a collection of Dates
+		else if (_isCollectionOrArrayType(annF.getRawType())) {
+			// due to type erasure the Collection type cannot be guessed 
+			outFormat = _dateFormatOf(annF,mf);
 		}
 		// warn if annotating a no-date-typed field
-		else if (ann.hasAnnotation(MarshallField.class)) {
-			MarshallField mf = ann.getAnnotation(MarshallField.class);
-			if (mf.dateFormat() != null
-			 && _isDateType(annF.getRawType())) {
-				log.warn("Field {} of type {} was annotated with @{}(dateFormat=...) BUT the field is NOT a date-type field!",
-						 annF.getName(),annF.getDeclaringClass(),MarshallField.class.getSimpleName());
-			}
-		}
+//		else if (mf.dateFormat() != null
+//			  && !_isDateType(annF.getRawType())) {
+//				log.warn("Field {} of type {} was annotated with @{}(dateFormat=...) BUT the field is NOT a date-type field!",
+//						 annF.getName(),annF.getDeclaringClass(),MarshallField.class.getSimpleName());
+//		}
 
 		// [2] - Delegate
 		if (outFormat == null) outFormat = _delegatedJacksonAnnotationIntrospector.findFormat(ann);
 
 		// [3] - Return
+		return outFormat;
+	}
+	private static JsonFormat.Value _dateFormatOf(final AnnotatedField annF,
+												  final MarshallField mf) {
+		JsonFormat.Value outFormat = null;
+		
+		DateFormat dateFormat = mf.dateFormat().use();
+		switch(dateFormat) {
+		case CUSTOM:
+			String pattern = mf.dateFormat().format();
+			String timezone = mf.dateFormat().timezone();
+			if (MarshallField.MARKER_FOR_DEFAULT.equals(pattern)) throw new AnnotationFormatError(String.format("Field %s of %s is a Date field with CUSTOM format: the pattern is mandatory",
+																												annF.getName(),annF.getDeclaringClass().getName()));
+			if (!"".equals(timezone)) {
+				TimeZone tz = TimeZone.getTimeZone(timezone);
+				outFormat = JsonFormat.Value.forShape(Shape.STRING)
+											.withTimeZone(tz)
+											.withPattern(pattern);
+			} else {
+				outFormat = JsonFormat.Value.forShape(Shape.STRING)
+											.withPattern(pattern);
+			}
+			break;
+		case EPOCH:
+			outFormat = JsonFormat.Value.forShape(Shape.STRING)
+										.withPattern(Dates.EPOCH);
+			break;
+		case ISO8601:
+			outFormat = JsonFormat.Value.forShape(Shape.STRING)
+										.withPattern(Dates.ISO8601);
+			break;
+		case TIMESTAMP:
+		default:
+			outFormat = JsonFormat.Value.forShape(Shape.NUMBER);
+			break;
+		}
 		return outFormat;
 	}
 	private static final boolean _isDateType(final Class<?> type) {
@@ -406,7 +416,7 @@ public class MarshallerAnnotationIntrospector
     	if (outTypes == null) outTypes = _delegatedJacksonAnnotationIntrospector.findSubtypes(ann);
     	return outTypes;
     }
-	private Class<?> _keyTypeFor(final Class<?> type) {
+	private static Class<?> _keyTypeFor(final Class<?> type) {
 		Class<?> outKeyType = null;
 		if (_isCollectionOrArrayType(type)) return null;
 		if (_isNotInstanciable(type)) {
@@ -425,7 +435,7 @@ public class MarshallerAnnotationIntrospector
 		}
 		return outKeyType;
 	}
-	private String _findTypeIdFor(final Class<?> subType) {
+	private static String _findTypeIdFor(final Class<?> subType) {
 		String typeId = null;
 		MarshallType typeMarshallAnn = subType.getAnnotation(MarshallType.class);
 		if (typeMarshallAnn != null) {
@@ -522,7 +532,7 @@ public class MarshallerAnnotationIntrospector
 		return _delegatedJacksonAnnotationIntrospector.findImplicitPropertyName(m);
 	}
 	@Override
-	public List<PropertyName> findPropertyAliases(Annotated m) {
+	public List<PropertyName> findPropertyAliases(final Annotated m) {
 		return _delegatedJacksonAnnotationIntrospector.findPropertyAliases(m);
 	}
 	@Override

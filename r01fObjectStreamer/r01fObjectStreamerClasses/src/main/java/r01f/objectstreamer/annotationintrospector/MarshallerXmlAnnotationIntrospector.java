@@ -37,7 +37,6 @@ import com.fasterxml.jackson.dataformat.xml.JacksonXmlAnnotationIntrospector;
 import com.fasterxml.jackson.dataformat.xml.XmlAnnotationIntrospector;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 
-import r01f.guids.CommonOIDs.AppCode;
 import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallType;
 import r01f.types.JavaPackage;
@@ -286,7 +285,8 @@ public class MarshallerXmlAnnotationIntrospector
 		// return
 		return outPropName;
     }
-    private PropertyName _findNameWithIntrospectorDelegates(final Annotated ann,
+    @SuppressWarnings("null")
+	private PropertyName _findNameWithIntrospectorDelegates(final Annotated ann,
 								   				  	 		final NameFor whatFor) {
     	PropertyName outPropName = null;
 		// [1] - jackson xml native annotations
@@ -316,7 +316,8 @@ public class MarshallerXmlAnnotationIntrospector
 		// [5] - Return
 		return outPropName;
     }
-    private static PropertyName _delegateFindName(final AnnotationIntrospector annIntrospector,
+    @SuppressWarnings("null")
+	private static PropertyName _delegateFindName(final AnnotationIntrospector annIntrospector,
     											  final Annotated ann,
     											  final NameFor whatFor) {
     	PropertyName outPropName = null;
@@ -527,7 +528,7 @@ public class MarshallerXmlAnnotationIntrospector
 		return _marshallerAnnotationIntrospector.findImplicitPropertyName(m);
 	}
 	@Override
-	public List<PropertyName> findPropertyAliases(Annotated m) {
+	public List<PropertyName> findPropertyAliases(final Annotated m) {
 		return _marshallerAnnotationIntrospector.findPropertyAliases(m);
 	}
 	@Override
