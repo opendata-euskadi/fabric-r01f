@@ -1,5 +1,7 @@
 package r01f.model;
 
+import java.util.Date;
+
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Objects;
 
@@ -159,6 +161,21 @@ public abstract class PersistableModelObjectBase<O extends PersistableObjectOID,
 	public TrackableBuilder<SELF_TYPE,SELF_TYPE> builderForTrackable() {
 		return new TrackableBuilder<SELF_TYPE,SELF_TYPE>((SELF_TYPE)this,
 														 (SELF_TYPE)this);
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	
+/////////////////////////////////////////////////////////////////////////////////////////
+	public Date getCreateDate() {
+		return this.getTrackingInfo() != null ? this.getTrackingInfo().getCreateDate()
+									   		  : null;
+	}
+	public Date getLastUpdateDate() {
+		return this.getTrackingInfo() != null ? this.getTrackingInfo().getLastUpdateDate() != null 
+														? this.getTrackingInfo().getLastUpdateDate()
+														: this.getTrackingInfo().getCreateDate() != null 
+																? this.getTrackingInfo().getCreateDate()
+																: null
+											   : null;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	EQUALS
