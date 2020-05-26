@@ -1,7 +1,5 @@
 package r01f.guids;
 
-import java.io.Serializable;
-
 import r01f.objectstreamer.annotations.MarshallPolymorphicTypeInfo;
 import r01f.objectstreamer.annotations.MarshallPolymorphicTypeInfo.MarshalTypeInfoIncludeCase;
 import r01f.objectstreamer.annotations.MarshallPolymorphicTypeInfo.MarshallTypeInfoInclude;
@@ -13,8 +11,7 @@ import r01f.types.CanBeRepresentedAsString;
 @MarshallPolymorphicTypeInfo(typeInfoAvailableWhenDeserializing=true,											// the type info (type id property) is available at the deserializer
 				  			 includeTypeInfo=@MarshallTypeInfoInclude(type=MarshalTypeInfoIncludeCase.NEVER))	// do NOT include type info for types (only for properties)
 public interface OID
-         extends Serializable,
-     			 Comparable<OID>,
+         extends Comparable<OID>,
      			 Cloneable,
      			 CanBeRepresentedAsString {
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -46,13 +43,13 @@ public interface OID
      * @param oids
      * @return true if the oid is included in the collection, false otherwise
      */
-	public <O extends OID> boolean isContainedIn(final O... oids);
+	public <O extends OID> boolean isContainedIn(@SuppressWarnings("unchecked") final O... oids);
     /**
      * Checks if this oid is NOT included in the provided collection
      * @param oids
      * @return true if the oid is NOT included in the collection, false otherwise
      */
-	public <O extends OID> boolean isNOTContainedIn(final O... oids);
+	public <O extends OID> boolean isNOTContainedIn(@SuppressWarnings("unchecked") final O... oids);
     /**
      * Checks if this oid is included in the provided collection
      * @param oids
