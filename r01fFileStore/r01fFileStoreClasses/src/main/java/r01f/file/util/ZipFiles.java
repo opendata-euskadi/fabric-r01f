@@ -218,7 +218,7 @@ public class ZipFiles {
 			Path fileDstPath = dstPath.joinedWith(filePathInsideZip);
 			
 			// b) Extract the file
-			NonCloseableInputStreamWrapper nonCloseableZipIS = new NonCloseableInputStreamWrapper(zIS);
+			NonCloseableInputStreamWrapper nonCloseableZipIS = new NonCloseableInputStreamWrapper(zipIS);
 			_fsApi.writeToFile(nonCloseableZipIS,
 							   fileDstPath,
 							   true);		// overwrite
