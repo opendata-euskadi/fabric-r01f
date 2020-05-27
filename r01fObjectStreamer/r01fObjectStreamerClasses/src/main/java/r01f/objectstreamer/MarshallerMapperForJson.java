@@ -21,7 +21,7 @@ public class MarshallerMapperForJson
 /////////////////////////////////////////////////////////////////////////////////////////
 	public static MarshallerMapperForJson forApps(final AppCode... appCodes) {
 		return MarshallerMapperForJson.forApps(appCodes != null ? Sets.<AppCode>newLinkedHashSet(Lists.newArrayList(appCodes))
-								  							   : Sets.<AppCode>newLinkedHashSet());
+								  							    : Sets.<AppCode>newLinkedHashSet());
 	}
 	public static MarshallerMapperForJson forApps(final Set<AppCode> appCodes) {
 		return new MarshallerMapperForJson(FluentIterable.from(appCodes)

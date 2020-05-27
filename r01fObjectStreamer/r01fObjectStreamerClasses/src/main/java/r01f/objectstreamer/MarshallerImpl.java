@@ -35,19 +35,19 @@ public class MarshallerImpl
 	private final Charset _defaultCharset;
 
 	@Getter private final Memoized<MarshallerMapperForXml> _marshallerXmlMapper = new Memoized<MarshallerMapperForXml>() {
-																				@Override
-																				public MarshallerMapperForXml supply() {
-																					return new MarshallerMapperForXml(_javaPackages,
-																													  _jacksonModules);
-																				}
-																	   };
+																							@Override
+																							public MarshallerMapperForXml supply() {
+																								return new MarshallerMapperForXml(_javaPackages,
+																																  _jacksonModules);
+																							}
+																				   };
 	@Getter private final Memoized<MarshallerMapperForJson> _marshallerJsonMapper = new Memoized<MarshallerMapperForJson>() {
-																				@Override
-																				public MarshallerMapperForJson supply() {
-																					return new MarshallerMapperForJson(_javaPackages,
-																													   _jacksonModules);
-																				}
-																	   };
+																							@Override
+																							public MarshallerMapperForJson supply() {
+																								return new MarshallerMapperForJson(_javaPackages,
+																																   _jacksonModules);
+																							}
+																				   };
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////

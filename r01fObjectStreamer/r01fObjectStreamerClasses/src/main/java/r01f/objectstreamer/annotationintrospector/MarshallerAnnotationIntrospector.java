@@ -79,7 +79,7 @@ import r01f.util.types.collections.CollectionUtils;
  */
 @Slf4j
 public class MarshallerAnnotationIntrospector
-     extends AnnotationIntrospector {
+	 extends AnnotationIntrospector {
 
 	private static final long serialVersionUID = -8142099488664415041L;
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -111,8 +111,8 @@ public class MarshallerAnnotationIntrospector
 /////////////////////////////////////////////////////////////////////////////////////////
 //	IGNORE PROPERTIES
 /////////////////////////////////////////////////////////////////////////////////////////
-    @Override
-    public boolean hasIgnoreMarker(final AnnotatedMember am) {
+	@Override
+	public boolean hasIgnoreMarker(final AnnotatedMember am) {
 		// [0] - only check fields!
 		if ( !(am instanceof AnnotatedField) ) return false; // _delegatedJacksonAnnotationIntrospector.hasIgnoreMarker(am);
 
@@ -128,8 +128,8 @@ public class MarshallerAnnotationIntrospector
 		if (isIgnorable == false) isIgnorable = _delegatedJacksonAnnotationIntrospector.hasIgnoreMarker(am);
 
 
-        return isIgnorable;
-    }
+		return isIgnorable;
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	NAME
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -140,19 +140,19 @@ public class MarshallerAnnotationIntrospector
 	}
 	@Override
 	public PropertyName findNameForSerialization(final Annotated ann) {
-    	return _findName(ann,
-    					 NameFor.SERIALIZATION);
+		return _findName(ann,
+						 NameFor.SERIALIZATION);
 	}
 	@Override
 	public PropertyName findNameForDeserialization(final Annotated ann) {
-    	return _findName(ann,
-    					 NameFor.DESERIALIZATION);
+		return _findName(ann,
+						 NameFor.DESERIALIZATION);
 	}
-    private enum NameFor {
-    	SERIALIZATION,
-    	DESERIALIZATION,
-    	ROOT;
-    }
+	private enum NameFor {
+		SERIALIZATION,
+		DESERIALIZATION,
+		ROOT;
+	}
 	private PropertyName _findName(final Annotated ann,
 								   final NameFor whatFor) {
 		PropertyName propertyName = null;
@@ -297,68 +297,68 @@ public class MarshallerAnnotationIntrospector
 /////////////////////////////////////////////////////////////////////////////////////////
 //	TYPE RESOLVING
 /////////////////////////////////////////////////////////////////////////////////////////
-    @Override
+	@Override
 	public TypeResolverBuilder<?> findTypeResolver(final MapperConfig<?> config,
 												   final AnnotatedClass ac,final JavaType baseType) {
-    	TypeResolverBuilder<?> outTypeResolverBuilder = null;
+		TypeResolverBuilder<?> outTypeResolverBuilder = null;
 
-    	// try custom type resolver builders
-    	outTypeResolverBuilder = MarshallerTypeResolverBuilderDelegates.findTypeResolver(config,
-    																					 ac,baseType);
+		// try custom type resolver builders
+		outTypeResolverBuilder = MarshallerTypeResolverBuilderDelegates.findTypeResolver(config,
+																						 ac,baseType);
 
-    	// just delegate
-    	if (outTypeResolverBuilder == null) outTypeResolverBuilder = _delegatedJacksonAnnotationIntrospector.findTypeResolver(config,
+		// just delegate
+		if (outTypeResolverBuilder == null) outTypeResolverBuilder = _delegatedJacksonAnnotationIntrospector.findTypeResolver(config,
 																															  ac,baseType);
-    	return outTypeResolverBuilder;
+		return outTypeResolverBuilder;
 	}
 	@Override
 	public TypeResolverBuilder<?> findPropertyTypeResolver(final MapperConfig<?> config,
 														   final AnnotatedMember am,final JavaType baseType) {
 		TypeResolverBuilder<?> outTypeResolverBuilder = null;
 
-        // As per definition of @JsonTypeInfo, should only apply to contents of container types (collection, map),
+		// As per definition of @JsonTypeInfo, should only apply to contents of container types (collection, map),
 		// not container types themselves:
-        if (baseType.isContainerType()
-         || baseType.isReferenceType()) return null;
+		if (baseType.isContainerType()
+		 || baseType.isReferenceType()) return null;
 
-    	// try custom type resolver builders
-    	outTypeResolverBuilder = MarshallerTypeResolverBuilderDelegates.findPropertyTypeResolver(config,
-    																							 am,baseType);
+		// try custom type resolver builders
+		outTypeResolverBuilder = MarshallerTypeResolverBuilderDelegates.findPropertyTypeResolver(config,
+																								 am,baseType);
 
-    	// just delegate
-    	if (outTypeResolverBuilder == null) outTypeResolverBuilder = _delegatedJacksonAnnotationIntrospector.findPropertyTypeResolver(config,
+		// just delegate
+		if (outTypeResolverBuilder == null) outTypeResolverBuilder = _delegatedJacksonAnnotationIntrospector.findPropertyTypeResolver(config,
 																															  		  am,baseType);
-    	return outTypeResolverBuilder;
+		return outTypeResolverBuilder;
 	}
 	@Override
 	public TypeResolverBuilder<?> findPropertyContentTypeResolver(final MapperConfig<?> config,
 																  final AnnotatedMember am,final JavaType containerType) {
 		TypeResolverBuilder<?> outTypeResolverBuilder = null;
 
-        // ensure property is a container type
-        if (containerType.getContentType() == null) throw new AnnotationFormatError("Must call method with a container or reference type (got " + containerType + ")");
+		// ensure property is a container type
+		if (containerType.getContentType() == null) throw new AnnotationFormatError("Must call method with a container or reference type (got " + containerType + ")");
 
-    	// try custom type resolver builders
-    	outTypeResolverBuilder = MarshallerTypeResolverBuilderDelegates.findPropertyContentTypeResolver(config,
-    																									am,containerType);
+		// try custom type resolver builders
+		outTypeResolverBuilder = MarshallerTypeResolverBuilderDelegates.findPropertyContentTypeResolver(config,
+																										am,containerType);
 
-    	// just delegate
-    	if (outTypeResolverBuilder == null) outTypeResolverBuilder = _delegatedJacksonAnnotationIntrospector.findPropertyContentTypeResolver(config,
+		// just delegate
+		if (outTypeResolverBuilder == null) outTypeResolverBuilder = _delegatedJacksonAnnotationIntrospector.findPropertyContentTypeResolver(config,
 																															  		  		 am,containerType);
-    	return outTypeResolverBuilder;
+		return outTypeResolverBuilder;
 	}
 
-    // A cache of sub-types by abstract type
-    private final Map<Class<?>,List<NamedType>> _subTypesByAbstractType = Maps.newHashMap();
+	// A cache of sub-types by abstract type
+	private final Map<Class<?>,List<NamedType>> _subTypesByAbstractType = Maps.newHashMap();
 
 	@Override
-    public List<NamedType> findSubtypes(final Annotated ann) {
-    	List<NamedType> outTypes = null;
+	public List<NamedType> findSubtypes(final Annotated ann) {
+		List<NamedType> outTypes = null;
 
-    	if ( !(ann instanceof AnnotatedClass) ) return _delegatedJacksonAnnotationIntrospector.findSubtypes(ann);
+		if ( !(ann instanceof AnnotatedClass) ) return _delegatedJacksonAnnotationIntrospector.findSubtypes(ann);
 
-    	// [0] - Find the type to be handled
-    	//		 (when collections, handle the collection elements type)
+		// [0] - Find the type to be handled
+		//		 (when collections, handle the collection elements type)
 		Class<?> type = null;
 		if (ann.getType() != null) {
 			if (ann.getType().isCollectionLikeType() || ann.getType().isArrayType()) {
@@ -374,48 +374,48 @@ public class MarshallerAnnotationIntrospector
 		Class<?> keyType = _keyTypeFor(type);
 
 		// [2] - Find subtypes
-    	if (keyType != null) {
-    		outTypes = _subTypesByAbstractType.get(keyType);	// check the cache
-    		if (outTypes == null) {		// BEWARE!! do NOT use CollectionUtils.isNullOrEmpty()!!!!
-    			Set<?> subTypes = TypeScan.findSubTypesOfInJavaPackages(keyType,
-    													  				_javaPackagess);
-    			log.trace("{} has {} subtypes",
-    					  keyType,(subTypes != null ? subTypes.size() : 0));
+		if (keyType != null) {
+			outTypes = _subTypesByAbstractType.get(keyType);	// check the cache
+			if (outTypes == null) {		// BEWARE!! do NOT use CollectionUtils.isNullOrEmpty()!!!!
+				Set<?> subTypes = TypeScan.findSubTypesOfInJavaPackages(keyType,
+														  				_javaPackagess);
+				log.trace("{} has {} subtypes",
+						  keyType,(subTypes != null ? subTypes.size() : 0));
 
-    			if (subTypes != null && CollectionUtils.hasData(subTypes)) {
-    				outTypes = Lists.newArrayListWithExpectedSize(subTypes.size());
-    			} else {
-    				outTypes = Lists.newArrayListWithExpectedSize(0);
-    			}
+				if (subTypes != null && CollectionUtils.hasData(subTypes)) {
+					outTypes = Lists.newArrayListWithExpectedSize(subTypes.size());
+				} else {
+					outTypes = Lists.newArrayListWithExpectedSize(0);
+				}
 
-    			if (subTypes != null) {
-	    			for (Object subTypeObj : subTypes) {
-	    				Class<?> subType = (Class<?>)subTypeObj;
+				if (subTypes != null) {
+					for (Object subTypeObj : subTypes) {
+						Class<?> subType = (Class<?>)subTypeObj;
 
-	    				// find the typeId from the @TypeMarshall annotation or @JsonRootName
-	    				// ... if none of these annotations is present, use the full class name
-	    				String typeId = _findTypeIdFor(subType);
+						// find the typeId from the @TypeMarshall annotation or @JsonRootName
+						// ... if none of these annotations is present, use the full class name
+						String typeId = _findTypeIdFor(subType);
 
-	    				// register the type with it's id
-	    				outTypes.add(new NamedType(subType,
-	    										   typeId));
-	    			}
-    			}
+						// register the type with it's id
+						outTypes.add(new NamedType(subType,
+												   typeId));
+					}
+				}
 
-	    		// cache
-	    		_subTypesByAbstractType.put(keyType,outTypes);
+				// cache
+				_subTypesByAbstractType.put(keyType,outTypes);
 
-		    	// debug
-//		    	System.out.println("====>" + " > " + keyType + " > " + outTypes);
-		    	log.trace("SubType Info for {}: {}",
-		    			  keyType,outTypes);
-    		}
-    	}
+				// debug
+//				System.out.println("====>" + " > " + keyType + " > " + outTypes);
+				log.trace("SubType Info for {}: {}",
+						  keyType,outTypes);
+			}
+		}
 
-    	// if not found, delegate
-    	if (outTypes == null) outTypes = _delegatedJacksonAnnotationIntrospector.findSubtypes(ann);
-    	return outTypes;
-    }
+		// if not found, delegate
+		if (outTypes == null) outTypes = _delegatedJacksonAnnotationIntrospector.findSubtypes(ann);
+		return outTypes;
+	}
 	private static Class<?> _keyTypeFor(final Class<?> type) {
 		Class<?> outKeyType = null;
 		if (_isCollectionOrArrayType(type)) return null;
@@ -456,10 +456,10 @@ public class MarshallerAnnotationIntrospector
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 	private static boolean _isNotInstanciable(final Class<?> type) {
-    	return type.isAnnotation()
-    		|| Modifier.isAbstract(type.getModifiers())		// is abstract
-    		|| Modifier.isInterface(type.getModifiers());	// is interface
-    }
+		return type.isAnnotation()
+			|| Modifier.isAbstract(type.getModifiers())		// is abstract
+			|| Modifier.isInterface(type.getModifiers());	// is interface
+	}
 	private static boolean _isCollectionOrArrayType(final Class<?> type) {
 		return Map.class.isAssignableFrom(type)
 			|| Collection.class.isAssignableFrom(type)

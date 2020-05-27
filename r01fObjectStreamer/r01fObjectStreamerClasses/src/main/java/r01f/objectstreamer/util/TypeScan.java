@@ -101,37 +101,37 @@ public abstract class TypeScan {
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-    /**
-     * Finds subtypes of a certain base (abstract / interface class)
-     * @param baseClass
-     * @return
-     */
+	/**
+	 * Finds subtypes of a certain base (abstract / interface class)
+	 * @param baseClass
+	 * @return
+	 */
 	public static <T> Set<Class<? extends T>> findSubTypesOfInApps(final Class<T> baseClass,
 															 	   final Collection<AppCode> appCodes) {
 		return TypeScan.findSubTypesOfInJavaPackages(baseClass,
 									   				 FluentIterable.from(appCodes)
 														 .transform(JavaPackage.APP_CODE_TO_JAVA_PACKAGE)
 														 .toSet());
-    }
-    /**
-     * Finds subtypes of a certain base (abstract / interface class)
-     * @param baseClass
-     * @return
-     */
+	}
+	/**
+	 * Finds subtypes of a certain base (abstract / interface class)
+	 * @param baseClass
+	 * @return
+	 */
 	public static <T> Set<Class<? extends T>> findSubTypesOfInJavaPackages(final Class<T> baseClass,
 															 			   final Collection<JavaPackage> javaPackages) {
 		// find the sub-types
-    	Set<Class<? extends T>> outSubTypes = SubTypeOfScanner.findSubTypesAt(baseClass,
-    																		  javaPackages);
+		Set<Class<? extends T>> outSubTypes = SubTypeOfScanner.findSubTypesAt(baseClass,
+																			  javaPackages);
 
-    	// filter instanciable types
+		// filter instanciable types
 		return FluentIterable.from(outSubTypes)
-						     .filter(new Predicate<Object>() {
+							 .filter(new Predicate<Object>() {
 										@Override
 										public boolean apply(final Object obj) {
 											return ReflectionUtils.isInstanciable((Class<?>)obj);
 										}
 								  })
-						     .toSet();
-    }
+							 .toSet();
+	}
 }

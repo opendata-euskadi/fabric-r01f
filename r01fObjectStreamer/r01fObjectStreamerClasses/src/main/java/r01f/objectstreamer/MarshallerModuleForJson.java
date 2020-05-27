@@ -41,11 +41,11 @@ public class MarshallerModuleForJson
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public void setupModule(final Module.SetupContext context) {
-        super.setupModule(context);
+		super.setupModule(context);
 
-        // Append after other introspectors (instead of before) since
-        // explicit annotations should have precedence
-        context.appendAnnotationIntrospector(new MarshallerAnnotationIntrospector(_javaPackages,
-        																		  context));
+		// Append after other introspectors (instead of before) since
+		// explicit annotations should have precedence
+		context.appendAnnotationIntrospector(new MarshallerAnnotationIntrospector(_javaPackages,
+																				  context));
 	}
 }
