@@ -2,6 +2,7 @@ package r01f.objectstreamer;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Writer;
 import java.nio.charset.Charset;
 
 import com.google.common.reflect.TypeToken;
@@ -91,6 +92,8 @@ public interface Marshaller {
 		// ================================================================================
 		public <T> void toXml(final T obj,
 							  final OutputStream os);
+		public <T> void toXml(final T obj,
+							  final Writer w);
 		
 		public <T> String toXml(final T obj,final Charset charset);
 		
@@ -98,6 +101,8 @@ public interface Marshaller {
 		// ================================================================================		
 		public <T> void toJson(final T obj,
 							   final OutputStream os);
+		public <T> void toJson(final T obj,
+							   final Writer w);
 		
 		public <T> String toJson(final T obj,final Charset charset);
 		

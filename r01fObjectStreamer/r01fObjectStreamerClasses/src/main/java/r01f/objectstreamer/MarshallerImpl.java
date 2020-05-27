@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Writer;
 import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.Set;
@@ -287,6 +288,20 @@ public class MarshallerImpl
 							}
 						}
 						@Override
+						public <T> void toXml(final T obj,
+											  final Writer w) {
+							// BEWARE: JSON specification states, that only valid encodings are UTF-8, UTF-16 and UTF-32.
+							//		   No other encodings (like Latin-1) can be used
+							//		   ... so data is ALWAYS written as UTF by Jackson
+							MarshallerMapperForXml xmlMapper = _marshallerXmlMapper.get();
+							try {
+								xmlMapper.writeValue(w,
+													 obj);
+							} catch (Throwable th) {
+								throw new MarshallerException(th);
+							}
+						}
+						@Override
 						public <T> String toXml(final T obj,final Charset charset) {
 							ByteArrayOutputStream os = new ByteArrayOutputStream();
 							this.toXml(obj,os);
@@ -306,6 +321,19 @@ public class MarshallerImpl
 							MarshallerMapperForJson jsonMapper = _marshallerJsonMapper.get();
 							try {
 								jsonMapper.writeValue(os,
+													  obj);
+							} catch (Throwable th) {
+								throw new MarshallerException(th);
+							}
+						}
+						@Override
+						public <T> void toJson(final T obj,
+											   final Writer w) {
+							// BEWARE: JSON specification states, that only valid encodings are UTF-8, UTF-16 and UTF-32.
+							//		   No other encodings (like Latin-1) can be used
+							MarshallerMapperForJson jsonMapper = _marshallerJsonMapper.get();
+							try {
+								jsonMapper.writeValue(w,
 													  obj);
 							} catch (Throwable th) {
 								throw new MarshallerException(th);
