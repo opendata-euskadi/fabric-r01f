@@ -137,7 +137,6 @@ public abstract class SecurityContextServletFilterBase
 				chain.doFilter(request,response);
 				return;
 			}
-
 			// [2] - Get the [securityContext] from the web session (set at the login page)
 			//		 ... the user MUST have pass through the login page and authenticate
 			HttpSession webSession = req.getSession(false);	// false = do not create session
