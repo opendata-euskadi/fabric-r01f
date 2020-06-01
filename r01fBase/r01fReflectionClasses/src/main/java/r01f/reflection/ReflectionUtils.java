@@ -1540,8 +1540,8 @@ public class ReflectionUtils {
 	 * @param memberType 
 	 * @return 
 	 */
-	public static Method _fieldGetterMethod(final Class<?> type,
-											final String fieldName,final Class<?> fieldType) {
+	public static Method fieldGetterMethod(final Class<?> type,
+										   final String fieldName,final Class<?> fieldType) {
 		// If the field name starts with "_" remove this char
 		String theFieldName = fieldName.startsWith("_") ? fieldName.substring(1) 
 														: fieldName;
@@ -1680,7 +1680,7 @@ public class ReflectionUtils {
 			if (useAccessor) {
 				try {		 
 					// use accessors
-					Method getter = _fieldGetterMethod(obj.getClass(),fieldName,fieldType);
+					Method getter = fieldGetterMethod(obj.getClass(),fieldName,fieldType);
 					if (getter == null) throw ReflectionException.noMethodException(obj.getClass(),fieldName + " getter");
 					outObj = getter.invoke(obj,(Object[])null);
 					// outObj = PropertyUtils.getProperty(obj,fieldName);
@@ -1694,7 +1694,7 @@ public class ReflectionUtils {
 					//			... try a less conventional way (beware maps & lists: use always the interface!)					
 					Class<?> valueType = fieldType != null ? CollectionUtils.getCollectionType(fieldType) : null;
 					if (valueType == null) valueType = fieldType;	// if it's NOT a collection it's an "usual" type							
-					Method accessorMethod = _fieldGetterMethod(obj.getClass(),fieldName,valueType);						
+					Method accessorMethod = fieldGetterMethod(obj.getClass(),fieldName,valueType);						
 					if (accessorMethod != null) {
 						outObj = ReflectionUtils.invokeMethod(obj,accessorMethod);
 					} else {
