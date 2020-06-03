@@ -129,21 +129,22 @@ c) **Eclipse WTP tools** (from eclipse update site http://download.eclipse.org/r
 
 ```
 		  Web, XML, Java EE and OSGi Enterprise Development
-			[X]	Eclipse Faceted Project Framework
+			[X] Eclipse Faceted Project Framework
 			[X] Eclipse Faceted Project Framework JDT Enablement
 			[X] Eclipse Java EE developer tools
 			[X] Eclipse Java Web Developer Tools
 			[X] Eclipse Web Developer Tools
+			[X] Eclipse XML Editor and Tools
 			[X] Eclipse XSL Developer Tools
 			[X] JavaScript Development Tools
 			[X] JavaScript Development Tools Chromium/V8 Remote Debugger
+			[X] JST Server Adapters
+			[X] JST Server Adapters Extensions
+			[X] JST Server UI
 			[X] m2e connector for mavenarchiver pom properties
 			[X] m2e-wtp - JAX-RS configurator for WTP.
 			[X] m2e-wtp - JPA configurator for WTP.
 			[X] m2e-wtp - Maven Integration for WTP.
-			[X] JST Server Adapters
-			[X] JST Server Adapters Extensions
-			[X] JST Server UI
 			[x] Wild Web Developer
 			[X] WST Server Adapters
 			
