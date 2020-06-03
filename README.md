@@ -18,7 +18,7 @@
 
 [Installation guide (ivy)](docs/eclipse/install/eclipse_ivy_install.md)
 
-## Tomcat hotswap in eclipse
+## Java hotswap in eclipse (used to setup hotdeploy in tomcat)
 
 [Tomcat hotswap](docs/java/java-hotswap.md)
 

@@ -165,6 +165,7 @@ e) Optional ** Genuitec DevStyle** (darkest dark theme: https://www.genuitec.com
 
 ## [5]: Clone R01F Git repository
 
+(do NOT import projects in eclipse)
 
 ## [6]: Configure plugins
 
@@ -202,6 +203,13 @@ This behavior can be disabled at `[Team] > [Git] > [Projects]` and **deselect** 
 
 c) **[Java]**
 
+Create a new [JRE]: `[Java] > [Installed JREs] > [Add]` pointing to a JDK8 at  `{dev_home}/java/jdk8` **Make this JRE the DEFAULT one**
+
+Create another [JRE] pointing to a JDK8 hot-deploy *patched* JDK8 at `{dev_home}/java/jdk8-hotswap`  
+see [how to installa a hotswap jre](../../java/java-hotswap.md to patch the JDK  
+set the JRE default JVM arguments: `-XXaltjvm=dcevm -javaagent:c:\develop\local-libs\hotswap-agent\hotswap-agent-1.4.0.jar`
+
+Preferences  
 > Import `[compiler preferences]`: `[File] > [Import] > [Preferences]` browse filesystem and select `/{dev_home}/projects/fabric-r01f/docs/eclipse/preferences/pci_compiler_preferences.epf`
 
 > `[Java] > [Editor] > [Templates]` add a NEW **Java** template named **_sep** with the following content
