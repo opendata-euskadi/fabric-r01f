@@ -60,6 +60,28 @@ public abstract class CommonOIDs {
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Immutable
+	@MarshallType(as="usageId")
+	@EqualsAndHashCode(callSuper=true)
+	@NoArgsConstructor
+	public static final class UsageID
+	     		      extends OIDBaseMutable<String> {
+		private static final long serialVersionUID = -4958918132166472496L;
+		
+		public UsageID(final String oid) {
+			super(oid);
+		}
+		public static UsageID from(final String id) {
+			return new UsageID(id);
+		}
+		public static UsageID forId(final String id) {
+			return new UsageID(id);
+		}
+		public static UsageID valueOf(final String id) {
+			return new UsageID(id);
+		}
+		public static final UsageID DEFAULT = UsageID.forId("default");
+	}
+	@Immutable
 	@MarshallType(as="systemId")
 	@EqualsAndHashCode(callSuper=true)
 	@NoArgsConstructor
