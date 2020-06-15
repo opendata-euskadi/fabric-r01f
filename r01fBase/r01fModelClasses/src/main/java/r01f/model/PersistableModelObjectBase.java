@@ -57,13 +57,13 @@ public abstract class PersistableModelObjectBase<O extends PersistableObjectOID,
 	 * 		... let's say that initially we have stock=100
 	 * 			----------[100]----------
 	 * 			|						|
-	 * 		  Load					Load
-	 *		  |-1						|-1
-	 *		[99]					 [99]
-	 *		  |						|
-	 *		Save					Save
-	 *		  |---------[99]			|
-	 *		  		  [99]----------| <---WTF!! the stock should have been 98
+	 * 		  Load					   Load
+	 *		    |-1						|-1
+	 *		  [99]					  [99]
+	 *		    |						|
+	 *		  Save					  Save
+	 *		    |---------[99]			|
+	 *		  		      [99]----------| <---WTF!! the stock should have been 98
 	 *		  									but it ends being 99: WRONG!!
 	 * To prevent this situation a last update timestamp or an incrementing version is used
 	 * Every time a process want to update an entity it MUST tell us what the version is so
@@ -74,14 +74,14 @@ public abstract class PersistableModelObjectBase<O extends PersistableObjectOID,
 	 * 			|						|
 	 * 		  Load 					   Load
 	 * 	   (version=1) 			   (version=1)
-	 *		  |-1						|-1
-	 *		[99]					 [99]
-	 *		  |						|
-	 *		Save					  |
-	 *	 (version=1)				  |
-	 *		  |---------[99]			|
-	 *		  	   (version=2)		|
-	 *		  			|		   Save
+	 *		    |-1						|-1
+	 *		  [99]					  [99]
+	 *		    |		   			   |
+	 *		  Save					   |
+	 *	  (version=1)				   |
+	 *		    |---------[99]		   |
+	 *		  	   (version=2)	       |
+	 *		  			|		      Save
 	 *		  		CONFLICT!<--(Version=1)
 	 *
 	 * As seen, to be able to detect conflicts:
