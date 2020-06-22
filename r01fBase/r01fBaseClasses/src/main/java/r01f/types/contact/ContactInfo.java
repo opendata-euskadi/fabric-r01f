@@ -114,7 +114,7 @@ public class ContactInfo
 														&& mail.getMail().equals(email);
 												}
 										 })
-							 .orNull();	
+							 .orNull();
 	}
 	public ContactMail getGoogleMail() {
 		if (CollectionUtils.isNullOrEmpty(_contactMails)) return null;
@@ -176,7 +176,7 @@ public class ContactInfo
 	 * Returns a mail address other than default
 	 * @return
 	 */
-	public EMail getMailAddressOtherThanDefaul() {
+	public EMail getMailAddressOtherThanDefault() {
 		ContactMail mail = _findOtherThanDefault(_contactMails);
 		return mail != null ? mail.getMail() : null;
 	}
@@ -239,6 +239,51 @@ public class ContactInfo
 		return CollectionUtils.hasData(_contactPhones);
 	}
 	/**
+	 * @return true if there are phones of a certain type associated with the contact info
+	 */
+	public boolean hasPhonesOfType(final ContactPhoneType type) {
+		if (hasPhones()){
+		return FluentIterable.from(_contactPhones)
+							 .anyMatch(new Predicate<ContactPhone>() {
+												@Override
+												public boolean apply(final ContactPhone aPhone) {
+													return aPhone != null
+														&& aPhone.getType() == type;
+												}
+										 });
+		}
+		return false;
+	}
+	/**
+	 * Returns the default contact phone.
+	 * @param id
+	 * @return
+	 */
+	public ContactPhone getDefaultContactPhone() {
+		ContactPhone phone = _findDefault(_contactPhones);
+		return phone != null ? phone : null;
+	}
+	/**
+	 * Returns the default contact phone or any of them if any is set as the default one
+	 * @return
+	 */
+	public ContactPhone getDefaultContactPhoneOrAny() {
+		ContactPhone phone = _findDefault(_contactPhones);
+		if (phone == null && CollectionUtils.hasData(_contactPhones)) phone = CollectionUtils.pickOneElement(_contactPhones);
+		return phone != null ? phone : null;
+	}
+	/**
+	 * Returns the default contact phone or any of them if any is set as the default one
+	 * @return
+	 */
+	public ContactPhone getDefaultContactPhoneOrAnyForType(final ContactPhoneType type) {
+		ContactPhone phone = _findDefaultForType(_contactPhones,
+												 type);
+		if (phone == null && hasPhonesOfType(type)) phone = _findOtherThanDefaultForType(_contactPhones,
+																						 type);
+		return phone != null ? phone : null;
+	}
+	/**
 	 * Checks if there exists a {@link ContactPhone} with the given number
 	 * @param thePhone
 	 * @return
@@ -268,7 +313,7 @@ public class ContactInfo
 														&& aPhone.getNumber().equals(phone);
 												}
 										 })
-							 .orNull();	
+							 .orNull();
 	}
 	/**
 	 * Returns a phone for an intended usage
@@ -402,7 +447,7 @@ public class ContactInfo
 														&& socialNet.getUser().is(user);
 												}
 										 })
-							 .orNull();	
+							 .orNull();
 	}
 	/**
 	 * Returns a social network for an intended usage
@@ -412,7 +457,7 @@ public class ContactInfo
 	 */
 	public ContactSocialNetwork getSocialNetwork(final ContactSocialNetworkType type,
 								  				 final ContactInfoUsage usage) {
-		ContactSocialNetwork net = CollectionUtils.hasData(_contactSocialNetworks) 
+		ContactSocialNetwork net = CollectionUtils.hasData(_contactSocialNetworks)
 										? CollectionUtils.of(_contactSocialNetworks)
 												     	 .findFirstElementMatching(new Predicate<ContactSocialNetwork>() {
 																							@Override
@@ -480,7 +525,7 @@ public class ContactInfo
 														&& web.getUrl().equals(url);
 												}
 										 })
-							 .orNull();	
+							 .orNull();
 	}
 	/**
 	 * Returns an url for an intended usage
@@ -681,6 +726,32 @@ public class ContactInfo
 																									@Override
 																									public boolean apply(final ContactMeanDataBase<?> el) {
 																										return el.isDefault();
+																									}
+															  							    });
+		return out;
+	}
+	@SuppressWarnings("unchecked")
+	private static <M extends ContactPhone> M _findDefaultForType(final Collection<? extends ContactPhone> col,
+																  final ContactPhoneType type) {
+		M out = null;
+		if (CollectionUtils.hasData(col)) out = (M)CollectionUtils.of(col)
+																  .findFirstElementMatching(new Predicate<ContactPhone>() {
+																	  @Override
+																	  public boolean apply(final ContactPhone el) {
+																		  return el.isDefault() && el.getType() == type;
+																	  }
+																  });
+		return out;
+	}
+	@SuppressWarnings("unchecked")
+	private static <M extends ContactPhone> M _findOtherThanDefaultForType(final Collection<? extends ContactPhone> col,
+															  			   final ContactPhoneType type) {
+		M out = null;
+		if (CollectionUtils.hasData(col)) out = (M)CollectionUtils.of(col)
+														     	  .findFirstElementMatching(new Predicate<ContactPhone>() {
+																									@Override
+																									public boolean apply(final ContactPhone el) {
+																										return !el.isDefault() && el.getType() == type;
 																									}
 															  							    });
 		return out;
