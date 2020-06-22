@@ -49,6 +49,11 @@ public class GeoPosition
 //  FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
+	 * A texttual (lang-independent) representation of the address
+	 */
+	@MarshallField(as="address",escape=true)
+	@Getter @Setter private String _addressText;
+	/**
 	 * Territory (groups more than a single state)
 	 */
 	@MarshallField(as="territory")
@@ -94,11 +99,6 @@ public class GeoPosition
 	@MarshallField(as="portal")
 	@Getter @Setter private GeoPortal _portal;
 	/**
-	 * Zip code
-	 */
-	@MarshallField(as="zipCode")
-	@Getter @Setter private GeoZipCode _zipCode;
-	/**
 	 * Stairway
 	 */
 	@MarshallField(as="stairWay")
@@ -113,6 +113,11 @@ public class GeoPosition
 	 */
 	@MarshallField(as="door")
 	@Getter @Setter private String _door;
+	/**
+	 * Zip code
+	 */
+	@MarshallField(as="zipCode")
+	@Getter @Setter private GeoZipCode _zipCode;
 	/**
 	 * X,Y position
 	 */
