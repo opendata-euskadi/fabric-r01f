@@ -461,7 +461,7 @@ public abstract class CommonOIDs {
 		@Getter @Setter private Password _password;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//
+//	SECURITY
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Immutable
 	@MarshallType(as="authenticatedActor")
@@ -554,6 +554,31 @@ public abstract class CommonOIDs {
 		}
 		public byte[] getBytes() {
 			return this.asString().getBytes();
+		}
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	GENERIC TOKEN
+/////////////////////////////////////////////////////////////////////////////////////////
+	@Immutable
+	@MarshallType(as="token")
+	@EqualsAndHashCode(callSuper=true)
+	@NoArgsConstructor
+	public static final class Token
+	     		      extends OIDBaseMutable<String> {
+
+		private static final long serialVersionUID = -5026236014365451126L;
+		
+		public Token(final String oid) {
+			super(oid);
+		}
+		public static Token from(final String id) {
+			return new Token(id);
+		}
+		public static Token forId(final String id) {
+			return new Token(id);
+		}
+		public static Token valueOf(final String id) {
+			return new Token(id);
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
