@@ -24,12 +24,12 @@ This environment variable can be set:
 [1] - At a JVM env property like:
 		-DR01_HOME=/data/r01
 
-[2] - Using an environment-dependent file named {appCode}LogEnvironment.xml 
+[2] - Using an environment-dependent file named {appCode}LogEnvironment.xml
 	  included in the main logback.xml file that contain env-dependent config
 			<included>
-				<property name="R01_HOME" value="c:/develop/log" />	
+				<property name="R01_HOME" value="c:/develop/log" />
 			</included>
-		
+
 If the R01_HOME environment var is NOT found, logs are located at /log folder
 
 This GLOBAL logback.xml is NOT ENVIRONMENT DEPENDENT
@@ -55,7 +55,7 @@ This GLOBAL logback.xml is NOT ENVIRONMENT DEPENDENT
 		</then>
 	</if>
 	-->
-	<property name="logPath" value="${R01_Home:-/pci}/logs/${appName}/" />
+	<property name="logPath" value="${R01_Home:-/pci}/logs/${appName}" />
 
 	<!-- 1 por día. Nivel DEBUG. 10 días de historia
 		 logger{10} líneas de stacktrace para las excepciones
