@@ -93,13 +93,13 @@ public class SearchFilterForModelObjectModifierWrapper<F extends SearchFilterFor
 										 final T eqValue,
 										 final QueryClauseOccur clauseOccur) {
 		Preconditions.checkArgument(eqValue != null,"The value to be set in the equals clause cannot be null");
-		final QueryClause clause = _wrappedFilter.getAccessorWrapper().queryClauses().find(fieldId);
+		QueryClause clause = _wrappedFilter.getAccessorWrapper().queryClauses().find(fieldId);
 		if (clause != null) {
-			final EqualsQueryClause<T> eq = clause.as(new TypeRef<EqualsQueryClause<T>>() {/* nothing */});
+			EqualsQueryClause<T> eq = clause.as(new TypeRef<EqualsQueryClause<T>>() {/* nothing */});
 			eq.setEqValue(eqValue);
 		} else {
 			if (eqValue instanceof Range || eqValue instanceof com.google.common.collect.Range) throw new IllegalArgumentException("For range conditions use _addOrUpdateRangeClause!");
-			final EqualsQueryClause<T> eq = EqualsQueryClause.forField(fieldId)
+			EqualsQueryClause<T> eq = EqualsQueryClause.forField(fieldId)
 													   .of(eqValue);
 			this.addClause(eq,clauseOccur);
 		}
