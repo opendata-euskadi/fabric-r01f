@@ -85,6 +85,12 @@ public class FileNameAndExtension
 /////////////////////////////////////////////////////////////////////////////////////////
 //  EQUALS & HASHCODE
 /////////////////////////////////////////////////////////////////////////////////////////
+	public boolean is(final FileNameAndExtension other) {
+		return this.equals(other);
+	}
+	public boolean isNOT(final FileNameAndExtension other) {
+		return !this.is(other);
+	}
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj == null) return false;
