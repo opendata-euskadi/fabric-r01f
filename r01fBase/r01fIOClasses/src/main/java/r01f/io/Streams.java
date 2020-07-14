@@ -34,43 +34,43 @@ public class Streams {
 			IOUtils.closeQuietly(is);
 		}
 	}
-    /**
-     * Loads the wrapped {@link InputStream} as a String
-     * @param is
-     * @return
-     * @throws IOException
-     */
+	/**
+	 * Loads the wrapped {@link InputStream} as a String
+	 * @param is
+	 * @return
+	 * @throws IOException
+	 */
 	public static String inputStreamAsString(final InputStream is) throws IOException {
 		return Streams.inputStreamAsString(is,Charset.defaultCharset());
 	}
-    /**
-     * Loads the wrapped {@link InputStream} as a String
-     * @param is
-     * @param charset
-     * @return
-     * @throws IOException
-     */
+	/**
+	 * Loads the wrapped {@link InputStream} as a String
+	 * @param is
+	 * @param charset
+	 * @return
+	 * @throws IOException
+	 */
 	public static String inputStreamAsString(final InputStream is,final Charset charSet) throws IOException {
 		Writer writer = null;
-        if (is != null) {
-            writer = new StringWriter();
-            char[] buffer = new char[1024];
-            try {
-                Reader reader = new BufferedReader(new InputStreamReader(is,charSet));
-                int n;
-                while ((n = reader.read(buffer)) != -1) {
-                    writer.write(buffer, 0, n);
-                }
-            } finally {
-            	try {
-            		is.close();
-            	} catch (IOException ioEx) {
-            		/* ignore */
-            	}
-            }
-        }
-        return writer != null ? writer.toString()
-        					  : null;
+		if (is != null) {
+			writer = new StringWriter();
+			char[] buffer = new char[1024];
+			try {
+				Reader reader = new BufferedReader(new InputStreamReader(is,charSet));
+				int n;
+				while ((n = reader.read(buffer)) != -1) {
+					writer.write(buffer, 0, n);
+				}
+			} finally {
+				try {
+					is.close();
+				} catch (IOException ioEx) {
+					/* ignore */
+				}
+			}
+		}
+		return writer != null ? writer.toString()
+							  : null;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  METHODS
@@ -88,8 +88,8 @@ public class Streams {
 	 * @return Number of bytes, which have been copied.
 	 */
 	public static long copy(final InputStream pInputStream,
-             				final OutputStream pOutputStream,
-             				final boolean pClose) throws IOException {
+			 				final OutputStream pOutputStream,
+			 				final boolean pClose) throws IOException {
 		return Streams.copy(pInputStream,
 						 	pOutputStream,
 						 	pClose,
@@ -109,49 +109,49 @@ public class Streams {
 							final boolean pClose,
 							final int bufferSize) throws IOException {
 		OutputStream out = pOut;
-        InputStream in = pIn;
-        byte[] pBuffer = new byte[bufferSize];
-        try {
-            long total = 0;
-            for (;;) {
-                int res = in.read(pBuffer);
-                if (res == -1) {
-                    break;
-                }
-                if (res > 0) {
-                    total += res;
-                    if (out != null) {
-                        out.write(pBuffer, 0, res);
-                    }
-                }
-            }
-            if (out != null) {
-                if (pClose) {
-                    out.close();
-                } else {
-                    out.flush();
-                }
-                out = null;
-            }
-            in.close();
-            in = null;
-            return total;
-        } finally {
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException ioEx) {
-                    /* Ignore me */
-                }
-            }
-            if (pClose  &&  out != null) {
-                try {
-                    out.close();
-                } catch (IOException ioEx) {
-                    /* Ignore me */
-                }
-            }
-        }
+		InputStream in = pIn;
+		byte[] pBuffer = new byte[bufferSize];
+		try {
+			long total = 0;
+			for (;;) {
+				int res = in.read(pBuffer);
+				if (res == -1) {
+					break;
+				}
+				if (res > 0) {
+					total += res;
+					if (out != null) {
+						out.write(pBuffer, 0, res);
+					}
+				}
+			}
+			if (out != null) {
+				if (pClose) {
+					out.close();
+				} else {
+					out.flush();
+				}
+				out = null;
+			}
+			in.close();
+			in = null;
+			return total;
+		} finally {
+			if (in != null) {
+				try {
+					in.close();
+				} catch (IOException ioEx) {
+					/* Ignore me */
+				}
+			}
+			if (pClose  &&  out != null) {
+				try {
+					out.close();
+				} catch (IOException ioEx) {
+					/* Ignore me */
+				}
+			}
+		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  READABLE
@@ -177,16 +177,15 @@ public class Streams {
 							final Writer w,
 							final int buffSize) throws IOException {
 		CharBuffer buff = CharBuffer.allocate(2 * 1024);
-	    char[] chars = buff.array();
+		char[] chars = buff.array();
 
-	    while (r.read(buff) != -1) { // Read from channel until EOF
-	      // Put the char buffer into drain mode, and write its contents
-	      // to the Writer, reading them from the backing array.
-	      buff.flip();
-	      w.write(chars,
-	    		  buff.position(),buff.remaining());
-	      buff.clear(); 		// Clear the character buffer
-	    }
+		while (r.read(buff) != -1) { // Read from channel until EOF
+		  // Put the char buffer into drain mode, and write its contents
+		  // to the Writer, reading them from the backing array.
+		  buff.flip();
+		  w.write(chars,
+				  buff.position(),buff.remaining());
+		  buff.clear(); 		// Clear the character buffer
+		}
 	}
-
 }
