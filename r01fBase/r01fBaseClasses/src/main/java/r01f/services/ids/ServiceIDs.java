@@ -151,6 +151,7 @@ public abstract class ServiceIDs {
 		public static final CoreModule NOTIFIER = CoreModule.forId("notifier");
 		public static final CoreModule BUSINESS = CoreModule.forId("business");
 		public static final CoreModule SECURITY = CoreModule.forId("security");
+		public static final CoreModule CMS = CoreModule.forId("cms");
 	}
 	@MarshallType(as="coreAppAndModule")
 	@EqualsAndHashCode(callSuper=true)
