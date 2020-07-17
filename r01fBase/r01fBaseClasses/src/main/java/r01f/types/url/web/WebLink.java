@@ -200,6 +200,6 @@ public class WebLink
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(_url,_textData,_presentation);
+		return Objects.hashCode(_url);
 	}
 }
