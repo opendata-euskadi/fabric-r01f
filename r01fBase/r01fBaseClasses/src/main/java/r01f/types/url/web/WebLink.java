@@ -186,17 +186,17 @@ public class WebLink
 								: this.getUrl() != null && other.getUrl() == null ? false
 																				  : this.getUrl() == null && other.getUrl() != null ? false
 																						  											: true;		// both urls null
-		boolean textEq = this.getTextData() != null && other.getTextData() != null
-								? this.getTextData().equals(other.getTextData())
-								: this.getTextData() != null && other.getTextData() == null ? false
-																						    : this.getTextData() == null && other.getTextData() != null ? false
-																				   		   											    				: true;		// both text null
-		boolean presEq = this.getPresentation() != null && other.getPresentation() != null
-								? this.getPresentation().equals(other.getPresentation())
-								: this.getPresentation() != null && other.getPresentation() == null ? false
-																									: this.getPresentation() == null && other.getPresentation() != null ? false
-																																										: true;		// both presentation null
-		return urlEq && textEq && presEq;
+//		boolean textEq = this.getTextData() != null && other.getTextData() != null
+//								? this.getTextData().equals(other.getTextData())
+//								: this.getTextData() != null && other.getTextData() == null ? false
+//																						    : this.getTextData() == null && other.getTextData() != null ? false
+//																				   		   											    				: true;		// both text null
+//		boolean presEq = this.getPresentation() != null && other.getPresentation() != null
+//								? this.getPresentation().equals(other.getPresentation())
+//								: this.getPresentation() != null && other.getPresentation() == null ? false
+//																									: this.getPresentation() == null && other.getPresentation() != null ? false
+//																																										: true;		// both presentation null
+		return urlEq;
 	}
 	@Override
 	public int hashCode() {
