@@ -196,7 +196,7 @@ public class WebLink
 //								: this.getPresentation() != null && other.getPresentation() == null ? false
 //																									: this.getPresentation() == null && other.getPresentation() != null ? false
 //																																										: true;		// both presentation null
-		return urlEq; 
+		return urlEq;
 	}
 	@Override
 	public int hashCode() {
