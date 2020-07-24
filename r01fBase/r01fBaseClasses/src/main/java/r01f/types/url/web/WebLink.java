@@ -75,7 +75,7 @@ public class WebLink
 		// default no-args constructor
 	}
 	public WebLink(final WebLink other) {
-		_url = other.getUrl();
+		_url = new Url(other.getUrl() != null ? other.getUrl() : new Url(""));	// clone! (but ensure the url is NOT null)
 		_textData = other.getTextData();
 		_presentation = other.getPresentation() != null ? new WebLinkPresentationData(other.getPresentation()) : null;
 	}
