@@ -13,9 +13,16 @@ Install PowerShell CORE:
 	
 	https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-core-on-windows?view=powershell-7
 
-	cmd> dotnet tool install --global PowerShell
+install powershell as DOTNET global tool:
+	  install: cmd> dotnet tool install --global PowerShell
+	uninstall: cmd> dotnet tool uninstall -g powershell
+	   update: cmd> dotnet tool update -g powershell
 
+Independent install powershell 
 	Download and install [powershell 7]: https://github.com/PowerShell/PowerShell/releases/tag/v7.0.0
+	or run powerShell > iex "& { $(irm https://aka.ms/install-powershell.ps1) } -UseMSI"
+	(see https://www.thomasmaurer.ch/2019/07/how-to-install-and-update-powershell-7/)
+	
 
 INSTALL WINDOWS LINUX SUBSYSTEM
 ================================
@@ -29,7 +36,15 @@ https://adamtheautomator.com/windows-subsystem-for-linux/#updating-to-windows-su
 [2] - Update to Windows Subsystem for Linux 2:
 
 	PowerShell > Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform
+	
+	Update the WSL kernel:
+	https://docs.microsoft.com/en-us/windows/wsl/wsl2-kernel
 
+	Set the default WSL version to v2
+	PowerShell> wsl --set-default-version 2
+	
+	or for a given linux distro:
+	PowerShell> wsl --set-version {DistroName} 2
 
 [3] Install ubuntu:
 
@@ -50,18 +65,18 @@ https://docs.microsoft.com/es-es/windows/wsl/install-manual
 
 	Create the directory where ubuntu will reside > C:\develop\wsl\ubuntu1804
 
-	PowerShell> Set-Location C:\develop\wsl\ubuntu1804
-	PowerShell> Invoke-WebRequest -Uri https://aka.ms/wsl-ubuntu-1804 -OutFile Ubuntu.appx -UseBasicParsing
+	PowerShell> Set-Location C:\develop\wsl\ubuntu2004
+	PowerShell> Invoke-WebRequest -Uri https://aka.ms/wslubuntu2004 -OutFile Ubuntu.appx -UseBasicParsing  <-- the complete list of distros is at https://docs.microsoft.com/es-es/windows/wsl/install-manual
 	PowerShell> Rename-Item .\Ubuntu.appx Ubuntu.zip
 	PowerShell> Expand-Archive .\Ubuntu.zip -Verbose
 
-	cmd > C:\develop\wsl\ubuntu1804\ubuntu1804.exe as an Administrator
+	cmd > C:\develop\wsl\ubuntu2004\ubuntu2004.exe as an Administrator
 
 	(the ubuntu filesystem will be at: C:\develop\wsl\ubuntu1804\Ubuntu\rootfs)
 
 **run the installed ubuntu** 
 
-	cmd > C:\develop\wsl\ubuntu1804\ubuntu1804.exe
+	cmd > C:\develop\wsl\ubuntu2004\ubuntu2004.exe
 
 ... or just [start] > [ubuntu]
 
@@ -97,6 +112,7 @@ Ubuntu root FileSystem : C:\develop\wsl\ubuntu1804\Ubuntu\rootfs\
 User ubuntu home dir : C:\develop\wsl\ubuntu1804\Ubuntu\rootfs\home\ubuntu
 
 [2] - Install multiple instances of ubuntu in the same WSL:
+
 	https://stackoverflow.com/questions/51584765/how-do-you-install-multiple-separate-instances-of-ubuntu-in-wsl
 
 

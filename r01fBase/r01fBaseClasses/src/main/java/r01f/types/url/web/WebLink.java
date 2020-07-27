@@ -17,6 +17,7 @@ import r01f.types.html.HtmlElementId;
 import r01f.types.tag.TagList;
 import r01f.types.url.HasUrl;
 import r01f.types.url.Url;
+import r01f.util.types.Strings;
 
 /**
  * Models an HTML link
@@ -74,7 +75,7 @@ public class WebLink
 		// default no-args constructor
 	}
 	public WebLink(final WebLink other) {
-		_url = other.getUrl();
+		_url = new Url(other.getUrl() != null ? other.getUrl() : new Url(""));	// clone! (but ensure the url is NOT null)
 		_textData = other.getTextData();
 		_presentation = other.getPresentation() != null ? new WebLinkPresentationData(other.getPresentation()) : null;
 	}
@@ -170,6 +171,24 @@ public class WebLink
 	public void setTags(final TagList<String> tags) {
 		if (_textData == null) _textData = new WebLinkText();
 		_textData.setTags(tags);
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	
+/////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Returns the most suitable text to be displayed: if the text is availaible it's returned,
+	 * otherwise the alt text is returned and if neither the text nor the alt text are available,
+	 * the url is returned
+	 * @return
+	 */
+	public String getDisplayText() {
+		return Strings.isNOTNullOrEmpty(this.getText()) 
+						? this.getText()
+						: Strings.isNOTNullOrEmpty(this.getDescription()) 
+								? this.getDescription()
+								: this.getUrl() != null
+										? this.getUrl().asString()
+										: "NO TEXT DEFINED";
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  EQUALS
