@@ -76,7 +76,7 @@ public abstract class HtmlLinkRenderer {
 												final WebLinkPresentationData presentation) {
 		return HtmlLinkRenderer.of(url,
 								  new WebLinkText(lang,
-												  linkText,linkTitle),
+												  linkText,linkTitle, null),// Fixes an issue with method overload
 								  presentation);
 	}
 	public static HtmlLinkRendererRenderStep of(final Url url,
