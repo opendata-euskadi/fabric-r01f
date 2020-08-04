@@ -17,61 +17,79 @@
 <!-- ====================================================================== -->
 <!-- ARTIFACT                                                               -->
 <!-- ====================================================================== -->
-	<name>r01fRESTServicesJersey2Classes</name>
-	<artifactId>r01fRESTServicesJersey2Classes</artifactId>
+	<name>r01fWebProfileGuiceClasses</name>
+	<artifactId>r01fWebProfileGuiceClasses</artifactId>
+
 <!-- ====================================================================== -->
 <!-- DEPENDENCIES                                                           -->
 <!-- ====================================================================== -->
 	<dependencies>
-
 		<!-- ///////////////////////////////////////// -->
-		<!-- REST Service  , must be inherited from r01fRESTServicesClasses,  but...
-		         Notes:
-		            1. [ JSR311 ]     JSR 2.0 cannot be used with Jersey 1
-		            2. [ Jersey 2 ]   Jersey 2  implements JSR 2.0 ...BUT, important!  has no integration with Guice ...]
-		            3.  ... Also [ check it ] , maybe,  another issues could be be caused by using   javax.servlet 3...
-		     When possible include/enable javax.ws.rs-api  and disable jsr311-api dependency into r01fRESTServicesClasses
-		             -->
-		<!-- /////////////////////////////////////////  -->
+		<!-- Base: web                                 -->
+		<!-- ///////////////////////////////////////// -->
 		<dependency>
 			<groupId>r01.r01f.web</groupId>
-			<artifactId>r01fRESTServicesClasses</artifactId>
+			<artifactId>r01fWebProfileClasses</artifactId>
 			<version>${revision}</version>
-			<exclusions>
-		        <exclusion>
-		           <groupId>javax.ws.rs</groupId>
-		           <artifactId>jsr311-api</artifactId>
-		        </exclusion>
-             </exclusions>
+		</dependency>
+
+		<!-- ///////////////////////////////////////// -->
+		<!-- GUICE WEb                                 -->
+		<!-- ///////////////////////////////////////// -->
+		<dependency>
+		    <groupId>com.google.inject</groupId>
+		    <artifactId>guice</artifactId>
+		    <version>${guice.version}</version>
 		</dependency>
 		<dependency>
-		   	<groupId>javax.ws.rs</groupId>
-		    <artifactId>javax.ws.rs-api</artifactId>
-		    <version>2.1</version>
+		    <groupId>com.google.inject.extensions</groupId>
+		    <artifactId>guice-servlet</artifactId>
+		    <version>${guice.version}</version>
+
+		    <!-- sometimes guice-servlet forces guice-xxx-tests.jar artifact
+		         this conflicts with guice.jar main artifcat -->
+		    <exclusions>
+		    	<exclusion>
+		    		<groupId>com.google.inject</groupId>
+		    		<artifactId>guice</artifactId>
+		    	</exclusion>
+		    </exclusions>
 		</dependency>
 
 		<!-- ///////////////////////////////////////// -->
 		<!-- ServletAPI                                -->
 		<!-- ///////////////////////////////////////// -->
-		<!-- [r01fWebProfileClasses] has SevletAPI as a dependency,
-			 ... BUT it's SCOPE is PROVIDED so it has to be defined
-			     here again -->
 		<dependency>
 		    <groupId>javax.servlet</groupId>
 		    <artifactId>javax.servlet-api</artifactId>
-		    <version>4.0.1</version>
+		    <version>3.1.0</version>
 		    <scope>provided</scope>		<!-- BEWARE!!! -->
 		</dependency>
 
 		<!-- ///////////////////////////////////////// -->
-		<!-- Jersey 2                                   -->
+		<!-- R01F: Proxy Servlet                       -->
+		<!-- 			> httpclient & file upload     -->
+		<!-- When using [r01fWebProfileClasses, these  -->
+		<!-- dependencies SHOUL BE EXCLUDED            -->
 		<!-- ///////////////////////////////////////// -->
 		<dependency>
-		    <groupId>org.glassfish.jersey.core</groupId>
-		    <artifactId>jersey-server</artifactId>
-		    <version>2.29.1</version>
+		    <groupId>r01.r01f.httpclient</groupId>
+		    <artifactId>r01fHttpClientClasses</artifactId>
+		    <version>${revision}</version>
 		</dependency>
-</dependencies>
+		<dependency>
+		    <groupId>commons-fileupload</groupId>
+		    <artifactId>commons-fileupload</artifactId>
+		    <version>1.3.3</version>
+		    <exclusions>
+		    	<exclusion>
+		    		<groupId>commons-io</groupId>
+		    		<artifactId>commons-io</artifactId>
+		    	</exclusion>
+		    </exclusions>
+		</dependency>
+	</dependencies>
+
 <!-- ====================================================================== -->
 <!-- BUILD                                                                  -->
 <!-- ====================================================================== -->

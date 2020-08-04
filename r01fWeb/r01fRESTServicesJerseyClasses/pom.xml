@@ -32,34 +32,20 @@
 			<artifactId>r01fRESTServicesClasses</artifactId>
 			<version>${revision}</version>
 		</dependency>
-		
+
 		<!-- ///////////////////////////////////////// -->
-		<!-- GUICE WEb                                 -->
+		<!-- Base: web                                 -->
 		<!-- ///////////////////////////////////////// -->
 		<dependency>
-		    <groupId>com.google.inject</groupId>
-		    <artifactId>guice</artifactId>
-		    <version>${guice.version}</version>
+			<groupId>r01.r01f.web</groupId>
+			<artifactId>r01fWebProfileGuiceClasses</artifactId>
+			<version>${revision}</version>
 		</dependency>
-		<dependency>
-		    <groupId>com.google.inject.extensions</groupId>
-		    <artifactId>guice-servlet</artifactId>
-		    <version>${guice.version}</version>
-		    
-		    <!-- sometimes guice-servlet forces guice-xxx-tests.jar artifact
-		         this conflicts with guice.jar main artifcat -->
-		    <exclusions>
-		    	<exclusion>
-		    		<groupId>com.google.inject</groupId>
-		    		<artifactId>guice</artifactId>
-		    	</exclusion>
-		    </exclusions>
-		</dependency>
-		
+
 		<!-- ///////////////////////////////////////// -->
 		<!-- ServletAPI                                -->
 		<!-- ///////////////////////////////////////// -->
-		<!-- [r01fWebProfileClasses] has SevletAPI as a dependency, 
+		<!-- [r01fWebProfileClasses] has SevletAPI as a dependency,
 			 ... BUT it's SCOPE is PROVIDED so it has to be defined
 			     here again -->
 		<dependency>
@@ -68,10 +54,10 @@
 		    <version>4.0.1</version>
 		    <scope>provided</scope>		<!-- BEWARE!!! -->
 		</dependency>
-		
+
 		<!-- ///////////////////////////////////////// -->
 		<!-- Jersey                                    -->
-		<!-- ///////////////////////////////////////// -->		
+		<!-- ///////////////////////////////////////// -->
 		<dependency>
 		    <groupId>com.sun.jersey</groupId>
 		    <artifactId>jersey-core</artifactId>
@@ -91,7 +77,7 @@
 		    <groupId>com.sun.jersey.contribs</groupId>
 		    <artifactId>jersey-guice</artifactId>
 		    <version>1.19.4</version>
-		    
+
 		    <!-- guice-servlet exclusion -->
 		    <exclusions>
 		    	<exclusion>
@@ -101,7 +87,7 @@
 		    </exclusions>
 		</dependency>
 	</dependencies>
-	
+
 <!-- ====================================================================== -->
 <!-- BUILD                                                                  -->
 <!-- ====================================================================== -->
@@ -119,7 +105,7 @@
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
 					<version>1.0.0</version>
-					<configuration> 
+					<configuration>
 						<lifecycleMappingMetadata>
 							<pluginExecutions>
 								<!-- flatten plugin -->
