@@ -186,15 +186,14 @@ public abstract class SecurityContextServletFilterBase
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 	private Url _fullURI(final HttpServletRequest request) {
-	   StringBuffer requestURL = request.getRequestURL();	//getRequestURI only returns URL BEFORE query string -- UrlPath.from(req.getRequestURI());
-	   String queryString = request.getQueryString();
+		StringBuffer requestURL = request.getRequestURL();	//getRequestURI only returns URL BEFORE query string -- UrlPath.from(req.getRequestURI());
+		String queryString = request.getQueryString();
 
-	   if (queryString == null) {
-		  return Url.from(requestURL.toString());
-	   } else {
-		  return Url.from(requestURL.toString())
-				  .joinWith(UrlQueryString.fromUrlEncodedParamsString(queryString));
-	   }
+		if (queryString == null) {
+			return Url.from(requestURL.toString());
+		} 
+		return Url.from(requestURL.toString())
+			   	  .joinWith(UrlQueryString.fromUrlEncodedParamsString(queryString));
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  SECURITY TOKEN COOKIE
@@ -202,7 +201,7 @@ public abstract class SecurityContextServletFilterBase
 	private static final Pattern HOST_PATTERN = Pattern.compile("([^.]+)\\.(cms\\..+)");
 	private static final String SECURITY_TOKEN_COOKIE_NAME = "r01SecurityToken";
 
-	private boolean _hasSecurityTokenCookie(final HttpServletRequest request) {
+	private static boolean _hasSecurityTokenCookie(final HttpServletRequest request) {
 	   Cookie[] cookies = request.getCookies();
 	   boolean outHasCookie = false;
 	   for (Cookie cookie : cookies) {
