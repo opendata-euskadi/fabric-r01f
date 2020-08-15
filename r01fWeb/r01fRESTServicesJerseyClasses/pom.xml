@@ -38,6 +38,11 @@
 		<!-- ///////////////////////////////////////// -->
 		<dependency>
 			<groupId>r01.r01f.web</groupId>
+			<artifactId>r01fWebProfileClasses</artifactId>
+			<version>${revision}</version>
+		</dependency>
+		<dependency>
+			<groupId>r01.r01f.web</groupId>
 			<artifactId>r01fWebProfileGuiceClasses</artifactId>
 			<version>${revision}</version>
 		</dependency>
