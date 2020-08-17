@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration scan="true" scanPeriod="300 seconds" debug="true">
+<!--
+IMPORTANT!!!!!
+=====================================================
+Do NOT forget to set a JVM env property like
+	-DR01_HOME=/data/r01
+-->
 
-	<property name="appName" value="r01fb" />
+<configuration debug="false">
 
-	<jmxConfigurator contextName="r01fb" />
-
-	<include resource="r01fb/r01fbEnvironment.xml"/>
+	<property name="appName" value="r01f" />
+	<jmxConfigurator contextName="r01f" />
 
 	<!-- Global -->
-	<include resource="r01fb/r01fbLogbackGlobal.xml"/>
-	<include resource="r01fb/r01fbLogback.xml"/>
+	<include resource="r01f/r01fLogbackGlobal.xml"/>
+	<include resource="r01f/r01fLogback.xml"/>
 </configuration>
