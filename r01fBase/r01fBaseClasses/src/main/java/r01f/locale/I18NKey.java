@@ -19,6 +19,9 @@ public class I18NKey
 	public static I18NKey named(final String id) {
 		return new I18NKey(id);
 	}
+	public static <O extends OID> I18NKey named(final O id) {
+		return I18NKey.forId(id);
+	}
 	public static I18NKey forId(final String id) {
 		return new I18NKey(id);
 	}
