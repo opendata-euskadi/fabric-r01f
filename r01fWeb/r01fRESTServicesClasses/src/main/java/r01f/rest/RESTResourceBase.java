@@ -29,7 +29,7 @@ public abstract class RESTResourceBase
 //  
 /////////////////////////////////////////////////////////////////////////////////////////
 	@SuppressWarnings("unchecked")
-	public <T extends RESTDelegate> T getDelegateAs(@SuppressWarnings("unused") final Class<T> type) {
+	public <T extends RESTDelegate> T getDelegateAs(final Class<T> type) {
 		return (T)_delegate;
 	}
 }
