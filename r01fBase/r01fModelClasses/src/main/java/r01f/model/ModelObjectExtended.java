@@ -15,13 +15,13 @@ import java.lang.annotation.Target;
  * </ul>
  * 
  * Create a model object type (implement an interface extending {@link r01mo.model.interfaces.R01MModelObject})
- * This type MUST contain a field annotated with @Inject y @R01MModelObjectExtension that will be injected automatically
+ * This type MUST contain a field annotated with @Inject y @RModelObjectExtension that will be injected automatically
  * by the infrastructure.
  * 	<pre class='brush:java'>
  * 		public class R01MContent 
  * 		  implements R01MModelObject {
  * 			...
- * 			@Inject @R01MModelObjectExtension
+ * 			@Inject @ModelObjectExtension
  *  		private transient R01MContentExtension _extension;	// this object encapsulates the server-interaction logic 
  *  		...
  * 		} 

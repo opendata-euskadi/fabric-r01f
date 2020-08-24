@@ -11,7 +11,6 @@ import com.google.common.collect.Sets;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import r01f.debug.Debuggable;
 import r01f.facets.HasOID;
 import r01f.model.services.COREServiceMethodExecError;
 import r01f.model.services.COREServiceMethodExecOK;
@@ -25,8 +24,7 @@ import r01f.util.types.collections.CollectionUtils;
 @MarshallType(as="coreServiceMethodExecResult",typeId="crudOnMultiple")
 @Accessors(prefix="_")
 public class CRUDOnMultipleResult<T>
-	 extends COREServiceMethodExecResultBase<Collection<T>>
-  implements Debuggable {	
+	 extends COREServiceMethodExecResultBase<Collection<T>> {	
 /////////////////////////////////////////////////////////////////////////////////////////
 //  SERIALIZABLE DATA
 /////////////////////////////////////////////////////////////////////////////////////////
