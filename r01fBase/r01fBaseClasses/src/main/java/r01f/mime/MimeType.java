@@ -99,5 +99,7 @@ public class MimeType
 	public static MimeType STYLESHEET = new MimeType("text/css");
 	public static MimeType IMAGE_JPEG = new MimeType("image/jpeg");
 	public static MimeType IMAGE_PNG = new MimeType("image/png");
+	public static MimeType PDF = new MimeType("application/pdf");
+	
 	
 }
