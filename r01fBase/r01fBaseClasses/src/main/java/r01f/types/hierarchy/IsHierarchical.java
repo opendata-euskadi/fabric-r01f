@@ -12,14 +12,14 @@ public interface IsHierarchical<T>
 /////////////////////////////////////////////////////////////////////////////////////////
 //  
 /////////////////////////////////////////////////////////////////////////////////////////
-    /**
-     * @return the branch root object
-     */
-    public T branchRoot();
-    /**
-     * Returns true if this object is descendant of the provided ancestor
-     * @param ancestor the ancestor
-     * @return
-     */
-    public boolean isDescendantOf(T ancestor);
+	/**
+	 * @return the branch root object
+	 */
+	public T branchRoot();
+	/**
+	 * Returns true if this object is descendant of the provided ancestor
+	 * @param ancestor the ancestor
+	 * @return
+	 */
+	public boolean isDescendantOf(T ancestor);
 }
