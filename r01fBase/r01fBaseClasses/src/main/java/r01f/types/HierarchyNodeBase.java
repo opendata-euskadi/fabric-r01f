@@ -14,8 +14,8 @@ import r01f.types.hierarchy.IsHierarchical;
 @Accessors(prefix="_")
 public abstract class HierarchyNodeBase<T,SELF_TYPE extends HierarchyNodeBase<T,SELF_TYPE>>
 	          extends HierarchyNodeNoParentRefBase<T,SELF_TYPE>
-  		   implements IsHierarchical<SELF_TYPE>,		// has an hierarchical structure
-  			 		  Serializable {
+  		   implements IsHierarchical<SELF_TYPE>	{	// has an hierarchical structure
+  			   
 	private static final long serialVersionUID = 6955527630723451277L;
 /////////////////////////////////////////////////////////////////////////////////////////
 //  PARENT
