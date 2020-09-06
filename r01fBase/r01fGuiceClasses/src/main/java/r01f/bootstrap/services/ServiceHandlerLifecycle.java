@@ -1,4 +1,4 @@
-package r01f.bootstarp.services;
+package r01f.bootstrap.services;
 
 import java.util.Collection;
 import java.util.List;
