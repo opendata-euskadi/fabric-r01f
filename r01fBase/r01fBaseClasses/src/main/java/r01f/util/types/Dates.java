@@ -6,6 +6,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -276,6 +278,12 @@ public abstract class Dates {
 	 */
 	@GwtIncompatible
 	public static String format(final Date date,final String fmt) {
+		return Dates.format(date,fmt,Locale.getDefault());
+	}
+	@GwtIncompatible
+	public static String format(final LocalDate localDate,final String fmt) {
+		ZoneId defaultZoneId = ZoneId.systemDefault();
+		Date date = Date.from(localDate.atStartOfDay(defaultZoneId).toInstant());
 		return Dates.format(date,fmt,Locale.getDefault());
 	}
 	@GwtIncompatible
