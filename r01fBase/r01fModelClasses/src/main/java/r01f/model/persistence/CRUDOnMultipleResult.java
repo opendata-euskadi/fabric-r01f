@@ -24,20 +24,20 @@ import r01f.util.types.collections.CollectionUtils;
 @MarshallType(as="coreServiceMethodExecResult",typeId="crudOnMultiple")
 @Accessors(prefix="_")
 public class CRUDOnMultipleResult<T>
-	 extends COREServiceMethodExecResultBase<Collection<T>> {	
+	 extends COREServiceMethodExecResultBase<Collection<T>> {
 /////////////////////////////////////////////////////////////////////////////////////////
 //  SERIALIZABLE DATA
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * The model object type
-	 * (beware that {@link PersistenceOperationOnObjectOK} wraps a {@link Collection} 
+	 * (beware that {@link PersistenceOperationOnObjectOK} wraps a {@link Collection}
 	 *  of this objects)
 	 */
 	@MarshallField(as="modelObjType",
 				   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter @Setter protected Class<T> _objectType;
 	/**
-	 * The result 
+	 * The result
 	 */
 	@MarshallField(as="methodExecResult",
 				   whenXml=@MarshallFieldAsXml(collectionElementName="resultItem"))		// only when the result is a Collection (ie: find ops)
@@ -47,6 +47,7 @@ public class CRUDOnMultipleResult<T>
 /////////////////////////////////////////////////////////////////////////////////////////
 	public CRUDOnMultipleResult(final PersistenceRequestedOperation reqOp) {
 		super(reqOp.getCOREServiceMethod());
+		_methodExecResult = Sets.newHashSet();
 	}
 	public CRUDOnMultipleResult(final Class<T> objectType,
 								final PersistenceRequestedOperation reqOp) {
@@ -62,7 +63,7 @@ public class CRUDOnMultipleResult<T>
 	 * @param opOK
 	 */
 	public void addOperationResult(final CRUDResult<T> opResult) {
-//		if (_requestedOperation != opResult.getRequestedOperation()) throw new IllegalArgumentException("Unexpected requested operation: received " + opResult.getRequestedOperation() + " - " + 
+//		if (_requestedOperation != opResult.getRequestedOperation()) throw new IllegalArgumentException("Unexpected requested operation: received " + opResult.getRequestedOperation() + " - " +
 //						 																	            "expected " + _requestedOperationName);
 		_methodExecResult.add(opResult);
 	}
@@ -97,7 +98,7 @@ public class CRUDOnMultipleResult<T>
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * @return the number of successful operations
@@ -108,7 +109,7 @@ public class CRUDOnMultipleResult<T>
 	}
 	/**
 	 * Gets the {@link CRUDResult}s that were successful (ie the {@link CRUDOK} instances)
-	 * @return the {@link CRUDOK} operations 
+	 * @return the {@link CRUDOK} operations
 	 */
 	public Collection<CRUDOK<T>> getOperationsOK() {
 		Collection<CRUDOK<T>> outOps = null;
@@ -119,7 +120,7 @@ public class CRUDOnMultipleResult<T>
 															public boolean apply(final CRUDResult<T> op) {
 																return op.hasSucceeded();	// only successful operations
 															}
-												})	
+												})
 									    .transform(new Function<CRUDResult<T>,CRUDOK<T>>() {
 															@Override
 															public CRUDOK<T> apply(final CRUDResult<T> op) {
@@ -139,7 +140,7 @@ public class CRUDOnMultipleResult<T>
 	}
 	/**
 	 * Gets the {@link CRUDResult}s that failed (ie the {@link CRUDError} instances)
-	 * @return the {@link CRUDOK} operations 
+	 * @return the {@link CRUDOK} operations
 	 */
 	public Collection<CRUDError<T>> getOperationsNOK() {
 		Collection<CRUDError<T>> outOps = null;
@@ -150,9 +151,9 @@ public class CRUDOnMultipleResult<T>
 															public boolean apply(final CRUDResult<T> op) {
 																return op.hasFailed();	// only failed operations
 															}
-												})	
+												})
 									    .transform(new Function<CRUDResult<T>,CRUDError<T>>() {
-															@Override 
+															@Override
 															public CRUDError<T> apply(final CRUDResult<T> op) {
 																return op.asCRUDError();	//as(CRUDError.class);
 															}
@@ -174,15 +175,15 @@ public class CRUDOnMultipleResult<T>
 	 * @return true if all persistence operations failed
 	 */
 	public boolean haveAllFailed() {
-		return CollectionUtils.hasData(_methodExecResult) ? this.getOperationsNOK().size() == _methodExecResult.size()	
+		return CollectionUtils.hasData(_methodExecResult) ? this.getOperationsNOK().size() == _methodExecResult.size()
 														  : false;
 	}
 	/**
 	 * @return true if all persistence operations succeeded
 	 */
 	public boolean haveAllSucceeded() {
-		return CollectionUtils.hasData(_methodExecResult) ? this.getOperationsOK().size() == _methodExecResult.size()	
-														  : false;		
+		return CollectionUtils.hasData(_methodExecResult) ? this.getOperationsOK().size() == _methodExecResult.size()
+														  : false;
 	}
 	/**
 	 * @return true if there's any failed operation
@@ -196,10 +197,10 @@ public class CRUDOnMultipleResult<T>
 	 */
 	public boolean haveSomeSucceeded() {
 		return CollectionUtils.hasData(_methodExecResult) ? this.getOperationsOK().size() <= _methodExecResult.size()
-														  : false;		
+														  : false;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Returns the successful persistence operations or throws a {@link PersistenceException}
@@ -222,8 +223,8 @@ public class CRUDOnMultipleResult<T>
 	 * <li>If all operations failed, this method throws a {@link PersistenceException} with the {@link CRUDError}
 	 *     for the first failed operation</li>
 	 * </ul>
-	 * On the contrary, the {@link #getStrict()} method throws a {@link PersistenceException} if 
-	 * there's any failed operation 
+	 * On the contrary, the {@link #getStrict()} method throws a {@link PersistenceException} if
+	 * there's any failed operation
 	 * @return a {@link Set} of the records after being processed
 	 * @throws PersistenceException if there's a general error or ALL of the operations failed
 	 */
@@ -243,9 +244,9 @@ public class CRUDOnMultipleResult<T>
 	public Collection<T> getAllSuccessfulOrThrow() throws PersistenceException {
 		Collection<T> outResults = null;
 		if (this.haveSomeSucceeded()) {
-			// Returns all successful entities			
+			// Returns all successful entities
 			outResults = this.getEntitiesOK();
-		} else {		
+		} else {
 			// Find the first error and throw it
 			CRUDError<T> firstError = this.getFirstError();
 			if (firstError != null) firstError.throwAsPersistenceException();
@@ -257,14 +258,14 @@ public class CRUDOnMultipleResult<T>
 		return this.getAllSuccessfulOrThrow();
 	}
 	/**
-	 * @return the entities that were successfully processed 
+	 * @return the entities that were successfully processed
 	 */
 	public Collection<T> getEntitiesOK() {
 		Set<T> outEntities = null;
 		if (CollectionUtils.hasData(this.getOperationsOK())) {
 			outEntities = FluentIterable.from(_methodExecResult)
 									    .transform(new Function<CRUDResult<T>,T>() {
-															@Override 
+															@Override
 															public T apply(final CRUDResult<T> op) {
 																T entity = op.asCRUDOK()		//.as(CRUDOK.class)
 																			 .getOrThrow();	// sure it won't throw
@@ -285,7 +286,7 @@ public class CRUDOnMultipleResult<T>
 												: null;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public COREServiceMethodExecError<Collection<T>> asCOREServiceMethodExecError() {
@@ -302,7 +303,7 @@ public class CRUDOnMultipleResult<T>
 	public CharSequence debugInfo() {
 		Collection<CRUDOK<T>> opsOK = this.getOperationsOK();
 		Collection<CRUDError<T>> opsNOK = this.getOperationsNOK();
-		
+
 		int size = (opsOK != null ? opsOK.size() * 200 : 0) +
 				   (opsNOK != null ? opsNOK.size() * 200 : 0);
 		StringBuilder sb = new StringBuilder(size);
@@ -345,7 +346,7 @@ public class CRUDOnMultipleResult<T>
 		return sb != null ? sb.toString() : null;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	@SuppressWarnings("unused")
 	private static String _oksToCommaSeparatedOids(final Collection<CRUDOK<?>> ops) {
@@ -353,7 +354,7 @@ public class CRUDOnMultipleResult<T>
 		if (CollectionUtils.hasData(ops)) {
 			oids = FluentIterable.from(ops)
 								 .transform(new Function<CRUDOK<?>,String>() {
-									 				@Override 
+									 				@Override
 													public String apply(final CRUDOK<?> op) {
 									 					Object obj = op.getOrThrow();
 									 					if (obj instanceof HasOID) return ((HasOID<?>)obj).getOid().asString();
@@ -371,7 +372,7 @@ public class CRUDOnMultipleResult<T>
 		if (CollectionUtils.hasData(ops)) {
 			oids = FluentIterable.from(ops)
 								 .transform(new Function<CRUDError<?>,String>() {
-									 				@Override 
+									 				@Override
 													public String apply(final CRUDError<?> op) {
 									 					return op.getTargetEntityIdInfo();
 													}
