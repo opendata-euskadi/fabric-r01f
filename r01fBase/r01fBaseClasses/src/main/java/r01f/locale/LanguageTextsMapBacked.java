@@ -27,19 +27,19 @@ import r01f.util.types.collections.CollectionUtils;
  * </pre>
  */
 @ConvertToDirtyStateTrackable
-@MarshallType(as="default") 
-@Accessors(prefix="_") 
-public class LanguageTextsMapBacked 
-     extends LanguageTextsBase<LanguageTextsMapBacked> 
+@MarshallType(as="default")
+@Accessors(prefix="_")
+public class LanguageTextsMapBacked
+     extends LanguageTextsBase<LanguageTextsMapBacked>
   implements Map<Language,String> {
-	
+
 	private static final long serialVersionUID = -3302253934368756020L;
 /////////////////////////////////////////////////////////////////////////////////////////
 //	STATE
 /////////////////////////////////////////////////////////////////////////////////////////
 	@MarshallIgnoredField
 	@Getter(AccessLevel.PRIVATE) private Map<Language,String> _backEndTextsMap;
-	
+
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -85,7 +85,7 @@ public class LanguageTextsMapBacked
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public Set<Language> getDefinedLanguages() {
-		return CollectionUtils.hasData(_backEndTextsMap) ? _backEndTextsMap.keySet() 
+		return CollectionUtils.hasData(_backEndTextsMap) ? _backEndTextsMap.keySet()
 														 : Sets.<Language>newLinkedHashSet();
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -93,35 +93,35 @@ public class LanguageTextsMapBacked
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public int size() {
-		return _backEndTextsMap.size();
+		return _backEndTextsMap != null ? _backEndTextsMap.size() : 0;
 	}
 	@Override
 	public boolean isEmpty() {
-		return _backEndTextsMap.isEmpty();
+		return _backEndTextsMap != null ? _backEndTextsMap.isEmpty() : true;
 	}
 	@Override
-	public boolean containsKey(Object key) {
-		return _backEndTextsMap.containsKey(key);
+	public boolean containsKey(final Object key) {
+		return _backEndTextsMap != null ? _backEndTextsMap.containsKey(key) : false;
 	}
 	@Override
-	public boolean containsValue(Object value) {
-		return _backEndTextsMap.containsValue(value);
+	public boolean containsValue(final Object value) {
+		return _backEndTextsMap != null ? _backEndTextsMap.containsValue(value) : false;
 	}
 	@Override
-	public String get(Object key) {
-		return _backEndTextsMap.get(key);
+	public String get(final Object key) {
+		return _backEndTextsMap != null ? _backEndTextsMap.get(key) : null;
 	}
 	@Override
-	public String put(Language key,String value) {
+	public String put(final Language key,final String value) {
 		_put(key,value);
-		return _backEndTextsMap.put(key,value);
+		return value;
 	}
 	@Override
-	public String remove(Object key) {
-		return _backEndTextsMap.remove(key);
+	public String remove(final Object key) {
+		return _backEndTextsMap != null ? _backEndTextsMap.remove(key) : null;
 	}
 	@Override
-	public void putAll(Map<? extends Language,? extends String> m) {
+	public void putAll(final Map<? extends Language,? extends String> m) {
 		if (CollectionUtils.hasData(m)) {
 			for (Map.Entry<? extends Language,? extends String> me : m.entrySet()) {
 				_put(me.getKey(),me.getValue());
@@ -134,7 +134,7 @@ public class LanguageTextsMapBacked
 	}
 	@Override
 	public Set<Language> keySet() {
-		return _backEndTextsMap != null ? _backEndTextsMap.keySet() 
+		return _backEndTextsMap != null ? _backEndTextsMap.keySet()
 										: Sets.<Language>newHashSet();
 	}
 	@Override
