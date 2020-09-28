@@ -344,8 +344,8 @@ public final class XMLPropertyWrapper {
      */
     public UrlPath asUrlPath() {
         String path = _props.getString(_xPath);
-        return path != null ? new UrlPath(_replacePathVars(path))
-                            : null;
+        return Strings.isNOTNullOrEmpty(path) ? new UrlPath(_replacePathVars(path))
+                            				  : null;
     }
     /**
      * Gets a property as a {@link UrlPath}
@@ -382,8 +382,8 @@ public final class XMLPropertyWrapper {
      */
     public Path asPath() {
         String path = _props.getString(_xPath);
-        return path != null ? new Path(_replacePathVars(path))
-                            : null;
+        return Strings.isNOTNullOrEmpty(path) ? new Path(_replacePathVars(path))
+                            				  : null;
     }
     /**
      * Gets a property as a {@link Path}
@@ -514,8 +514,8 @@ public final class XMLPropertyWrapper {
      * @return
      */
     public AppCode asAppCode(final AppCode defaultVal) {
-        String outAppCode = _props.getString(_xPath);
-        return outAppCode != null ? AppCode.forId(outAppCode)
+        AppCode outAppCode = this.asAppCode();
+        return outAppCode != null ? outAppCode
                                   : defaultVal;
     }
     /**
@@ -535,8 +535,8 @@ public final class XMLPropertyWrapper {
      */
     public AppCode asAppCode(final XMLPropertyDefaultValueByEnv<AppCode> valByEnv) {
         String outAppCode = _props.getString(_xPath);
-        return outAppCode != null ? AppCode.forId(outAppCode)
-                                  : valByEnv.getFor(_props.getEnvironment());
+        return Strings.isNOTNullOrEmpty(outAppCode) ? AppCode.forId(outAppCode)
+                                  					: valByEnv.getFor(_props.getEnvironment());
     }
 /////////////////////////////////////////////////////////////////////////////////////////
 //  USER / PASSWORD
@@ -547,7 +547,7 @@ public final class XMLPropertyWrapper {
      */
     public UserCode asUserCode() {
         String outUserCode = _props.getString(_xPath);
-        return outUserCode != null ? UserCode.forId(outUserCode) : null;
+        return Strings.isNOTNullOrEmpty(outUserCode) ? UserCode.forId(outUserCode) : null;
     }
     /**
      * Gets a property as a {@link UserCode}
@@ -555,8 +555,8 @@ public final class XMLPropertyWrapper {
      * @return the property value or the default value if the property is NOT found
      */
     public UserCode asUserCode(final UserCode defaultVal) {
-        String outUserCode = _props.getString(_xPath);
-        return outUserCode != null ? UserCode.forId(outUserCode)
+        UserCode outUserCode = this.asUserCode();
+        return outUserCode != null ? outUserCode
                                    : defaultVal;
     }
     /**
@@ -574,8 +574,8 @@ public final class XMLPropertyWrapper {
      */
     public UserCode asUserCode(final XMLPropertyDefaultValueByEnv<UserCode> valByEnv) {
         String outUserCode = _props.getString(_xPath);
-        return outUserCode != null ? UserCode.forId(outUserCode)
-                                   : valByEnv.getFor(_props.getEnvironment());
+        return Strings.isNOTNullOrEmpty(outUserCode) ? UserCode.forId(outUserCode)
+                                   					 : valByEnv.getFor(_props.getEnvironment());
     }
     /**
      * Gets a property as a {@link Password}
@@ -584,7 +584,7 @@ public final class XMLPropertyWrapper {
      */
     public Password asPassword() {
         String outPwd = _props.getString(_xPath);
-        return outPwd != null ? Password.forId(outPwd) : null;
+        return Strings.isNOTNullOrEmpty(outPwd) ? Password.forId(outPwd) : null;
     }
     /**
      * Gets a property as a {@link Password}
@@ -592,8 +592,8 @@ public final class XMLPropertyWrapper {
      * @return the property value or the default value if the property is NOT found
      */
     public Password asPassword(final Password defaultVal) {
-        String outPwd = _props.getString(_xPath);
-        return outPwd != null ? Password.forId(outPwd)
+        Password outPwd = this.asPassword();
+        return outPwd != null ? outPwd
                               : defaultVal;
     }
     /**
@@ -620,7 +620,7 @@ public final class XMLPropertyWrapper {
      */
     public UserRole asUserRole() {
         String outUserRole = _props.getString(_xPath);
-        return outUserRole != null ? UserRole.forId(outUserRole) : null;
+        return Strings.isNOTNullOrEmpty(outUserRole) ? UserRole.forId(outUserRole) : null;
     }
     /**
      * Gets a property as a {@link UserRole}
@@ -628,8 +628,8 @@ public final class XMLPropertyWrapper {
      * @return the property value or the default value if the property is NOT found
      */
     public UserRole asUserRole(final UserRole defaultVal) {
-        String outUserRole = _props.getString(_xPath);
-        return outUserRole != null ? UserRole.forId(outUserRole)
+        UserRole outUserRole = this.asUserRole();
+        return outUserRole != null ? outUserRole
                                    : defaultVal;
     }
     /**
@@ -715,8 +715,8 @@ public final class XMLPropertyWrapper {
      */
     public Pattern asRegexPattern() {
         String outPattern = _props.getString(_xPath);
-        return outPattern != null ? Pattern.compile(outPattern)
-                                  : null;
+        return Strings.isNOTNullOrEmpty(outPattern) ? Pattern.compile(outPattern)
+                                  					: null;
     }
     /**
      * Gets a property as a regex {@link Pattern}
@@ -854,7 +854,7 @@ public final class XMLPropertyWrapper {
      */
     public Host asHost() {
         String host = this.asString();
-        return Host.of(host);
+        return Strings.isNOTNullOrEmpty(host) ? Host.of(host) : null;
     }
     /**
      * Gets the property as a {@link Host}
@@ -887,7 +887,7 @@ public final class XMLPropertyWrapper {
      */
     public Url asUrl() {
         String url = this.asString();
-        return Url.from(url);
+        return Strings.isNOTNullOrEmpty(url) ? Url.from(url) : null;
     }
     /**
      * Gets the property as a {@link Url}
