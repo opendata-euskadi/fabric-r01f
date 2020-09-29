@@ -77,15 +77,20 @@ public abstract class HttpClientProxySettingsBuilder
 		HttpClientProxySettings proxySettings = HttpClientProxySettingsBuilder.loadFromProperties(props,
 																								  propsRootNode + "/proxySettings");
 		if (proxySettings == null) {
-			throw new IllegalStateException(Throwables.message("It seems that there's NO direct internet connection; tried using a proxy BUT no config found at {} in {} properties file",
-															   propsRootNode + "/proxy",props.getAppCode()));
+			log.error("It seems that there's NO direct internet connection; tried using a proxy BUT no config found at {} in {} properties file",
+					  propsRootNode + "/proxy",props.getAppCode());
+			// create a fake proxy settings
+			proxySettings = new HttpClientProxySettings(Host.forId("proxyhost"),800,
+														UserCode.forId("proxyUser"),Password.forId("proxyPasswd"),
+														false);		// not enabled!
 		}
-
 		// Try proxy
-		if (proxySettings.getProxyHost() == null || proxySettings.getUser() == null || proxySettings.getPassword() == null) throw new IllegalStateException(Throwables.message("Cannot try internet connection through proxy since there's NO enough info at {} in {} properties file",
-																																											   propsRootNode + "/proxy",props.getAppCode()));
-		final boolean inetConxThroughProxy = HttpClientProxySettingsBuilder.testProxyInternetConnection(proxySettings,
-																		 	  							true);		// ignore proxySettings enabled state
+		if (proxySettings.getProxyHost() == null 
+		 || proxySettings.getUser() == null 
+		 || proxySettings.getPassword() == null) throw new IllegalStateException(Throwables.message("Cannot try internet connection through proxy since there's NO enough info at {} in {} properties file",
+																								    propsRootNode + "/proxy",props.getAppCode()));
+		boolean inetConxThroughProxy = HttpClientProxySettingsBuilder.testProxyInternetConnection(proxySettings,
+																		 	  					  true);		// ignore proxySettings enabled state
 		if (inetConxThroughProxy
 		 && !proxySettings.isEnabled()) {
 			log.warn("A proxy ({}:{}) is configured BUT not enabled at {} in {} properties file and it seems there's internet connection through it... overriding the enabled state of the config",
