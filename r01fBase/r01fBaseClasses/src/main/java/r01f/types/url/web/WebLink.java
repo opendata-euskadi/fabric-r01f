@@ -5,6 +5,7 @@ import com.google.common.base.Objects;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import r01f.aspects.interfaces.dirtytrack.ConvertToDirtyStateTrackable;
 import r01f.facets.HasID;
 import r01f.facets.HasLanguage;
 import r01f.facets.Tagged;
@@ -43,6 +44,7 @@ import r01f.util.types.Strings;
  * </pre>
  */
 @MarshallType(as="webLink")
+@ConvertToDirtyStateTrackable
 @Accessors(prefix="_")
 public class WebLink
   implements HasUrl,
@@ -173,7 +175,7 @@ public class WebLink
 		_textData.setTags(tags);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//	
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Returns the most suitable text to be displayed: if the text is availaible it's returned,
@@ -182,9 +184,9 @@ public class WebLink
 	 * @return
 	 */
 	public String getDisplayText() {
-		return Strings.isNOTNullOrEmpty(this.getText()) 
+		return Strings.isNOTNullOrEmpty(this.getText())
 						? this.getText()
-						: Strings.isNOTNullOrEmpty(this.getDescription()) 
+						: Strings.isNOTNullOrEmpty(this.getDescription())
 								? this.getDescription()
 								: this.getUrl() != null
 										? this.getUrl().asString()

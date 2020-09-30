@@ -22,8 +22,8 @@ import r01f.objectstreamer.annotations.MarshallType;
  * 																.withMimeType(MimeTypeForDocument.PDF);
  * </pre>
  */
-@ConvertToDirtyStateTrackable
 @MarshallType(as="linkTargetResourceData")
+@ConvertToDirtyStateTrackable
 @Accessors(prefix="_")
 public class WebLinkTargetResourceData {
 	/**
@@ -42,7 +42,7 @@ public class WebLinkTargetResourceData {
 	@MarshallField(as="mimeType",whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter @Setter private MimeType _mimeType;
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	public WebLinkTargetResourceData() {
 		// default no-args constructor
@@ -64,8 +64,8 @@ public class WebLinkTargetResourceData {
 		return outData;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//	
-/////////////////////////////////////////////////////////////////////////////////////////	
+//
+/////////////////////////////////////////////////////////////////////////////////////////
 	public WebLinkTargetResourceData withLang(final Language lang) {
 		_language = lang;
 		return this;
@@ -79,12 +79,12 @@ public class WebLinkTargetResourceData {
 		return this;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Relation between the document containing the link and the document target of the link
 	 */
-	public static enum RelationBetweenTargetAndLinkContainerDocuments 
+	public static enum RelationBetweenTargetAndLinkContainerDocuments
 		    implements EnumExtended<RelationBetweenTargetAndLinkContainerDocuments> {
 		ALTERNATE,
 		AUTHOR,
@@ -98,9 +98,9 @@ public class WebLinkTargetResourceData {
 		NOFOLLOW,
 		NOREFERRER,
 		PREFETCH;
-		
+
 		private static final EnumExtendedWrapper<RelationBetweenTargetAndLinkContainerDocuments> WRAPPER = EnumExtendedWrapper.wrapEnumExtended(RelationBetweenTargetAndLinkContainerDocuments.class);
-		
+
 		public static RelationBetweenTargetAndLinkContainerDocuments fromName(final String name) {
 			return WRAPPER.fromName(name.toUpperCase());
 		}

@@ -14,11 +14,11 @@ import lombok.experimental.Accessors;
 import r01f.aspects.interfaces.dirtytrack.ConvertToDirtyStateTrackable;
 import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
+import r01f.objectstreamer.annotations.MarshallType;
 import r01f.types.html.CSSStyleClassName;
 import r01f.types.html.HtmlElementId;
 import r01f.types.html.HtmlElementJSEvent;
 import r01f.types.html.MediaQuery;
-import r01f.objectstreamer.annotations.MarshallType;
 import r01f.util.types.Strings;
 import r01f.util.types.collections.CollectionUtils;
 
@@ -67,8 +67,8 @@ import r01f.util.types.collections.CollectionUtils;
  *																	.build();
  * </pre>
  */
-@ConvertToDirtyStateTrackable
 @MarshallType(as="linkPresentationData")
+@ConvertToDirtyStateTrackable
 @Accessors(prefix="_")
 public class WebLinkPresentationData
   implements Serializable {
@@ -255,12 +255,12 @@ public class WebLinkPresentationData
 		return this;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//	
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	public boolean isOpeningInNewWindow() {
 		return (_openTarget != null && _openTarget.isNOT(WebLinkOpenTarget.SELF))
 				||
 			   _newWindowOpeningMode != null;
-				
+
 	}
 }

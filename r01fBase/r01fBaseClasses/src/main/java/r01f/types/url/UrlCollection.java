@@ -16,10 +16,12 @@ import r01f.facets.HasLanguage;
 import r01f.facets.Tagged.HasTaggeableFacet;
 import r01f.locale.Language;
 import r01f.objectstreamer.annotations.MarshallType;
+import r01f.types.url.web.WebLinkCollection;
 import r01f.util.types.collections.CollectionUtils;
 
 /**
  * A collection of urls
+ * @See {@link WebLinkCollection}
  */
 @ConvertToDirtyStateTrackable
 @Slf4j
@@ -89,7 +91,7 @@ public class UrlCollection<U extends HasUrl & HasID<?> & HasLanguage & HasTaggea
 		}
 		// return the replaced urls
 		return outReplacedUrls;
-		
+
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  GET Urls by tag

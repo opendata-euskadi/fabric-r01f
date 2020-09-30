@@ -1,7 +1,5 @@
 package r01f.types.url.web;
 
-import java.io.Serializable;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -17,9 +15,9 @@ import r01f.util.types.Strings;
 @MarshallType(as="accessKey")
 @Immutable
 @Accessors(prefix="_")
-public class WebLinkAccessKey 
-  implements CanBeRepresentedAsString,
-  			 Serializable {
+public class WebLinkAccessKey
+  implements CanBeRepresentedAsString {
+
 	private static final long serialVersionUID = -3951876797922937680L;
 /////////////////////////////////////////////////////////////////////////////////////////
 //	FIELDS
@@ -61,8 +59,8 @@ public class WebLinkAccessKey
 		return _accessKey != null ? _accessKey.toString() : null;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
-/////////////////////////////////////////////////////////////////////////////////////////	
+//
+/////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public boolean equals(final Object o) {
 		if (o == this) return true;
@@ -76,5 +74,5 @@ public class WebLinkAccessKey
 	public int hashCode() {
 		return _accessKey.hashCode();
 	}
-	
+
 }

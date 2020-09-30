@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import r01f.aspects.interfaces.dirtytrack.ConvertToDirtyStateTrackable;
 import r01f.enums.EnumWithCode;
 import r01f.enums.EnumWithCodeWrapper;
 import r01f.objectstreamer.annotations.MarshallField;
@@ -15,6 +16,7 @@ import r01f.objectstreamer.annotations.MarshallType;
 import r01f.util.types.Strings;
 
 @MarshallType(as="htmlElementJSEvent")
+@ConvertToDirtyStateTrackable
 @Accessors(prefix="_")
 public class HtmlElementJSEvent
   implements Serializable {
@@ -26,7 +28,7 @@ public class HtmlElementJSEvent
 	@MarshallField(as="event",
 				   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter @Setter private LinkJSEvent _event;
-	
+
 	@MarshallField(as="jsCode",escape=true)
 	@Getter @Setter private String _jsCode;
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -44,20 +46,20 @@ public class HtmlElementJSEvent
 		_jsCode = Strings.isNOTNullOrEmpty(other.getJsCode()) ? new String(other.getJsCode()) : null;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Accessors(prefix="_")
 	@RequiredArgsConstructor(access=AccessLevel.PRIVATE)
-	public enum LinkJSEvent 
+	public enum LinkJSEvent
 	 implements EnumWithCode<String,LinkJSEvent> {
 		ON_CLICK("onClick"),
 		ON_CHANGE("onChange");
-		
+
 		@Getter private final String _code;
 		@Getter private final Class<String> _codeType = String.class;
-		
+
 		private static final EnumWithCodeWrapper<String,LinkJSEvent> WRAPPER = EnumWithCodeWrapper.wrapEnumWithCode(LinkJSEvent.class);
-		
+
 		@Override
 		public boolean isIn(final LinkJSEvent... els) {
 			return WRAPPER.isIn(this,els);

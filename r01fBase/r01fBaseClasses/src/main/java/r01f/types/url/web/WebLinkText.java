@@ -5,6 +5,7 @@ import com.google.common.base.Objects;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import r01f.aspects.interfaces.dirtytrack.ConvertToDirtyStateTrackable;
 import r01f.facets.HasLang;
 import r01f.facets.HasLanguage;
 import r01f.facets.Tagged;
@@ -30,6 +31,7 @@ import r01f.util.types.collections.CollectionUtils;
  * </pre>
  */
 @MarshallType(as="webLinkText")
+@ConvertToDirtyStateTrackable
 @Accessors(prefix="_")
 public class WebLinkText
   implements HasLanguage,HasLang,

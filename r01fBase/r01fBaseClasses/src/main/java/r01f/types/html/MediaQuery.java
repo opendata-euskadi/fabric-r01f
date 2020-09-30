@@ -37,24 +37,24 @@ import r01f.util.types.collections.CollectionUtils;
  *		// Get the media-query text to be included at a @media directive or at a link's media attribute
  *		String mediaStr = MediaQuery.toMediaQueryString(IPHONE4);
  * </pre>
- * 
- * To ease the usage some commonly used media queries are defined as templates 
+ *
+ * To ease the usage some commonly used media queries are defined as templates
  * (see http://nmsdvid.com/snippets/#)
  * <pre class='brush:java'>
  * 		Collection<MediaQuery> mediaQuery = MediaQuery.IPHONE4;
  * </pre>
  */
-@ConvertToDirtyStateTrackable
 @MarshallType(as="mediaQuery")
+@ConvertToDirtyStateTrackable
 @Accessors(prefix="_")
 public class MediaQuery {
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	@MarshallField(as="device",
 				   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter @Setter(AccessLevel.PRIVATE) private MediaQueryDevice _device;
-	
+
 	@MarshallField(as="values",
 				   whenXml=@MarshallFieldAsXml(collectionElementName="value"))
 	@Getter @Setter(AccessLevel.PRIVATE) private Collection<MediaQueryValue<?>> _values;
@@ -81,7 +81,7 @@ public class MediaQuery {
 															 : null;
 	}
 	private static <T> MediaQueryValue<T> _cloneMediaQueryValue(final String name,final T value) {
-		return new MediaQueryValue<T>(name,value);		
+		return new MediaQueryValue<T>(name,value);
 	}
 	public static MediaQuery createForDevice(final MediaQueryDevice device) {
 		MediaQuery outMediaQuery = new MediaQuery();
@@ -134,7 +134,7 @@ public class MediaQuery {
 		return this;
 	}
 	public MediaQuery deviceHeightPixels(final int pixels) {
-		_putValue(new MediaQueryValue<String>("device-height",pixels + "px"));	
+		_putValue(new MediaQueryValue<String>("device-height",pixels + "px"));
 		return this;
 	}
 	public MediaQuery deviceHeightMinPixels(final int pixels) {
@@ -152,7 +152,7 @@ public class MediaQuery {
 		return this;
 	}
 	public MediaQuery aspectRatio(final String ratio) {
-		_putValue(new MediaQueryValue<String>("aspect-ratio",ratio));	
+		_putValue(new MediaQueryValue<String>("aspect-ratio",ratio));
 		return this;
 	}
 	public MediaQuery aspectMinRatio(final String ratio) {
@@ -166,7 +166,7 @@ public class MediaQuery {
 		return this;
 	}
 	public MediaQuery deviceAspectRatio(final String ratio) {
-		_putValue(new MediaQueryValue<String>("device-aspect-ratio",ratio));	
+		_putValue(new MediaQueryValue<String>("device-aspect-ratio",ratio));
 		return this;
 	}
 	public MediaQuery deviceAspectMinRatio(final String ratio) {
@@ -208,7 +208,7 @@ public class MediaQuery {
 		return this;
 	}
 	public MediaQuery monochromeBitsPerPixel(final int bits) {
-		_putValue(new MediaQueryValue<Integer>("monochrome",bits));	
+		_putValue(new MediaQueryValue<Integer>("monochrome",bits));
 		return this;
 	}
 	public MediaQuery monochromeBitsPerPixelMin(final int bits) {
@@ -264,21 +264,21 @@ public class MediaQuery {
 		return this;
 	}
 	public MediaQuery scanMethod(final MediaQueryScanMethod method) {
-		_putValue(new MediaQueryValue<String>("scan",method.name().toLowerCase()));	
+		_putValue(new MediaQueryValue<String>("scan",method.name().toLowerCase()));
 		return this;
 	}
 	public MediaQuery grid() {
 		_putValue(new MediaQueryValue<String>("grid","1"),
-				  "bitmap");	
+				  "bitmap");
 		return this;
 	}
 	public MediaQuery bitmap() {
 		_putValue(new MediaQueryValue<String>("bitmap","0"),
-				  "grid");	
+				  "grid");
 		return this;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	private <T> void _putValue(final MediaQueryValue<T> value,
 							   final String... valuesToExcludeIfPresent) {
@@ -298,7 +298,7 @@ public class MediaQuery {
 		_values.add(value);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	public static String toMediaQueryString(final Collection<MediaQuery> orCombinedMediaQueries) {
 		StringBuilder outMediaQuery = new StringBuilder(orCombinedMediaQueries.size() * 100);
@@ -392,7 +392,7 @@ public class MediaQuery {
 																							.pixelRatioMinForWebKit(1.331F)
 																							.pixelRatioMaxForWebKit(1.332F));
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	public static enum MediaQueryDevice {
 		ALL,
@@ -410,7 +410,7 @@ public class MediaQuery {
 		LANDSCAPE;
 	}
 	public static enum MediaQueryResolutionUnit {
-		DPI,	// dots per inch 
+		DPI,	// dots per inch
 		DPCM, 	// dots per cm
 		DPPX;	// dots per pixel
 	}
@@ -422,10 +422,10 @@ public class MediaQuery {
 	@NoArgsConstructor @AllArgsConstructor
 	private static class MediaQueryValue<T>
 	   implements CanBeRepresentedAsString {
-		
+
 		@Getter @Setter private String _name;
 		@Getter @Setter private T _value;
-			
+
 		@Override
 		public String asString() {
 			return Strings.customized("({}:{})",
@@ -450,7 +450,7 @@ public class MediaQuery {
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	/*
 	public boolean hasErrors() {

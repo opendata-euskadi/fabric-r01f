@@ -1,18 +1,20 @@
 package r01f.types.html;
 
 import r01f.annotations.Immutable;
-import r01f.guids.OID;
+import r01f.aspects.interfaces.dirtytrack.ConvertToDirtyStateTrackable;
 import r01f.guids.OIDBaseMutable;
 import r01f.objectstreamer.annotations.MarshallType;
 
 @Immutable
 @MarshallType(as="cssStyleClassName")
+@ConvertToDirtyStateTrackable
 public class CSSStyleClassName
-	 extends OIDBaseMutable<String> 
-  implements OID {
+	 extends OIDBaseMutable<String> {
 
 	private static final long serialVersionUID = 4544524456179310518L;
-
+/////////////////////////////////////////////////////////////////////////////////////////
+//	CONSTRUCTOR & BUILDER
+/////////////////////////////////////////////////////////////////////////////////////////
 	public CSSStyleClassName() {
 		// default no-args constructor
 	}
