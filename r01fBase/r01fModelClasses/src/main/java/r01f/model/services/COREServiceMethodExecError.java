@@ -19,7 +19,7 @@ import r01f.util.types.Strings.StringCustomizerVarsProvider;
 public class COREServiceMethodExecError<T>
 	 extends COREServiceMethodExecResultBase<T> {
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * The error type: client / core
@@ -49,7 +49,7 @@ public class COREServiceMethodExecError<T>
 //  NOT-SERIALIZABLE STATUS
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
-	 * Contains the error in the case that there is a general error that prevents 
+	 * Contains the error in the case that there is a general error that prevents
 	 * the find operation to be executed
 	 */
 	@MarshallIgnoredField
@@ -72,21 +72,29 @@ public class COREServiceMethodExecError<T>
 	public COREServiceMethodExecError(final COREServiceMethod reqOp,
 									  final COREServiceErrorType errorType,
 							   		  final Throwable th) {
+		this(reqOp,
+			 errorType,0,	// no error code
+			 th);
+	}
+	public COREServiceMethodExecError(final COREServiceMethod reqOp,
+									  final COREServiceErrorType errorType,final int errorCode,
+							   		  final Throwable th) {
 		this(reqOp);
-		_error = th;		
-		_errorMessage = th != null ? th.getMessage() 
+		_error = th;
+		_errorMessage = th != null ? th.getMessage()
 								   : errorType.debugInfo().toString();
 		_errorDebug = th != null ? Throwables.getStackTraceAsString(th) : null;
 		if (th instanceof EnrichedThrowable) {
 			EnrichedThrowable enrichedTh = (EnrichedThrowable)th;
 			_errorCode = enrichedTh.getExtendedCode() > 0 ? enrichedTh.getExtendedCode()
-														  : null;
+														  : errorCode;
 			_errorType = errorType != null ? errorType
 										   : enrichedTh.getType();
 		} else {
+			_errorCode = errorCode;
 			_errorType = errorType != null ? errorType
 										   : COREServiceErrorTypes.SERVER_ERROR;		// a server error by default
-			
+
 		}
 	}
 	public COREServiceMethodExecError(final COREServiceMethod reqOp,
@@ -98,9 +106,17 @@ public class COREServiceMethodExecError<T>
 	public COREServiceMethodExecError(final COREServiceMethod reqOp,
 							   		  final COREServiceErrorType errorType,
 							   		  final String errMsg) {
+		this(reqOp,
+			 errorType,0,	// no error code
+			 errMsg);
+	}
+	public COREServiceMethodExecError(final COREServiceMethod reqOp,
+							   		  final COREServiceErrorType errorType,final int errorCode,
+							   		  final String errMsg) {
 		this(reqOp);
 		_errorMessage = errMsg;
 		_errorType = errorType;
+		_errorCode = errorCode;
 		_errorDebug = null;
 	}
 	public <E extends COREServiceMethodExecError<?>> COREServiceMethodExecError(final COREServiceMethod reqOp,
@@ -113,7 +129,7 @@ public class COREServiceMethodExecError<T>
 		this.setErrorType(otherError.getErrorType());
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	@SuppressWarnings("unchecked")
 	public <E extends Throwable> E getErrorAs(final Class<E> errorType) {
@@ -144,8 +160,8 @@ public class COREServiceMethodExecError<T>
 		return _errorType.isClientError();
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//	                                                                          
-/////////////////////////////////////////////////////////////////////////////////////////	
+//
+/////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public T getOrThrow() throws COREServiceException {
 		throw this.getCOREServiceException();
@@ -162,7 +178,7 @@ public class COREServiceMethodExecError<T>
 		throw new ClassCastException();
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public String getDetailedMessage() {
@@ -177,17 +193,17 @@ public class COREServiceMethodExecError<T>
 																									  : "SERVER";
 															if (err.getErrorType() != null) {
 																outVars[2] = " (code=" + err.getErrorType().getName() + ")";
-																
+
 															} else {
 																outVars[2] = "";
 															}
-															outVars[3] = Strings.isNOTNullOrEmpty(err.getErrorMessage()) ? err.getErrorMessage() 
+															outVars[3] = Strings.isNOTNullOrEmpty(err.getErrorMessage()) ? err.getErrorMessage()
 																					 						     		 : err.getErrorType() != null ? err.getErrorType().toString() : "";
 															return outVars;
 														}
 						       				  });
 		return outMsg;
-	} 
+	}
 	@Override
 	public CharSequence debugInfo() {
 		StringBuilder outDbgInfo = new StringBuilder();
