@@ -80,7 +80,7 @@ public class CustomStreamers {
 //	CanBeRepresentedAsString SERIALIZER / DESERIALIZER
 /////////////////////////////////////////////////////////////////////////////////////////
 	public static class CanBeRepresentedAsStringSerializer<T extends CanBeRepresentedAsString>
-		        extends CanBeRepresentedAsStringSerializerBase<T,CanBeRepresentedAsStringSerializer<T>> {
+				extends CanBeRepresentedAsStringSerializerBase<T,CanBeRepresentedAsStringSerializer<T>> {
 		public CanBeRepresentedAsStringSerializer(final Class<T> oidType) {
 			super(oidType);
 		}
@@ -100,18 +100,18 @@ public class CustomStreamers {
 		private static final long serialVersionUID = -5273319484446776784L;
 
 		public CanBeRepresentedAsStringDeserializer(final Class<T> objType) {
-	        super(objType,new FactoryFromType<T>() {
+			super(objType,new FactoryFromType<T>() {
 									@Override
 									public T create(final Class<? extends T> type,final Object... args) {
 										return ReflectionUtils.<T>createInstanceFromString(type,(String)args[0]);
 									}
-	        			  });
-	    }
+						  });
+		}
 		public CanBeRepresentedAsStringDeserializer(final Class<T> objType,final FactoryFromType<T> objFactory,
 							   						final BeanProperty property) {
-	        super(objType,objFactory,
-	        	  property);
-	    }
+			super(objType,objFactory,
+				  property);
+		}
 		@Override
 		protected CanBeRepresentedAsStringDeserializer<T> cloneFrom(final Class<T> objType,final FactoryFromType<T> objFactory,final BeanProperty property) {
 			return new CanBeRepresentedAsStringDeserializer<T>(objType,objFactory,property);
@@ -121,7 +121,7 @@ public class CustomStreamers {
 //	PolymorphicCanBeRepresentedAsString SERIALIZER / DESERIALIZER
 /////////////////////////////////////////////////////////////////////////////////////////
 	public static class PolymorphicCanBeRepresentedAsStringSerializer<T extends CanBeRepresentedAsString>
-		        extends PolymorphicCanBeRepresentedAsStringSerializerBase<T,PolymorphicCanBeRepresentedAsStringSerializer<T>> {
+				extends PolymorphicCanBeRepresentedAsStringSerializerBase<T,PolymorphicCanBeRepresentedAsStringSerializer<T>> {
 		public PolymorphicCanBeRepresentedAsStringSerializer(final Class<T> oidType,
 															 final String valuePropName) {
 			super(oidType,
@@ -147,21 +147,21 @@ public class CustomStreamers {
 
 		public PolymorphicCanBeRepresentedAsStringDeserializer(final Class<T> objType,
 															   final String valuePropName) {
-	        super(objType,new FactoryFromType<T>() {
+			super(objType,new FactoryFromType<T>() {
 									@Override
 									public T create(final Class<? extends T> type,final Object... args) {
 										return ReflectionUtils.<T>createInstanceFromString(type,(String)args[0]);
 									}
-	        			  },
-	        	 valuePropName);
-	    }
+						  },
+				 valuePropName);
+		}
 		public PolymorphicCanBeRepresentedAsStringDeserializer(final Class<T> objType,final FactoryFromType<T> objFactory,
 							   								   final BeanProperty property,
 							   								   final String valuePropName) {
-	        super(objType,objFactory,
-	        	  property,
-	        	  valuePropName);
-	    }
+			super(objType,objFactory,
+				  property,
+				  valuePropName);
+		}
 		@Override
 		protected PolymorphicCanBeRepresentedAsStringDeserializer<T> cloneFrom(final Class<T> objType,final FactoryFromType<T> objFactory,final BeanProperty property) {
 			return new PolymorphicCanBeRepresentedAsStringDeserializer<T>(objType,objFactory,property,
@@ -172,7 +172,7 @@ public class CustomStreamers {
 //	OID SERIALIZER / DESERIALIZER
 /////////////////////////////////////////////////////////////////////////////////////////
 	public static class OIDSerializer<O extends OID>
-		        extends PolymorphicCanBeRepresentedAsStringSerializerBase<O,OIDSerializer<O>> {
+				extends PolymorphicCanBeRepresentedAsStringSerializerBase<O,OIDSerializer<O>> {
 		public OIDSerializer(final Class<O> oidType) {
 			super(oidType,
 				  "value");
@@ -194,20 +194,20 @@ public class CustomStreamers {
 		private static final long serialVersionUID = -5273319484446776784L;
 
 		public OIDDeserializer(final Class<O> oidType) {
-	        super(oidType,new FactoryFromType<O>() {
+			super(oidType,new FactoryFromType<O>() {
 									@Override
 									public O create(final Class<? extends O> type,final Object... args) {
 										return ReflectionUtils.<O>createInstanceFromString(type,(String)args[0]);
 									}
-	        			  },
-	        	  "value");
-	    }
+						  },
+				  "value");
+		}
 		public OIDDeserializer(final Class<O> oidType,final FactoryFromType<O> objFactory,
 							   final BeanProperty property) {
-	        super(oidType,objFactory,
-	        	  property,
-	        	  "value");
-	    }
+			super(oidType,objFactory,
+				  property,
+				  "value");
+		}
 		@Override
 		protected OIDDeserializer<O> cloneFrom(final Class<O> objType,final FactoryFromType<O> objFactory,final BeanProperty property) {
 			return new OIDDeserializer<O>(objType,objFactory,property);
@@ -217,7 +217,7 @@ public class CustomStreamers {
 //  RANGE
 /////////////////////////////////////////////////////////////////////////////////////////
 	public static class RangeSerializer<T extends Comparable<T>>
-        	    extends JsonSerializer<Range<T>>
+				extends JsonSerializer<Range<T>>
 	 		 implements ContextualSerializer {
 
 		protected BeanProperty _property;			// property being deserialized
@@ -235,78 +235,78 @@ public class CustomStreamers {
 			return _property == property ? this		// collections
 										 : new RangeSerializer<T>(property);
 		}
-	    @Override
-	    public void serialize(final Range<T> value,
-	    					  final JsonGenerator gen,final SerializerProvider provider) throws IOException {
-	    	// [0] - Guess the range data type
-	    	Class<?> rangeDataType = Range.guessDataType(value);
-	    	String rangeDataTypeId = rangeDataType.getSimpleName();
-	    	String rangeSpec = value.asString();
+		@Override
+		public void serialize(final Range<T> value,
+							  final JsonGenerator gen,final SerializerProvider provider) throws IOException {
+			// [0] - Guess the range data type
+			Class<?> rangeDataType = Range.guessDataType(value);
+			String rangeDataTypeId = rangeDataType.getSimpleName();
+			String rangeSpec = value.asString();
 
-	    	// [1] - Serialize
-	    	if (_property != null) {
-	    		// a) serialize the object being a field of a container object
-	    		if (gen instanceof ToXmlGenerator) {
-	    			// --- XML
-	    			ToXmlGenerator xgen = (ToXmlGenerator)gen;
-	    			MarshallField fmAnn = _property.getAnnotation(MarshallField.class);
-	    			if (fmAnn != null
-	    			 && fmAnn.whenXml() != null
-	    			 && fmAnn.whenXml().attr()) {	// attribute
-	    				// serialize as an XML attribute as [range_type_id]:[range_spec]
-	    				xgen.setNextIsAttribute(true);
-	    				//xgen.writeFieldName(fmAnn.as());	// ??? 2018/03 > this line was NOT previously present BUT it seems necessary
-	    				//									// 2018/04 > commented!! if not fails... it seems it's NOT necessary
-			    		xgen.writeString(String.format("%s:%s",
-							   		     			   rangeDataTypeId,rangeSpec));
-	    			} else {
-		    			// serialize the object itself as an XML element <propName dataTypeId=[typeId]>[rangeSpec]</propName>
-	    				_writeRangeTypedWrapped(rangeDataTypeId,rangeSpec,
-	    								 		gen);
-	    			}
-	    		} else {
-	    			// --- JSON
-		    		gen.writeString(String.format("%s:%s",
-						   		     			  rangeDataTypeId,rangeSpec));
-//	    			// serialize the object itself [propName] = { typeId=[typeId],rangeSpec=[value] }
-//			    	_writeRangeTypedWrapped(rangeDataTypeId,rangeSpec,
-//			    					 		gen);
-	    		}
-	    	}
-	    	else {
-	    		// b) serialize the object itself as { [rootName] : { typeId=[typeId],rangeSpec=[value] } }
-		    	_writeRangeTypedWrapped(rangeDataTypeId,rangeSpec,
-		    					 		gen);
-	    	}
-	    }
-	    private void _writeRangeTypedWrapped(final String rangeDataTypeId,final String rangeSpec,
-	    							  		 final JsonGenerator gen) throws IOException {
-    		gen.writeStartObject();
-    		_writeRangeTyped(rangeDataTypeId,rangeSpec,
-    						 gen);
-    		gen.writeEndObject();
-	    }
-	    private void _writeRangeTyped(final String rangeDataTypeId,final String rangeSpec,
-	    							  final JsonGenerator gen) throws IOException {
-	    	if ( !(gen instanceof ToXmlGenerator)) {
-	    		gen.writeFieldName(RANGE_TYPE_ID_PROPERTY_NAME);
-	    		gen.writeString(rangeDataTypeId);
-	    		gen.writeFieldName(RANGE_SPEC_PROPERTY_NAME);
-	    		gen.writeString(rangeSpec);
-	    	}
-	    	else if (gen instanceof ToXmlGenerator) {
-	    		ToXmlGenerator xgen = (ToXmlGenerator)gen;
+			// [1] - Serialize
+			if (_property != null) {
+				// a) serialize the object being a field of a container object
+				if (gen instanceof ToXmlGenerator) {
+					// --- XML
+					ToXmlGenerator xgen = (ToXmlGenerator)gen;
+					MarshallField fmAnn = _property.getAnnotation(MarshallField.class);
+					if (fmAnn != null
+					 && fmAnn.whenXml() != null
+					 && fmAnn.whenXml().attr()) {	// attribute
+						// serialize as an XML attribute as [range_type_id]:[range_spec]
+						xgen.setNextIsAttribute(true);
+						//xgen.writeFieldName(fmAnn.as());	// ??? 2018/03 > this line was NOT previously present BUT it seems necessary
+						//									// 2018/04 > commented!! if not fails... it seems it's NOT necessary
+						xgen.writeString(String.format("%s:%s",
+							   			 			   rangeDataTypeId,rangeSpec));
+					} else {
+						// serialize the object itself as an XML element <propName dataTypeId=[typeId]>[rangeSpec]</propName>
+						_writeRangeTypedWrapped(rangeDataTypeId,rangeSpec,
+										 		gen);
+					}
+				} else {
+					// --- JSON
+					gen.writeString(String.format("%s:%s",
+						   			 			  rangeDataTypeId,rangeSpec));
+//					// serialize the object itself [propName] = { typeId=[typeId],rangeSpec=[value] }
+//					_writeRangeTypedWrapped(rangeDataTypeId,rangeSpec,
+//									 		gen);
+				}
+			}
+			else {
+				// b) serialize the object itself as { [rootName] : { typeId=[typeId],rangeSpec=[value] } }
+				_writeRangeTypedWrapped(rangeDataTypeId,rangeSpec,
+								 		gen);
+			}
+		}
+		private static void _writeRangeTypedWrapped(final String rangeDataTypeId,final String rangeSpec,
+									  		 		final JsonGenerator gen) throws IOException {
+			gen.writeStartObject();
+			_writeRangeTyped(rangeDataTypeId,rangeSpec,
+							 gen);
+			gen.writeEndObject();
+		}
+		private static void _writeRangeTyped(final String rangeDataTypeId,final String rangeSpec,
+									  		 final JsonGenerator gen) throws IOException {
+			if ( !(gen instanceof ToXmlGenerator)) {
+				gen.writeFieldName(RANGE_TYPE_ID_PROPERTY_NAME);
+				gen.writeString(rangeDataTypeId);
+				gen.writeFieldName(RANGE_SPEC_PROPERTY_NAME);
+				gen.writeString(rangeSpec);
+			}
+			else if (gen instanceof ToXmlGenerator) {
+				ToXmlGenerator xgen = (ToXmlGenerator)gen;
 				// ... the dataTypeId attr
 				xgen.setNextIsAttribute(true);
 				xgen.writeFieldName(RANGE_TYPE_ID_PROPERTY_NAME);	//xgen.setNextName(QName.valueOf(RANGE_TYPE_ID_PROPERTY_NAME));
-	    		xgen.writeString(rangeDataTypeId);
-	    		// ... the range spec
-	    		xgen.setNextIsAttribute(false);
-	    		xgen.setNextIsUnwrapped(true);
-	    		xgen.writeFieldName("fake_field_name");		// this field name is NEVER written to the XML output since NEXT IS UNWRAPPED was previously set
-	    		xgen.writeString(rangeSpec);
-	    	}
-	    }
+				xgen.writeString(rangeDataTypeId);
+				// ... the range spec
+				xgen.setNextIsAttribute(false);
+				xgen.setNextIsUnwrapped(true);
+				xgen.writeFieldName("fake_field_name");		// this field name is NEVER written to the XML output since NEXT IS UNWRAPPED was previously set
+				xgen.writeString(rangeSpec);
+			}
+		}
 	}
 	private static final Pattern RANGE_XML_ATTR_PATTERN = Pattern.compile("(" + Date.class.getSimpleName() + "|" +
 																				LocalDate.class.getSimpleName() + "|" +
@@ -319,8 +319,8 @@ public class CustomStreamers {
 																				Float.class.getSimpleName() +
 																			"):(.+)");
 	public static class RangeDeserializer<T extends Comparable<T>>
-		 	    extends StdDeserializer<Range<T>>
-    		 implements ContextualDeserializer {	// needed to know which field is being deserialized
+		 		extends StdDeserializer<Range<T>>
+			 implements ContextualDeserializer {	// needed to know which field is being deserialized
 
 		private static final long serialVersionUID = 8141066318006052053L;
 
@@ -328,8 +328,8 @@ public class CustomStreamers {
 		protected BeanProperty _property;
 
 		public RangeDeserializer() {
-	        super(Range.class);
-	    }
+			super(Range.class);
+		}
 		public RangeDeserializer(final BeanProperty property) {
 			this();
 			_property = property;
@@ -341,18 +341,18 @@ public class CustomStreamers {
 										 : new RangeDeserializer<T>(property);
 		}
 		@Override
-	    public Range<T> deserialize(final JsonParser parser,
-	    					 		final DeserializationContext ctxt) throws IOException,
-	    															   		  JsonProcessingException {
+		public Range<T> deserialize(final JsonParser parser,
+							 		final DeserializationContext ctxt) throws IOException,
+																	   		  JsonProcessingException {
 			String rangeTypeId = null;				// the range type
-	    	String rangeSpec = null;				// the range as string
+			String rangeSpec = null;				// the range as string
 
-	        JsonNode node = parser.getCodec().readTree(parser); 	// reads all tree!!
+			JsonNode node = parser.getCodec().readTree(parser); 	// reads all tree!!
 
-	        // [1] - Read the object string representation depending on the serialized format
-	        if (node.getNodeType() == JsonNodeType.STRING) {
-	        	// a) the object was serialized being a field of a container object as [range_type_id]:[range_spec]
-	            String rangeSerialized = ((TextNode)node).asText();
+			// [1] - Read the object string representation depending on the serialized format
+			if (node.getNodeType() == JsonNodeType.STRING) {
+				// a) the object was serialized being a field of a container object as [range_type_id]:[range_spec]
+				String rangeSerialized = ((TextNode)node).asText();
 
 				Matcher m = RANGE_XML_ATTR_PATTERN.matcher(rangeSerialized);
 				if (m.find()) {
@@ -362,30 +362,30 @@ public class CustomStreamers {
 					ctxt.reportInputMismatch(this,"Bad range definition: %s. Range expression MUST match %s",
 												  rangeSerialized,RANGE_XML_ATTR_PATTERN);
 				}
-	        }
-	        else {
-	        	// b) the object was serialized itself
-	            ObjectNode objNode = (ObjectNode)node;
+			}
+			else {
+				// b) the object was serialized itself
+				ObjectNode objNode = (ObjectNode)node;
 
-	            Map<String,String> propValues = Maps.newLinkedHashMapWithExpectedSize(2);
-	            for (Iterator<Map.Entry<String,JsonNode>> fIt = objNode.fields(); fIt.hasNext(); ) {
-	            	Map.Entry<String,JsonNode> me = fIt.next();
-	            	if (Strings.isNOTNullOrEmpty(me.getKey())) {
-	            		propValues.put(me.getKey(),me.getValue().asText());
-	            	} else {
-	            		// ... when deserialized from xml as <propName typeId=[rangeTypeId]>[rangeSpec]</propName>
-	            		//	   the property name is ""
-	            		propValues.put(RANGE_SPEC_PROPERTY_NAME,me.getValue().asText());
-	            	}
-	            }
-	    		rangeTypeId = propValues.get(RANGE_TYPE_ID_PROPERTY_NAME);
-	            rangeSpec = propValues.get(RANGE_SPEC_PROPERTY_NAME);
-	        }
+				Map<String,String> propValues = Maps.newLinkedHashMapWithExpectedSize(2);
+				for (Iterator<Map.Entry<String,JsonNode>> fIt = objNode.fields(); fIt.hasNext(); ) {
+					Map.Entry<String,JsonNode> me = fIt.next();
+					if (Strings.isNOTNullOrEmpty(me.getKey())) {
+						propValues.put(me.getKey(),me.getValue().asText());
+					} else {
+						// ... when deserialized from xml as <propName typeId=[rangeTypeId]>[rangeSpec]</propName>
+						//	   the property name is ""
+						propValues.put(RANGE_SPEC_PROPERTY_NAME,me.getValue().asText());
+					}
+				}
+				rangeTypeId = propValues.get(RANGE_TYPE_ID_PROPERTY_NAME);
+				rangeSpec = propValues.get(RANGE_SPEC_PROPERTY_NAME);
+			}
 
-	        // [2] - Get the oid type
-	        Range<T> outRange = _createRange(rangeSpec,rangeTypeId);
-	        return outRange;
-	    }
+			// [2] - Get the oid type
+			Range<T> outRange = _createRange(rangeSpec,rangeTypeId);
+			return outRange;
+		}
 		@SuppressWarnings("unchecked")
 		private Range<T> _createRange(final String rangeSpec,
 									  final String rangeTypeId) {
@@ -418,8 +418,8 @@ public class CustomStreamers {
 //	LANG-TEXTS
 /////////////////////////////////////////////////////////////////////////////////////////
 	public static abstract class LanguageTextsSerializerBase<L extends LanguageTexts>
-				          extends JsonSerializer<L>
-			           implements ContextualSerializer {
+						  extends JsonSerializer<L>
+					   implements ContextualSerializer {
 
 		protected BeanProperty _property;		// property being serialized
 
@@ -457,8 +457,8 @@ public class CustomStreamers {
 		}
 	}
 	public static abstract class LanguageTextsDeserializerBase<L extends LanguageTexts>
-		 	    		  extends StdDeserializer<L>
-    		 		   implements ContextualDeserializer {
+		 				 extends StdDeserializer<L>
+			 		  implements ContextualDeserializer {
 
 		private static final long serialVersionUID = 4888982791994392289L;	// needed to know which field is being deserialized
 
@@ -484,20 +484,20 @@ public class CustomStreamers {
 		@Override @SuppressWarnings("unchecked")
 		public L deserialize(final JsonParser parser,final DeserializationContext ctxt) throws IOException,
 																							   JsonProcessingException {
-	    	L outLangTexts = this.createLanguageTextsInstance((Class<L>)this.handledType());
+			L outLangTexts = this.createLanguageTextsInstance((Class<L>)this.handledType());
 
-	    	JsonNode node = parser.getCodec().readTree(parser); 	// reads all tree!!
-	    	for (Iterator<Map.Entry<String,JsonNode>> fIt = node.fields(); fIt.hasNext(); ) {
-	    		Map.Entry<String,JsonNode> f = fIt.next();
-	    		String langStr = f.getKey();
-	    		String text = f.getValue().asText();
-	    		if (Languages.canBe(langStr)) {
-	    			outLangTexts.add(Languages.fromName(langStr),text);
-	    		} else {
-	    			log.error("NOT recognized language: {}",langStr);
-	    		}
-	    	}
-	    	return outLangTexts;
+			JsonNode node = parser.getCodec().readTree(parser); 	// reads all tree!!
+			for (Iterator<Map.Entry<String,JsonNode>> fIt = node.fields(); fIt.hasNext(); ) {
+				Map.Entry<String,JsonNode> f = fIt.next();
+				String langStr = f.getKey();
+				String text = f.getValue().asText();
+				if (Languages.canBe(langStr)) {
+					outLangTexts.add(Languages.fromName(langStr),text);
+				} else {
+					log.error("NOT recognized language: {}",langStr);
+				}
+			}
+			return outLangTexts;
 		}
 	}
 	public static class LanguageTextsSerializer
@@ -572,7 +572,7 @@ public class CustomStreamers {
 	 * Extends {@link AsPropertyTypeDeserializer} that uses a PROPERTY at the source stream
 	 * to RESOLVE the object type and DESERIALIZE the object
 	 * ... BUT in this case, NO PROPERTY is used, since the {@link LanguageTexts} concrete type
-	 *     guessed from the stream
+	 *	 guessed from the stream
 	 * (see MarshallerTypeResolverBuilderDelegates)
 	 */
 	public static class LangTextsTypeResolverAndDeserializer
@@ -586,23 +586,23 @@ public class CustomStreamers {
 							   				  		final String typePropertyName,
 							   				  		final boolean typeIdVisible,
 							   				  		final JavaType defaultImpl) {
-	        super(bt,typeIdResolver,
-	        	  typePropertyName,
-	        	  typeIdVisible,
-	        	  defaultImpl);
-	    }
-	    public LangTextsTypeResolverAndDeserializer(final AsPropertyTypeDeserializer src,
-	    					   				  		final BeanProperty property,
-	    					   				  		final TypeIdResolver typeIdResolver) {
-	        super(src,
-	        	  property);
-	    }
-	    @Override
-	    public Object deserializeTypedFromObject(final JsonParser parser,
-	    										 final DeserializationContext context) throws IOException {
-	    	return new LanguageTextsDeserializer()
-	    					.deserialize(parser,
-	    								 context);
-	    }
+			super(bt,typeIdResolver,
+				  typePropertyName,
+				  typeIdVisible,
+				  defaultImpl);
+		}
+		public LangTextsTypeResolverAndDeserializer(final AsPropertyTypeDeserializer src,
+							   				  		final BeanProperty property,
+							   				  		final TypeIdResolver typeIdResolver) {
+			super(src,
+				  property);
+		}
+		@Override
+		public Object deserializeTypedFromObject(final JsonParser parser,
+												 final DeserializationContext context) throws IOException {
+			return new LanguageTextsDeserializer()
+							.deserialize(parser,
+										 context);
+		}
 	}
 }

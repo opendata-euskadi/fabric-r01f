@@ -538,8 +538,6 @@ public class Range<T extends Comparable<? super T>>
 		} else {
 			throw new IllegalArgumentException("Type " + dataType + " is NOT supported in Range");
 		}
-
-
 		String outStr = Strings.customized("{}{}..{}{}",
 							   (rangeDef.getLowerBoundType() == BoundType.CLOSED ? "[" : "("),(rangeDef.getLowerBound() != null ? rangeDef.getLowerBound() : ""),
 							   (rangeDef.getUpperBound() != null ? rangeDef.getUpperBound() : ""),(rangeDef.getUpperBoundType() == BoundType.CLOSED ? "]" : ")"));
@@ -750,15 +748,15 @@ public class Range<T extends Comparable<? super T>>
 //		return _range.or(otherPred);
 //	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//	                                                                          
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	public static final <T extends Comparable<? super T>> Comparator<Range<T>> createComparatorByLowerBound() {
 		return new Comparator<Range<T>>() {
 						@Override
 						public int compare(final Range<T> r1,final Range<T> r2) {
 							if (r1 == null && r2 == null) return 0;
-							if (r1 != null && r2 == null) return -1;	
-							if (r1 == null && r2 != null) return 1;		
+							if (r1 != null && r2 == null) return -1;
+							if (r1 == null && r2 != null) return 1;
 							T l1 = r1.getLowerBound();
 							T l2 = r2.getLowerBound();
 							T u1 = r1.getUpperBound();
