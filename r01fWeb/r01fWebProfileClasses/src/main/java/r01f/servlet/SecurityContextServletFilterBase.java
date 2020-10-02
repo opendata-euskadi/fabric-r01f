@@ -84,7 +84,7 @@ public abstract class SecurityContextServletFilterBase
 					@Override
 					public boolean apply(final ServletRequest req) {
 						boolean outNotFiltered = false;	// not filtered by default
-						
+
 						HttpServletRequest request = (HttpServletRequest)req;
 						String reqUri = request.getRequestURI();
 						if (CollectionUtils.hasData(notFilteredResourcesPatterns)) {
@@ -191,7 +191,7 @@ public abstract class SecurityContextServletFilterBase
 
 		if (queryString == null) {
 			return Url.from(requestURL.toString());
-		} 
+		}
 		return Url.from(requestURL.toString())
 			   	  .joinWith(UrlQueryString.fromUrlEncodedParamsString(queryString));
 	}
@@ -224,6 +224,13 @@ public abstract class SecurityContextServletFilterBase
 		// [1] - Guess the cookie domain (should be cms.euskadi.xxx)
 		Host host = url.getHost();
 		String cookieDomain = null;
+
+		if (host == null) {
+			log.error("could NOT get HOST from req.getRequestURL() = {} > cannot create [security token cookie]",
+					  url);
+			return null;
+		}
+
 		if (host.is(Host.localhost())) {
 			cookieDomain = Host.localhost().asString();
 		} else {
