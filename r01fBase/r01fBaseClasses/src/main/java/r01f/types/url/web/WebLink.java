@@ -11,6 +11,7 @@ import r01f.facets.HasLanguage;
 import r01f.facets.Tagged;
 import r01f.facets.Tagged.HasTaggeableFacet;
 import r01f.guids.OID;
+import r01f.html.HtmlLinkRenderer;
 import r01f.locale.Language;
 import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallType;
@@ -192,6 +193,10 @@ public class WebLink
 										? this.getUrl().asString()
 										: "NO TEXT DEFINED";
 	}
+	public String getHtml() {
+		return HtmlLinkRenderer.of(this)
+							   .render();
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  EQUALS
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -207,6 +212,12 @@ public class WebLink
 								: this.getUrl() != null && other.getUrl() == null ? false
 																				  : this.getUrl() == null && other.getUrl() != null ? false
 																						  											: true;		// both urls null
+		boolean langEq = this.getLanguage() != null && other.getLanguage() != null
+								? this.getLanguage().equals(other.getLanguage())
+								: this.getLanguage() != null && other.getLanguage() == null ? false
+																							: this.getLanguage() == null && other.getLanguage() == null ? false
+																																						: true;	// both lang null
+
 //		boolean textEq = this.getTextData() != null && other.getTextData() != null
 //								? this.getTextData().equals(other.getTextData())
 //								: this.getTextData() != null && other.getTextData() == null ? false
@@ -217,7 +228,7 @@ public class WebLink
 //								: this.getPresentation() != null && other.getPresentation() == null ? false
 //																									: this.getPresentation() == null && other.getPresentation() != null ? false
 //																																										: true;		// both presentation null
-		return urlEq;
+		return urlEq && langEq;
 	}
 	@Override
 	public int hashCode() {
