@@ -105,13 +105,11 @@ public abstract class LanguageTextsBase<SELF_TYPE extends LanguageTextsBase<SELF
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public LanguageTexts add(final Language lang,final String text) {
-		if (text == null) return this;
 		_put(lang,text);
 		return this;
 	}
 	@Override
 	public LanguageTexts addForAll(final String text) {
-		if (text == null) return this;
 		for (Language lang : Language.values()) {
 			this.add(lang,text);
 		}
