@@ -13,8 +13,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyWriter;
 
+import com.google.common.collect.Lists;
+
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import r01f.objectstreamer.HasMarshaller;
@@ -23,6 +24,7 @@ import r01f.reflection.ReflectionUtils;
 import r01f.types.Range;
 import r01f.util.types.Dates;
 import r01f.util.types.Strings;
+import r01f.util.types.collections.CollectionUtils;
 
 /**
  * {@link MessageBodyWriter} for basic types as Long, Integer, Boolean, etc
@@ -252,23 +254,46 @@ public class RESTResponseTypeMappersForBasicTypes {
 	 * MessageBodyWriter for all {@link PersistenceOperationResult}
 	 */
 	@Accessors(prefix="_")
-	@RequiredArgsConstructor
 	public static abstract class MarshalledObjectResultTypeMapperBase<T>
 		              implements MessageBodyWriter<T>,
 		              			 HasMarshaller {
 
-		private final Class<?> _mappedType;
-		private final MediaType _mediaType;
+				private final Class<?> _mappedType;
+				private final Collection<MediaType> _mediaTypes;
 
 		@Getter private final Marshaller _modelObjectsMarshaller;
+
+		@Deprecated
+		public MarshalledObjectResultTypeMapperBase(final Class<?> mappedType,
+													final MediaType mediaTypes,
+													final Marshaller modelObjectsMarshaller) {
+			this(mappedType,
+				 modelObjectsMarshaller,
+				 Lists.newArrayList(mediaTypes));
+		}
+		public MarshalledObjectResultTypeMapperBase(final Class<?> mappedType,
+													final Marshaller modelObjectsMarshaller,
+													final MediaType... mediaTypes) {
+			this(mappedType,
+				 modelObjectsMarshaller,
+				 CollectionUtils.hasData(mediaTypes) ? Lists.newArrayList(mediaTypes) : null);
+
+		}
+		public MarshalledObjectResultTypeMapperBase(final Class<?> mappedType,
+													final Marshaller modelObjectsMarshaller,
+													final Collection<MediaType> mediaTypes) {
+			_mappedType = mappedType;
+			_modelObjectsMarshaller = modelObjectsMarshaller;
+			_mediaTypes = mediaTypes;
+		}
 
 		@Override
 		public boolean isWriteable(final Class<?> type,final Type genericType,
 								   final Annotation[] annotations,
 								   final MediaType mediaType) {
 			boolean outWriteable = false;
-			if (mediaType.isCompatible(_mediaType)
-			 && ReflectionUtils.isImplementingAny(type, _mappedType)) {
+			if (this.isCompatible(mediaType)
+			 && ReflectionUtils.isImplementingAny(type,_mappedType)) {
 			     outWriteable = true;
 			}
 			log.trace("{} type is {} writeable with {}",type.getName(),
@@ -294,10 +319,10 @@ public class RESTResponseTypeMappersForBasicTypes {
 			log.trace("writing {} type",type.getName());
 			String outString = null;
 
-			if (_mediaType.isCompatible(MediaType.APPLICATION_JSON_TYPE)) {
+			if (mediaType.isCompatible(MediaType.APPLICATION_JSON_TYPE)) {
 				outString = obj != null ? this.getModelObjectsMarshaller().forWriting().toJson(obj)
-							  		 	   : null;
-			} else if (_mediaType.isCompatible(MediaType.APPLICATION_XML_TYPE)) {
+							  		 	: null;
+			} else if (mediaType.isCompatible(MediaType.APPLICATION_XML_TYPE)) {
 				outString = obj != null ? this.getModelObjectsMarshaller().forWriting().toXml(obj)
 							  		 	   : null;
 			} else {
@@ -306,13 +331,26 @@ public class RESTResponseTypeMappersForBasicTypes {
 
 			if (Strings.isNOTNullOrEmpty(outString)) entityStream.write(outString.getBytes());
 		}
+		protected boolean isCompatible(final MediaType mediaType) {
+			if (CollectionUtils.isNullOrEmpty(_mediaTypes)) return true;
+			boolean outCompatible = false;
+			for (MediaType m : _mediaTypes) {
+				if (mediaType.isCompatible(m)) {
+					outCompatible = true;
+					break;
+				}
+			}
+			return outCompatible;
+		}
 	}
-	
+
 	@Deprecated
 	public static abstract class XMLMarshalledObjectResponseTypeMapper<T>
 						 extends MarshalledObjectResultTypeMapperBase<T> {
-		public XMLMarshalledObjectResponseTypeMapper(Class<?> mappedType, Marshaller marshaller) {
-			super(mappedType, MediaType.APPLICATION_XML_TYPE, marshaller);
+		public XMLMarshalledObjectResponseTypeMapper(final Class<?> mappedType, final Marshaller marshaller) {
+			super(mappedType,
+				  marshaller,
+				  MediaType.APPLICATION_XML_TYPE,MediaType.APPLICATION_JSON_TYPE);
 		}
 	}
 }
