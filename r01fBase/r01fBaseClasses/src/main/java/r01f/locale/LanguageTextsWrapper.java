@@ -14,7 +14,7 @@ import r01f.locale.LanguageTexts.LangTextNotFoundBehabior;
  * 		@Accessors(prefix="_")
  * 		public class MyType {
  * 			@Getter @Setter private LanguageTexts _nameByLang;
- * 
+ *
  * 			@Getter private final transient LanguageTextsWrapper<MyType> _name = LanguageTextsWrapper.at(this)
  * 																					.wrap(new HasLanguageTexts() {
  * 																					     		public LanguageTexts get() {
@@ -29,20 +29,20 @@ import r01f.locale.LanguageTexts.LangTextNotFoundBehabior;
  * If <pre>MyType</pre> implements {@link HasLangDependentNamedFacet} then just:
  * <pre class='brush:java'>
  * 		@Accessors(prefix="_")
- * 		public class MyType 
+ * 		public class MyType
  * 		  implements HasLangDependentNamedFacet {
  * 			@Getter @Setter private LanguageTexts _nameByLang;
- * 
+ *
  * 			@Getter private final transient LanguageTextsWrapper<MyType> _name = LanguageTextsWrapper.atHasLang(this);
- * 
+ *
  * 	        @Override
  * 	        public LangDependentNamed asLangDependentNamed() {
  * 	        	return new LangDependentNamedDelegate<MyType>(this);
  * 	        }
  * 	   }
  * </pre>
- * 
- * 
+ *
+ *
  * Now '_nameByLang' field can be easily accessed:
  * <pre class='brush:java'>
  * 		MyType t = new MyType();
@@ -66,10 +66,10 @@ public class LanguageTextsWrapper<T> {
 								final HasLanguageTexts hasLangTexts) {
 		_langTextsContainer = langTextsContainer;
 		_hasLangTexts = hasLangTexts;
-		
+
 		// ensure that there exists a LangTexts object
 		if (_hasLangTexts.get() == null) _hasLangTexts.set(new LanguageTextsMapBacked(LangTextNotFoundBehabior.RETURN_NULL));
-		
+
 		// create the wrapper
 		_accessWrapper = LanguageTextsAccessWrapper.wrap(_hasLangTexts);
 	}
@@ -119,7 +119,7 @@ public class LanguageTextsWrapper<T> {
 		}
 		// add
 		hasLangTexts.add(lang,text);
-		
+
 		return _langTextsContainer;
 	}
 	public T setIn(final Language lang,
@@ -132,7 +132,7 @@ public class LanguageTextsWrapper<T> {
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  GET
-/////////////////////////////////////////////////////////////////////////////////////////	
+/////////////////////////////////////////////////////////////////////////////////////////
 	public Optional<String> getIn(final Language lang) {
 		return _accessWrapper.getIn(lang);
 	}

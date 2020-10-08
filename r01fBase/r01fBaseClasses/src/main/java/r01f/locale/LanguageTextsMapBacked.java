@@ -153,7 +153,11 @@ public class LanguageTextsMapBacked
 	@Override
 	protected void _put(final Language lang,final String text) {
 		if (_backEndTextsMap == null) _backEndTextsMap = Maps.newLinkedHashMap();
-		_backEndTextsMap.put(lang,text);
+		if (text == null) {
+			_backEndTextsMap.remove(lang);
+		} else {
+			_backEndTextsMap.put(lang,text);
+		}
 	}
 	@Override
 	protected String _retrieve(final Language lang) {
