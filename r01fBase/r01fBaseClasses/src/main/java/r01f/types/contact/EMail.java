@@ -3,13 +3,13 @@ package r01f.types.contact;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.google.common.base.Function;
 
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import r01f.annotations.Immutable;
 import r01f.guids.CommonOIDs.UserCode;
+import r01f.objectstreamer.annotations.MarshallFrom;
 import r01f.objectstreamer.annotations.MarshallType;
 import r01f.patterns.Memoized;
 import r01f.patterns.Supplier;
@@ -27,14 +27,13 @@ public class EMail
 
 	private static final long serialVersionUID = -6976066522439926427L;
 /////////////////////////////////////////////////////////////////////////////////////////
-//	                                                                          
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	private static final Pattern EMAIL_MATCH_PATTERN = Pattern.compile("([^@]+)@(.+)");
 /////////////////////////////////////////////////////////////////////////////////////////
 //  BUILDERS
 /////////////////////////////////////////////////////////////////////////////////////////
-	@JsonCreator
-	public EMail(final String mail) {
+	public EMail(@MarshallFrom("id") final String mail) {
 		super(mail);
 	}
 	public static EMail of(final String mail) {
