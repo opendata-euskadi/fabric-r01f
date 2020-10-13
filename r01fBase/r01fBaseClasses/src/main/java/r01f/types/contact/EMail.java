@@ -3,6 +3,7 @@ package r01f.types.contact;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.google.common.base.Function;
 
 import lombok.NoArgsConstructor;
@@ -32,6 +33,7 @@ public class EMail
 /////////////////////////////////////////////////////////////////////////////////////////
 //  BUILDERS
 /////////////////////////////////////////////////////////////////////////////////////////
+	@JsonCreator
 	public EMail(final String mail) {
 		super(mail);
 	}
