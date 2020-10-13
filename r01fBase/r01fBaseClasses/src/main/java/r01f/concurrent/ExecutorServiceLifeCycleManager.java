@@ -24,15 +24,14 @@ import lombok.extern.slf4j.Slf4j;
  * 		public class MyContextListener 
  * 		  implements ServletContextListener {
  * 
- * 			private DaemonExecutorServiceLifeCycleManager _lifeCycleManager;
+ * 			private ExecutorServiceLifeCycleManager _lifeCycleManager;
  * 
  * 			public void contextInitialized(ServletContextEvent servletContextEvent) {
  * 				// Create and initialize the daemon ExecutorService to run background jobs in tomcat
- *				_lifeCycleManager = new DaemonExecutorServiceLifeCycleManager(5);
- *				_lifeCycleManager.initialize();
+ *				_lifeCycleManager = new ExecutorServiceLifeCycleManager(5);
  * 			}
  * 			public void contextDestroyed(ServletContextEvent servletContextEvent) {
- * 				_lifeCycleManager.destroy(); 
+ * 				_lifeCycleManager.stop(); 
  * 			}
  * 		}
  * </pre>
@@ -109,7 +108,6 @@ public class ExecutorServiceLifeCycleManager
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public ExecutorService getExecutorService() {
-		if (_executor == null) this.start();	// Ensure the executor is initialized!
 		return _executor;
 	}
 }
