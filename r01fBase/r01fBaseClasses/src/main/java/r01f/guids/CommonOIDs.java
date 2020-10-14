@@ -66,7 +66,7 @@ public abstract class CommonOIDs {
 	public static final class UsageID
 	     		      extends OIDBaseMutable<String> {
 		private static final long serialVersionUID = -4958918132166472496L;
-		
+
 		public UsageID(final String oid) {
 			super(oid);
 		}
@@ -349,6 +349,17 @@ public abstract class CommonOIDs {
 		public boolean isMaster() {
 			return this.is(MASTER);
 		}
+		@SuppressWarnings("null")
+		public boolean isIgnoringCase(final UserCode other) {
+			if (other == null) return false;
+			String thisStr = this.asString();
+			String otherStr = other.asString();
+			if (thisStr == null && otherStr == null) return true;
+			if (thisStr != null && otherStr == null) return false;
+			if (thisStr == null && otherStr != null) return false;
+			if (thisStr.equalsIgnoreCase(otherStr)) return true;
+			return true;
+		}
 	}
 	@Immutable
 	@MarshallType(as="userRole")
@@ -567,7 +578,7 @@ public abstract class CommonOIDs {
 	     		      extends OIDBaseMutable<String> {
 
 		private static final long serialVersionUID = -5026236014365451126L;
-		
+
 		public Token(final String oid) {
 			super(oid);
 		}
