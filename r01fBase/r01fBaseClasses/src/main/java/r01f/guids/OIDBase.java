@@ -15,23 +15,23 @@ import r01f.annotations.Immutable;
  * Models an oid by encapsulating an id that can be either a String, an int, a long, etc
  * The OID could be based on an iImmutable OID if it extends {@link OIDBaseImmutable}
  * or on an mutable OID if it extends {@link OIDBaseMutable}
- * 
- * {@link OIDBaseMutable} should be used as OID base type if the OID must have a zero-argument 
+ *
+ * {@link OIDBaseMutable} should be used as OID base type if the OID must have a zero-argument
  * constructor. This is the case of objects that must be serialized using GWT serialization
  * mechanism: if a no-arg constructor is missing a compilation error is raised
- * 
+ *
  * @param <T> the type of the id
  */
 @Immutable
 @NoArgsConstructor
-public abstract class OIDBase<T> 
+public abstract class OIDBase<T>
 		   implements OIDTyped<T> {
-	
+
 	private static final long serialVersionUID = 3253497735245445342L;
 /////////////////////////////////////////////////////////////////////////////////////////
 //  ABSTRACT METHODS
 /////////////////////////////////////////////////////////////////////////////////////////
-	public abstract T getId(); 
+	public abstract T getId();
 /////////////////////////////////////////////////////////////////////////////////////////
 //  METHODS
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -42,13 +42,13 @@ public abstract class OIDBase<T>
 	@Override
 	public <O extends OID> boolean isNOT(final O other) {
 		return !this.is(other);
-	}	
-	@Override
+	}
+	@Override @SuppressWarnings("unchecked")
 	public <O extends OID> boolean isContainedIn(final O... oids) {
 		return oids != null ? this.isContainedIn(Arrays.asList(oids))
 							: false;
 	}
-	@Override
+	@Override @SuppressWarnings("unchecked")
 	public <O extends OID> boolean isNOTContainedIn(final O... oids) {
 		return !this.isContainedIn(oids);
 	}
@@ -68,6 +68,17 @@ public abstract class OIDBase<T>
 	@Override
 	public <O extends OID> boolean isNOTContainedIn(final Iterable<O> oids) {
 		return !this.isContainedIn(oids);
+	}
+	@Override @SuppressWarnings("null")
+	public <O extends OID> boolean isIgnoringCase(final O other) {
+		if (other == null) return false;
+		String thisStr = this.asString();
+		String otherStr = other.asString();
+		if (thisStr == null && otherStr == null) return true;
+		if (thisStr != null && otherStr == null) return false;
+		if (thisStr == null && otherStr != null) return false;
+		if (thisStr.equalsIgnoreCase(otherStr)) return true;
+		return true;
 	}
 	@Override
 	public T getRaw() {
@@ -110,7 +121,7 @@ public abstract class OIDBase<T>
 		} else if (obj instanceof String
 				|| obj instanceof Number) {
 			return obj.toString().equals(this.getId().toString());
-		} 
+		}
 		return super.equals(obj);
 	}
 	@Override
@@ -120,28 +131,28 @@ public abstract class OIDBase<T>
 		return otherId.equals(this.getId());
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	public static <O extends OID> String asStringOrNull(final O oid) {
 		return oid != null ? oid.asString()
 						   : null;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override @SuppressWarnings("unchecked")
 	public <O extends OID> O cast() {
 		return (O)this;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-// 	
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public boolean isValid() {
 		return this.getId() != null;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-// 	
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	@GwtIncompatible("gwt does NOT supports reflection") @SuppressWarnings("unchecked")
 	private static <O extends OID> O _createOIDFromString(final Class<O> oidType,

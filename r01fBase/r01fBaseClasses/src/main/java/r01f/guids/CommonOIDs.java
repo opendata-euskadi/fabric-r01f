@@ -349,17 +349,6 @@ public abstract class CommonOIDs {
 		public boolean isMaster() {
 			return this.is(MASTER);
 		}
-		@SuppressWarnings("null")
-		public boolean isIgnoringCase(final UserCode other) {
-			if (other == null) return false;
-			String thisStr = this.asString();
-			String otherStr = other.asString();
-			if (thisStr == null && otherStr == null) return true;
-			if (thisStr != null && otherStr == null) return false;
-			if (thisStr == null && otherStr != null) return false;
-			if (thisStr.equalsIgnoreCase(otherStr)) return true;
-			return true;
-		}
 	}
 	@Immutable
 	@MarshallType(as="userRole")
