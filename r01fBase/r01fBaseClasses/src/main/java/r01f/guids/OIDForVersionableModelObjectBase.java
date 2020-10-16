@@ -31,6 +31,16 @@ public abstract class OIDForVersionableModelObjectBase
 		return !this.is(other);
 	}
 	@Override
+	public <O extends OID> boolean isIgnoringCase(final O other) {
+		if (other instanceof OIDForVersionableModelObjectBase) {
+			OIDForVersionableModelObjectBase versionable = (OIDForVersionableModelObjectBase)other;
+			boolean oidEquals = versionable.getOid().isIgnoringCase(this.getOid()); 
+			boolean versionEquals = versionable.getVersion().isIgnoringCase(this.getVersion());
+			return oidEquals && versionEquals;
+		} 
+		return false;
+	}
+	@Override
 	public String toString() {
 		String outStr = null;
 		if (this.getOid() != null && this.getVersion() != null) {
