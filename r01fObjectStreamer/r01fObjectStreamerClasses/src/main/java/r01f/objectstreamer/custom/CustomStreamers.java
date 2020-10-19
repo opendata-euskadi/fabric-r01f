@@ -239,8 +239,9 @@ public class CustomStreamers {
 		public void serialize(final Range<T> value,
 							  final JsonGenerator gen,final SerializerProvider provider) throws IOException {
 			// [0] - Guess the range data type
-			Class<?> rangeDataType = Range.guessDataType(value);
-			String rangeDataTypeId = rangeDataType.getSimpleName();
+//			Class<?> rangeDataType = Range.guessDataType(value);
+//			String rangeDataTypeId = rangeDataType.getSimpleName();
+			String rangeDataTypeId = Range.guessDataTypeAsString(value); // to avoid collision with same name classes (joda and java)
 			String rangeSpec = value.asString();
 
 			// [1] - Serialize
@@ -308,16 +309,18 @@ public class CustomStreamers {
 			}
 		}
 	}
-	private static final Pattern RANGE_XML_ATTR_PATTERN = Pattern.compile("(" + Date.class.getSimpleName() + "|" +
-																				LocalDate.class.getSimpleName() + "|" +
-																				LocalDateTime.class.getSimpleName() + "|" +
-																				LocalTime.class.getSimpleName() + "|" +
-																				Integer.class.getSimpleName() + "|" +
-																				Long.class.getSimpleName() + "|" +
-																				Short.class.getSimpleName() + "|" +
-																				Double.class.getSimpleName() + "|" +
-																				Float.class.getSimpleName() +
-																			"):(.+)");
+//	private static final Pattern RANGE_XML_ATTR_PATTERN = Pattern.compile("(" + Date.class.getSimpleName() + "|" +
+//																				LocalDate.class.getSimpleName() + "|" +
+//																				LocalDateTime.class.getSimpleName() + "|" +
+//																				LocalTime.class.getSimpleName() + "|" +
+//																				Integer.class.getSimpleName() + "|" +
+//																				Long.class.getSimpleName() + "|" +
+//																				Short.class.getSimpleName() + "|" +
+//																				Double.class.getSimpleName() + "|" +
+//																				Float.class.getSimpleName() +
+//																			"):(.+)");
+	private static final Pattern RANGE_XML_ATTR_PATTERN = Pattern.compile("(" + Range.getRangeClassesPatternAsString() + "):(.+)");
+	
 	public static class RangeDeserializer<T extends Comparable<T>>
 		 		extends StdDeserializer<Range<T>>
 			 implements ContextualDeserializer {	// needed to know which field is being deserialized
@@ -408,6 +411,12 @@ public class CustomStreamers {
 				rangeDataType = Double.class;
 			} else if (rangeTypeId.equals(Float.class.getSimpleName())) {
 				rangeDataType = Float.class;
+			} else {
+				try {
+					rangeDataType = Class.forName(rangeTypeId);
+				} catch (ClassNotFoundException e) {
+					// This can't happen
+				}
 			}
 			Range<T> outRange = Range.parse(rangeSpec,
 								   			(Class<T>)rangeDataType);

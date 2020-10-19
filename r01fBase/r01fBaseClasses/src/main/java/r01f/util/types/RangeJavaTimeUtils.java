@@ -6,6 +6,8 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoField;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.google.common.collect.BoundType;
 
@@ -17,6 +19,21 @@ import r01f.types.Range.RangeDef;
  */
 @SuppressWarnings("rawtypes")
 public class RangeJavaTimeUtils {
+	
+	public static String getRangeClassesPatternAsString() {
+		return LocalDate.class.getName() + "|" +
+			   LocalDateTime.class.getName() + "|" +
+			   LocalTime.class.getName();
+	}
+	
+	public static boolean isJavaTimeClass(final Class<?> rangeClass) {
+		if (rangeClass == LocalDate.class
+				|| rangeClass == LocalDateTime.class
+				|| rangeClass == LocalTime.class) {
+			return true;
+		}
+		return false;
+	}
 	
 	public static Range<LocalDate> parseLocalDateRange(final String lowerBound,final BoundType lowerBoundType,
 													   final String upperBound,final BoundType upperBoundType) {
@@ -45,16 +62,21 @@ public class RangeJavaTimeUtils {
 		return new Range<LocalDateTime>(lowerBoundDate,lowerBoundType,
 										upperBoundDate,upperBoundType);
 	}
-	
+	private static final transient Pattern LOCAL_TIME_PATTERN = Pattern.compile("([0-9]|0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9]):([0-9]{3})");
+	private static LocalTime _localTimeFromString(final String str) {
+		Matcher m = LOCAL_TIME_PATTERN.matcher(str);
+		if (!m.find()) throw new IllegalStateException(str + " is not a valid time: MUST match " + LOCAL_TIME_PATTERN);
+		int hour = Integer.parseInt(m.group(1));
+		int minutes = Integer.parseInt(m.group(2));
+		int seconds = Integer.parseInt(m.group(3));
+		int milis = Integer.parseInt(m.group(4));
+		return LocalTime.of(hour,minutes,seconds,milis*1000000);
+	}
 	public static Range<LocalTime> parseLocalTimeRange(final String lowerBound,final BoundType lowerBoundType,
 													   final String upperBound,final BoundType upperBoundType) {
-		Calendar lowerCal = Calendar.getInstance();
-		lowerCal.setTime(Dates.fromMillis(Long.parseLong(lowerBound)));
-		LocalTime lowerBoundDate = lowerBound != null ? LocalTime.of(lowerCal.get(Calendar.HOUR_OF_DAY), lowerCal.get(Calendar.MINUTE), lowerCal.get(Calendar.SECOND), lowerCal.get(Calendar.MILLISECOND)*1000000)
+		LocalTime lowerBoundDate = lowerBound != null ? _localTimeFromString(lowerBound)
 													  : null;
-		Calendar upperCal = Calendar.getInstance();
-		upperCal.setTime(Dates.fromMillis(Long.parseLong(upperBound)));
-		LocalTime upperBoundDate = upperBound != null ? LocalTime.of(upperCal.get(Calendar.HOUR_OF_DAY), upperCal.get(Calendar.MINUTE), upperCal.get(Calendar.SECOND), upperCal.get(Calendar.MILLISECOND)*1000000)
+		LocalTime upperBoundDate = upperBound != null ? _localTimeFromString(upperBound)
 													  : null;
 		return new Range<LocalTime>(lowerBoundDate,lowerBoundType,
 									upperBoundDate,upperBoundType);

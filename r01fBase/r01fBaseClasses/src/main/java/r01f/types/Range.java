@@ -76,6 +76,16 @@ public class Range<T extends Comparable<? super T>>
 ////////////////////////////////////////////////////////////////////////////////////////
 	@GwtIncompatible
 	private static final Pattern RANGE_PATTERN = Pattern.compile("(?:\\(|\\[)(.+)?\\.\\.(.+)?(?:\\)|\\])");
+	private static final boolean IS_USED_WITH_JDK8_OR_HIGHER;
+	static {
+		boolean auxBool = true;
+		try {
+			Class.forName("java.time.LocalTime");
+		} catch (final ClassNotFoundException cnfe) {
+			auxBool = false;
+		}
+		IS_USED_WITH_JDK8_OR_HIGHER = auxBool;
+	}
 
 /////////////////////////////////////////////////////////////////////////////////////////
 //  SERIALIZABLE FIELDS
@@ -308,12 +318,14 @@ public class Range<T extends Comparable<? super T>>
 		Class<?> java_time_LocalTime = null;
 		Class<?> java_time_LocalDate = null;
 		Class<?> java_time_LocalDateTime = null;
-		try { // to avoid java.time dependency with java8- jdks
-			java_time_LocalTime = Class.forName("java.time.LocalTime");
-			java_time_LocalDate = Class.forName("java.time.LocalDate");
-			java_time_LocalDateTime = Class.forName("java.time.LocalDateTime");
-		} catch (final ClassNotFoundException cnfe) {
-			//
+		if (IS_USED_WITH_JDK8_OR_HIGHER) { // to avoid java.time dependency with java8- jdks
+			try {
+				java_time_LocalTime = Class.forName("java.time.LocalTime");
+				java_time_LocalDate = Class.forName("java.time.LocalDate");
+				java_time_LocalDateTime = Class.forName("java.time.LocalDateTime");
+			} catch (final ClassNotFoundException cnfe) {
+				// can't happen
+			}
 		}
 
 		RangeDef bounds = _parseBounds(rangeStr);
@@ -360,6 +372,32 @@ public class Range<T extends Comparable<? super T>>
 			throw new IllegalArgumentException("Type " + dataType + " is NOT supported in Range");
 		}
 		return  (Range<T>)outRange;
+	}
+	public static String getRangeClassesPatternAsString() {
+		String javaTimePattern = "";
+		if (IS_USED_WITH_JDK8_OR_HIGHER) { // to avoid java.time dependency with java8- jdks
+			javaTimePattern = "|" + RangeJavaTimeUtils.getRangeClassesPatternAsString();
+		}
+		return Date.class.getSimpleName() + "|" +
+				LocalDate.class.getSimpleName() + "|" +
+				LocalDateTime.class.getSimpleName() + "|" +
+				LocalTime.class.getSimpleName() + "|" +
+				Integer.class.getSimpleName() + "|" +
+				Long.class.getSimpleName() + "|" +
+				Short.class.getSimpleName() + "|" +
+				Double.class.getSimpleName() + "|" +
+				Float.class.getSimpleName() + "|" +
+				java.util.Date.class.getName() + "|" +
+				java.sql.Date.class.getName() + "|" +
+				LocalDate.class.getName() + "|" +
+				LocalDateTime.class.getName() + "|" +
+				LocalTime.class.getName() + "|" +
+				Integer.class.getName() + "|" +
+				Long.class.getName() + "|" +
+				Short.class.getName() + "|" +
+				Double.class.getName() + "|" +
+				Float.class.getName() +
+				javaTimePattern;
 	}
 
 	@GwtIncompatible
@@ -537,12 +575,14 @@ public class Range<T extends Comparable<? super T>>
 		Class<?> java_time_LocalTime = null;
 		Class<?> java_time_LocalDate = null;
 		Class<?> java_time_LocalDateTime = null;
-		try { // to avoid java.time dependency with java8- jdks
-			java_time_LocalTime = Class.forName("java.time.LocalTime");
-			java_time_LocalDate = Class.forName("java.time.LocalDate");
-			java_time_LocalDateTime = Class.forName("java.time.LocalDateTime");
-		} catch (final ClassNotFoundException cnfe) {
-			//
+		if (IS_USED_WITH_JDK8_OR_HIGHER) {  // to avoid java.time dependency with java8- jdks
+			try {
+				java_time_LocalTime = Class.forName("java.time.LocalTime");
+				java_time_LocalDate = Class.forName("java.time.LocalDate");
+				java_time_LocalDateTime = Class.forName("java.time.LocalDateTime");
+			} catch (final ClassNotFoundException cnfe) {
+				// this can't happen
+			}
 		}
 
 		if (dataType == java_util_Date_class || dataType == java_sql_Date_class) {
@@ -686,6 +726,21 @@ public class Range<T extends Comparable<? super T>>
 			throw new IllegalStateException("NO lower or upper bound set!");
 		}
 		return outDataType;
+	}
+	@SuppressWarnings("unchecked")
+	public static <T extends Comparable<? super T>> String guessDataTypeAsString(final Range<T> range) {
+		Class<T> outDataType = null;
+		if (range.getLowerBound() != null) {
+			outDataType = (Class<T>)range.getLowerBound().getClass();
+		} else if (range.getUpperBound() != null) {
+			outDataType = (Class<T>)range.getUpperBound().getClass();
+		} else {
+			throw new IllegalStateException("NO lower or upper bound set!");
+		}
+		if (IS_USED_WITH_JDK8_OR_HIGHER && RangeJavaTimeUtils.isJavaTimeClass(outDataType)) {
+			return outDataType.getName();
+		}
+		return outDataType.getSimpleName();
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //
