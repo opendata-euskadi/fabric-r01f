@@ -39,11 +39,11 @@ public class RangeJavaTimeUtils {
 													   final String upperBound,final BoundType upperBoundType) {
 		Calendar lowerCal = Calendar.getInstance();
 		lowerCal.setTime(Dates.fromMillis(Long.parseLong(lowerBound)));
-		LocalDate lowerBoundDate = lowerBound != null ? LocalDate.of(lowerCal.get(Calendar.YEAR), lowerCal.get(Calendar.MONTH), lowerCal.get(Calendar.DAY_OF_MONTH))
+		LocalDate lowerBoundDate = lowerBound != null ? LocalDate.of(lowerCal.get(Calendar.YEAR), lowerCal.get(Calendar.MONTH)+1, lowerCal.get(Calendar.DAY_OF_MONTH))
 													  : null;
 		Calendar upperCal = Calendar.getInstance();
 		upperCal.setTime(Dates.fromMillis(Long.parseLong(upperBound)));
-		LocalDate upperBoundDate = upperBound != null ? LocalDate.of(upperCal.get(Calendar.YEAR), upperCal.get(Calendar.MONTH), upperCal.get(Calendar.DAY_OF_MONTH))
+		LocalDate upperBoundDate = upperBound != null ? LocalDate.of(upperCal.get(Calendar.YEAR), upperCal.get(Calendar.MONTH)+1, upperCal.get(Calendar.DAY_OF_MONTH))
 													  : null;
 		return new Range<LocalDate>(lowerBoundDate,lowerBoundType,
 									upperBoundDate,upperBoundType);
@@ -53,11 +53,11 @@ public class RangeJavaTimeUtils {
 															   final String upperBound,final BoundType upperBoundType) {
 		Calendar lowerCal = Calendar.getInstance();
 		lowerCal.setTime(Dates.fromMillis(Long.parseLong(lowerBound)));
-		LocalDateTime lowerBoundDate = lowerBound != null ? LocalDateTime.of(lowerCal.get(Calendar.YEAR), lowerCal.get(Calendar.MONTH), lowerCal.get(Calendar.DAY_OF_MONTH), lowerCal.get(Calendar.HOUR_OF_DAY), lowerCal.get(Calendar.MINUTE), lowerCal.get(Calendar.SECOND), lowerCal.get(Calendar.MILLISECOND)*1000000)
+		LocalDateTime lowerBoundDate = lowerBound != null ? LocalDateTime.of(lowerCal.get(Calendar.YEAR), lowerCal.get(Calendar.MONTH)+1, lowerCal.get(Calendar.DAY_OF_MONTH), lowerCal.get(Calendar.HOUR_OF_DAY), lowerCal.get(Calendar.MINUTE), lowerCal.get(Calendar.SECOND), lowerCal.get(Calendar.MILLISECOND)*1000000)
 														  : null;
 		Calendar upperCal = Calendar.getInstance();
 		upperCal.setTime(Dates.fromMillis(Long.parseLong(upperBound)));
-		LocalDateTime upperBoundDate = upperBound != null ? LocalDateTime.of(upperCal.get(Calendar.YEAR), upperCal.get(Calendar.MONTH), upperCal.get(Calendar.DAY_OF_MONTH), upperCal.get(Calendar.HOUR_OF_DAY), upperCal.get(Calendar.MINUTE), upperCal.get(Calendar.SECOND), upperCal.get(Calendar.MILLISECOND)*1000000)
+		LocalDateTime upperBoundDate = upperBound != null ? LocalDateTime.of(upperCal.get(Calendar.YEAR), upperCal.get(Calendar.MONTH)+1, upperCal.get(Calendar.DAY_OF_MONTH), upperCal.get(Calendar.HOUR_OF_DAY), upperCal.get(Calendar.MINUTE), upperCal.get(Calendar.SECOND), upperCal.get(Calendar.MILLISECOND)*1000000)
 														  : null;
 		return new Range<LocalDateTime>(lowerBoundDate,lowerBoundType,
 										upperBoundDate,upperBoundType);
