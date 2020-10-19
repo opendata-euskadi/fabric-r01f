@@ -11,7 +11,6 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.google.common.collect.Sets;
 
 import r01f.guids.OID;
-import r01f.internal.R01F;
 import r01f.internal.R01FAppCodes;
 import r01f.locale.LanguageTexts;
 import r01f.locale.LanguageTextsMapBacked;
@@ -35,6 +34,7 @@ import r01f.types.JavaPackage;
 import r01f.types.Range;
 import r01f.types.StringBase64;
 import r01f.types.TimeLapse;
+import r01f.types.contact.EMail;
 import r01f.types.contact.Phone;
 import r01f.types.datetime.DayOfMonth;
 import r01f.types.datetime.DayOfWeek;
@@ -160,6 +160,10 @@ abstract class MarshallerModuleBase
 		// Add Phone serializer & desarializer
 		this.addSerializer(Phone.class,new CanBeRepresentedAsStringSerializer(Phone.class));
 		this.addDeserializer(Phone.class,new CanBeRepresentedAsStringDeserializer(Phone.class));
+		
+		// Add Mail serializer & desarializer
+		this.addSerializer(EMail.class,new CanBeRepresentedAsStringSerializer(EMail.class));
+		this.addDeserializer(EMail.class,new CanBeRepresentedAsStringDeserializer(EMail.class));
 
 		// Add XY serializer & desarializer
 //		this.addSerializer(XY.class,new CanBeRepresentedAsStringSerializer(XY.class));
