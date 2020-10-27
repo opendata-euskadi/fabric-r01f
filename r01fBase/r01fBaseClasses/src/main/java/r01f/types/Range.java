@@ -26,6 +26,7 @@ import r01f.aspects.interfaces.dirtytrack.NotDirtyStateTrackable;
 import r01f.objectstreamer.annotations.MarshallIgnoredField;
 import r01f.objectstreamer.annotations.MarshallType;
 import r01f.util.types.Dates;
+import r01f.util.types.RangeJavaTimeUtils;
 import r01f.util.types.Strings;
 
 /**
@@ -75,6 +76,16 @@ public class Range<T extends Comparable<? super T>>
 ////////////////////////////////////////////////////////////////////////////////////////
 	@GwtIncompatible
 	private static final Pattern RANGE_PATTERN = Pattern.compile("(?:\\(|\\[)(.+)?\\.\\.(.+)?(?:\\)|\\])");
+	private static final boolean IS_USED_WITH_JDK8_OR_HIGHER;
+	static {
+		boolean auxBool = true;
+		try {
+			Class.forName("java.time.LocalTime");
+		} catch (final ClassNotFoundException cnfe) {
+			auxBool = false;
+		}
+		IS_USED_WITH_JDK8_OR_HIGHER = auxBool;
+	}
 
 /////////////////////////////////////////////////////////////////////////////////////////
 //  SERIALIZABLE FIELDS
@@ -160,7 +171,7 @@ public class Range<T extends Comparable<? super T>>
 		}
 	}
 	public static <T extends Comparable<? super T>> Range<T> range(final T lower,final BoundType lowerBoundType,
-				 									       		   final T upper,final BoundType upperBoundType) {
+																   final T upper,final BoundType upperBoundType) {
 		return new Range<T>(lower,lowerBoundType,
 						 	upper,upperBoundType);
 	}
@@ -282,7 +293,7 @@ public class Range<T extends Comparable<? super T>>
 	 * @param rangeStr
 	 * @param dataType
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked" })
 	@GwtIncompatible
 	public static <T extends Comparable<? super T>> Range<T> parse(final String rangeStr,
 							 	 	  					   		   final Class<T> dataType) {
@@ -304,21 +315,32 @@ public class Range<T extends Comparable<? super T>>
 		Class<?> java_lang_Long_class = Long.class;
 		Class<?> java_lang_Double_class = Double.class;
 		Class<?> java_lang_Float_class = Float.class;
-
+		Class<?> java_time_LocalTime = null;
+		Class<?> java_time_LocalDate = null;
+		Class<?> java_time_LocalDateTime = null;
+		if (IS_USED_WITH_JDK8_OR_HIGHER) { // to avoid java.time dependency with java8- jdks
+			try {
+				java_time_LocalTime = Class.forName("java.time.LocalTime");
+				java_time_LocalDate = Class.forName("java.time.LocalDate");
+				java_time_LocalDateTime = Class.forName("java.time.LocalDateTime");
+			} catch (final ClassNotFoundException cnfe) {
+				// can't happen
+			}
+		}
 
 		RangeDef bounds = _parseBounds(rangeStr);
 		if (dataType == java_util_Date_class|| dataType == java_sql__Date_class) {
 			outRange = _parseDateRange(bounds.getLowerBound(),bounds.getLowerBoundType(),
 									   bounds.getUpperBound(),bounds.getUpperBoundType());
 		} else if (dataType == joda_LocalDate) {
-			outRange = _parseLocalDateRange(bounds.getLowerBound(),bounds.getLowerBoundType(),
-									   		bounds.getUpperBound(),bounds.getUpperBoundType());
+			outRange = _parseJodaLocalDateRange(bounds.getLowerBound(),bounds.getLowerBoundType(),
+												bounds.getUpperBound(),bounds.getUpperBoundType());
 		} else if (dataType == joda_LocalDateTime) {
-			outRange = _parseLocalDateTimeRange(bounds.getLowerBound(),bounds.getLowerBoundType(),
-									   			bounds.getUpperBound(),bounds.getUpperBoundType());
+			outRange = _parseJodaLocalDateTimeRange(bounds.getLowerBound(),bounds.getLowerBoundType(),
+													bounds.getUpperBound(),bounds.getUpperBoundType());
 		} else if (dataType == joda_LocalTime) {
-			outRange = _parseLocalTimeRange(bounds.getLowerBound(),bounds.getLowerBoundType(),
-									   		bounds.getUpperBound(),bounds.getUpperBoundType());
+			outRange = _parseJodaLocalTimeRange(bounds.getLowerBound(),bounds.getLowerBoundType(),
+												bounds.getUpperBound(),bounds.getUpperBoundType());
 		} else if (dataType == java_lang_Byte_class) {
 			outRange = _parseByteRange(bounds.getLowerBound(),bounds.getLowerBoundType(),
 									   bounds.getUpperBound(),bounds.getUpperBoundType());
@@ -337,10 +359,45 @@ public class Range<T extends Comparable<? super T>>
 		} else if (dataType == java_lang_Float_class) {
 			outRange = _parseFloatRange(bounds.getLowerBound(),bounds.getLowerBoundType(),
 										bounds.getUpperBound(),bounds.getUpperBoundType());
+		} else if (java_time_LocalDate != null && dataType == java_time_LocalDate) {
+			outRange = RangeJavaTimeUtils.parseLocalDateRange(bounds.getLowerBound(),bounds.getLowerBoundType(),
+															  bounds.getUpperBound(),bounds.getUpperBoundType());
+		} else if (java_time_LocalDateTime != null && dataType == java_time_LocalDateTime) {
+			outRange = RangeJavaTimeUtils.parseLocalDateTimeRange(bounds.getLowerBound(),bounds.getLowerBoundType(),
+															  bounds.getUpperBound(),bounds.getUpperBoundType());
+		} else if (java_time_LocalTime != null && dataType == java_time_LocalTime) {
+			outRange = RangeJavaTimeUtils.parseLocalTimeRange(bounds.getLowerBound(),bounds.getLowerBoundType(),
+															  bounds.getUpperBound(),bounds.getUpperBoundType());
 		} else {
 			throw new IllegalArgumentException("Type " + dataType + " is NOT supported in Range");
 		}
 		return  (Range<T>)outRange;
+	}
+	public static String getRangeClassesPatternAsString() {
+		String javaTimePattern = "";
+		if (IS_USED_WITH_JDK8_OR_HIGHER) { // to avoid java.time dependency with java8- jdks
+			javaTimePattern = "|" + RangeJavaTimeUtils.getRangeClassesPatternAsString();
+		}
+		return Date.class.getSimpleName() + "|" +
+				LocalDate.class.getSimpleName() + "|" +
+				LocalDateTime.class.getSimpleName() + "|" +
+				LocalTime.class.getSimpleName() + "|" +
+				Integer.class.getSimpleName() + "|" +
+				Long.class.getSimpleName() + "|" +
+				Short.class.getSimpleName() + "|" +
+				Double.class.getSimpleName() + "|" +
+				Float.class.getSimpleName() + "|" +
+				java.util.Date.class.getName() + "|" +
+				java.sql.Date.class.getName() + "|" +
+				LocalDate.class.getName() + "|" +
+				LocalDateTime.class.getName() + "|" +
+				LocalTime.class.getName() + "|" +
+				Integer.class.getName() + "|" +
+				Long.class.getName() + "|" +
+				Short.class.getName() + "|" +
+				Double.class.getName() + "|" +
+				Float.class.getName() +
+				javaTimePattern;
 	}
 
 	@GwtIncompatible
@@ -393,22 +450,23 @@ public class Range<T extends Comparable<? super T>>
 		return new Range<Date>(lowerBoundDate,lowerBoundType,
 							   upperBoundDate,upperBoundType);
 	}
-	private static Range<LocalDate> _parseLocalDateRange(final String lowerBound,final BoundType lowerBoundType,
-											   			 final String upperBound,final BoundType upperBoundType) {
+	
+	private static Range<LocalDate> _parseJodaLocalDateRange(final String lowerBound,final BoundType lowerBoundType,
+															 final String upperBound,final BoundType upperBoundType) {
 		LocalDate lowerBoundDate = lowerBound != null ? new LocalDate(Dates.fromMillis(Long.parseLong(lowerBound))) : null;
 		LocalDate upperBoundDate = upperBound != null ? new LocalDate(Dates.fromMillis(Long.parseLong(upperBound))) : null;
 		return new Range<LocalDate>(lowerBoundDate,lowerBoundType,
 							   		upperBoundDate,upperBoundType);
 	}
-	private static Range<LocalDateTime> _parseLocalDateTimeRange(final String lowerBound,final BoundType lowerBoundType,
-											   			 	     final String upperBound,final BoundType upperBoundType) {
+	private static Range<LocalDateTime> _parseJodaLocalDateTimeRange(final String lowerBound,final BoundType lowerBoundType,
+																	 final String upperBound,final BoundType upperBoundType) {
 		LocalDateTime lowerBoundDate = lowerBound != null ? new LocalDateTime(Dates.fromMillis(Long.parseLong(lowerBound))) : null;
 		LocalDateTime upperBoundDate = upperBound != null ? new LocalDateTime(Dates.fromMillis(Long.parseLong(upperBound))) : null;
 		return new Range<LocalDateTime>(lowerBoundDate,lowerBoundType,
 							   			upperBoundDate,upperBoundType);
 	}
-	private static Range<LocalTime> _parseLocalTimeRange(final String lowerBound,final BoundType lowerBoundType,
-											   			 final String upperBound,final BoundType upperBoundType) {
+	private static Range<LocalTime> _parseJodaLocalTimeRange(final String lowerBound,final BoundType lowerBoundType,
+															 final String upperBound,final BoundType upperBoundType) {
 		LocalTime lowerBoundDate = lowerBound != null ? _localTimeFromString(lowerBound) : null;
 		LocalTime upperBoundDate = upperBound != null ? _localTimeFromString(upperBound) : null;
 		return new Range<LocalTime>(lowerBoundDate,lowerBoundType,
@@ -501,7 +559,7 @@ public class Range<T extends Comparable<? super T>>
 		/// Compilation errors:  Incomparable Types
 		//[javac] /softbase_ejie/aplic/r01fb/tmp/compileLib/r01fbClasses/src/r01f/types/Range.java:407:
 		//incomparable types: java.lang.Class<T> and java.lang.Class<java.util.Date>
-	    // [javac] 		if (dataType == java.util.Date.class || dataType == java.sql.Date.class) {
+		// [javac] 		if (dataType == java.util.Date.class || dataType == java.sql.Date.class) {
 
 		Class<?> java_util_Date_class = java.util.Date.class;
 		Class<?> java_sql_Date_class = java.sql.Date.class;
@@ -514,15 +572,27 @@ public class Range<T extends Comparable<? super T>>
 		Class<?> java_lang_Long_class = Long.class;
 		Class<?> java_lang_Double_class = Double.class;
 		Class<?> java_lang_Float_class = Float.class;
+		Class<?> java_time_LocalTime = null;
+		Class<?> java_time_LocalDate = null;
+		Class<?> java_time_LocalDateTime = null;
+		if (IS_USED_WITH_JDK8_OR_HIGHER) {  // to avoid java.time dependency with java8- jdks
+			try {
+				java_time_LocalTime = Class.forName("java.time.LocalTime");
+				java_time_LocalDate = Class.forName("java.time.LocalDate");
+				java_time_LocalDateTime = Class.forName("java.time.LocalDateTime");
+			} catch (final ClassNotFoundException cnfe) {
+				// this can't happen
+			}
+		}
 
 		if (dataType == java_util_Date_class || dataType == java_sql_Date_class) {
 			rangeDef = _toDateBoundStrings(this);
 		} else if (dataType == joda_LocalDate) {
-			rangeDef = _toLocalDateBoundStrings(this);
+			rangeDef = _toJodaLocalDateBoundStrings(this);
 		} else if (dataType == joda_LocalDateTime) {
-			rangeDef = _toLocalDateTimeBoundStrings(this);
+			rangeDef = _toJodaLocalDateTimeBoundStrings(this);
 		} else if (dataType == joda_LocalTime) {
-			rangeDef = _toLocalTimeBoundStrings(this);
+			rangeDef = _toJodaLocalTimeBoundStrings(this);
 		} else if (dataType == java_lang_Byte_class) {
 			rangeDef = _toByteBoundStrings(this);
 		} else if (dataType == java_lang_Integer_class) {
@@ -535,6 +605,12 @@ public class Range<T extends Comparable<? super T>>
 			rangeDef = _toDoubleBoundStrings(this);
 		} else if (dataType == java_lang_Float_class) {
 			rangeDef = _toFloatBoundStrings(this);
+		} else if (java_time_LocalDate != null && dataType == java_time_LocalDate) {
+			rangeDef = RangeJavaTimeUtils.toLocalDateBoundStrings(this);
+		} else if (java_time_LocalDateTime != null && dataType == java_time_LocalDateTime) {
+			rangeDef = RangeJavaTimeUtils.toLocalDateTimeBoundStrings(this);
+		} else if (java_time_LocalTime != null && dataType == java_time_LocalTime) {
+			rangeDef = RangeJavaTimeUtils.toLocalTimeBoundStrings(this);
 		} else {
 			throw new IllegalArgumentException("Type " + dataType + " is NOT supported in Range");
 		}
@@ -553,7 +629,8 @@ public class Range<T extends Comparable<? super T>>
 		return new RangeDef(lower,range.getLowerBoundType(),
 							upper,range.getUpperBoundType());
 	}
-	private static RangeDef _toLocalDateBoundStrings(final Range<? extends Comparable> range) {
+	
+	private static RangeDef _toJodaLocalDateBoundStrings(final Range<? extends Comparable> range) {
 		LocalDate l = (LocalDate)(range.getLowerBound());
 		LocalDate u = (LocalDate)(range.getUpperBound());
 		String lower = range.getLowerBound() != null ? Long.toString(Dates.asMillis(l.toDate())) : null;
@@ -561,7 +638,7 @@ public class Range<T extends Comparable<? super T>>
 		return new RangeDef(lower,range.getLowerBoundType(),
 							upper,range.getUpperBoundType());
 	}
-	private static RangeDef _toLocalDateTimeBoundStrings(final Range<? extends Comparable> range) {
+	private static RangeDef _toJodaLocalDateTimeBoundStrings(final Range<? extends Comparable> range) {
 		LocalDateTime l = (LocalDateTime)(range.getLowerBound());
 		LocalDateTime u = (LocalDateTime)(range.getUpperBound());
 		String lower = range.getLowerBound() != null ? Long.toString(Dates.asMillis(l.toDate())) : null;
@@ -569,7 +646,7 @@ public class Range<T extends Comparable<? super T>>
 		return new RangeDef(lower,range.getLowerBoundType(),
 							upper,range.getUpperBoundType());
 	}
-	private static RangeDef _toLocalTimeBoundStrings(final Range<? extends Comparable> range) {
+	private static RangeDef _toJodaLocalTimeBoundStrings(final Range<? extends Comparable> range) {
 		LocalTime l = (LocalTime)(range.getLowerBound());
 		LocalTime u = (LocalTime)(range.getUpperBound());
 		String lower = l != null ? Strings.customized("{}:{}:{}:{}",
@@ -650,12 +727,27 @@ public class Range<T extends Comparable<? super T>>
 		}
 		return outDataType;
 	}
+	@SuppressWarnings("unchecked")
+	public static <T extends Comparable<? super T>> String guessDataTypeAsString(final Range<T> range) {
+		Class<T> outDataType = null;
+		if (range.getLowerBound() != null) {
+			outDataType = (Class<T>)range.getLowerBound().getClass();
+		} else if (range.getUpperBound() != null) {
+			outDataType = (Class<T>)range.getUpperBound().getClass();
+		} else {
+			throw new IllegalStateException("NO lower or upper bound set!");
+		}
+		if (IS_USED_WITH_JDK8_OR_HIGHER && RangeJavaTimeUtils.isJavaTimeClass(outDataType)) {
+			return outDataType.getName();
+		}
+		return outDataType.getSimpleName();
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Accessors(prefix="_")
 	@NoArgsConstructor @AllArgsConstructor
-	private static class RangeDef {
+	public static class RangeDef {
 		@Getter @Setter private String _lowerBound;
 		@Getter @Setter private BoundType _lowerBoundType;
 		@Getter @Setter private String _upperBound;

@@ -23,30 +23,30 @@ public class MapsWrappers {
 		 */
 		Map<K,V> _theMap;
 				
-		public WrappedMap(Map<K,V> newMap) {
+		public WrappedMap(final Map<K,V> newMap) {
 			_theMap = newMap;
 		}
 		
 		
 		@Override public int size() {				return _theMap.size(); 		}
 		@Override public boolean isEmpty() {		return _theMap.isEmpty();	}
-		@Override public boolean containsKey(Object key) {		return _theMap.containsKey(key);		}
-		@Override public boolean containsValue(Object value) {	return _theMap.containsValue(value);	}
-		@Override public V get(Object key) {			return _theMap.get(key);			}
-		@Override public V put(K key,V value) {		return _theMap.put(key,value);		}
-		@Override public V remove(Object key) {		return _theMap.remove(key);			}
-		@Override public void putAll(Map<? extends K,? extends V> m) {	_theMap.putAll(m);		}
+		@Override public boolean containsKey(final Object key) {		return _theMap.containsKey(key);		}
+		@Override public boolean containsValue(final Object value) {	return _theMap.containsValue(value);	}
+		@Override public V get(final Object key) {			return _theMap.get(key);			}
+		@Override public V put(final K key,final V value) {		return _theMap.put(key,value);		}
+		@Override public V remove(final Object key) {		return _theMap.remove(key);			}
+		@Override public void putAll(final Map<? extends K,? extends V> m) {	_theMap.putAll(m);		}
 		@Override public void clear() {		_theMap.clear();		}
 		@Override public Set<K> keySet() {			return _theMap.keySet();		}
 		@Override public Collection<V> values() {	return _theMap.values();		}
 		@Override public Set<java.util.Map.Entry<K,V>> entrySet() {	return _theMap.entrySet();		}
-		@Override public boolean equals(Object o) {	return _theMap.equals(o);		}
+		@Override public boolean equals(final Object o) {	return _theMap.equals(o);		}
 		@Override public int hashCode() {			return _theMap.hashCode();		}
 		
 		public Map<K,V> map() {
 			return _theMap;
 		}	
-		void set(Map<K,V> newMap) {
+		void set(final Map<K,V> newMap) {
 			_theMap = newMap;
 		}
 	    /**
@@ -168,12 +168,13 @@ public class MapsWrappers {
 		 * @param keysToInclude the keys to mantain
 		 * @return the filtered map
 		 */
+		@SuppressWarnings("unchecked")
 		public WrappedMap<K,V> filterKeys(final K... keysToInclude) {
 	    	Map<K,V> outEntries = null;
 	    	if (CollectionUtils.hasData(_theMap)) {
 	    		outEntries = Maps.filterKeys(_theMap,
 	    									 new Predicate<K>() {
-	    												private Collection<K> keysCol = CollectionUtils.of(keysToInclude)
+	    												private final Collection<K> keysCol = CollectionUtils.of(keysToInclude)
 	    																							   .asCollection();
 	    												@Override
 	    												public boolean apply(final K key) {
@@ -201,6 +202,7 @@ public class MapsWrappers {
 		 * @param keys 
 		 * @return 
 		 */
+		@SuppressWarnings("unchecked")
 		public boolean containsAllTheseKeys(final K... keys) {
 			boolean outContains = true;
 			if (_theMap != null) {
@@ -223,7 +225,7 @@ public class MapsWrappers {
 /////////////////////////////////////////////////////////////////////////////////////////	
 	public static class MapDifferences<K,V> {
 		private final MapDifference<K,V> _diferences;
-		public MapDifferences(MapDifference<K,V> theDifferences) {
+		public MapDifferences(final MapDifference<K,V> theDifferences) {
 			_diferences = theDifferences;
 		}		
 		public Map<K,V> entriesInCommonWith() {

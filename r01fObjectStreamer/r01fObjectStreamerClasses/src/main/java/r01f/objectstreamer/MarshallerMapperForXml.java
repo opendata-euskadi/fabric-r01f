@@ -5,12 +5,11 @@ import java.util.Set;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
 
-import org.codehaus.stax2.XMLOutputFactory2;
-
 import com.ctc.wstx.api.WstxInputProperties;
 import com.ctc.wstx.stax.WstxInputFactory;
 import com.ctc.wstx.stax.WstxOutputFactory;
 import com.fasterxml.jackson.databind.Module;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.dataformat.xml.XmlFactory;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.google.common.collect.FluentIterable;
@@ -52,7 +51,12 @@ public class MarshallerMapperForXml
 			  null);	// no custom modules
 	}
 	public MarshallerMapperForXml(final Set<JavaPackage> javaPackages,
-							      final Set<? extends MarshallerModule> jacksonModules) {
+								  final Set<? extends MarshallerModule> jacksonModules) {
+		this(javaPackages, jacksonModules, null);
+	}
+	public MarshallerMapperForXml(final Set<JavaPackage> javaPackages,
+								  final Set<? extends MarshallerModule> jacksonModules,
+								  final Set<? extends SimpleModule> jacksonSimpleModules) {
 		// WOODSTOX error in weblogic 10.3.6
 		// =================================
 		// Jackson XML performs better with woodstox (see: https://github.com/FasterXML/jackson-dataformat-xml/)
@@ -90,7 +94,7 @@ public class MarshallerMapperForXml
 		// Serialize:
 		XMLOutputFactory outputFactory = this.getFactory().getXMLOutputFactory();
 //		outputFactory.setProperty(XMLOutputFactory2.P_AUTOMATIC_NS_PREFIX,"r01");					// the xmlns prefix automatically added to annotated fields (the prefix is generated like prefix{xx})
-		outputFactory.setProperty(XMLOutputFactory2.IS_REPAIRING_NAMESPACES,Boolean.TRUE);			// do now fail when xmlns='' (namespace-reparing mode)
+		outputFactory.setProperty(XMLOutputFactory.IS_REPAIRING_NAMESPACES,Boolean.TRUE);			// do now fail when xmlns='' (namespace-reparing mode)
 
 
 
@@ -105,8 +109,14 @@ public class MarshallerMapperForXml
 				this.registerModule((Module)jsonMod);
 			}
 		}
+		if (CollectionUtils.hasData(jacksonSimpleModules)) {
+			for (SimpleModule jsonMod : jacksonSimpleModules) {
+				this.registerModule(jsonMod);
+			}
+		}
 
 		// [3] - Global default config
 		MarshallerObjectMappers.setDefaultConfig(this);
 	}
+	
 }

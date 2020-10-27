@@ -2,9 +2,12 @@ package r01f.types.tag;
 
 import java.util.Collection;
 
+import com.google.common.collect.Lists;
+
 import lombok.experimental.Accessors;
 import r01f.aspects.interfaces.dirtytrack.ConvertToDirtyStateTrackable;
 import r01f.objectstreamer.annotations.MarshallType;
+import r01f.util.types.collections.CollectionUtils;
 
 @MarshallType(as="tags")
 @ConvertToDirtyStateTrackable
@@ -36,5 +39,11 @@ public class StringTagList
 	 */
 	public StringTagList(final int size) {
 		// marshaller needs this method
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	
+/////////////////////////////////////////////////////////////////////////////////////////
+	public void addAll(final String... tags) {
+		if (CollectionUtils.hasData(tags)) this.addAll(Lists.newArrayList(tags));
 	}
 }

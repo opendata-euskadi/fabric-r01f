@@ -11,9 +11,9 @@ import r01f.types.CanBeRepresentedAsString;
 @MarshallPolymorphicTypeInfo(typeInfoAvailableWhenDeserializing=true,											// the type info (type id property) is available at the deserializer
 				  			 includeTypeInfo=@MarshallTypeInfoInclude(type=MarshalTypeInfoIncludeCase.NEVER))	// do NOT include type info for types (only for properties)
 public interface OID
-         extends Comparable<OID>,
-     			 Cloneable,
-     			 CanBeRepresentedAsString {
+		 extends Comparable<OID>,
+	 			 Cloneable,
+	 			 CanBeRepresentedAsString {
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -38,37 +38,44 @@ public interface OID
 	 * @return
 	 */
 	public <O extends OID> boolean isNOT(final O other);
-    /**
-     * Checks if this oid is included in the provided collection
-     * @param oids
-     * @return true if the oid is included in the collection, false otherwise
-     */
+	/**
+	 * Checks if this oid is included in the provided collection
+	 * @param oids
+	 * @return true if the oid is included in the collection, false otherwise
+	 */
 	public <O extends OID> boolean isContainedIn(@SuppressWarnings("unchecked") final O... oids);
-    /**
-     * Checks if this oid is NOT included in the provided collection
-     * @param oids
-     * @return true if the oid is NOT included in the collection, false otherwise
-     */
+	/**
+	 * Checks if this oid is NOT included in the provided collection
+	 * @param oids
+	 * @return true if the oid is NOT included in the collection, false otherwise
+	 */
 	public <O extends OID> boolean isNOTContainedIn(@SuppressWarnings("unchecked") final O... oids);
-    /**
-     * Checks if this oid is included in the provided collection
-     * @param oids
-     * @return true if the oid is included in the collection, false otherwise
-     */
-    public <O extends OID> boolean isContainedIn(final Iterable<O> oids);
-    /**
-     * Checks if this oid NOT is included in the provided collection
-     * @param oids
-     * @return true if the oid is NOT included in the collection, false otherwise
-     */
-    public <O extends OID> boolean isNOTContainedIn(final Iterable<O> oids);
+	/**
+	 * Checks if this oid is included in the provided collection
+	 * @param oids
+	 * @return true if the oid is included in the collection, false otherwise
+	 */
+	public <O extends OID> boolean isContainedIn(final Iterable<O> oids);
+	/**
+	 * Checks if this oid NOT is included in the provided collection
+	 * @param oids
+	 * @return true if the oid is NOT included in the collection, false otherwise
+	 */
+	public <O extends OID> boolean isNOTContainedIn(final Iterable<O> oids);
+	/**
+	 * Checks if this oid is the same as the provided one ignoring the case
+	 * @param <O>
+	 * @param other
+	 * @return
+	 */
+	public <O extends OID> boolean isIgnoringCase(final O other);
 /////////////////////////////////////////////////////////////////////////////////////////
-// 	
+//
 /////////////////////////////////////////////////////////////////////////////////////////
-    /**
-     * @return true if the oid is valid
-     */
-    public boolean isValid();
+	/**
+	 * @return true if the oid is valid
+	 */
+	public boolean isValid();
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////

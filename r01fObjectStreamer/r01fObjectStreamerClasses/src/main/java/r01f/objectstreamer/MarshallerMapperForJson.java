@@ -4,6 +4,7 @@ import java.util.Set;
 
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -36,15 +37,16 @@ public class MarshallerMapperForJson
 	}
 	public MarshallerMapperForJson(final Set<JavaPackage> javaPackages) {
 		this(javaPackages,
-			 null);	// no custom modules
+			 null, null);	// no custom modules
 	}
 	public MarshallerMapperForJson(final JavaPackage... javaPackages) {
 		this(javaPackages != null ? Sets.<JavaPackage>newLinkedHashSet(Lists.newArrayList(javaPackages))
 			 					  : Sets.<JavaPackage>newLinkedHashSet(),
-			  null);	// no custom modules
+			  null, null);	// no custom modules
 	}
 	public MarshallerMapperForJson(final Set<JavaPackage> javaPackages,
-								   final Set<? extends MarshallerModule> jacksonModules) {
+								   final Set<? extends MarshallerModule> jacksonModules,
+								   final Set<? extends SimpleModule> jacksonSimpleModules) {
 		// [1] - register the r01f module
 		MarshallerModuleForJson mod = new MarshallerModuleForJson(javaPackages);		// BEWARE!!! JSON Module!
 		this.registerModule(mod);
@@ -55,6 +57,11 @@ public class MarshallerMapperForJson
 				if (!(jsonMod instanceof Module)) throw new IllegalArgumentException(String.format("% MUST be a subtype of %s to be a jackson module",
 																								   jsonMod.getClass(),Module.class));
 				this.registerModule((Module)jsonMod);
+			}
+		}
+		if (CollectionUtils.hasData(jacksonSimpleModules)) {
+			for (SimpleModule jsonMod : jacksonSimpleModules) {
+				this.registerModule(jsonMod);
 			}
 		}
 

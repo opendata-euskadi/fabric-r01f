@@ -57,7 +57,7 @@ public abstract class CommonOIDs {
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//
+//	APPS
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Immutable
 	@MarshallType(as="usageId")
@@ -66,7 +66,7 @@ public abstract class CommonOIDs {
 	public static final class UsageID
 	     		      extends OIDBaseMutable<String> {
 		private static final long serialVersionUID = -4958918132166472496L;
-		
+
 		public UsageID(final String oid) {
 			super(oid);
 		}
@@ -204,33 +204,7 @@ public abstract class CommonOIDs {
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//	ROLE
-/////////////////////////////////////////////////////////////////////////////////////////
-	public static interface IsRole
-					extends OID {
-		// just a marker interface
-	}
-	@Immutable
-	@MarshallType(as="role")
-	@EqualsAndHashCode(callSuper=true)
-	@NoArgsConstructor
-	public static final class Role
-	     		      extends OIDBaseMutable<String>
-				   implements IsRole {
-		private static final long serialVersionUID = 7547259948658810158L;
-		public Role(final String oid) {
-			super(oid);
-		}
-		public static Role forId(final String id) {
-			return new Role(id);
-		}
-		public static Role valueOf(final String id) {
-			return new Role(id);
-		}
-	}
-
-/////////////////////////////////////////////////////////////////////////////////////////
-//
+//	WORKPLACE
 /////////////////////////////////////////////////////////////////////////////////////////
 		@Immutable
 	@MarshallType(as="workPlaceCode")
@@ -257,9 +231,6 @@ public abstract class CommonOIDs {
 			return this.is(WorkPlaceCode.ANONYMOUS);
 		}
 	}
-/////////////////////////////////////////////////////////////////////////////////////////
-//
-/////////////////////////////////////////////////////////////////////////////////////////
 	@Immutable
 	@MarshallType(as="buildingCode")
 	@EqualsAndHashCode(callSuper=true)
@@ -284,6 +255,31 @@ public abstract class CommonOIDs {
 		public static final BuildingCode ANONYMOUS = BuildingCode.forId("anonymous");
 		public boolean isAnonymous() {
 			return this.is(BuildingCode.ANONYMOUS);
+		}
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	SECURITY
+/////////////////////////////////////////////////////////////////////////////////////////
+	public static interface IsRole
+					extends OID {
+		// just a marker interface
+	}
+	@Immutable
+	@MarshallType(as="role")
+	@EqualsAndHashCode(callSuper=true)
+	@NoArgsConstructor
+	public static final class Role
+	     		      extends OIDBaseMutable<String>
+				   implements IsRole {
+		private static final long serialVersionUID = 7547259948658810158L;
+		public Role(final String oid) {
+			super(oid);
+		}
+		public static Role forId(final String id) {
+			return new Role(id);
+		}
+		public static Role valueOf(final String id) {
+			return new Role(id);
 		}
 	}
 	@Immutable
@@ -460,9 +456,6 @@ public abstract class CommonOIDs {
 					   whenXml=@MarshallFieldAsXml(attr=true))
 		@Getter @Setter private Password _password;
 	}
-/////////////////////////////////////////////////////////////////////////////////////////
-//	SECURITY
-/////////////////////////////////////////////////////////////////////////////////////////
 	@Immutable
 	@MarshallType(as="authenticatedActor")
 	@EqualsAndHashCode(callSuper=true)
@@ -537,7 +530,7 @@ public abstract class CommonOIDs {
 	@EqualsAndHashCode(callSuper=true)
 	@NoArgsConstructor
 	public static final class SecurityToken
-	     		      extends OIDBaseMutable<String> {
+	     		      extends TokenBase {
 		private static final long serialVersionUID = -6056892755877680637L;
 
 		public SecurityToken(final String oid) {
@@ -552,22 +545,39 @@ public abstract class CommonOIDs {
 		public static SecurityToken valueOf(final String id) {
 			return new SecurityToken(id);
 		}
-		public byte[] getBytes() {
-			return this.asString().getBytes();
-		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	GENERIC TOKEN
 /////////////////////////////////////////////////////////////////////////////////////////
+	public interface IsToken
+			 extends OIDTyped<String> {
+		public byte[] getBytes();
+	}
+	@EqualsAndHashCode(callSuper=true)
+	@NoArgsConstructor
+	public static abstract class TokenBase
+	     		      	 extends OIDBaseMutable<String>
+					  implements IsToken {
+		
+		private static final long serialVersionUID = 2597097651034832977L;
+
+		public TokenBase(final String oid) {
+			super(oid);
+		}
+		@Override
+		public byte[] getBytes() {
+			return this.asString().getBytes();
+		}
+	}
 	@Immutable
 	@MarshallType(as="token")
 	@EqualsAndHashCode(callSuper=true)
 	@NoArgsConstructor
 	public static final class Token
-	     		      extends OIDBaseMutable<String> {
+	     		      extends TokenBase {
 
 		private static final long serialVersionUID = -5026236014365451126L;
-		
+
 		public Token(final String oid) {
 			super(oid);
 		}
@@ -582,7 +592,7 @@ public abstract class CommonOIDs {
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//
+//	ENVIRONMENT
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Tenant identifier
@@ -610,9 +620,6 @@ public abstract class CommonOIDs {
 			return new TenantID(id);
 		}
 	}
-/////////////////////////////////////////////////////////////////////////////////////////
-//
-/////////////////////////////////////////////////////////////////////////////////////////
 	@Immutable
 	@MarshallType(as="env")
 	@EqualsAndHashCode(callSuper=true)
@@ -657,7 +664,7 @@ public abstract class CommonOIDs {
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//
+//	WEB
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Immutable
 	@MarshallType(as="webSessionOid")
@@ -674,6 +681,26 @@ public abstract class CommonOIDs {
 		}
 		public static WebSessionOID valueOf(final String id) {
 			return WebSessionOID.forId(id);
+		}
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	PROPERTY ID
+/////////////////////////////////////////////////////////////////////////////////////////
+	@Immutable
+	@MarshallType(as="propertyId")
+	@EqualsAndHashCode(callSuper=true)
+	@NoArgsConstructor
+	public static final class PropertyID
+	     		      extends OIDBaseMutable<String> {
+		private static final long serialVersionUID = -7386816180797103655L;
+		public PropertyID(final String oid) {
+			super(oid);
+		}
+		public static PropertyID forId(final String id) {
+			return new PropertyID(id);
+		}
+		public static PropertyID valueOf(final String id) {
+			return PropertyID.forId(id);
 		}
 	}
 }

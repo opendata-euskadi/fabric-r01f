@@ -23,9 +23,9 @@ import r01f.securitycontext.SecurityContext;
 @ConvertToDirtyStateTrackable
 @MarshallType(as="tracking")
 @Accessors(prefix="_")
-public class ModelObjectTracking 
+public class ModelObjectTracking
   implements Serializable {
-	
+
 	private static final long serialVersionUID = 2286660970580116262L;
 /////////////////////////////////////////////////////////////////////////////////////////
 //	FIELDS
@@ -60,6 +60,12 @@ public class ModelObjectTracking
 	public ModelObjectTracking() {
 		// default no-args constructor
 	}
+	public ModelObjectTracking(final ModelObjectTracking other) {
+		_createDate = other.getCreateDate();
+		_creatorUserCode = other.getCreatorUserCode();
+		_lastUpdateDate = other.getLastUpdateDate();
+		_lastUpdatorUserCode = other.getLastUpdatorUserCode();
+	}
 	public ModelObjectTracking(final UserCode creator,final Date createDate) {
 		this(creator,createDate,
 			 creator,createDate);
@@ -73,11 +79,11 @@ public class ModelObjectTracking
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  METHODS
-/////////////////////////////////////////////////////////////////////////////////////////	
+/////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Sets that the provided user code has made an update just now
 	 * @param userCode
-	 * @return 
+	 * @return
 	 */
 	public ModelObjectTracking setModifiedBy(final UserCode userCode) {
 		this.setLastUpdatorUserCode(userCode);
@@ -108,14 +114,14 @@ public class ModelObjectTracking
 	public class ModelObjectTrackingMergesecurityContextStep {
 		private final ModelObjectTracking _other;
 		private final PersistencePerformedOperation _op;
-		
+
 		public void by(final SecurityContext securityContext) {
 			_merge(_other,
 				   _op,
 				   securityContext);
 		}
 	}
-	private void _merge(final ModelObjectTracking other,						
+	private void _merge(final ModelObjectTracking other,
 						final PersistencePerformedOperation op,
 						final SecurityContext securityContext) {
 		if (other == null) return;
@@ -152,13 +158,13 @@ public class ModelObjectTracking
 		if (this == obj) return true;
 		if (obj == null) return false;
 		if (!(obj instanceof ModelObjectTracking)) return false;
-		
+
 		ModelObjectTracking other = (ModelObjectTracking)obj;
 		return Objects.equal(this.getCreateDate(),other.getCreateDate())
 			&& Objects.equal(this.getCreatorUserCode(),other.getCreatorUserCode())
 			&& Objects.equal(this.getLastUpdateDate(),other.getLastUpdateDate())
 			&& Objects.equal(this.getLastUpdatorUserCode(),other.getLastUpdatorUserCode());
-		
+
 	}
 	@Override
 	public int hashCode() {

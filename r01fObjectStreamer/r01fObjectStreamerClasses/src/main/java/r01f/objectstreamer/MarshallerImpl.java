@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.Set;
 
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -32,20 +33,23 @@ public class MarshallerImpl
 /////////////////////////////////////////////////////////////////////////////////////////
 	private final Set<JavaPackage> _javaPackages;
 	private final Set<? extends MarshallerModule> _jacksonModules;
+	private final Set<? extends SimpleModule> _simpleModules;
 	private final Charset _defaultCharset;
 
 	@Getter private final Memoized<MarshallerMapperForXml> _marshallerXmlMapper = new Memoized<MarshallerMapperForXml>() {
 																							@Override
 																							public MarshallerMapperForXml supply() {
 																								return new MarshallerMapperForXml(_javaPackages,
-																																  _jacksonModules);
+																																  _jacksonModules,
+																																  _simpleModules);
 																							}
 																				   };
 	@Getter private final Memoized<MarshallerMapperForJson> _marshallerJsonMapper = new Memoized<MarshallerMapperForJson>() {
 																							@Override
 																							public MarshallerMapperForJson supply() {
 																								return new MarshallerMapperForJson(_javaPackages,
-																																   _jacksonModules);
+																																   _jacksonModules,
+																																   _simpleModules);
 																							}
 																				   };
 /////////////////////////////////////////////////////////////////////////////////////////

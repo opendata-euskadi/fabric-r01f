@@ -4,6 +4,7 @@ import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.Set;
 
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Sets;
 
@@ -60,11 +61,13 @@ public abstract class MarshallerBuilder
 	public static MarshallerImpl build() {
 		return new MarshallerImpl(Sets.<JavaPackage>newLinkedHashSet(),
 								  Sets.<MarshallerModule>newLinkedHashSet(),
+								  Sets.<SimpleModule>newLinkedHashSet(),
 								  DEFAULT_MARSHALLER_CHARSET);
 	}
 	public static MarshallerImpl build(final Charset defaultCharset) {
 		return new MarshallerImpl(Sets.<JavaPackage>newLinkedHashSet(),
 								  Sets.<MarshallerModule>newLinkedHashSet(),
+								  Sets.<SimpleModule>newLinkedHashSet(),
 								  defaultCharset);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -77,20 +80,30 @@ public abstract class MarshallerBuilder
 		public MarshallerBuilderBuildStep registerModules(final MarshallerModule... marshallerModules) {
 			return new MarshallerBuilderBuildStep(_javaPackages,
 												  CollectionUtils.hasData(marshallerModules) ? Sets.newLinkedHashSet(Lists.newArrayList(marshallerModules))
-														  									 : Sets.<MarshallerModule>newLinkedHashSet());
+														  									 : Sets.<MarshallerModule>newLinkedHashSet(),
+												  null);
 		}
 		public MarshallerBuilderBuildStep registerModules(final Set<? extends MarshallerModule> marshallerModules) {
 			return new MarshallerBuilderBuildStep(_javaPackages,
-												  marshallerModules);
+												  marshallerModules,
+												  null);
+		}
+		public MarshallerBuilderBuildStep registerModules(final Set<? extends MarshallerModule> marshallerModules,
+														  final Set<? extends SimpleModule> simpleModules) {
+			return new MarshallerBuilderBuildStep(_javaPackages,
+												  marshallerModules,
+												  simpleModules);
 		}
 		public MarshallerImpl build() {
 			return new MarshallerImpl(_javaPackages,
 									  Sets.<MarshallerModule>newLinkedHashSet(),		// no custom jackson modules
+									  null,
 									  DEFAULT_MARSHALLER_CHARSET);
 		}
 		public MarshallerImpl build(final Charset defaultCharset) {
 			return new MarshallerImpl(_javaPackages,
 									  Sets.<MarshallerModule>newLinkedHashSet(),		// no custom jackson modules
+									  null,
 									  defaultCharset);
 		}
 	}
@@ -101,15 +114,18 @@ public abstract class MarshallerBuilder
 	public final class MarshallerBuilderBuildStep {
 		private final Set<JavaPackage> _javaPackages;
 		private final Set<? extends MarshallerModule> _customModules;
+		private final Set<? extends SimpleModule> _simpleModules;
 
 		public MarshallerImpl build() {
 			return new MarshallerImpl(Sets.newLinkedHashSet(_javaPackages),
 									  _customModules,
+									  _simpleModules,
 									  DEFAULT_MARSHALLER_CHARSET);
 		}
 		public MarshallerImpl build(final Charset defaultCharset) {
 			return new MarshallerImpl(Sets.newLinkedHashSet(_javaPackages),
 									  _customModules,
+									  _simpleModules,
 									  defaultCharset);
 		}
 	}

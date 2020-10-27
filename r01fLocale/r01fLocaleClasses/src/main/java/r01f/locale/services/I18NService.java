@@ -35,14 +35,14 @@ import r01f.xmlproperties.XMLProperties;
  * </pre>
  * In order to get a text three steps must be acomplished:
  * <pre>
- * 		1.- Get a service {@link I18NService} representing the different {@link Locale}s of a "bundle", that's to say, a {@link I18NService} 
+ * 		1.- Get a service {@link I18NService} representing the different {@link Locale}s of a "bundle", that's to say, a {@link I18NService}
  * 			provides access to every bundle/locale pair
  * 				In order to get a {@link I18NService} the name of the bundle is needed. This bundle name is an identifier like 'myApp.components.myBundle'
- * 				The {@link I18NService} will search for the bundle at /myApp/components/myBundle using a {@link r01f.resources.ResourcesLoader}, 
+ * 				The {@link I18NService} will search for the bundle at /myApp/components/myBundle using a {@link r01f.resources.ResourcesLoader},
  * 				for example (ej {@link r01f.resources.ResourcesLoaderFromClassPath} (loads the resources from the classPath)
- * 
+ *
  * 		2.- Get the bundle {@link I18NBundleAccessImpl} of a {@link Locale}
- * 				
+ *
  * 		3.- Get the message from the bundle
  * </pre>
  * The access to the messages is done through the {@link I18NService} that provides a {@link I18NBundleAccessImpl} of a {@link Locale}
@@ -50,7 +50,7 @@ import r01f.xmlproperties.XMLProperties;
  * 		myI18nService.forLocale(new Locale("es","ES"))
  * 					 .message("msgKey"));
  * </pre>
- * 
+ *
  * CHAIN OF BUNDLES TO SEARCH FOR A MESSAGE
  * -------------------------------------------
  * {@link I18NService} allows a chain of bundles to be specified in order to find a message
@@ -59,16 +59,16 @@ import r01f.xmlproperties.XMLProperties;
  * <pre>
  * 		- If the bundle-chain is {"myApp.myComponent.myChildBundle","myApp.myComponent.myParentBundle"}
  * 		  ... and a key like 'textKey' is required
- * 		  ... the key would be searched starting at the "myApp.myComponent.myChildBundle" bundle 
+ * 		  ... the key would be searched starting at the "myApp.myComponent.myChildBundle" bundle
  * 		  ... if the key is not found there, the next link in the chain of boundles would be checked: "myApp.myComponent.myParentBundle"
  * </pre>
  * SIDE NOTE: In order to optimize the processing, it's better to put the bundles where the keys are likely to be found in the first places of the list
- * 
+ *
  * <h2>OPTIONS TO GET AN INSTANCE OF {@link I18NService}</h2>
  * <pre>---------------------------------------------------------</pre>
- * 
+ *
  * <h3>
- * [OPTION 1]: When the instance where the {@link I18NService} is to be used is injected by guice 
+ * [OPTION 1]: When the instance where the {@link I18NService} is to be used is injected by guice
  * </h3>
  * <pre>
  * 		Ej: If a type MyType, needs to use messages of a resource boundle called components.myResourceBundle
@@ -81,12 +81,12 @@ import r01f.xmlproperties.XMLProperties;
  * 			...
  * 		}
  * </pre>
- * If GUICE is used to get an instance of MyType, GUICE will inject the {@link I18NService} instance, BUT this requires a {@link ResourceBundleControl} 
+ * If GUICE is used to get an instance of MyType, GUICE will inject the {@link I18NService} instance, BUT this requires a {@link ResourceBundleControl}
  * instance that controls how the resources are going to be loaded/reloaded
  * There are two options:
  * <h4>Use Annotations</h4>
  * 		<pre>
- * 		1.- Annotate the types where the {@link I18NService} is going to be injected with @I18NLocalized 
+ * 		1.- Annotate the types where the {@link I18NService} is going to be injected with @I18NLocalized
  * 		2.- Annotate the {@link I18NService} members with
  * 				a.- @I18NMessageBundleService that specifies the bundle search specs (if the bundle name is not specified, the type name is used instead)
  * 				b.- @ResourcesLoaderDefLocation that specifies the location of the definition for the resources loading/reloading</pre>
@@ -119,18 +119,15 @@ import r01f.xmlproperties.XMLProperties;
  *				public class TestI18NModule
  *				  implements Module {
  *						@Override
- *						public void configure(Binder binder) {		
+ *						public void configure(Binder binder) {
  *						}
  *						@Provides @Named("myBundle")
  *						public I18NService newMyBundle(final XMLProperties xmlProperties) {
  *							// The XMLProperties is injected to the provider
- *							ResourceBundleControl resBundleControl = ResourceBundleControlFactory.create(xmlProperties)
- *																				 				 .forLoadingDefinitionAt(AppCode.forId("r01fb"),
- *																						 				 				 AppComponent.forId("test"),
- *																						 				 				 Path.of("/properties/resourcesLoader[@id='myClassPathResourcesLoader']")); 
- *							return I18NServiceFactory.create(resBundleControl)
+ *							return I18NServiceBuilder.create(ResourceBundleControlBuilder.defaultResourceBundleControl())
  *													 .forBundleChain(new String[] {"components.myParentBundle","components.myChildBundle"})
- *									 				 .withMissingKeyBehaviour(ResourceBundleMissingKeyBehaviour.RETURN_NULL);
+ *													 .usingDefaultClassLoader()
+ *									 				 .withMissingKeyBehavior(ResourceBundleMissingKeyBehavior.RETURN_NULL);
  *						}
  *					}
  * 			</pre><pre>
@@ -157,7 +154,7 @@ import r01f.xmlproperties.XMLProperties;
  * 				}
  * 			</pre>
  * <h3>
- * 
+ *
  * [OPTION 2]: Create the {@link I18NService} by hand (not using GUICE at all)
  * </h3>
  * <pre>
@@ -176,8 +173,8 @@ import r01f.xmlproperties.XMLProperties;
  *				I18NService i18n = I18NServiceBuilder.create(resBundle)
  *												 	 .forBundleChain("properties/myProject");
  * 			</pre>
- * <pre> 
- * 
+ * <pre>
+ *
  * If the resources loading/reloading is NOT defined in an XMLProperties file, the ResourceBundleControlFactory can be
  * created as:
  * 		1.- Create a ResourceBundleControlFactory that provides ResourceBundleControl object instances</pre>
@@ -205,11 +202,11 @@ public class I18NService {
 	// ResourceBundle reload check control responsible
 	// It's important that the ResourceBundle.Control object is CACHED because it may contain some status about the reload process (ej: timeStamp of the last reloading)
 	private final ResourceBundleControl _control;
-	
+
 	private final ClassLoader _classLoader;
-	
+
 	private final String[] _bundleChain;
-	
+
 	private	ResourceBundleMissingKeyBehavior _missingKeyBehaviour = ResourceBundleMissingKeyBehavior.THROW_EXCEPTION;
 	private boolean _devMode;
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -229,7 +226,7 @@ public class I18NService {
 		_bundleChain = bundleChain;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//	INTERFACE 
+//	INTERFACE
 /////////////////////////////////////////////////////////////////////////////////////////
 	public final I18NBundleAccessImpl forLocale(final Locale locale) {
 		return new I18NBundleAccessImpl(locale);
@@ -251,9 +248,13 @@ public class I18NService {
 	 * Sets the behavior when a requested key is not found (ie: throw an exception, return null)
 	 * @param behaviour the behavior
 	 */
-	public I18NService withMissingKeyBehaviour(final ResourceBundleMissingKeyBehavior behaviour) {
+	public I18NService withMissingKeyBehavior(final ResourceBundleMissingKeyBehavior behaviour) {
 		_missingKeyBehaviour = behaviour;
 		return this;
+	}
+	@Deprecated
+	public I18NService withMissingKeyBehaviour(final ResourceBundleMissingKeyBehavior behaviour) {
+		return this.withMissingKeyBehavior(behaviour);
 	}
 	/**
 	 * Sets the bundle in debug mode
@@ -270,18 +271,18 @@ public class I18NService {
 	/**
 	 * Encapsulates access to the {@link ResourceBundle} object that stores i18n messages and cache
 	 * This type is handled by {@link I18NService} who needs
-	 * 		- The {@link ResourcesLoader} in charge of loading the resource files 
+	 * 		- The {@link ResourcesLoader} in charge of loading the resource files
 	 * 		- The bundle to be loaded
 	 * 		- The locale {@link Locale}
 	 */
 	@Accessors(prefix="_")
 	public class I18NBundleAccessImpl
 	  implements I18NBundleAccess {
-		
+
 		private static final long serialVersionUID = -2598252820377106207L;
-		
+
 		private final Locale _locale;
-		
+
 		private I18NBundleAccessImpl(final Locale locale) {
 			_locale = locale;
 		}
@@ -295,7 +296,7 @@ public class I18NService {
 			for (String bundle : _bundleChain) {
 				containsKey = _retrieveBundle(bundle).containsKey(key);
 				if (containsKey) break;
-			} 
+			}
 			return containsKey;
 		}
 		@Override
@@ -314,7 +315,7 @@ public class I18NService {
 		@Override
 		public String getMessage(final String key,final Object... params) {
 			if (key == null) throw new IllegalArgumentException("Cannot load bundle key: Missing key!");
-			
+
 			String outValue = _retrieveMessage(key);
 			if (outValue == null || outValue.length() == 0) {
 				switch (_missingKeyBehaviour) {
@@ -330,18 +331,18 @@ public class I18NService {
 					default:
 				}
 			}
-			return outValue == null || params == null || params.length == 0 ? outValue 
+			return outValue == null || params == null || params.length == 0 ? outValue
 																			: MessageFormat.format(outValue,params);
 		}
 		@Override
 		public final Map<String,String> getMessagesWithKeysStartingWith(final String keyPrefix) {
-			if (keyPrefix == null) throw new IllegalArgumentException("Cannot load bundle key: Missing key!");  
+			if (keyPrefix == null) throw new IllegalArgumentException("Cannot load bundle key: Missing key!");
 			Map<String,String> outMessages = new HashMap<String,String>();
 			try {
 				for (int i = 0; i < _bundleChain.length; i++) {
 					String thisBundle = _bundleChain[i];
-					
-					// Load the resourceBundle and iterate for every key 
+
+					// Load the resourceBundle and iterate for every key
 					ResourceBundle bundle = _retrieveBundle(thisBundle);
 					Enumeration<String> keys = bundle.getKeys();
 					if (keys != null && keys.hasMoreElements()) {
@@ -364,7 +365,7 @@ public class I18NService {
 			try {
 				for (int i = 0; i < _bundleChain.length; i++) {
 					String thisBundle = _bundleChain[i];
-					
+
 					// Load the resourceBundle and iterate
 					ResourceBundle bundle = _retrieveBundle(thisBundle);
 					Enumeration<String> keys = bundle.getKeys();
@@ -386,7 +387,7 @@ public class I18NService {
 			return Arrays.toString(_bundleChain) + " (" + _locale + ")";
 		}
 		/**
-		 * Returns a key searching over every bundle in the chain 
+		 * Returns a key searching over every bundle in the chain
 		 * @param key
 		 * @return
 		 * @throws ResourceBundleMissingKeyException
@@ -421,7 +422,7 @@ public class I18NService {
 			// Create or load the bundle for the given locale
 			// BEWARE!!
 			//		- DO NOT CACHE the ResourceBoundle since ResourceBundle ALREADY IMPLEMENTS A CACHE; anyway if cache is used, the hot loading is disabled
-			//		- Use a ResourceBundle.Control to customize the hot loading 
+			//		- Use a ResourceBundle.Control to customize the hot loading
 			//		- CACHE ResourceBundle.Control since it can contain some state about the bundle load (ie: last load timeStamp)
 			ResourceBundle outBundle = _classLoader != null ? ResourceBundle.getBundle(bundleName,
 																					   _locale,

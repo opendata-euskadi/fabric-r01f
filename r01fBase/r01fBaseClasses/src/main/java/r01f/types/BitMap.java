@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import r01f.debug.Debuggable;
+import r01f.objectstreamer.annotations.MarshallField;
+import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
+import r01f.objectstreamer.annotations.MarshallType;
 import r01f.util.types.Numbers;
 
 /**
@@ -45,6 +48,7 @@ import r01f.util.types.Numbers;
  * 		}
  * </pre>
  */
+@MarshallType(as="bitMap")
 @Accessors(prefix="_")
 @AllArgsConstructor
 public abstract class BitMap 
@@ -54,7 +58,9 @@ public abstract class BitMap
 	private static final long serialVersionUID = -7795853546674157713L;
 /////////////////////////////////////////////////////////////////////////////////////////
 //  FIELDS
-/////////////////////////////////////////////////////////////////////////////////////////        
+/////////////////////////////////////////////////////////////////////////////////////////
+	@MarshallField(as="bitMap",
+				   whenXml=@MarshallFieldAsXml(attr=true))
     @Getter @Setter private int _bitMap;      // int containing the data      
     
 /////////////////////////////////////////////////////////////////////////////////////////
