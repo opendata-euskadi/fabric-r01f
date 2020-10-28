@@ -226,6 +226,10 @@ public abstract class CommonOIDs {
 		public static WorkPlaceCode forAuthenticatedUserId(final AuthenticatedActorID authActorId) {
 			return new WorkPlaceCode(authActorId.asString());
 		}
+		public static final WorkPlaceCode UNKNOWN = WorkPlaceCode.forId("unknown");
+		public boolean isUnknown() {
+			return this.is(WorkPlaceCode.UNKNOWN);
+		}
 		public static final WorkPlaceCode ANONYMOUS = WorkPlaceCode.forId("anonymous");
 		public boolean isAnonymous() {
 			return this.is(WorkPlaceCode.ANONYMOUS);
