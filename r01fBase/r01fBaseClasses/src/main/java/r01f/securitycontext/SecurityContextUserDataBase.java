@@ -1,7 +1,5 @@
 package r01f.securitycontext;
 
-import java.io.Serializable;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -14,9 +12,14 @@ import r01f.types.contact.EMail;
 import r01f.types.contact.Phone;
 import r01f.util.types.Strings;
 
+/**
+ * Data about a [user] stored at the {@link SecurityContext}
+ * Beware that this object is very similar to the [user] object from the [security system] (google, local users db,...)
+ * but it does NOT have to be the same 
+ */
 @Accessors(prefix="_")
 public abstract class SecurityContextUserDataBase
-           implements Serializable {
+           implements SecurityContextUserData {
 
 	private static final long serialVersionUID = 8114955252922390809L;
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -41,7 +44,7 @@ public abstract class SecurityContextUserDataBase
 
 	@MarshallField(as="prefLang",
 				   whenXml=@MarshallFieldAsXml(attr=true))
-	@Getter @Setter private Language _prefLang = Language.ENGLISH;
+	@Getter @Setter private Language _prefLang = Language.DEFAULT;
 
 	@MarshallField(as="email",
 			   	   whenXml=@MarshallFieldAsXml(attr=true))
@@ -99,8 +102,8 @@ public abstract class SecurityContextUserDataBase
 			 email,phone);
 	}
 	public SecurityContextUserDataBase(final UserCode userCode,final WorkPlaceCode workPlace,
-									   	  final String name,final String surname,
-									   	  final Language prefLang) {
+									   final String name,final String surname,
+									   final Language prefLang) {
 		this(userCode,workPlace,
 			 name,surname,
 			 _displayNameFrom(name,surname),			// display name

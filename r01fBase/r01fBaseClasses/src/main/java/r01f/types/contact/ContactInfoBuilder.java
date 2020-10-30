@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import r01f.locale.Language;
 import r01f.patterns.IsBuilder;
+import r01f.util.types.collections.CollectionUtils;
 
 @RequiredArgsConstructor(access=AccessLevel.PRIVATE)
 public class ContactInfoBuilder
@@ -44,6 +45,7 @@ public class ContactInfoBuilder
 	@NoArgsConstructor(access=AccessLevel.PRIVATE)
 	public final class ContactInfoBuilderPhonesStep {
 		public ContactInfoBuilderPhonesStep addPhone(final ContactPhone... phones) {
+			if (CollectionUtils.isNullOrEmpty(phones)) return this;
 			for (ContactPhone phone : phones) _contactInfo.addPhone(phone);
 			return this;
 		}
@@ -61,6 +63,7 @@ public class ContactInfoBuilder
 	@NoArgsConstructor(access=AccessLevel.PRIVATE)
 	public final class ContactInfoBuilderMailsStep {
 		public ContactInfoBuilderMailsStep addMail(final ContactMail... mails) {
+			if (CollectionUtils.isNullOrEmpty(mails)) return this;
 			for (ContactMail mail : mails) _contactInfo.addMailAddress(mail);
 			return this;
 		}
@@ -78,6 +81,7 @@ public class ContactInfoBuilder
 	@NoArgsConstructor(access=AccessLevel.PRIVATE)
 	public final class ContactInfoBuilderWebsStep {
 		public ContactInfoBuilderWebsStep addWeb(final ContactWeb... webs) {
+			if (CollectionUtils.isNullOrEmpty(webs)) return this;
 			for (ContactWeb web : webs) _contactInfo.addWebSite(web);
 			return this;
 		}
@@ -95,6 +99,7 @@ public class ContactInfoBuilder
 	@NoArgsConstructor(access=AccessLevel.PRIVATE)
 	public final class ContactInfoBuilderSocialNetworksStep {
 		public ContactInfoBuilderSocialNetworksStep addSocialNetwork(final ContactSocialNetwork... socNets) {
+			if (CollectionUtils.isNullOrEmpty(socNets)) return this;
 			for (ContactSocialNetwork socNet : socNets) _contactInfo.addSocialNetwork(socNet);
 			return this;
 		}
