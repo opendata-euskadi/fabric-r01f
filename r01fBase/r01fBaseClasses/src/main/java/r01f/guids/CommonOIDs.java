@@ -181,7 +181,6 @@ public abstract class CommonOIDs {
 	 * AppCode component
 	 */
 	@MarshallType(as="appComponent")
-	@EqualsAndHashCode(callSuper=true)
 	@NoArgsConstructor
 	public static class AppComponent
 	            extends AppComponentBase {
@@ -218,6 +217,18 @@ public abstract class CommonOIDs {
 		@Override
 		public AppComponent asAppComponent() {
 			return this;
+		}
+		@Override
+		public boolean equals(final Object obj) {
+			if (obj == null) return false;
+			if (this == obj) return true;
+			if (!(obj instanceof AppComponent)) return false;
+			
+			AppComponent other = (AppComponent)obj;
+			return this.getId() != null && other.getId() != null ? this.getId().equals(other.getId())
+																 : this.getId() != null && other.getId() == null ? false
+																		 										 : this.getId() == null && other.getId() != null ? false
+																		 												 										 : true;	// both null
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
