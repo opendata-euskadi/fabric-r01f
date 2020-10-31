@@ -163,6 +163,14 @@ public abstract class CommonOIDs {
 		public boolean isNoComponent() {
 			return this.is(NO_COMPONENT);
 		}
+		public abstract AppComponent asAppComponent();
+		
+		public <C extends AppComponentBase> boolean is(final C other) {
+			// compare objects of the same type, otherwise equals will fail
+			AppComponent thisAppComponent = this.asAppComponent();
+			AppComponent otherAppComponent = other != null ? other.asAppComponent() : null;
+			return thisAppComponent.is(otherAppComponent);
+		}
 	}
 	/**
 	 * AppCode component
@@ -201,6 +209,10 @@ public abstract class CommonOIDs {
 		public static AppComponent compose(final String one,final String other) {
 			return AppComponent.forId(Strings.customized("{}.{}",
 														 one,other));
+		}
+		@Override
+		public AppComponent asAppComponent() {
+			return this;
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
