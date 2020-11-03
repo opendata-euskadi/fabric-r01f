@@ -25,20 +25,42 @@ import r01f.filestore.api.FileStoreChecksDelegate;
 import r01f.util.types.Strings;
 
 /**
- * [1] - Build a <pre>Configuration</pre> object that sets where in the classpath 
- * 		 the core-site.xml & hdfs-site.xml files resides
- * 
- * 		 	<pre class='brush:java'> 
+ * [1] - Build a <pre>Configuration</pre> object that sets where in the classpath
+ * 		 the core-site.xml & hdfs-site.xml files resides.
+ *
+ * 		SIMPLE authentication mode (must be enabled in core-site.xml).
+ *
+ * 		 	<pre class='brush:java'>
  *				Configuration conf = new Configuration();
  *				conf.addResource("hadoop/core-site.xml");
  *				conf.addResource("hadoop/hdfs-site.xml");
+ *			</pre>
+ *
+ *		KERBEROS authentication mode (must be enabled in core-site.xml):
+ *			<pre class='brush:java'>
+ *				System.setProperty("java.security.krb5.realm", DOMINIODOMINIO.toUpperCase());
+ *				System.setProperty("java.security.krb5.kdc", U);
+ *
+ *				Configuration conf = newConfiguration();
+ *				conf.addResource("hadoop/core-site.xml");
+ *				conf.addResource("hadoop/hdfs-site.xml");
+ *				conf.set("fs.hdfs.impl", org.apache.hadoop.hdfs.DistributedFileSystem.class.getName());
+ *				conf.set("fs.webhdfs.impl", org.apache.hadoop.hdfs.web.WebHdfsFileSystem.class.getName());
+ *				conf.set("hadoop.security.authentication", "kerberos");
+ *				conf.set("fs.defaultFS", URL_WEBHDFS);
+ *				conf.set("dfs.namenode.kerberos.principal.pattern", "nn/*@" + DOMINIO.toUpperCase());
+ *
+ *				UserGroupInformation.setConfiguration(conf);
+ *				UserGroupInformation.loginUserFromKeytab(user, keytab);
+ *
+ *				FileSystemfs = FileSystem.get(conf);
  *			</pre>
  *
  * [2] - Just create the api
  * 		 	<pre class='brush:java'>
  *				HDFSFileStoreAPI api = new HDFSFileStoreAPI(conf);
  * 			</pre>
- * 
+ *
  * For local testing (use the hdfs api to access the local file system):
  * 	[1] Copy winutils from http://public-repo-1.hortonworks.com/hdp-win-alpha/winutils.exe to HADOOP_HOME/bin
  * 	[2] Set at core-site.xml
@@ -48,27 +70,27 @@ import r01f.util.types.Strings;
  *	   				  <value>file:///</value>
  *				   </property>
  *			</pre>
- * 
- * 
+ *
+ *
  * see: http://hadoop.apache.org/docs/current/
  *
  * Hadoop HDFS basic commands.
  * It's important to know URI and Path usage:
  * 		Hadoop's URI file location in HDFS > hdfs://host:port/location to access file through FileSystem.
- * 
+ *
  * Code below shows how to create URI:
  * <pre class='brush: java'>
  * 		hdfs://localhost:9000/user/joe/TestFile.txt
  *  	URI uri = URI.create ("hdfs://host: port/path");
  * </pre>
- * 
- * Path object resolves the OS dependency in URI e.g. Windows uses \\path whereas linux uses //. 
+ *
+ * Path object resolves the OS dependency in URI e.g. Windows uses \\path whereas linux uses //.
  * It's also used to resolve parent child dependency.
- * 
+ *
  * Code below shows how to create a Path:
  * <pre class='brush: java'>
- * 		Path path = new Path (path); 
- * 	
+ * 		Path path = new Path (path);
+ *
  * 		new Path("/test/file.txt");
  *		new Path("hdfs://localhost:9000/test/file.txt");
  * </pre>
@@ -257,7 +279,7 @@ public class HDFSFileStoreAPI
 		// Prepare source and destination
 		InputStream srcIS = new BufferedInputStream(new ByteArrayInputStream(srcDataChunk));
 		OutputStream out = this.getFileOutputStreamForAppending(dstFileId);
-		
+
 		// write
 		// IOUtils.copyBytes close input and output streams unless it was tell to
 		IOUtils.copyBytes(srcIS,out,
@@ -334,18 +356,18 @@ public class HDFSFileStoreAPI
 		// read
 		FSDataInputStream in = null;
 		byte[] btbuffer = null;
-		
+
 		try {
 			Path theFilePath = _fileIdToHDFSPath(fileId);
 			in = _fs.open(theFilePath); //FSDataInputStream implements Seekable interface
-	
+
 			// Adjust num of bytes to read
 			FileStatus[] fstatus = _fs.listStatus(theFilePath);
 			long size = fstatus[0].getLen();
 			log.trace("\tfile size={},offset={},len={}",size,offset,len);
-	
+
 			if (offset >= size) return null; // End of file
-	
+
 			int theLen = len;
 			if (theLen > ((size-offset) + 1)) {
 				theLen = (int)(size - offset);
@@ -356,7 +378,7 @@ public class HDFSFileStoreAPI
 			in.readFully(offset,
 						 btbuffer);
 		} finally {
-			if (in != null) in.close();			
+			if (in != null) in.close();
 		}
 		return btbuffer;
 	}
@@ -396,7 +418,7 @@ public class HDFSFileStoreAPI
 		if (!_fs.exists(theFilePath)) throw new IOException(Strings.customized("The file {} does not exists!",fileId.asString()));
 
 		_fs.setTimes(theFilePath,
-					 modifiedTimeInMillis, 
+					 modifiedTimeInMillis,
 					 -1); // A value of -1 means that this call should not set access time.
 	}
 }
