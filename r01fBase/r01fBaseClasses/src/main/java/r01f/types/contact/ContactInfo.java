@@ -85,6 +85,20 @@ public class ContactInfo
 		return CollectionUtils.hasData(_contactMails);
 	}
 	/**
+	 *
+	 * @return true if there are none private mail addresses associated with the contact info
+	 */
+	public boolean hasNonePrivateMails() {
+		if(hasMails()) {
+			for(ContactMail contactMail : _contactMails) {
+				if(!contactMail.isPrivate()) {
+					return true;
+				}
+			};
+		}
+		return false;
+	}
+	/**
 	 * Check if there exists a {@link ContactMail} with the given email
 	 * @param theEmail
 	 * @return
@@ -416,6 +430,20 @@ public class ContactInfo
 	public boolean hasSocialNetworks() {
 		return CollectionUtils.hasData(_contactSocialNetworks);
 	}
+	/**
+	 *
+	 * @return true if there are none private social networks associated with the contact info
+	 */
+	public boolean hasNonePrivateSocialNetworks() {
+		if(hasSocialNetworks()) {
+			for(ContactSocialNetwork contactSocialNetwork : _contactSocialNetworks) {
+				if(!contactSocialNetwork.isPrivate()) {
+					return true;
+				}
+			};
+		}
+		return false;
+	}
 	public boolean hasSocialNetwork(final ContactSocialNetworkType type,
 									final UserCode user) {
 		ContactSocialNetwork searchedNet = Iterables.tryFind(_contactSocialNetworks,
@@ -494,6 +522,20 @@ public class ContactInfo
 	 */
 	public boolean hasWebSites() {
 		return CollectionUtils.hasData(_contactWebSites);
+	}
+	/**
+	 *
+	 * @return true if there are none private  web sites associated with the contact info
+	 */
+	public boolean hasNonePrivateWebSites() {
+		if(hasWebSites()) {
+			for(ContactWeb contactWebSite : _contactWebSites) {
+				if(!contactWebSite.isPrivate()) {
+					return true;
+				}
+			};
+		}
+		return false;
 	}
 	/**
 	 * Check if there exists a {@link ContactWeb} with the given email
