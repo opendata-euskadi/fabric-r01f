@@ -148,7 +148,6 @@ public abstract class CommonOIDs {
 	/**
 	 * AppCode component
 	 */
-	@EqualsAndHashCode(callSuper=true)
 	@NoArgsConstructor
 	public static abstract class AppComponentBase
 	                     extends OIDBaseMutable<String> {
@@ -163,12 +162,25 @@ public abstract class CommonOIDs {
 		public boolean isNoComponent() {
 			return this.is(NO_COMPONENT);
 		}
+		public abstract AppComponent asAppComponent();
+		
+		@Override
+		public boolean equals(final Object obj) {
+			if (obj == null) return false;
+			if (this == obj) return true;
+			if (!(obj instanceof AppComponentBase)) return false;
+			
+			AppComponentBase other = (AppComponentBase)obj;
+			// compare objects of the same type, otherwise equals will fail
+			AppComponent thisAppComponent = this.asAppComponent();
+			AppComponent otherAppComponent = other.asAppComponent();
+			return thisAppComponent.equals(otherAppComponent);
+		}
 	}
 	/**
 	 * AppCode component
 	 */
 	@MarshallType(as="appComponent")
-	@EqualsAndHashCode(callSuper=true)
 	@NoArgsConstructor
 	public static class AppComponent
 	            extends AppComponentBase {
@@ -202,11 +214,27 @@ public abstract class CommonOIDs {
 			return AppComponent.forId(Strings.customized("{}.{}",
 														 one,other));
 		}
+		@Override
+		public AppComponent asAppComponent() {
+			return this;
+		}
+		@Override
+		public boolean equals(final Object obj) {
+			if (obj == null) return false;
+			if (this == obj) return true;
+			if (!(obj instanceof AppComponent)) return false;
+			
+			AppComponent other = (AppComponent)obj;
+			return this.getId() != null && other.getId() != null ? this.getId().equals(other.getId())
+																 : this.getId() != null && other.getId() == null ? false
+																		 										 : this.getId() == null && other.getId() != null ? false
+																		 												 										 : true;	// both null
+		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	WORKPLACE
 /////////////////////////////////////////////////////////////////////////////////////////
-		@Immutable
+	@Immutable
 	@MarshallType(as="workPlaceCode")
 	@EqualsAndHashCode(callSuper=true)
 	@NoArgsConstructor
