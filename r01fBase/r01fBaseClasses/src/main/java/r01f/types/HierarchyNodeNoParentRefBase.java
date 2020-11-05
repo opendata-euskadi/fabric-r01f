@@ -10,6 +10,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import r01f.aspects.interfaces.dirtytrack.ConvertToDirtyStateTrackable;
+import r01f.objectstreamer.annotations.MarshallField;
+import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 import r01f.types.hierarchy.HasChildren;
 import r01f.util.types.collections.CollectionUtils;
 
@@ -27,11 +29,14 @@ public abstract class HierarchyNodeNoParentRefBase<T,SELF_TYPE extends Hierarchy
 /////////////////////////////////////////////////////////////////////////////////////////
 //  DATA ASSOCIATED WITH THE NODE
 /////////////////////////////////////////////////////////////////////////////////////////
+	@MarshallField(as="data")
 	@Getter @Setter protected T _data;
 
 /////////////////////////////////////////////////////////////////////////////////////////
 //  HIERARCHY
 /////////////////////////////////////////////////////////////////////////////////////////
+	@MarshallField(as="children",
+				   whenXml=@MarshallFieldAsXml(collectionElementName="child"))
 	protected List<SELF_TYPE> _children;
 
 /////////////////////////////////////////////////////////////////////////////////////////
