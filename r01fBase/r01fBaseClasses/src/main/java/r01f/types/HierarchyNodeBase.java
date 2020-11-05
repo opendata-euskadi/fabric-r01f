@@ -1,10 +1,10 @@
 package r01f.types;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
 import lombok.experimental.Accessors;
+import r01f.objectstreamer.annotations.MarshallField;
 import r01f.types.hierarchy.IsHierarchical;
 
 /**
@@ -20,6 +20,7 @@ public abstract class HierarchyNodeBase<T,SELF_TYPE extends HierarchyNodeBase<T,
 /////////////////////////////////////////////////////////////////////////////////////////
 //  PARENT
 /////////////////////////////////////////////////////////////////////////////////////////
+	@MarshallField(as="parent")
 	private SELF_TYPE _parent;
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR & BUILDER
