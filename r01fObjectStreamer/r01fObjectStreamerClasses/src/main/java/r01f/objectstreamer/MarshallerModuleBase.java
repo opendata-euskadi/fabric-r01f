@@ -161,7 +161,8 @@ abstract class MarshallerModuleBase
 		this.addSerializer(Phone.class,new CanBeRepresentedAsStringSerializer(Phone.class));
 		this.addDeserializer(Phone.class,new CanBeRepresentedAsStringDeserializer(Phone.class));
 		
-		// Add Email serializer & desarializer
+
+		// Add Mail serializer & desarializer
 		this.addSerializer(EMail.class,new CanBeRepresentedAsStringSerializer(EMail.class));
 		this.addDeserializer(EMail.class,new CanBeRepresentedAsStringDeserializer(EMail.class));
 

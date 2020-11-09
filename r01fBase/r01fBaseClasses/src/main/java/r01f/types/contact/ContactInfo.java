@@ -318,9 +318,7 @@ public class ContactInfo
 	 * @return
 	 */
 	public ContactPhone getPhoneFor(final Phone phone) {
-		if (CollectionUtils.isNullOrEmpty(_contactPhones)) {
-			return null;
-		}
+		if (CollectionUtils.isNullOrEmpty(_contactPhones)) return null;
 		return FluentIterable.from(_contactPhones)
 							 .firstMatch(new Predicate<ContactPhone>() {
 												@Override
@@ -337,9 +335,6 @@ public class ContactInfo
 	 * @return
 	 */
 	public Phone getPhone(final ContactInfoUsage usage) {
-		if (CollectionUtils.isNullOrEmpty(_contactPhones)) {
-			return null;
-		}
 		ContactPhone phone = _find(_contactPhones,usage);
 		return phone != null ? phone.getNumber() : null;
 	}
@@ -349,9 +344,6 @@ public class ContactInfo
 	 * @return
 	 */
 	public Phone getPhone(final ContactPhoneType type) {
-		if (CollectionUtils.isNullOrEmpty(_contactPhones)) {
-			return null;
-		}
 		ContactPhone phone = _find(_contactPhones,type);
 		return phone != null ? phone.getNumber() : null;
 	}
@@ -360,9 +352,6 @@ public class ContactInfo
 	 * @return
 	 */
 	public Phone getDefaultPhone() {
-		if (CollectionUtils.isNullOrEmpty(_contactPhones)) {
-			return null;
-		}
 		ContactPhone phone = _findDefault(_contactPhones);
 		return phone != null ? phone.getNumber() : null;
 	}
@@ -371,9 +360,6 @@ public class ContactInfo
 	 * @return
 	 */
 	public Phone getDefaultPhoneOrAny() {
-		if (CollectionUtils.isNullOrEmpty(_contactPhones)) {
-			return null;
-		}
 		ContactPhone phone = _findDefault(_contactPhones);
 		if (phone == null && CollectionUtils.hasData(_contactPhones)) phone = CollectionUtils.pickOneElement(_contactPhones);
 		return phone != null ? phone.getNumber() : null;
