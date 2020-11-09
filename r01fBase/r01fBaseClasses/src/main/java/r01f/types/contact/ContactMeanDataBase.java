@@ -1,19 +1,12 @@
 package r01f.types.contact;
 
-import java.util.Collection;
-
 import com.google.common.base.Objects;
-import com.google.common.base.Predicate;
-import com.google.common.collect.FluentIterable;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import r01f.guids.CommonOIDs.SecurityToken;
-import r01f.guids.CommonOIDs.SystemID;
 import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
-import r01f.util.types.collections.CollectionUtils;
 
 /**
  * Base type for every {@link ContactInfo} media related object: {@link ContactMail}, {@link ContactPhone}, {@link ContactSocialNetwork}, etc
@@ -46,29 +39,6 @@ abstract class ContactMeanDataBase<SELF_TYPE extends ContactMeanDataBase<SELF_TY
 	@MarshallField(as="default",
 				   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter @Setter protected boolean _default = false;
-	/**
-	 * Security tokens for any system
-	 */
-	@MarshallField(as="securityTokens",
-				   whenXml=@MarshallFieldAsXml(collectionElementName="token"))
-	@Getter @Setter protected Collection<ContactMeanToken> _securityTokens;
-/////////////////////////////////////////////////////////////////////////////////////////
-//	SECURITY TOKENS BY SYSTEM (ie Firebase / AWS, etc)
-/////////////////////////////////////////////////////////////////////////////////////////
-	public SecurityToken getSecurityTokenFor(final SystemID sysId) {
-		ContactMeanToken token = CollectionUtils.hasData(_securityTokens)
-									? FluentIterable.from(_securityTokens)
-													.filter(new Predicate<ContactMeanToken>() {
-																	@Override
-																	public boolean apply(final ContactMeanToken token) {
-																		return token.getSystem().is(sysId);
-																	}
-															})
-													.first().orNull()
-									: null;
-		return token != null ? token.getToken()
-							 : null;
-	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
