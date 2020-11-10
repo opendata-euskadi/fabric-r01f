@@ -391,6 +391,19 @@ public class Strings {
 		int trimLength = currLength <= max ? currLength : max;
 		return str.substring(0,trimLength);
 	}
+		/**
+	 * Returns a string consisting of a specific number of concatenated copies of an input string. For
+	 * example, {@code repeat("hey", 3)} returns the string {@code "heyheyhey"}.
+	 *
+	 * @param string any non-null string
+	 * @param count the number of times to repeat it; a nonnegative integer
+	 * @return a string containing {@code string} repeated {@code count} times (the empty string if
+	 *     {@code count} is zero)
+	 * @throws IllegalArgumentException if {@code count} is negative
+	 */
+	public static String repeat(final String str,final int count) {
+		return com.google.common.base.Strings.repeat(str,count);
+	}
 	/**
 	 * Replaces accentuated chars with their no-accentuated equivalents
 	 * @param str
@@ -538,5 +551,6 @@ public class Strings {
 									  : str.length() > n ? StringUtils.left(str,
 															  			    n) + "..."
 													     : str;
-		}
+	}
+	
 }
