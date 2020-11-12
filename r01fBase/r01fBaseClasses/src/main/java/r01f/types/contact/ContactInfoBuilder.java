@@ -1,5 +1,11 @@
 package r01f.types.contact;
 
+import java.util.List;
+
+import com.google.common.base.Predicates;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +20,6 @@ public class ContactInfoBuilder
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 	private final ContactInfo _contactInfo;
-
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -45,8 +50,14 @@ public class ContactInfoBuilder
 	@NoArgsConstructor(access=AccessLevel.PRIVATE)
 	public final class ContactInfoBuilderPhonesStep {
 		public ContactInfoBuilderPhonesStep addPhone(final ContactPhone... phones) {
-			if (CollectionUtils.isNullOrEmpty(phones)) return this;
-			for (ContactPhone phone : phones) _contactInfo.addPhone(phone);
+			List<ContactPhone> contactPhones = Lists.newArrayList(phones);
+			Iterables.removeIf(contactPhones, Predicates.isNull());
+			if (! CollectionUtils.hasData(contactPhones)){
+				return this;
+			}
+			for (ContactPhone phone : contactPhones) {
+				_contactInfo.addPhone(phone);
+			}
 			return this;
 		}
 		public ContactInfoBuilderMailsStep noPhones() {
