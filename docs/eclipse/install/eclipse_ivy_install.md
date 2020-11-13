@@ -263,7 +263,7 @@ Import preferences from [fabric/r01fEjie]/docs/eclipse/preferences
 
 Since some internal deps are NOT published in public repos they MUST be copied manually into `{dev_home}/ivy-libs/local` from `{dev_home}/projects/legacy/r01f/r01fDocs/ivy/ivy-local.7z`
 
-## [11]: Import eclipse workging-set
+## [11]: Import eclipse working-set
 
 AnyEdit tools have a feature that allows importing eclipse's [workingsets]
 
