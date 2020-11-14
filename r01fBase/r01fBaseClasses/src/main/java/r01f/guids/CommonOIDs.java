@@ -395,6 +395,9 @@ public abstract class CommonOIDs {
 		public static UserRole valueOf(final String id) {
 			return new UserRole(id);
 		}
+		public static UserRole named(final String id) {
+			return new UserRole(id); 
+		}
 	}
 	@Immutable
 	@MarshallType(as="password")
