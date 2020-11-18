@@ -1,7 +1,39 @@
+[Java HotSwap] (jdk11)
+============================================================================
+
+see [HotswapAgent](http://hotswapagent.org/) and [jdk11 install guide](http://hotswapagent.org/mydoc_quickstart-jdk11.html)
+
+# [1] - Download a jdk-11-dcevm
+
+Download a [jdk-11-dcevm](https://github.com/TravaOpenJDK/trava-jdk-11-dcevm/releases)
+
+# [2] - Install (extract) the JDK to `{develop_home}\java\jdk-11.0.9+1-hotswap`
+
+# [3] - Configure a NEW [JRE] in eclipse pointing to the patched JRE and using the [hotswap agent]
+
+5.1) Open Eclipse
+
+5.2) Goto `Window > Preferences > Java > Intalled JREs`
+
+5.3) Create a *NEW* JDK named `openjdk11-hotswap` pointing to the patched JDK: `{develop_home}\java\jdk-11.0.9+1-hotswap` *(DO NOT select it as DEFAULT JRE)*
+
+5.4) At the `Default VM args` set: `-XX:HotswapAgent=fatjar`
+
+# [4] - Configure [Tomcat] to use the patched [JRE]
+
+6.1) Goto `Windows > Preferences > Server > Runtime Environments`
+
+6.2) Edit the `tomcat9` [runtime environment]
+
+6.3) Change it's JRE to the previously created one `openjdk11-hotswap`
+
+
+
+
 [Java HotSwap] (jdk8)
 ============================================================================
 
-see [HotswapAgent](http://hotswapagent.org/) and [jdk8 install guide)(http://hotswapagent.org/mydoc_quickstart.html)
+see [HotswapAgent](http://hotswapagent.org/) and [jdk8 install guide](http://hotswapagent.org/mydoc_quickstart.html)
 
 # [1] - Download DCEVM [Dynamic Code Evolution]
 
