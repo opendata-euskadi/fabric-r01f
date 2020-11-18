@@ -671,12 +671,23 @@ public class ContactInfo
 /////////////////////////////////////////////////////////////////////////////////////////
 	public ContactInfo addPhone(final ContactPhone phone) {
 		if (_contactPhones == null) _contactPhones = Lists.newArrayList();
-		_contactPhones.add(phone);
+		// check if there exists another phone with the same number
+		ContactPhone other = this.getPhoneFor(phone.getNumber());
+		// update the existing one or add
+		if (other != null) {
+			other.updateFrom(phone);
+		} else {
+			_contactPhones.add(phone);
+		}
 		return this;
 	}
 	public ContactInfo addPhones(final Collection<ContactPhone> phones) {
 		if (_contactPhones == null) _contactPhones = Lists.newArrayList();
-		if (CollectionUtils.hasData(phones)) _contactPhones.addAll(phones);
+		if (CollectionUtils.hasData(phones)) {
+			for (ContactPhone phone : phones) {
+				this.addPhone(phone);
+			}
+		}
 		return this;
 	}
 	public ContactPhone removePhone(final ContactInfoUsage usage) {
@@ -686,12 +697,23 @@ public class ContactInfo
 	}
 	public ContactInfo addSocialNetwork(final ContactSocialNetwork net) {
 		if (_contactSocialNetworks == null) _contactSocialNetworks = Lists.newArrayList();
-		_contactSocialNetworks.add(net);
+		// check if there exists another social net with the same user
+		ContactSocialNetwork other = this.getSocialNetworkFor(net.getType(),net.getUser());
+		// update the existing or add
+		if (other != null) {
+			other.updateFrom(net);
+		} else {
+			_contactSocialNetworks.add(net);
+		}
 		return this;
 	}
 	public ContactInfo addSocialNetworks(final Collection<ContactSocialNetwork> nets) {
 		if (_contactSocialNetworks == null) _contactSocialNetworks = Lists.newArrayList();
-		if (CollectionUtils.hasData(nets)) _contactSocialNetworks.addAll(nets);
+		if (CollectionUtils.hasData(nets)) {
+			for (ContactSocialNetwork net : nets) {
+				this.addSocialNetwork(net);
+			}
+		}
 		return this;
 	}
 	public ContactSocialNetwork removeSocialNetwork(final ContactInfoUsage id) {
@@ -701,12 +723,23 @@ public class ContactInfo
 	}
 	public ContactInfo addMailAddress(final ContactMail mail) {
 		if (_contactMails == null) _contactMails = Lists.newArrayList();
-		_contactMails.add(mail);
+		// check if there exists another mail with the same address
+		ContactMail other = this.getMailFor(mail.getMail());
+		// update the existing or add
+		if (other != null) {
+			other.updateFrom(mail);
+		} else {
+			_contactMails.add(mail);
+		}
 		return this;
 	}
 	public ContactInfo addMailAddress(final Collection<ContactMail> mails) {
 		if (_contactMails == null) _contactMails = Lists.newArrayList();
-		if (CollectionUtils.hasData(mails)) _contactMails.addAll(mails);
+		if (CollectionUtils.hasData(mails)) {
+			for (ContactMail mail : mails) {
+				this.addMailAddress(mail);
+			}
+		}
 		return this;
 	}
 	public ContactMail removeMailAddress(final ContactInfoUsage usage) {
@@ -716,12 +749,23 @@ public class ContactInfo
 	}
 	public ContactInfo addWebSite(final ContactWeb web) {
 		if (_contactWebSites == null) _contactWebSites = Lists.newArrayList();
-		_contactWebSites.add(web);
+		// check if ther exists another web for the same address
+		ContactWeb other = this.getWebSiteFor(web.getUrl());
+		// update the existing or add
+		if (other != null) {
+			other.updateFrom(web);
+		} else {
+			_contactWebSites.add(web);
+		}
 		return this;
 	}
 	public ContactInfo addWebSites(final Collection<ContactWeb> webs) {
 		if (_contactWebSites == null) _contactWebSites = Lists.newArrayList();
-		if (CollectionUtils.hasData(webs)) _contactWebSites.addAll(webs);
+		if (CollectionUtils.hasData(webs)) {
+			for (ContactWeb web : webs) {
+				this.addWebSite(web);
+			}
+		}
 		return this;
 	}
 	public ContactWeb removeWebSite(final ContactInfoUsage usage) {
