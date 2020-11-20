@@ -25,8 +25,8 @@ public class SecurityContextProviderFromThreadLocalStorage
 		// The Auth attached to the ThreadLocal storage at the security filter
 		SecurityContext outSecurityContext = SecurityContextStoreAtThreadLocalStorage.get();
 		if (outSecurityContext != null) {
-			log.trace("got a [security context] attached to the [thread local] storage for user={}",
-					  outSecurityContext.getUserCode());
+			log.trace("got a [security context] attached to the [thread local] storage for login={}",
+					  outSecurityContext.getLoginId());
 		} else {
 			log.warn("NO [security context] attached to the [thread local] storage: no security filter in use!!");
 		}

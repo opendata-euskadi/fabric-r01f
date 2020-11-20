@@ -32,7 +32,8 @@ package r01f.httpclient.jsse.security.krb5.internal.crypto;
 
 import r01f.httpclient.jsse.security.krb5.Confounder;
 import r01f.httpclient.jsse.security.krb5.KrbCryptoException;
-import r01f.httpclient.jsse.security.krb5.internal.*;
+import r01f.httpclient.jsse.security.krb5.internal.Krb5;
+import r01f.httpclient.jsse.security.krb5.internal.KrbApErrException;
 
 abstract class DesCbcEType extends EType {
     protected abstract byte[] calculateChecksum(byte[] data, int size)

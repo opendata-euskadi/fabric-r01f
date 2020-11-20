@@ -29,8 +29,16 @@
 
 package r01f.httpclient.jsse.security.krb5.internal.ccache;
 
-import r01f.httpclient.jsse.security.krb5.*;
-import r01f.httpclient.jsse.security.krb5.internal.*;
+import r01f.httpclient.jsse.security.krb5.EncryptionKey;
+import r01f.httpclient.jsse.security.krb5.PrincipalName;
+import r01f.httpclient.jsse.security.krb5.Realm;
+import r01f.httpclient.jsse.security.krb5.RealmException;
+import r01f.httpclient.jsse.security.krb5.Ticket;
+import r01f.httpclient.jsse.security.krb5.TicketFlags;
+import r01f.httpclient.jsse.security.krb5.internal.AuthorizationData;
+import r01f.httpclient.jsse.security.krb5.internal.HostAddresses;
+import r01f.httpclient.jsse.security.krb5.internal.KDCRep;
+import r01f.httpclient.jsse.security.krb5.internal.KerberosTime;
 
 public class Credentials {
         PrincipalName cname;

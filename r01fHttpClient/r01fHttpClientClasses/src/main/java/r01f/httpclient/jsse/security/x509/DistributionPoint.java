@@ -26,7 +26,7 @@
 package r01f.httpclient.jsse.security.x509;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
 
 import r01f.httpclient.jsse.security.util.BitArray;
 import r01f.httpclient.jsse.security.util.DerOutputStream;

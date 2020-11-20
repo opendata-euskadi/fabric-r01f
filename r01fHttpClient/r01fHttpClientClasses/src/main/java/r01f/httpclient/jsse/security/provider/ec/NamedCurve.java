@@ -27,13 +27,21 @@ package r01f.httpclient.jsse.security.provider.ec;
 
 import java.io.IOException;
 import java.math.BigInteger;
-import java.util.*;
+import java.security.spec.ECField;
+import java.security.spec.ECFieldF2m;
+import java.security.spec.ECFieldFp;
+import java.security.spec.ECParameterSpec;
+import java.security.spec.ECPoint;
+import java.security.spec.EllipticCurve;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import r01f.httpclient.jsse.security.util.DerOutputStream;
 import r01f.httpclient.jsse.security.util.ObjectIdentifier;
-
-import java.security.spec.*;
 
 /**
  * Repository for well-known Elliptic Curve parameters. It is used by both

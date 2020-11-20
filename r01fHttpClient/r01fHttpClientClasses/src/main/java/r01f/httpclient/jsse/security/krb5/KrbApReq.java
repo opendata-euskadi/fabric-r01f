@@ -30,13 +30,25 @@
 
 package r01f.httpclient.jsse.security.krb5;
 
-import r01f.httpclient.jsse.security.krb5.internal.*;
-import r01f.httpclient.jsse.security.krb5.internal.crypto.*;
-import r01f.httpclient.jsse.security.krb5.internal.rcache.*;
-import r01f.httpclient.jsse.security.util.*;
-
-import java.net.InetAddress;
 import java.io.IOException;
+import java.net.InetAddress;
+
+import r01f.httpclient.jsse.security.krb5.internal.APOptions;
+import r01f.httpclient.jsse.security.krb5.internal.Authenticator;
+import r01f.httpclient.jsse.security.krb5.internal.AuthorizationData;
+import r01f.httpclient.jsse.security.krb5.internal.EncTicketPart;
+import r01f.httpclient.jsse.security.krb5.internal.HostAddress;
+import r01f.httpclient.jsse.security.krb5.internal.KRBError;
+import r01f.httpclient.jsse.security.krb5.internal.KerberosTime;
+import r01f.httpclient.jsse.security.krb5.internal.Krb5;
+import r01f.httpclient.jsse.security.krb5.internal.KrbApErrException;
+import r01f.httpclient.jsse.security.krb5.internal.LocalSeqNumber;
+import r01f.httpclient.jsse.security.krb5.internal.SeqNumber;
+import r01f.httpclient.jsse.security.krb5.internal.crypto.EType;
+import r01f.httpclient.jsse.security.krb5.internal.crypto.KeyUsage;
+import r01f.httpclient.jsse.security.krb5.internal.rcache.AuthTime;
+import r01f.httpclient.jsse.security.krb5.internal.rcache.CacheTable;
+import r01f.httpclient.jsse.security.util.DerValue;
 
 /**
  * This class encapsulates a KRB-AP-REQ that a client sends to a

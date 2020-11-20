@@ -28,13 +28,15 @@ package r01f.httpclient.jsse.security.x509;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.security.cert.CertificateException;
-import java.security.cert.CertificateParsingException;
 import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateNotYetValidException;
+import java.security.cert.CertificateParsingException;
 import java.util.Date;
 import java.util.Enumeration;
 
-import r01f.httpclient.jsse.security.util.*;
+import r01f.httpclient.jsse.security.util.DerInputStream;
+import r01f.httpclient.jsse.security.util.DerOutputStream;
+import r01f.httpclient.jsse.security.util.DerValue;
 
 /**
  * This class defines the Private Key Usage Extension.

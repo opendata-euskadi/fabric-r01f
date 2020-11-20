@@ -29,10 +29,13 @@
 
 package r01f.httpclient.jsse.security.krb5.internal.ktab;
 
-import r01f.httpclient.jsse.security.krb5.*;
-import r01f.httpclient.jsse.security.krb5.internal.*;
-
 import java.io.UnsupportedEncodingException;
+
+import r01f.httpclient.jsse.security.krb5.EncryptionKey;
+import r01f.httpclient.jsse.security.krb5.PrincipalName;
+import r01f.httpclient.jsse.security.krb5.Realm;
+import r01f.httpclient.jsse.security.krb5.internal.KerberosTime;
+import r01f.httpclient.jsse.security.krb5.internal.Krb5;
 
 /**
  * This class represents a Key Table entry. Each entry contains the service principal of

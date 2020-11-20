@@ -27,9 +27,13 @@ package r01f.httpclient.jsse.security.x509;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.*;
+import java.util.Enumeration;
+import java.util.Vector;
 
-import r01f.httpclient.jsse.security.util.*;
+import r01f.httpclient.jsse.security.util.BitArray;
+import r01f.httpclient.jsse.security.util.DerOutputStream;
+import r01f.httpclient.jsse.security.util.DerValue;
+import r01f.httpclient.jsse.security.util.ObjectIdentifier;
 
 /**
  * Represents Netscape Certificate Type Extension.

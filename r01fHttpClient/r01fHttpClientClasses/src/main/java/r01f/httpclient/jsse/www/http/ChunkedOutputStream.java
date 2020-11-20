@@ -24,7 +24,7 @@
  */
 package r01f.httpclient.jsse.www.http;
 
-import java.io.*;
+import java.io.PrintStream;
 
 /**
  * OutputStream that sends the output to the underlying stream using chunked

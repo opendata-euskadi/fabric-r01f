@@ -29,7 +29,10 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.Arrays;
 
-import r01f.httpclient.jsse.security.util.*;
+import r01f.httpclient.jsse.security.util.DerInputStream;
+import r01f.httpclient.jsse.security.util.DerOutputStream;
+import r01f.httpclient.jsse.security.util.DerValue;
+import r01f.httpclient.jsse.security.util.ObjectIdentifier;
 
 /**
  * This class represents the OtherName as required by the GeneralNames

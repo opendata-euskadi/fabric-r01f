@@ -30,15 +30,21 @@
 
 package r01f.httpclient.jsse.security.krb5;
 
-import r01f.httpclient.jsse.security.krb5.internal.*;
+import java.io.IOException;
+import java.net.UnknownHostException;
+
+import r01f.httpclient.jsse.security.krb5.internal.ASReq;
+import r01f.httpclient.jsse.security.krb5.internal.HostAddresses;
+import r01f.httpclient.jsse.security.krb5.internal.KDCOptions;
+import r01f.httpclient.jsse.security.krb5.internal.KDCReqBody;
+import r01f.httpclient.jsse.security.krb5.internal.KerberosTime;
+import r01f.httpclient.jsse.security.krb5.internal.Krb5;
+import r01f.httpclient.jsse.security.krb5.internal.KrbApErrException;
+import r01f.httpclient.jsse.security.krb5.internal.PAData;
+import r01f.httpclient.jsse.security.krb5.internal.PAEncTSEnc;
 import r01f.httpclient.jsse.security.krb5.internal.crypto.EType;
 import r01f.httpclient.jsse.security.krb5.internal.crypto.KeyUsage;
 import r01f.httpclient.jsse.security.krb5.internal.crypto.Nonce;
-import sun.security.util.*;
-import java.io.IOException;
-import java.io.ByteArrayInputStream;
-import java.net.UnknownHostException;
-import java.util.StringTokenizer;
 
 /**
  * This class encapsulates the KRB-AS-REQ message that the client

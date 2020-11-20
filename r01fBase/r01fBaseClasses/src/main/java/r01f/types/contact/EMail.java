@@ -8,10 +8,10 @@ import com.google.common.base.Function;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import r01f.annotations.Immutable;
-import r01f.guids.CommonOIDs.UserCode;
 import r01f.objectstreamer.annotations.MarshallType;
 import r01f.patterns.Memoized;
 import r01f.patterns.Supplier;
+import r01f.securitycontext.SecurityIDS.LoginID;
 import r01f.types.url.Host;
 import r01f.util.types.Strings;
 
@@ -69,9 +69,9 @@ public class EMail
 																					return new String[] { user,domain };
 																				}
 																	   });
-	public UserCode getUser() {
+	public LoginID getUser() {
 		String userCodeStr = _parts.get()[0];
-		return UserCode.forId(userCodeStr);
+		return LoginID.forId(userCodeStr);
 	}
 	public Host getDomain() {
 		String domainStr = _parts.get()[1];

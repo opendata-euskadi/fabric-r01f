@@ -29,7 +29,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Enumeration;
 
-import r01f.httpclient.jsse.security.util.*;
+import r01f.httpclient.jsse.security.util.DerOutputStream;
+import r01f.httpclient.jsse.security.util.DerValue;
 
 /**
  * The reasonCode is a non-critical CRL entry extension that identifies

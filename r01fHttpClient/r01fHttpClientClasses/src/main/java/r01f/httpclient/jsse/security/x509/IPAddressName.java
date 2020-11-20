@@ -26,7 +26,6 @@
 package r01f.httpclient.jsse.security.x509;
 
 import java.io.IOException;
-import java.lang.Integer;
 import java.net.InetAddress;
 import java.util.Arrays;
 

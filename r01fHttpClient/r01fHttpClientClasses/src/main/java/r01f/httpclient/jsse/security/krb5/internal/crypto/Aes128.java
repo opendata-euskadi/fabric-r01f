@@ -25,10 +25,10 @@
 
 package r01f.httpclient.jsse.security.krb5.internal.crypto;
 
+import java.security.GeneralSecurityException;
+
 import r01f.httpclient.jsse.security.krb5.KrbCryptoException;
 import r01f.httpclient.jsse.security.krb5.internal.crypto.dk.AesDkCrypto;
-
-import java.security.GeneralSecurityException;
 
 /**
  * Class with static methods for doing AES operations.

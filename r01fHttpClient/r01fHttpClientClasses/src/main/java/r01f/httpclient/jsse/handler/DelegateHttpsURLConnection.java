@@ -2,6 +2,7 @@ package r01f.httpclient.jsse.handler;
 
 import java.io.IOException;
 import java.net.URL;
+
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSocketFactory;

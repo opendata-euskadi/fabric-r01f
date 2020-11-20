@@ -7,6 +7,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import r01f.xmlproperties.XMLProperties;
+
 /**
  * Annotation to define a {@link ResourcesLoaderDef} location at a {@link XMLProperties} file 
  * where the load/reloading of resources is defined

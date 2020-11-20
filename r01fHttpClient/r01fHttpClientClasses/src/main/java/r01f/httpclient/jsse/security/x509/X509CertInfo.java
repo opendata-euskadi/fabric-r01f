@@ -27,12 +27,18 @@ package r01f.httpclient.jsse.security.x509;
 
 import java.io.IOException;
 import java.io.OutputStream;
-
-import java.security.cert.*;
-import java.util.*;
+import java.security.cert.CertificateEncodingException;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateParsingException;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 import r01f.httpclient.jsse.misc.HexDumpEncoder;
-import r01f.httpclient.jsse.security.util.*;
+import r01f.httpclient.jsse.security.util.DerInputStream;
+import r01f.httpclient.jsse.security.util.DerOutputStream;
+import r01f.httpclient.jsse.security.util.DerValue;
 
 
 /**

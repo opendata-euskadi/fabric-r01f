@@ -3,9 +3,9 @@ package r01f.securitycontext;
 import java.io.Serializable;
 import java.util.Date;
 
-import r01f.guids.CommonOIDs.AppCode;
-import r01f.guids.CommonOIDs.SecurityToken;
-import r01f.guids.CommonOIDs.UserCode;
+import r01f.securitycontext.SecurityIDS.LoginID;
+import r01f.securitycontext.SecurityIDS.SecurityProviderID;
+import r01f.securitycontext.SecurityIDS.SecurityToken;
 import r01f.types.url.Url;
 
 /**
@@ -13,43 +13,41 @@ import r01f.types.url.Url;
  */
 public interface SecurityContext 
 		 extends Serializable {
+/////////////////////////////////////////////////////////////////////////////////////////
+//	
+/////////////////////////////////////////////////////////////////////////////////////////	
 	/**
 	 * @return this object casted to a {@link SecurityContext} impl
 	 */
 	public <CTX extends SecurityContext> CTX as(final Class<CTX> type);
 	/**
-	 * If this user context is for a physical user, it returns his/her user code
-	 * if it's an app user context it throws an {@link IllegalStateException}
+	 * Get the [security provider] that created this [security context]
 	 * @return
 	 */
-	public UserCode getUserCode();
+	public SecurityProviderID getSecurityProviderId();
 	/**
-	 * If this user context is for an app, it returns the appCode
-	 * if it's an user context it throws an {@link IllegalStateException}
+	 * The login id
 	 * @return
 	 */
-	public AppCode getAppCode();
+	public LoginID getLoginId();
 	/**
 	 * @return true if this is an app user context
 	 */
 	public boolean isForApp();
 	/**
+	 * Returns the {@link SecurityContext} as an [app] {@link SecurityContext}
+	 * @return
+	 */
+	public SecurityContextForApp asForApp();
+	/**
 	 * @return true if this is an user context
 	 */
 	public boolean isForUser();
 	/**
-	 * @return true if the authenticated user is anonymous
+	 * Returns the {@link SecurityContext} as an [user] {@link SecurityContext}
+	 * @return
 	 */
-	public boolean isAnonymousUser();
-	/**
-	 * @return true if the security context is for the SYSTEM user (an internal user will all privileges)
-	 */
-	public boolean isSystemUser();
-	/**
-	 * use isSystemUser
-	 */
-	@Deprecated
-	public boolean isMasterUser();
+	public SecurityContextForUser asForUser();
 	/**
 	 * @return the Date when this user context was created
 	 */
@@ -62,4 +60,7 @@ public interface SecurityContext
 	 * @return the login url
 	 */
 	public Url getLoginUrl();
+/////////////////////////////////////////////////////////////////////////////////////////
+//	
+/////////////////////////////////////////////////////////////////////////////////////////
 }

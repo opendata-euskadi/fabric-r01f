@@ -25,12 +25,13 @@
 
 package r01f.httpclient.jsse.security.krb5.internal.crypto;
 
+import java.security.GeneralSecurityException;
+
 import r01f.httpclient.jsse.security.krb5.Checksum;
 import r01f.httpclient.jsse.security.krb5.EncryptedData;
 import r01f.httpclient.jsse.security.krb5.KrbCryptoException;
-import r01f.httpclient.jsse.security.krb5.internal.*;
-
-import java.security.GeneralSecurityException;
+import r01f.httpclient.jsse.security.krb5.internal.Krb5;
+import r01f.httpclient.jsse.security.krb5.internal.KrbApErrException;
 
 public final class Des3CbcHmacSha1KdEType extends EType {
 

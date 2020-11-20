@@ -25,12 +25,12 @@
 
 package r01f.httpclient.jsse.security.util;
 
-import java.io.InputStream;
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.Vector;
-import java.math.BigInteger;
-import java.io.DataInputStream;
 
 /**
  * A DER input stream, used for parsing ASN.1 DER-encoded data such as

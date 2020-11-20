@@ -25,10 +25,14 @@
 
 package r01f.httpclient.jsse.security.x509;
 
-import java.io.*;
-import java.util.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
-import r01f.httpclient.jsse.security.util.*;
+import r01f.httpclient.jsse.security.util.DerOutputStream;
+import r01f.httpclient.jsse.security.util.DerValue;
+import r01f.httpclient.jsse.security.util.ObjectIdentifier;
 
 /**
  * Represent the GeneralSubtrees ASN.1 object.

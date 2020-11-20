@@ -26,11 +26,10 @@
 package r01f.httpclient.jsse.security.util;
 
 import java.math.BigInteger;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import r01f.httpclient.jsse.security.action.GetPropertyAction;
-
-import java.util.regex.Matcher;
 
 /**
  * A utility class for debuging.

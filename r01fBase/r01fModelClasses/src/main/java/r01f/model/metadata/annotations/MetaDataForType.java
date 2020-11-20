@@ -5,6 +5,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import r01f.model.ModelObject;
+
 
 /**
  * Annotation used to set metadata about a {@link ModelObject}

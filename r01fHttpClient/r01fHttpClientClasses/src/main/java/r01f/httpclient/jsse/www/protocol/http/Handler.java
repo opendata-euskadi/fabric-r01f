@@ -30,8 +30,8 @@
 package r01f.httpclient.jsse.www.protocol.http;
 
 import java.io.IOException;
-import java.net.URL;
 import java.net.Proxy;
+import java.net.URL;
 
 /** open an http input stream given a URL */
 public class Handler extends java.net.URLStreamHandler {

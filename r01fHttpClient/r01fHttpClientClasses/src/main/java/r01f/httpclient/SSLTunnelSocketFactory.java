@@ -13,8 +13,8 @@ import javax.net.ssl.SSLSocketFactory;
 
 import org.apache.commons.codec.binary.Base64;
 
-import r01f.guids.CommonOIDs.Password;
-import r01f.guids.CommonOIDs.UserCode;
+import r01f.securitycontext.SecurityIDS.LoginID;
+import r01f.securitycontext.SecurityIDS.Password;
 import r01f.types.url.Host;
 
 /** 
@@ -121,7 +121,7 @@ public class SSLTunnelSocketFactory
 	public void setDelegateFactory(final SSLSocketFactory sslsocketfactory) {
 		_dfactory = sslsocketfactory;
 	}
-	public void setProxyAuth(final UserCode usr,final Password pwd) {
+	public void setProxyAuth(final LoginID usr,final Password pwd) {
 		_proxySettings = new HttpClientProxySettings(_proxySettings.getProxyHost(),_proxySettings.getProxyPort(),
 												     usr,pwd,
 												     _proxySettings.isEnabled());

@@ -29,13 +29,14 @@
 
 package r01f.httpclient.jsse.security.krb5.internal;
 
-import java.util.Vector;
-
-import r01f.httpclient.jsse.security.krb5.*;
-import r01f.httpclient.jsse.security.util.*;
-
 import java.io.IOException;
 import java.math.BigInteger;
+import java.util.Vector;
+
+import r01f.httpclient.jsse.security.krb5.Asn1Exception;
+import r01f.httpclient.jsse.security.krb5.KrbException;
+import r01f.httpclient.jsse.security.util.DerOutputStream;
+import r01f.httpclient.jsse.security.util.DerValue;
 
 /**
  * Implements the ASN.1 KRB_KDC_REQ type.

@@ -7,12 +7,12 @@ import com.google.common.annotations.GwtIncompatible;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
-import r01f.guids.CommonOIDs.UserCode;
 import r01f.locale.Language;
 import r01f.model.metadata.annotations.DescInLang;
 import r01f.model.metadata.annotations.MetaDataForField;
 import r01f.model.metadata.annotations.MetaDataForType;
 import r01f.model.metadata.annotations.Storage;
+import r01f.securitycontext.SecurityIDS.LoginID;
 
 @MetaDataForType(modelObjTypeCode = HasFieldsMetaData.HAS_TRACKING_INFO_MODEL_OBJECT_TYPE_CODE,
 			     description = {
@@ -67,7 +67,7 @@ public interface HasMetaDataForHasTrackableFacetForModelObject
 					  },
 					  storage = @Storage(indexed=true,tokenized=false,
 							  			 stored=true))
-	public UserCode getCreator();
+	public LoginID getCreator();
 
 	@MetaDataForField(description = {
 							@DescInLang(language=Language.SPANISH, value="Usuario/a que ha actualizado el objeto por última vez"),
@@ -76,5 +76,5 @@ public interface HasMetaDataForHasTrackableFacetForModelObject
 					  },
 					  storage = @Storage(indexed=true,tokenized=false,
 							  			 stored=true))
-	public UserCode getLastUpdator();
+	public LoginID getLastUpdator();
 }

@@ -10,12 +10,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import r01f.aspects.interfaces.dirtytrack.ConvertToDirtyStateTrackable;
-import r01f.guids.CommonOIDs.UserCode;
 import r01f.model.persistence.PersistencePerformedOperation;
 import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 import r01f.objectstreamer.annotations.MarshallType;
 import r01f.securitycontext.SecurityContext;
+import r01f.securitycontext.SecurityIDS.LoginID;
+import r01f.securitycontext.SecurityOIDs.UserOID;
 
 /**
  * Object's Tracking info (author/a, create date, update date, etc)
@@ -30,30 +31,42 @@ public class ModelObjectTracking
 /////////////////////////////////////////////////////////////////////////////////////////
 //	FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
-    /**
-     * Object create date
-     */
+	/**
+	 * Object create date
+	 */
 	@MarshallField(as="createDate",
 				   whenXml=@MarshallFieldAsXml(attr=true))
-    @Getter @Setter private Date _createDate =  new Date();//Not compatible in GWT :Calendar.getInstance().getTime();
-    /**
-     * Creator user code
-     */
+	@Getter @Setter private Date _createDate =  new Date();// Not compatible in GWT :Calendar.getInstance().getTime();
+	/**
+	 * Creator user oid
+	 */
+	@MarshallField(as="creatorUserOid",
+				   whenXml=@MarshallFieldAsXml(attr=true))
+	@Getter @Setter private UserOID _creatorUserOid;
+	/**
+	 * Creator user code
+	 */
 	@MarshallField(as="creatorUserCode",
 				   whenXml=@MarshallFieldAsXml(attr=true))
-    @Getter @Setter private UserCode _creatorUserCode;
-    /**
-     * Object's create date
-     */
+	@Getter @Setter private LoginID _creatorUserCode;
+	/**
+	 * Object's create date
+	 */
 	@MarshallField(as="lastUpdate",
 				   whenXml=@MarshallFieldAsXml(attr=true))
-    @Getter @Setter private Date _lastUpdateDate =  new Date(); //Not compatible in GWT :Calendar.getInstance().getTime();
-    /**
-     * Last update user code
-     */
+	@Getter @Setter private Date _lastUpdateDate =  new Date(); // Not compatible in GWT :Calendar.getInstance().getTime();
+	/**
+	 * Last update user oid
+	 */
+	@MarshallField(as="lastUpdaterUserOid",
+				   whenXml=@MarshallFieldAsXml(attr=true))
+	@Getter @Setter private UserOID _lastUpdatorUserOid;
+	/**
+	 * Last update user code
+	 */
 	@MarshallField(as="lastUpdaterUserCode",
 				   whenXml=@MarshallFieldAsXml(attr=true))
-    @Getter @Setter private UserCode _lastUpdatorUserCode;
+	@Getter @Setter private LoginID _lastUpdatorUserCode;
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -62,19 +75,23 @@ public class ModelObjectTracking
 	}
 	public ModelObjectTracking(final ModelObjectTracking other) {
 		_createDate = other.getCreateDate();
+		_creatorUserOid = other.getCreatorUserOid();
 		_creatorUserCode = other.getCreatorUserCode();
 		_lastUpdateDate = other.getLastUpdateDate();
+		_lastUpdatorUserOid = other.getLastUpdatorUserOid();
 		_lastUpdatorUserCode = other.getLastUpdatorUserCode();
 	}
-	public ModelObjectTracking(final UserCode creator,final Date createDate) {
-		this(creator,createDate,
-			 creator,createDate);
+	public ModelObjectTracking(final UserOID creatorOid,final LoginID creator,final Date createDate) {
+		this(creatorOid,creator,createDate,
+			 creatorOid,creator,createDate);
 	}
-	public ModelObjectTracking(final UserCode creator,final Date createDate,
-							   final UserCode lastUpdator,final Date lastUpdateDate) {
+	public ModelObjectTracking(final UserOID creatorOid,final LoginID creator,final Date createDate,
+							   final UserOID updatorOid,final LoginID lastUpdator,final Date lastUpdateDate) {
 		_createDate = createDate;
 		_lastUpdateDate = lastUpdateDate;
+		_creatorUserOid = creatorOid;
 		_creatorUserCode = creator;
+		_lastUpdatorUserOid = updatorOid;
 		_lastUpdatorUserCode = lastUpdator;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -85,7 +102,8 @@ public class ModelObjectTracking
 	 * @param userCode
 	 * @return
 	 */
-	public ModelObjectTracking setModifiedBy(final UserCode userCode) {
+	public ModelObjectTracking setModifiedBy(final UserOID userOid,final LoginID userCode) {
+		this.setLastUpdatorUserOid(userOid);
 		this.setLastUpdatorUserCode(userCode);
 		this.setLastUpdateDate(new Date());
 		return this;
@@ -128,26 +146,24 @@ public class ModelObjectTracking
 		if (op == PersistencePerformedOperation.CREATED) {
 			_createDate = new Date();
 			_lastUpdateDate = _createDate;
+			if (_creatorUserOid == null) {
+				_creatorUserOid = other.getCreatorUserOid() != null ? other.getCreatorUserOid()
+																    : securityContext.isForUser() ? securityContext.asForUser()
+																    											   .getUserOid()
+																    							  : null;
+			}
 			if (_creatorUserCode == null) {
-				if (other.getCreatorUserCode() != null) {
-					_creatorUserCode = other.getCreatorUserCode();
-				} else if (securityContext.getUserCode() != null) {
-					_creatorUserCode = securityContext.getUserCode();
-				} else if (securityContext.getAppCode() != null) {
-					_creatorUserCode = UserCode.forId(securityContext.getAppCode().asString());
-				}
+				_creatorUserCode = other.getCreatorUserCode() != null ? other.getCreatorUserCode()
+																	  : securityContext.getLoginId();
 			}
 			_lastUpdatorUserCode = null;
 		}
 		else if (op == PersistencePerformedOperation.UPDATED) {
 			_lastUpdateDate = new Date();
-			if (securityContext.getUserCode() != null) {
-				_lastUpdatorUserCode = securityContext.getUserCode();
-			} else if (other.getLastUpdatorUserCode() != null) {
-				_lastUpdatorUserCode = other.getLastUpdatorUserCode();
-			} else if (securityContext.getAppCode() != null) {
-				_lastUpdatorUserCode = UserCode.forId(securityContext.getAppCode().asString());
-			}
+			_lastUpdatorUserOid = securityContext.isForUser() ? securityContext.asForUser()
+																			   .getUserOid()
+															  : null;
+			_lastUpdatorUserCode = securityContext.getLoginId();
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -161,14 +177,16 @@ public class ModelObjectTracking
 
 		ModelObjectTracking other = (ModelObjectTracking)obj;
 		return Objects.equal(this.getCreateDate(),other.getCreateDate())
+			&& Objects.equal(this.getCreatorUserOid(),other.getCreatorUserOid())
 			&& Objects.equal(this.getCreatorUserCode(),other.getCreatorUserCode())
 			&& Objects.equal(this.getLastUpdateDate(),other.getLastUpdateDate())
-			&& Objects.equal(this.getLastUpdatorUserCode(),other.getLastUpdatorUserCode());
+			&& Objects.equal(this.getLastUpdatorUserCode(),other.getLastUpdatorUserCode())
+			&& Objects.equal(this.getLastUpdatorUserOid(),other.getLastUpdatorUserOid());
 
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(_createDate,_creatorUserCode,
-								_lastUpdateDate,_lastUpdatorUserCode);
+		return Objects.hashCode(_createDate,_creatorUserCode,_creatorUserOid,
+								_lastUpdateDate,_lastUpdatorUserCode,_lastUpdatorUserOid);
 	}
 }

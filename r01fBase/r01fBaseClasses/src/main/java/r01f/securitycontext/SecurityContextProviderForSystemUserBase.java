@@ -4,8 +4,7 @@ import java.util.Date;
 
 import javax.inject.Provider;
 
-import r01f.guids.CommonOIDs.AuthenticatedActorID;
-import r01f.guids.CommonOIDs.SecurityToken;
+import r01f.securitycontext.SecurityIDS.SecurityToken;
 
 /**
  * Annotation to set that a client api is for the SYSTEM user: the one that have all privileges
@@ -121,8 +120,8 @@ public abstract class SecurityContextProviderForSystemUserBase
 		
 		// complete the token
 		SecurityContextBase context = (SecurityContextBase)_systemSecurityContext;
+		context.setAuthenticatedActor(SecurityContextAuthenticatedActor.forSystemUserLogin());
 		context.setSystemUser(true);	// ensure it's a master context
-		context.setAuthenticatedActorId(AuthenticatedActorID.SYSTEM);
 		context.setCreateDate(new Date());
 		context.setSecurityToken(_createToken());
 	}

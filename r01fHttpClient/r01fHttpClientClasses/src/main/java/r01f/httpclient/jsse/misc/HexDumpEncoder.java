@@ -25,9 +25,9 @@
 
 
 package r01f.httpclient.jsse.misc;
-import java.io.PrintStream;
-import java.io.OutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 
 /**
  * This class encodes a buffer into the classic: "Hexadecimal Dump" format of

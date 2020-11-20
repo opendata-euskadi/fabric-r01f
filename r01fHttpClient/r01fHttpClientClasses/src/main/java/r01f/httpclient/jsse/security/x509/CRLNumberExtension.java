@@ -30,7 +30,10 @@ import java.io.OutputStream;
 import java.math.BigInteger;
 import java.util.Enumeration;
 
-import r01f.httpclient.jsse.security.util.*;
+import r01f.httpclient.jsse.security.util.Debug;
+import r01f.httpclient.jsse.security.util.DerOutputStream;
+import r01f.httpclient.jsse.security.util.DerValue;
+import r01f.httpclient.jsse.security.util.ObjectIdentifier;
 
 /**
  * Represent the CRL Number Extension.

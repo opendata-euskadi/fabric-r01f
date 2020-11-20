@@ -20,7 +20,6 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import r01f.generics.TypeRef;
-import r01f.guids.CommonOIDs.UserCode;
 import r01f.guids.OID;
 import r01f.locale.Language;
 import r01f.model.ModelObject;
@@ -43,6 +42,7 @@ import r01f.model.search.query.RangeQueryClause;
 import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 import r01f.objectstreamer.annotations.MarshallIgnoredField;
+import r01f.securitycontext.SecurityIDS.LoginID;
 import r01f.types.Range;
 import r01f.util.types.Strings;
 import r01f.util.types.collections.CollectionUtils;
@@ -343,7 +343,7 @@ public abstract class SearchFilterForModelObjectBase<SELF_TYPE extends SearchFil
 //  CREATOR & EDITOR
 /////////////////////////////////////////////////////////////////////////////////////////
     @SuppressWarnings("unchecked")
-	public SELF_TYPE createdBy(final UserCode creator) {
+	public SELF_TYPE createdBy(final LoginID creator) {
 		Preconditions.checkArgument(creator != null,
 									"The creator cannot be null");
 		
@@ -351,42 +351,42 @@ public abstract class SearchFilterForModelObjectBase<SELF_TYPE extends SearchFil
 		
 		QueryClause clause = _accessorWrapper.queryClauses().find(fieldId);
 		if (clause != null) {
-			EqualsQueryClause<UserCode> eqClause = (EqualsQueryClause<UserCode>)clause; 	// clause.as(new TypeRef<EqualsQueryClause<UserCode>>() { /* nothing */ });
+			EqualsQueryClause<LoginID> eqClause = (EqualsQueryClause<LoginID>)clause; 	// clause.as(new TypeRef<EqualsQueryClause<LoginID>>() { /* nothing */ });
 			eqClause.setEqValue(creator);
 		} else {
-			EqualsQueryClause<UserCode> eqClause = EqualsQueryClause.forField(fieldId)	
+			EqualsQueryClause<LoginID> eqClause = EqualsQueryClause.forField(fieldId)	
 																	.of(creator);
 			_modifierWrapper.addClause(eqClause,QueryClauseOccur.MUST);
 		}
 		return (SELF_TYPE)this;
     }
-	public UserCode getCreator() {
+	public LoginID getCreator() {
 		FieldID fieldId = FieldID.from(HasMetaDataForHasTrackableFacetForModelObject.SEARCHABLE_METADATA.CREATOR);
 		return _accessorWrapper.queryClauses().getValueOrNull(fieldId);
 	}
     @SuppressWarnings("unchecked")
-	public SELF_TYPE lastEditedBy(final UserCode lastEditor) {
+	public SELF_TYPE lastEditedBy(final LoginID lastEditor) {
 		Preconditions.checkArgument(lastEditor != null,"The creator cannot be null");
 		
 		FieldID fieldId = FieldID.from(HasMetaDataForHasTrackableFacetForModelObject.SEARCHABLE_METADATA.LAST_UPDATOR);
 		
 		QueryClause clause = _accessorWrapper.queryClauses().find(fieldId);
 		if (clause != null) {
-			EqualsQueryClause<UserCode> eqClause = (EqualsQueryClause<UserCode>)clause; 	// clause.as(new TypeRef<EqualsQueryClause<UserCode>>() { /* nothing */ });
+			EqualsQueryClause<LoginID> eqClause = (EqualsQueryClause<LoginID>)clause; 	// clause.as(new TypeRef<EqualsQueryClause<LoginID>>() { /* nothing */ });
 			eqClause.setEqValue(lastEditor);
 		} else {
-			EqualsQueryClause<UserCode> eqClause = EqualsQueryClause.forField(fieldId)	
+			EqualsQueryClause<LoginID> eqClause = EqualsQueryClause.forField(fieldId)	
 																	.of(lastEditor);
 			_modifierWrapper.addClause(eqClause,QueryClauseOccur.MUST);
 		}
 		return (SELF_TYPE)this;
     }
-	public UserCode getLastEditor() {
+	public LoginID getLastEditor() {
 		FieldID fieldId = FieldID.from(HasMetaDataForHasTrackableFacetForModelObject.SEARCHABLE_METADATA.LAST_UPDATOR);
 		return _accessorWrapper.queryClauses().getValueOrNull(fieldId);
 	}
 	@SuppressWarnings("unchecked")
-	public SELF_TYPE createdOrEditedBy(final UserCode lastCreatorOrUpdator) {
+	public SELF_TYPE createdOrEditedBy(final LoginID lastCreatorOrUpdator) {
 		Preconditions.checkArgument(lastCreatorOrUpdator != null,"The creator or updator cannot be null");
 
 		// creator = userCode OR lastUpdator = userCode
@@ -399,10 +399,10 @@ public abstract class SearchFilterForModelObjectBase<SELF_TYPE extends SearchFil
 		_modifierWrapper.addClause(booleanClause,QueryClauseOccur.MUST);
 		return (SELF_TYPE)this;
 	}
-	public UserCode getCreatedOrEditedByUser() {
+	public LoginID getCreatedOrEditedByUser() {
 		QualifiedQueryClause<BooleanQueryClause> bQryClause = _booleanQuery.findBooleanQueryClause("createdOrEditedBy");
 		return bQryClause != null ? Iterables.getFirst(bQryClause.getClause().getClauses(),null)	// any clause
-											 .getClause().<UserCode>getValue()
+											 .getClause().<LoginID>getValue()
 								  : null;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
