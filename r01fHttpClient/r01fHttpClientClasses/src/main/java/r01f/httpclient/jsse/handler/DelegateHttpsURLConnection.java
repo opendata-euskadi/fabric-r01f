@@ -12,10 +12,22 @@ import r01f.httpclient.jsse.www.protocol.http.Handler;
 // Referenced classes of package sun.net.www.protocol.https:
 //            AbstractDelegateHttpsURLConnection
 
-class DelegateHttpsURLConnection extends AbstractDelegateHttpsURLConnection {
+  class DelegateHttpsURLConnection 
+extends AbstractDelegateHttpsURLConnection {
 
-	private HttpsURLConnection httpsURLConnection;
-
+	private final HttpsURLConnection httpsURLConnection;
+/////////////////////////////////////////////////////////////////////////////////////////
+//	CONSTRUCTOR
+/////////////////////////////////////////////////////////////////////////////////////////	
+	DelegateHttpsURLConnection(final URL url,
+							   final Handler handler,
+							   final HttpsURLConnection httpsurlconnection) throws IOException {
+		super(url,handler);
+		this.httpsURLConnection = httpsurlconnection;
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	
+/////////////////////////////////////////////////////////////////////////////////////////	
 	@Override
 	protected HostnameVerifier getHostnameVerifier() {
 		return this.httpsURLConnection.getHostnameVerifier();
@@ -23,12 +35,5 @@ class DelegateHttpsURLConnection extends AbstractDelegateHttpsURLConnection {
 	@Override
 	protected SSLSocketFactory getSSLSocketFactory() {
 		return this.httpsURLConnection.getSSLSocketFactory();
-	}
-
-	DelegateHttpsURLConnection(final URL url,
-							   final Handler handler,
-							   final HttpsURLConnection httpsurlconnection) throws IOException {
-		super(url, handler);
-		this.httpsURLConnection = httpsurlconnection;
 	}
 }
