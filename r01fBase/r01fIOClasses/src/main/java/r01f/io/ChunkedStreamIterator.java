@@ -12,7 +12,8 @@ import java.util.Iterator;
  * De esta forma, el cliente se abstrae de la complejidad de implementar el troceado del churro de entrada
  * Ejemplo de uso:
  * <pre>
- *		R01MContentDataAPI contentDataAPI = R01MClientFactory.getContentDataAPI(_securityContext,contentOid);
+ *		R01MContentDataAPI contentDataAPI = R01MClientFactory.getContentDataAPI(_securityContext,
+ *																				contentOid);
  *		ChunkedIterator bytesIt = new InputStreamChunkedIterator(is);	// cambiar por new ByteArrayChunkedIterator(fileBytes) si en lugar de un InputStream se pasa un array de bytes 
  *		while (bytesIt.hasNext()) {
  *			int offset = bytesIt.getOffset();
