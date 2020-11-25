@@ -91,6 +91,27 @@
 		    	</exclusion>
 		    </exclusions>
 		</dependency>
+		
+		<!-- ///////////////////////////////////////// -->
+		<!-- JDK11 jaxb has been removed               -->
+		<!-- It must be added via dep manager          -->
+		<!-- ///////////////////////////////////////// -->
+		<!-- see https://xspdf.com/resolution/54632086.html-->
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-impl</artifactId>
+			<version>2.3.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.activation</groupId>
+			<artifactId>activation</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-core</artifactId>
+			<version>2.3.0.1</version>
+		</dependency>
 	</dependencies>
 
 <!-- ====================================================================== -->

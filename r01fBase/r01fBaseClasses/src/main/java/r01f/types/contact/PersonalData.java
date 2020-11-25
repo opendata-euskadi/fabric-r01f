@@ -40,8 +40,11 @@ public class PersonalData
 	private static final long serialVersionUID = -4090115487051906413L;
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// FIELDS
+// 	FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
+	@MarshallField(as="id",
+				   whenXml=@MarshallFieldAsXml(attr=true))
+	@Getter @Setter protected PersonID _personId;
 	/**
 	 * Name
 	 */
