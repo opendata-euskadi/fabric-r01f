@@ -18,6 +18,7 @@ import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 import r01f.objectstreamer.annotations.MarshallType;
 import r01f.patterns.Memoized;
+import r01f.types.contact.EMail;
 import r01f.types.contact.Phone;
 import r01f.util.types.Passwords;
 
@@ -274,6 +275,9 @@ public abstract class SecurityIDS {
 		}
 		public static LoginID fromPhone(final Phone phone) {
 			return LoginID.forId(phone.asString());
+		}
+		public static LoginID fromEMail(final EMail mail) {
+			return LoginID.forId(mail.asString());
 		}
 		public static final LoginID ANONYMOUS = LoginID.forId("anonymous");
 		public boolean isAnonymous() {
