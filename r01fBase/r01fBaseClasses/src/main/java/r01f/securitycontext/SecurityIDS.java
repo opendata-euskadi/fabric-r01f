@@ -18,6 +18,7 @@ import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 import r01f.objectstreamer.annotations.MarshallType;
 import r01f.patterns.Memoized;
+import r01f.types.contact.Phone;
 import r01f.util.types.Passwords;
 
 public abstract class SecurityIDS {
@@ -109,6 +110,7 @@ public abstract class SecurityIDS {
 		public static final SecurityProviderID GOOGLE = SecurityProviderID.forId("google");
 		public static final SecurityProviderID XLNETS = SecurityProviderID.forId("xlnets");
 		public static final SecurityProviderID PAIRED_PHONE = SecurityProviderID.forId("pairedphone");
+		public static final SecurityProviderID REGISTERED_DEVICE = SecurityProviderID.forId("registered-device");
 		public static final SecurityProviderID SYSTEM = SecurityProviderID.forId("system");		// ie: app login
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -269,6 +271,9 @@ public abstract class SecurityIDS {
 		}
 		public static LoginID fromAppCode(final AppCode appCode) {
 			return LoginID.forId(appCode.asString());
+		}
+		public static LoginID fromPhone(final Phone phone) {
+			return LoginID.forId(phone.asString());
 		}
 		public static final LoginID ANONYMOUS = LoginID.forId("anonymous");
 		public boolean isAnonymous() {

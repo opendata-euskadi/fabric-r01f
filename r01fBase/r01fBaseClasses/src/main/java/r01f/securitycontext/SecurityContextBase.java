@@ -7,12 +7,15 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import r01f.guids.CommonOIDs.AppCode;
 import r01f.guids.CommonOIDs.TenantID;
+import r01f.guids.OID;
 import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
+import r01f.patterns.FactoryFrom;
 import r01f.securitycontext.SecurityIDS.LoginID;
 import r01f.securitycontext.SecurityIDS.SecurityProviderID;
 import r01f.securitycontext.SecurityIDS.SecurityToken;
 import r01f.securitycontext.SecurityOIDs.UserOID;
+import r01f.types.contact.Phone;
 import r01f.types.url.Url;
 
 /**
@@ -39,12 +42,6 @@ public abstract class SecurityContextBase
 	@MarshallField(as="createDate",
 				   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter @Setter protected Date _createDate;
-	/**
-	 * The [security provider] id used to creat this context
-	 */
-	@MarshallField(as="securityProviderId",
-				   whenXml=@MarshallFieldAsXml(attr=true))
-	@Getter @Setter protected SecurityProviderID _securityProviderId;
 	/**
 	 * The authenticated actor
 	 */
@@ -158,12 +155,83 @@ public abstract class SecurityContextBase
 	public LoginID getLoginId() {
 		return _authenticatedActor.getLoginId();
 	}
+	@Override
+	public SecurityProviderID getSecurityProviderId() {
+		return _authenticatedActor.getSecurityProviderId();
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	
+/////////////////////////////////////////////////////////////////////////////////////////	
+	@Override
+	public boolean hasUserOid() {
+		return _authenticatedActor.isUser()
+			&& _authenticatedActor.isPairedPhone();
+	}
+	@Override
+	public SecurityContextForHasUserOID asForHasUserOid() {
+		return new SecurityContextForHasUserOID() {
+						@Override
+						public UserOID getUserOid() {
+							UserOID outUserOid = null;
+							if (SecurityContextBase.this.isForUser()) {
+								outUserOid = SecurityContextBase.this.asForUser()
+																	 .getUserOid();
+							} else if (SecurityContextBase.this.isForPairedPhone()) {
+								outUserOid = SecurityContextBase.this.asForPairedPhone()
+																	 .getUserOid();
+							} else {
+								throw new IllegalStateException("The [security context] is DOES NOT have [user oid] info!!");
+							}
+							return outUserOid;
+						}
+			   };
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	USER
+/////////////////////////////////////////////////////////////////////////////////////////
+	@Override
+	public SecurityContextForUser asForUser() {
+		if (!this.isForUser()) throw new IllegalStateException("The [security context] is NOT a [user] [security context]!");
+		return new SecurityContextForUser() {
+						@Override
+						public UserOID getUserOid() {
+							UserOID userOid = _authenticatedActor.getUserOid();
+							return userOid;
+						}
+			   };
+	}
+	@Override
+	public boolean isForUser() {
+		return _authenticatedActor.isUser();
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	PAIRED PHONE
+/////////////////////////////////////////////////////////////////////////////////////////
+	@Override
+	public SecurityContextForPairedPhone asForPairedPhone() {
+		if (!this.isForPairedPhone()) throw new IllegalStateException("The [security context] is NOT a [paired phone] [security context]!!");
+		return new SecurityContextForPairedPhone() {
+						@Override
+						public UserOID getUserOid() {
+							UserOID userOid = _authenticatedActor.getUserOid();
+							return userOid;
+						}
+						@Override
+						public Phone getPhone() {
+							return Phone.of(_authenticatedActor.getLoginId().asString());
+						}
+			   };
+	}
+	@Override
+	public boolean isForPairedPhone() {
+		return _authenticatedActor.isUser();
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	APP
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public SecurityContextForApp asForApp() {
-		if (!this.isForApp()) throw new IllegalStateException("The [security context] is a USER [security context], NOT an APP one!");
+		if (!this.isForApp()) throw new IllegalStateException("The [security context] is NOT an [app] [security context]!");
 		return new SecurityContextForApp() {
 						@Override
 						public AppCode getAppCode() {
@@ -177,23 +245,25 @@ public abstract class SecurityContextBase
 		return _authenticatedActor.isApp();
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//	USER
-/////////////////////////////////////////////////////////////////////////////////////////
+//	REGISTERED DEVICE
+/////////////////////////////////////////////////////////////////////////////////////////	
 	@Override
-	public SecurityContextForUser asForUser() {
-		if (!this.isForUser()) throw new IllegalStateException("The [security context] is an APP [security context], NOT a USER one!");
-		return new SecurityContextForUser() {
+	public <O extends OID> SecurityContextForRegisteredDevice<O> asForRegisteredDevice(final FactoryFrom<LoginID,O> deviceOidFactory) {
+		if (!this.isForRegisteredDevice()) throw new IllegalStateException("The [security context] is NOT a [registered device] [security context]!!");
+		return new SecurityContextForRegisteredDevice<O>() {
 						@Override
-						public UserOID getUserOid() {
-							UserOID userOid = _authenticatedActor.getUserOid();
-							return userOid;
+						public O getDeviceOid() {
+							return deviceOidFactory.from(_authenticatedActor.getLoginId());
 						}
 			   };
 	}
 	@Override
-	public boolean isForUser() {
-		return _authenticatedActor.isUser();
+	public boolean isForRegisteredDevice() {
+		return _authenticatedActor.isRegisteredDevice();
 	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	USER OID
+/////////////////////////////////////////////////////////////////////////////////////////	
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////

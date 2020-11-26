@@ -5,6 +5,7 @@ import java.io.Serializable;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import r01f.guids.CommonOIDs.AppCode;
+import r01f.guids.OID;
 import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 import r01f.objectstreamer.annotations.MarshallFrom;
@@ -12,6 +13,7 @@ import r01f.objectstreamer.annotations.MarshallType;
 import r01f.securitycontext.SecurityIDS.LoginID;
 import r01f.securitycontext.SecurityIDS.SecurityProviderID;
 import r01f.securitycontext.SecurityOIDs.UserOID;
+import r01f.types.contact.Phone;
 
 @MarshallType(as="authenticatedActor")
 @Accessors(prefix="_")
@@ -55,15 +57,35 @@ public class SecurityContextAuthenticatedActor
 		return new SecurityContextAuthenticatedActor(SecurityProviderID.SYSTEM,LoginID.fromAppCode(appCode),
 													 null);		// app login = no user
 	}
+	public static SecurityContextAuthenticatedActor forPairedPhone(final Phone phone,
+																   final UserOID userOid) {
+		return new SecurityContextAuthenticatedActor(SecurityProviderID.PAIRED_PHONE,LoginID.fromPhone(phone),
+													 userOid);
+	}
+	public static <O extends OID> SecurityContextAuthenticatedActor forRegisteredDevice(final O deviceOid) {
+		return new SecurityContextAuthenticatedActor(SecurityProviderID.REGISTERED_DEVICE,LoginID.forId(deviceOid.asString()),
+													 null);		// device login = no user
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	
 /////////////////////////////////////////////////////////////////////////////////////////	
 	public boolean isApp() {
 		return _userOid == null
-			&& _loginId.isNOT(LoginID.SYSTEM);	// when system login userOid = null
+			&& _loginId.isNOT(LoginID.SYSTEM)	// when system login userOid = null
+			&& !this.isRegisteredDevice()
+			&& !this.isPairedPhone();
 	}
 	public boolean isUser() {
-		return !this.isApp();
+		return _userOid != null
+			&& !this.isApp()
+			&& !this.isRegisteredDevice()
+			&& !this.isPairedPhone();
+	}
+	public boolean isRegisteredDevice() {
+		return _securityProviderId.is(SecurityProviderID.REGISTERED_DEVICE);
+	}
+	public boolean isPairedPhone() {
+		return _securityProviderId.is(SecurityProviderID.PAIRED_PHONE);
 	}
 	public boolean isSystem() {
 		return _loginId.isSystem();
