@@ -295,6 +295,15 @@ public abstract class SecurityIDS {
 		public boolean isSystem() {
 			return this.is(SYSTEM);
 		}
+		
+		public boolean isEMail() {
+			EMail email = EMail.of(this.asString());
+			return email == null || !email.isValid();
+		}
+		public boolean isPhone() {
+			Phone phone = Phone.of(this.asString());
+			return phone == null || !phone.isValid();
+		}
 	}
 	@Immutable
 	@MarshallType(as="userLoginEntryID")
