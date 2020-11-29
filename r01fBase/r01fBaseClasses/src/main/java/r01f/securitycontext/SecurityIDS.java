@@ -241,9 +241,9 @@ public abstract class SecurityIDS {
 			       implements Serializable {
 		private static final long serialVersionUID = 1549566021138557737L;
 
-		@MarshallField(as="user",
+		@MarshallField(as="loginId",
 					   whenXml=@MarshallFieldAsXml(attr=true))
-		@Getter @Setter private LoginID _user;
+		@Getter @Setter private LoginID _loginId;
 
 		@MarshallField(as="password",
 					   whenXml=@MarshallFieldAsXml(attr=true))
