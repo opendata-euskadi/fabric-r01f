@@ -224,7 +224,7 @@ public abstract class SecurityContextBase
 	}
 	@Override
 	public boolean isForPairedPhone() {
-		return _authenticatedActor.isUser();
+		return _authenticatedActor.isPairedPhone();
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	APP
