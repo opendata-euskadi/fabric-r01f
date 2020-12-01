@@ -111,17 +111,17 @@ public abstract class CommonOIDs {
 			if (!(obj instanceof AppCodeBase)) return false;
 			
 			AppCodeBase other = (AppCodeBase)obj;
-			return this.getId() != null && other.getId() != null ? this.getId().equals(other.getId())
-																 : this.getId() != null && other.getId() == null ? false
-																		 										 : this.getId() == null && other.getId() != null ? false
-																		 												 										 : true;	// both null
+			boolean eqs = this.getId() != null && other.getId() != null ? this.getId().equals(other.getId())
+																		: this.getId() != null && other.getId() == null ? false
+																				 										: this.getId() == null && other.getId() != null ? false
+																				 												 										: true;	// both null
+			return eqs;
 		}
 	}
 	/**
 	 * AppCode
 	 */
 	@MarshallType(as="appCode")
-	@EqualsAndHashCode(callSuper=true)
 	@NoArgsConstructor
 	public static class AppCode
 	            extends AppCodeBase {
@@ -146,7 +146,15 @@ public abstract class CommonOIDs {
 		public static AppCode forLogin(final LoginID loginId) {
 			return AppCode.forId(loginId.asString());
 		}
-	}
+		@Override
+		public int hashCode() {
+			return super.hashCode();
+		}
+		@Override
+		public boolean equals(final Object obj) {
+			return super.equals(obj);
+		}
+	}	
 	/**
 	 * AppCode component
 	 */
