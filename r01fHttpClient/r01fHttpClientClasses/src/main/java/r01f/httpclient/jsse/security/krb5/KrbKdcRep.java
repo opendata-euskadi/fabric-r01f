@@ -29,7 +29,11 @@
 
 package r01f.httpclient.jsse.security.krb5;
 
-import r01f.httpclient.jsse.security.krb5.internal.*;
+import r01f.httpclient.jsse.security.krb5.internal.KDCOptions;
+import r01f.httpclient.jsse.security.krb5.internal.KDCRep;
+import r01f.httpclient.jsse.security.krb5.internal.KDCReq;
+import r01f.httpclient.jsse.security.krb5.internal.Krb5;
+import r01f.httpclient.jsse.security.krb5.internal.KrbApErrException;
 
 abstract class KrbKdcRep {
 

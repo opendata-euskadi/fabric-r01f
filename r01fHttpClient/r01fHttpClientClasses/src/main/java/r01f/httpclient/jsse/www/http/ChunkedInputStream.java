@@ -24,9 +24,10 @@
  */
 package r01f.httpclient.jsse.www.http;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
 
-import r01f.httpclient.jsse.www.*;
+import r01f.httpclient.jsse.www.MessageHeader;
 
 /**
  * A <code>ChunkedInputStream</code> provides a stream for reading a body of

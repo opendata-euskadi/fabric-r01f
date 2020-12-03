@@ -25,23 +25,28 @@
 
 package r01f.httpclient.jsse.security.pkcs;
 
-import java.io.*;
-import java.util.Properties;
-import java.math.*;
-import java.security.Key;
-import java.security.KeyRep;
-import java.security.PrivateKey;
-import java.security.KeyFactory;
-import java.security.Security;
-import java.security.Provider;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.math.BigInteger;
 import java.security.InvalidKeyException;
+import java.security.Key;
+import java.security.KeyFactory;
+import java.security.KeyRep;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.Provider;
+import java.security.Security;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.util.Properties;
 
 import r01f.httpclient.jsse.misc.HexDumpEncoder;
-import r01f.httpclient.jsse.security.util.*;
-import r01f.httpclient.jsse.security.x509.*;
+import r01f.httpclient.jsse.security.util.Debug;
+import r01f.httpclient.jsse.security.util.DerOutputStream;
+import r01f.httpclient.jsse.security.util.DerValue;
+import r01f.httpclient.jsse.security.x509.AlgorithmId;
 
 /**
  * Holds a PKCS#8 key, for example a private key

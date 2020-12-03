@@ -198,7 +198,7 @@ public class HttpClientRequestBuilderResponseStep
 		} else {
 			throw new IOException("Protocol NOT supported: '" + url + "'");
 		}
-		if (conx == null) throw new IOException( "No se ha podido obtener una conexi�n con '" + url + "'" );
+		if (conx == null) throw new IOException( "No se ha podido obtener una conexin con '" + url + "'" );
 		conx.setDoInput(true);
 		conx.setUseCaches(false);
 		log.trace("...connection retrieved!");

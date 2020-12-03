@@ -1,5 +1,6 @@
 package r01f.types.contact;
 
+import r01f.util.types.Strings;
 import r01f.validation.ObjectValidationResult;
 import r01f.validation.ObjectValidationResultBuilder;
 import r01f.validation.Validates;
@@ -48,7 +49,7 @@ public class NIFValidator
 	
 
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//  VALIDATION
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public ObjectValidationResult<PersonID> validate(final PersonID nif) {
@@ -58,13 +59,21 @@ public class NIFValidator
 						: ObjectValidationResultBuilder.on(nif)
 													   .isNotValidBecause("Not valid nif={}",nif);
 	}
+	public static boolean isValidNif(final String personId) {
+		boolean nifValid = (_validateNif(personId) >= 0);
+		return nifValid;
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  
 /////////////////////////////////////////////////////////////////////////////////////////
 	private static int _validateNif(final PersonID nif) {
 		if (nif == null) return NIF_ERROR;
-		int k1 = 0;
 		String theNif = nif.getId().trim();
+		return _validateNif(theNif);
+	}
+	private static int _validateNif(final String theNif) {
+		if (Strings.isNullOrEmpty(theNif)) return NIF_ERROR;
+		int k1 = 0;
 		if (theNif.length() != 9) {
 			return NIF_ERROR_TAMANO;
 		}

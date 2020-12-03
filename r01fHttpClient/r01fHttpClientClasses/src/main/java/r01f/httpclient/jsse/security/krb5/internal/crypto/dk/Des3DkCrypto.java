@@ -25,18 +25,19 @@
 
 package r01f.httpclient.jsse.security.krb5.internal.crypto.dk;
 
+import java.security.GeneralSecurityException;
+import java.security.InvalidKeyException;
+import java.security.spec.KeySpec;
+import java.util.Arrays;
+
 import javax.crypto.Cipher;
 import javax.crypto.Mac;
-import javax.crypto.SecretKeyFactory;
 import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
+import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 import javax.crypto.spec.DESedeKeySpec;
 import javax.crypto.spec.IvParameterSpec;
-import java.security.spec.KeySpec;
-import java.security.GeneralSecurityException;
-import java.security.InvalidKeyException;
-import java.util.Arrays;
+import javax.crypto.spec.SecretKeySpec;
 
 public class Des3DkCrypto extends DkCrypto {
 

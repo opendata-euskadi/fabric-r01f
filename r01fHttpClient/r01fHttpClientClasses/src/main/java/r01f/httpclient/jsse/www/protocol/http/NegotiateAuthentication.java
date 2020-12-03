@@ -30,6 +30,7 @@ import java.net.PasswordAuthentication;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
+
 import org.apache.commons.codec.binary.Base64;
 
 import r01f.httpclient.jsse.www.HeaderParser;

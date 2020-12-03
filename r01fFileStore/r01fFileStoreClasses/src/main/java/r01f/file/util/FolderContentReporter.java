@@ -22,11 +22,11 @@ import r01f.file.FileProperties;
 import r01f.file.util.FolderContentReporter.FolderContentReportItem;
 import r01f.filestore.api.FileFilter;
 import r01f.filestore.api.FileStoreFilerAPI;
-import r01f.guids.CommonOIDs.UserCode;
 import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 import r01f.objectstreamer.annotations.MarshallFrom;
 import r01f.objectstreamer.annotations.MarshallType;
+import r01f.securitycontext.SecurityIDS.LoginID;
 import r01f.types.CanBeRepresentedAsString;
 import r01f.types.Path;
 import r01f.util.types.Strings;
@@ -192,7 +192,7 @@ public class FolderContentReporter
 		
 		@MarshallField(as="owner",
 					   whenXml=@MarshallFieldAsXml(attr=true))
-		@Getter private final UserCode _owner;
+		@Getter private final LoginID _owner;
 		
 		@MarshallField(as="lastUpdated",
 					   whenXml=@MarshallFieldAsXml(attr=true))
@@ -205,7 +205,7 @@ public class FolderContentReporter
 		public FolderContentReportItem(@MarshallFrom("type") final FolderContentReportItemType type,
 									   @MarshallFrom("path") final Path path,
 									   @MarshallFrom("size") final long size,
-									   @MarshallFrom("owner") final UserCode owner,
+									   @MarshallFrom("owner") final LoginID owner,
 									   @MarshallFrom("lastUpdated") final long lastUpdatedTS,@MarshallFrom("created") final long createdTS) {
 			_type = type;
 			_path = path;

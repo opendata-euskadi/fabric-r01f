@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import r01f.config.ContainsConfigData;
 import r01f.debug.Debuggable;
-import r01f.guids.CommonOIDs.Password;
-import r01f.guids.CommonOIDs.UserCode;
 import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 import r01f.objectstreamer.annotations.MarshallType;
+import r01f.securitycontext.SecurityIDS.LoginID;
+import r01f.securitycontext.SecurityIDS.Password;
 import r01f.types.url.Host;
 import r01f.util.types.Strings;
 
@@ -38,7 +38,7 @@ public class HttpClientProxySettings
 	@Getter private int _proxyPort;
 	@MarshallField(as="user",
 				   whenXml=@MarshallFieldAsXml(attr=true))
-	@Getter private UserCode _user;
+	@Getter private LoginID _user;
 	@MarshallField(as="password",
 				   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter private  Password _password;
@@ -49,7 +49,7 @@ public class HttpClientProxySettings
 //  CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
 	public HttpClientProxySettings(final Host proxyHost,final int proxyPort,
-								   final UserCode userCode,final Password password,
+								   final LoginID userCode,final Password password,
 								   final boolean enabled) {
 		_proxyHost = proxyHost;
 		_proxyPort = proxyPort;
@@ -58,19 +58,19 @@ public class HttpClientProxySettings
 		_enabled = enabled;
 	}
 	public HttpClientProxySettings(final Host proxyHost,final int proxyPort,
-								   final UserCode userCode,final Password password) {
+								   final LoginID userCode,final Password password) {
 		this(proxyHost,proxyPort,
 			 userCode,password,
 			 true);
 	}
 	public HttpClientProxySettings(final Host proxyHost,
-								   final UserCode userCode,final Password password) {
+								   final LoginID userCode,final Password password) {
 		this(proxyHost,
 			 userCode,password,
 			 true);
 	}
 	public HttpClientProxySettings(final Host proxyHost,
-								   final UserCode userCode,final Password password,
+								   final LoginID userCode,final Password password,
 								   final boolean enabled) {
 		this(proxyHost.asUrl().getHost(),proxyHost.asUrl().getPort(),
 			 userCode,password,

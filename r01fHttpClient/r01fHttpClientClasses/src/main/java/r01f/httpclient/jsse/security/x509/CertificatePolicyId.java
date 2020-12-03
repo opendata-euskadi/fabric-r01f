@@ -27,7 +27,9 @@ package r01f.httpclient.jsse.security.x509;
 
 import java.io.IOException;
 
-import r01f.httpclient.jsse.security.util.*;
+import r01f.httpclient.jsse.security.util.DerOutputStream;
+import r01f.httpclient.jsse.security.util.DerValue;
+import r01f.httpclient.jsse.security.util.ObjectIdentifier;
 
 
 /**

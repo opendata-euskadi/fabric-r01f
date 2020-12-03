@@ -27,13 +27,16 @@ package r01f.httpclient.jsse.security.provider.ec;
 
 import java.io.IOException;
 import java.math.BigInteger;
-
-import java.security.*;
-import java.security.interfaces.*;
-import java.security.spec.*;
+import java.security.AlgorithmParameters;
+import java.security.InvalidKeyException;
+import java.security.interfaces.ECPrivateKey;
+import java.security.spec.ECParameterSpec;
+import java.security.spec.InvalidParameterSpecException;
 
 import r01f.httpclient.jsse.security.pkcs.PKCS8Key;
-import r01f.httpclient.jsse.security.util.*;
+import r01f.httpclient.jsse.security.util.DerInputStream;
+import r01f.httpclient.jsse.security.util.DerOutputStream;
+import r01f.httpclient.jsse.security.util.DerValue;
 import r01f.httpclient.jsse.security.x509.AlgorithmId;
 
 /**

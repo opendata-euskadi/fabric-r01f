@@ -29,10 +29,11 @@
 
 package r01f.httpclient.jsse.security.krb5.internal;
 
-import r01f.httpclient.jsse.security.krb5.Asn1Exception;
-import r01f.httpclient.jsse.security.util.*;
-
 import java.io.IOException;
+
+import r01f.httpclient.jsse.security.krb5.Asn1Exception;
+import r01f.httpclient.jsse.security.util.DerOutputStream;
+import r01f.httpclient.jsse.security.util.DerValue;
 
 public class LastReqEntry {
     private int lrType;

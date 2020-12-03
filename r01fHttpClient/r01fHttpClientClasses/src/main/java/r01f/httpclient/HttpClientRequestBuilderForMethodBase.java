@@ -9,8 +9,6 @@ import java.util.Map;
 
 import com.google.common.collect.Maps;
 
-import r01f.guids.CommonOIDs.Password;
-import r01f.guids.CommonOIDs.UserCode;
 import r01f.httpclient.HttpClient.RequestMethod;
 import r01f.httpclient.HttpClientRequestBuilderConnectionRetrieveStepBase.HttpClientRequestConnectionProvider;
 import r01f.httpclient.HttpClientRequestBuilderConnectionRetrieveSteps.HttpClientRequestBuilderConnectionRetrieveForHttpUrlConnectionStep;
@@ -19,6 +17,8 @@ import r01f.httpclient.HttpClientRequestBuilderConnectionRetrieveSteps.HttpClien
 import r01f.httpclient.HttpClientRequestBuilderConnectionRetrieveSteps.HttpClientRequestBuilderConnectionRetrieveForResponseStep;
 import r01f.httpclient.HttpClientRequestBuilderConnectionRetrieveSteps.HttpClientRequestBuilderConnectionRetrieveForStringStep;
 import r01f.mime.MimeType;
+import r01f.securitycontext.SecurityIDS.LoginID;
+import r01f.securitycontext.SecurityIDS.Password;
 import r01f.types.url.Url;
 import r01f.util.types.collections.CollectionUtils;
 
@@ -45,7 +45,7 @@ public abstract class HttpClientRequestBuilderForMethodBase<SELF_TYPE extends Ht
 	//private HttpClientProxySettings _proxySettings;
 
 	// AuthDigest variables
-	protected UserCode _authUserCode;
+	protected LoginID _authUserCode;
 	protected Password _authPassword;
 
 ///////////////////////////////////////////////////////////////////////////////

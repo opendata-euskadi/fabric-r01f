@@ -32,7 +32,9 @@ import java.util.Enumeration;
 
 import javax.security.auth.x500.X500Principal;
 
-import r01f.httpclient.jsse.security.util.*;
+import r01f.httpclient.jsse.security.util.DerInputStream;
+import r01f.httpclient.jsse.security.util.DerOutputStream;
+import r01f.httpclient.jsse.security.util.DerValue;
 
 /**
  * This class defines the X500Name attribute for the Certificate.

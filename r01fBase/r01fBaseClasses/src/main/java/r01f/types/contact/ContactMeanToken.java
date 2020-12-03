@@ -5,11 +5,11 @@ import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import r01f.guids.CommonOIDs.SecurityToken;
 import r01f.guids.CommonOIDs.SystemID;
 import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 import r01f.objectstreamer.annotations.MarshallType;
+import r01f.securitycontext.SecurityIDS.SecurityToken;
 
 @MarshallType(as="contactMeanToken")
 @Accessors(prefix="_")

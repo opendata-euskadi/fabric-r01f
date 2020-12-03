@@ -25,14 +25,13 @@
 
 package r01f.httpclient.jsse.www.http;
 
+import java.io.IOException;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 import r01f.httpclient.jsse.net.NetProperties;
-
-import java.io.IOException;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 
 /**
  * This class is used to cleanup any remaining data that may be on a KeepAliveStream

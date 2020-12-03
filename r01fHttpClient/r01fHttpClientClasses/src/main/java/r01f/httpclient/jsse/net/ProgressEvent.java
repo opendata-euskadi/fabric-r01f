@@ -24,8 +24,8 @@
  */
 package r01f.httpclient.jsse.net;
 
-import java.util.EventObject;
 import java.net.URL;
+import java.util.EventObject;
 
 /**
  * ProgressEvent represents an progress event in monitering network input stream.

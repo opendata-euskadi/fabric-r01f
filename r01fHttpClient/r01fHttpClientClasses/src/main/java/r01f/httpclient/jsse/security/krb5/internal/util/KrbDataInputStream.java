@@ -31,8 +31,8 @@
 package r01f.httpclient.jsse.security.krb5.internal.util;
 
 import java.io.BufferedInputStream;
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * This class implements a buffered input stream. It provides methods to read a chunck

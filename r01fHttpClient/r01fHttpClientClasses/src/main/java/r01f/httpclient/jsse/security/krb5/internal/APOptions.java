@@ -29,11 +29,12 @@
 
 package r01f.httpclient.jsse.security.krb5.internal;
 
+import java.io.IOException;
+
 import r01f.httpclient.jsse.security.krb5.Asn1Exception;
 import r01f.httpclient.jsse.security.krb5.internal.util.KerberosFlags;
-import r01f.httpclient.jsse.security.util.*;
-
-import java.io.IOException;
+import r01f.httpclient.jsse.security.util.DerInputStream;
+import r01f.httpclient.jsse.security.util.DerValue;
 
 /**
  * Implements the ASN.1 APOptions type.

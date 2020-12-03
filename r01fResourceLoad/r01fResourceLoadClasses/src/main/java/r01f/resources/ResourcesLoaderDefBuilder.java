@@ -14,10 +14,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import r01f.guids.CommonOIDs.AppCode;
 import r01f.guids.CommonOIDs.AppComponent;
-import r01f.guids.CommonOIDs.Password;
-import r01f.guids.CommonOIDs.UserCode;
 import r01f.patterns.IsBuilder;
 import r01f.resources.ResourcesLoaderDef.ResourcesLoaderType;
+import r01f.securitycontext.SecurityIDS.LoginID;
+import r01f.securitycontext.SecurityIDS.Password;
 import r01f.types.Path;
 import r01f.util.types.collections.CollectionUtils;
 import r01f.util.types.collections.MapEntry;
@@ -247,7 +247,7 @@ public class ResourcesLoaderDefBuilder
 		}
 		public ResourcesLoaderDefManualBuilderBBDDLoaderPropertiesLoadSqlStep conectingUsing(final String driverClass,
 																							 final String conxUri,
-																							 final UserCode user,final Password password) {
+																							 final LoginID user,final Password password) {
 			_resLoaderDef.setLoaderProps(new HashMap<String,String>(6));
 			_resLoaderDef.getLoaderProps().put(ResourcesLoaderFromBBDD.CLASS,driverClass);
 			_resLoaderDef.getLoaderProps().put(ResourcesLoaderFromBBDD.URI,conxUri);
@@ -288,7 +288,7 @@ public class ResourcesLoaderDefBuilder
 		private final ResourcesLoaderDef _resLoaderDef;
 		
 		public ResourcesLoaderDefManualBuilderReloadingStep usingProxy(final String proxyHost,final int proxyPort,
-																	   final UserCode proxyUser,final Password proxyPassword) {
+																	   final LoginID proxyUser,final Password proxyPassword) {
 			_resLoaderDef.setLoaderProps(new HashMap<String,String>(4));
 			_resLoaderDef.getLoaderProps().put(ResourcesLoaderFromURL.PROXY_HOST_PROP,proxyHost);
 			_resLoaderDef.getLoaderProps().put(ResourcesLoaderFromURL.PROXY_PORT_PROP,Integer.toString(proxyPort));

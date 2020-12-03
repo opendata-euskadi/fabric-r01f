@@ -25,9 +25,12 @@
 
 package r01f.httpclient.jsse.security.pkcs;
 
-import java.io.*;
+import java.io.IOException;
 
-import r01f.httpclient.jsse.security.util.*;
+import r01f.httpclient.jsse.security.util.DerInputStream;
+import r01f.httpclient.jsse.security.util.DerOutputStream;
+import r01f.httpclient.jsse.security.util.DerValue;
+import r01f.httpclient.jsse.security.util.ObjectIdentifier;
 
 /**
  * A ContentInfo type, as defined in PKCS#7.

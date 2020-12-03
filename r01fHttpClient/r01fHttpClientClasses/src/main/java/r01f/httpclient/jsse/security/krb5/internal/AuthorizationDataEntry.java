@@ -33,7 +33,8 @@ import java.io.IOException;
 
 import r01f.httpclient.jsse.security.krb5.Asn1Exception;
 import r01f.httpclient.jsse.security.krb5.internal.ccache.CCacheOutputStream;
-import r01f.httpclient.jsse.security.util.*;
+import r01f.httpclient.jsse.security.util.DerOutputStream;
+import r01f.httpclient.jsse.security.util.DerValue;
 
 public class AuthorizationDataEntry implements Cloneable {
         public int adType;

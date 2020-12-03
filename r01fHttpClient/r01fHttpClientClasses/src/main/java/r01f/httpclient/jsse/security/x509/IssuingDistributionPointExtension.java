@@ -27,8 +27,7 @@ package r01f.httpclient.jsse.security.x509;
 
 import java.io.IOException;
 import java.io.OutputStream;
-
-import java.util.*;
+import java.util.Enumeration;
 
 import r01f.httpclient.jsse.security.util.DerInputStream;
 import r01f.httpclient.jsse.security.util.DerOutputStream;

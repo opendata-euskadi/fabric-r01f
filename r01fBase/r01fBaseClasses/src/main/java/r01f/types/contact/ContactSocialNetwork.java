@@ -8,11 +8,11 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import r01f.aspects.interfaces.dirtytrack.ConvertToDirtyStateTrackable;
 import r01f.facets.HasLanguage;
-import r01f.guids.CommonOIDs.UserCode;
 import r01f.locale.Language;
 import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 import r01f.objectstreamer.annotations.MarshallType;
+import r01f.securitycontext.SecurityIDS.LoginID;
 import r01f.types.url.Url;
 
 
@@ -55,7 +55,7 @@ public class ContactSocialNetwork
 	 */
 	@MarshallField(as="user",
 				   whenXml=@MarshallFieldAsXml(attr=true))
-	@Getter @Setter private UserCode _user;
+	@Getter @Setter private LoginID _user;
 	/**
 	 * Profile url (ie: twitter.com/futuretelematics)
 	 */
@@ -77,7 +77,7 @@ public class ContactSocialNetwork
 		_type = type;
 		return this;
 	}
-	public ContactSocialNetwork user(final UserCode user) {
+	public ContactSocialNetwork user(final LoginID user) {
 		_user = user;
 		return this;
 	}

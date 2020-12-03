@@ -31,8 +31,6 @@ package r01f.httpclient.jsse.security.krb5.internal.ccache;
 
 import java.io.ByteArrayOutputStream;
 
-import r01f.httpclient.jsse.security.krb5.*;
-
 /**
  * tag field introduced in KRB5_FCC_FVNO_4
  *

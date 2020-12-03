@@ -30,19 +30,21 @@
 
 package r01f.httpclient.jsse.security.krb5.internal;
 
-import java.util.Vector;
-import java.util.ArrayList;
-import java.net.InetAddress;
+import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.Inet6Address;
+import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Vector;
 
 import r01f.httpclient.jsse.security.krb5.Asn1Exception;
 import r01f.httpclient.jsse.security.krb5.KrbException;
 import r01f.httpclient.jsse.security.krb5.PrincipalName;
 import r01f.httpclient.jsse.security.krb5.internal.ccache.CCacheOutputStream;
-import r01f.httpclient.jsse.security.util.*;
+import r01f.httpclient.jsse.security.util.DerInputStream;
+import r01f.httpclient.jsse.security.util.DerOutputStream;
+import r01f.httpclient.jsse.security.util.DerValue;
 
 /**
  * Implements the ASN.1 HostAddresses type.

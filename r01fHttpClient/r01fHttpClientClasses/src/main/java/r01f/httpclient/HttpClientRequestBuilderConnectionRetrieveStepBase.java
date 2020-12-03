@@ -16,10 +16,10 @@ import com.google.common.collect.Lists;
 import lombok.Cleanup;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import r01f.guids.CommonOIDs.Password;
-import r01f.guids.CommonOIDs.UserCode;
 import r01f.httpclient.HttpClient.RequestMethod;
 import r01f.patterns.Provider;
+import r01f.securitycontext.SecurityIDS.LoginID;
+import r01f.securitycontext.SecurityIDS.Password;
 import r01f.types.url.Host;
 import r01f.types.url.Url;
 
@@ -104,7 +104,7 @@ public class HttpClientRequestBuilderConnectionRetrieveStepBase<T> {
 	 * @param password
 	 */
 	public HttpClientRequestBuilderConnectionTimeOutStep usingProxy(final Host proxyHost,
-																	final UserCode user,final Password password) {
+																	final LoginID user,final Password password) {
 		return this.usingProxy(proxyHost.asUrl().getHost(),proxyHost.asUrl().getPort(),
 							   user,password);
 	}
@@ -116,7 +116,7 @@ public class HttpClientRequestBuilderConnectionRetrieveStepBase<T> {
 	 * @param password password
 	 */
 	public HttpClientRequestBuilderConnectionTimeOutStep usingProxy(final Host host,final int port,
-																    final UserCode user,final Password password) {
+																    final LoginID user,final Password password) {
 		if (host == null) throw new IllegalArgumentException("The proxy host cannot be null!");
 		if (port == 0) throw new IllegalArgumentException("The proxy port cannot be zero!");
 		HttpClientProxySettings proxySettings = new HttpClientProxySettings(host,port,
@@ -156,7 +156,7 @@ public class HttpClientRequestBuilderConnectionRetrieveStepBase<T> {
 		 * @param user
 		 * @param password
 		 */
-		public T usingBasicAuthCredentials(final UserCode user,final Password password) throws IOException {
+		public T usingBasicAuthCredentials(final LoginID user,final Password password) throws IOException {
 			_auth = new HttpTargetServerAuth(HttpTargetServerAuthType.BASIC,
 											user,password);
 			return _resultProvider.provideResponse(_proxySettings,
@@ -168,7 +168,7 @@ public class HttpClientRequestBuilderConnectionRetrieveStepBase<T> {
 		 * @param user 
 		 * @param password 
 		 */
-		public T usingDigestAuthCredentials(final UserCode user,final Password password) throws IOException {
+		public T usingDigestAuthCredentials(final LoginID user,final Password password) throws IOException {
 			_auth = new HttpTargetServerAuth(HttpTargetServerAuthType.DIGEST,
 											user,password);
 			return _resultProvider.provideResponse(_proxySettings,

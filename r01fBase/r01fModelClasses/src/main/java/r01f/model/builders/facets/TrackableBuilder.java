@@ -2,9 +2,10 @@ package r01f.model.builders.facets;
 
 import java.util.Date;
 
-import r01f.guids.CommonOIDs.UserCode;
 import r01f.model.ModelObjectTracking;
 import r01f.model.TrackableModelObject.HasTrackableFacet;
+import r01f.securitycontext.SecurityIDS.LoginID;
+import r01f.securitycontext.SecurityOIDs.UserOID;
 
 public class TrackableBuilder<CONTAINER_TYPE,
 							  SELF_TYPE extends HasTrackableFacet> 
@@ -24,22 +25,23 @@ public class TrackableBuilder<CONTAINER_TYPE,
 	 * Sets the creator and the create date to the actual date
 	 * @param creator 
 	 */
-	public TrackableBuilder<CONTAINER_TYPE,SELF_TYPE> createdBy(final UserCode creatorUser) {
+	public TrackableBuilder<CONTAINER_TYPE,SELF_TYPE> createdBy(final UserOID creatorUserOid,final LoginID creatorUser) {
 		if (creatorUser == null) return this;
 		if (_modelObject.getTrackingInfo() == null) _modelObject.setTrackingInfo(new ModelObjectTracking());
+		_modelObject.getTrackingInfo().setCreatorUserOid(creatorUserOid);
 		_modelObject.getTrackingInfo().setCreatorUserCode(creatorUser);
 		return this;
 	}
 	/**
 	 * Sets the last modifier and the last update date to the actual date
-	 * @param modifierUser
+	 * @param updatorUser
 	 */
-	public TrackableBuilder<CONTAINER_TYPE,SELF_TYPE> lastUpdatedBy(final UserCode modifierUser) {
+	public TrackableBuilder<CONTAINER_TYPE,SELF_TYPE> lastUpdatedBy(final UserOID updatorUserOid,final LoginID updatorUser) {
 		if (_modelObject.getTrackingInfo() == null) {
-			return this.createdBy(modifierUser);
-		} else if (modifierUser != null) {
+			return this.createdBy(updatorUserOid,updatorUser);
+		} else if (updatorUser != null) {
 			_modelObject.getTrackingInfo()
-						.setModifiedBy(modifierUser);
+						.setModifiedBy(updatorUserOid,updatorUser);
 		}
 		return this;
 	}

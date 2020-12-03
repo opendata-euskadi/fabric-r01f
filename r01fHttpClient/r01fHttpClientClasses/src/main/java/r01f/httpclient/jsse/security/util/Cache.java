@@ -25,8 +25,12 @@
 
 package r01f.httpclient.jsse.security.util;
 
-import java.util.*;
-import java.lang.ref.*;
+import java.lang.ref.ReferenceQueue;
+import java.lang.ref.SoftReference;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Abstract base class and factory for caches. A cache is a key-value mapping.

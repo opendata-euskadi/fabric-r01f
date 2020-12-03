@@ -28,7 +28,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
 
-import r01f.httpclient.jsse.security.util.*;
+import r01f.httpclient.jsse.security.util.Debug;
+import r01f.httpclient.jsse.security.util.DerInputStream;
+import r01f.httpclient.jsse.security.util.DerOutputStream;
+import r01f.httpclient.jsse.security.util.DerValue;
 
 /**
  * This class defines the SerialNumber class used by certificates.

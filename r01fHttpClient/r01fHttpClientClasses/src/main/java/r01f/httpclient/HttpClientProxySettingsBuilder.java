@@ -6,9 +6,9 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import r01f.exceptions.Throwables;
-import r01f.guids.CommonOIDs.Password;
-import r01f.guids.CommonOIDs.UserCode;
 import r01f.patterns.IsBuilder;
+import r01f.securitycontext.SecurityIDS.LoginID;
+import r01f.securitycontext.SecurityIDS.Password;
 import r01f.types.url.Host;
 import r01f.xmlproperties.XMLPropertiesForAppComponent;
 
@@ -25,8 +25,8 @@ public abstract class HttpClientProxySettingsBuilder
 							   .asBoolean(true);
 		Host proxyHost = props.propertyAt(baseXPath + "/host")
 							   		  .asHost();
-		UserCode userCode = props.propertyAt(baseXPath + "/user")
-								 .asUserCode();
+		LoginID userCode = props.propertyAt(baseXPath + "/user")
+								.asLoginId();
 		Password password = props.propertyAt(baseXPath + "/password")
 								 .asPassword();
 		
@@ -81,7 +81,7 @@ public abstract class HttpClientProxySettingsBuilder
 					  propsRootNode + "/proxy",props.getAppCode());
 			// create a fake proxy settings
 			proxySettings = new HttpClientProxySettings(Host.forId("proxyhost"),800,
-														UserCode.forId("proxyUser"),Password.forId("proxyPasswd"),
+														LoginID.forId("proxyUser"),Password.forId("proxyPasswd"),
 														false);		// not enabled!
 		}
 		// Try proxy

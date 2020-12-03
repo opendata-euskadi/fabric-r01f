@@ -20,8 +20,8 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import r01f.guids.CommonOIDs.Password;
-import r01f.guids.CommonOIDs.UserCode;
+import r01f.securitycontext.SecurityIDS.LoginID;
+import r01f.securitycontext.SecurityIDS.Password;
 import r01f.types.IsPath;
 import r01f.util.types.Strings;
 import r01f.util.types.collections.CollectionUtils;
@@ -44,7 +44,7 @@ public class ResourcesLoaderFromURL
 /////////////////////////////////////////////////////////////////////////////////////////	
 	@Getter @Setter private String _proxyHost;
 	@Getter @Setter private String _proxyPort;
-	@Getter @Setter private UserCode _proxyUser;
+	@Getter @Setter private LoginID _proxyUser;
 	@Getter @Setter private Password _proxyPassword;
 ///////////////////////////////////////////////////////////////////////////////
 // 	CONSTRUCTOR
@@ -61,7 +61,7 @@ public class ResourcesLoaderFromURL
 				
 				String proxyUser = def.getProperty(PROXY_USER_PROP);
 				String proxyPwd = def.getProperty(PROXY_PASSWORD_PROP);
-				_proxyUser = !Strings.isNullOrEmpty(proxyUser) ? UserCode.forId(proxyUser) : null;
+				_proxyUser = !Strings.isNullOrEmpty(proxyUser) ? LoginID.forId(proxyUser) : null;
 				_proxyPassword = !Strings.isNullOrEmpty(proxyPwd) ? Password.forId(proxyPwd) : null;
 			}
 		}

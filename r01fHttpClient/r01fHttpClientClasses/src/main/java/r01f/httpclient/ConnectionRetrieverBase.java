@@ -51,7 +51,7 @@ abstract class ConnectionRetrieverBase {
 					throw task.ioException;
 				}
 			} catch (TimeOutController.TimeoutException timeOutEx) {
-				throw new IOException("No se ha podido obtener la conexión con el host '" + url + "' en el tiempo especificado: " + timeout + " millis");
+				throw new IOException("No se ha podido obtener la conexin con el host '" + url + "' en el tiempo especificado: " + timeout + " millis");
 			}
 		}
 		return outConx;

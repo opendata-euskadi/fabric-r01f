@@ -21,10 +21,10 @@ import r01f.util.types.collections.CollectionUtils;
 /**
  * Clase que carga un fichero de propiedades desde la Base de Datos.
  * 
- * Propiedades con la informaci�n de conexi�n a la Base de Datos,
+ * Propiedades con la informacin de conexin a la Base de Datos,
  * la query de consulta del fichero de propiedades y la columna que contiene el fichero.
  *
- * <p>Ejemplo de conexi�n v�a JDBC a la Base de datos:
+ * <p>Ejemplo de conexin va JDBC a la Base de datos:
  * <pre class="brush:xml">
  * <resourcesLoader type='BBDD'>
  * 	<props>
@@ -35,8 +35,8 @@ import r01f.util.types.collections.CollectionUtils;
  *		<query>
  *			<!-- Query para obtener el fichero de propiedades de la base de datos, OBLIGATORIAMENTE se
  *				debe definir un alias llamado PROPERTIES_XML para obtener el campo que almacena las propiedades,
- *				la consulta se realizar� a trav�s de dicho alias. Solamente se consulta la versi�n activa, y adem�s esta
- *				debe ser �nica. -->
+ *				la consulta se realizar a travs de dicho alias. Solamente se consulta la versin activa, y adems esta
+ *				debe ser nica. -->
  *			<![CDATA[
  *				SELECT DATA_01 AS PROPERTIES_XML
  *				    FROM PROPERTIES_CFG
@@ -47,7 +47,7 @@ import r01f.util.types.collections.CollectionUtils;
  *			]]>
  *		</query>
  * 		<updatets>
- * 			<!-- Actualizaci�n de la fecha con la �ltima recarga. -->
+ * 			<!-- Actualizacin de la fecha con la ltima recarga. -->
  * 			<![CDATA[
  * 				UPDATE PROPERTIES_CFG
  *				  		SET LAST_UPDATE_TS_01 = SYSDATE
@@ -58,11 +58,11 @@ import r01f.util.types.collections.CollectionUtils;
  * 			]]>
  * 		</updatets>
  * 	</props>
- * 	<reloadControl><!-- Definici�n del control de la recarga. --></reloadControl>
+ * 	<reloadControl><!-- Definicin del control de la recarga. --></reloadControl>
  * </resourcesLoader>
  * </pre>
  *
- * <p>Ejemplo de conexi�n con Datasource:
+ * <p>Ejemplo de conexin con Datasource:
  * <pre class="brush:xml">
  * <resourcesLoader type='BBDD'>
  * 	<props>
@@ -71,7 +71,7 @@ import r01f.util.types.collections.CollectionUtils;
  *		<query>
  *			<!-- Query para obtener el fichero de propiedades de la base de datos, OBLIGATORIAMENTE se
  *				debe definir un alias llamado PROPERTIES_XML para obtener el campo que almacena las propiedades,
- *				la consulta se realizar� a trav�s de dicho alias. -->
+ *				la consulta se realizar a travs de dicho alias. -->
  *			<![CDATA[
  *				SELECT DATA_01 AS PROPERTIES_XML
  *				    FROM PROPERTIES_CFG
@@ -81,7 +81,7 @@ import r01f.util.types.collections.CollectionUtils;
  *			]]>
  *		</query>
  * 		<updatets>
- * 			<!-- Actualizaci�n de la fecha con la �ltima recarga. -->
+ * 			<!-- Actualizacin de la fecha con la ltima recarga. -->
  * 			<![CDATA[
  * 				UPDATE LAST_UPDATE_TS_01
  * 					SET SYSDATE
@@ -91,7 +91,7 @@ import r01f.util.types.collections.CollectionUtils;
  * 			]]>
  * 		</updatets>
  * 	</props>
- * 	<reloadControl><!-- Definici�n del control de la recarga. --></reloadControl>
+ * 	<reloadControl><!-- Definicin del control de la recarga. --></reloadControl>
  * </resourcesLoader>
  * </pre>
  */
@@ -174,10 +174,10 @@ public class ResourcesLoaderFromBBDD
     								  	    final boolean reload) throws IOException {
 		InputStream fileIS = null;
 		if (!_dbConnectionProps.containsKey("query")) {
-			throw new IllegalStateException("Revisar la definici�n del componente cuyo 'resourcesLoader' debe contener una propiedad denominada 'query' con la query " +
+			throw new IllegalStateException("Revisar la definicin del componente cuyo 'resourcesLoader' debe contener una propiedad denominada 'query' con la query " +
 					 						"para obtener el fichero de propiedades de la base de datos, OBLIGATORIAMENTE se " +
 					 						"debe definir un alias llamado PROPERTIES_XML para obtener el campo que almacena las propiedades, " +
-					 						"la consulta se realizar� a trav�s de dicho alias.");
+					 						"la consulta se realizar a travs de dicho alias.");
 		}
 		String sql = _dbConnectionProps.get("query").toString();
 
@@ -190,17 +190,17 @@ public class ResourcesLoaderFromBBDD
 		if (result != null) {
 			fileIS = new ByteArrayInputStream(result.get(0).get("PROPERTIES_XML")
 														   .toString().getBytes(this.getConfig().getCharset()));
-			_updateReloadTS();	// Actualizar la fecha de la �ltima actualizaci�n
+			_updateReloadTS();	// Actualizar la fecha de la ltima actualizacin
 		}
         return fileIS;
     }
     /**
-	 * Actualizar con la fecha actual la fecha de �ltima recarga del fichero de propiedades.
+	 * Actualizar con la fecha actual la fecha de ltima recarga del fichero de propiedades.
 	 */
 	private void _updateReloadTS() {
 		if (!_dbConnectionProps.containsKey("updatets")) {
-			throw new IllegalStateException("Revisar la definici�n del componente cuyo 'resourcesLoader' debe contener una propiedad denominada 'updatets' con " +
-					 						"la update para la actualizaci�n de la fecha con la �ltima recarga del fichero de propiedades.");
+			throw new IllegalStateException("Revisar la definicin del componente cuyo 'resourcesLoader' debe contener una propiedad denominada 'updatets' con " +
+					 						"la update para la actualizacin de la fecha con la ltima recarga del fichero de propiedades.");
 		}
 
 		String updateSQL = _dbConnectionProps.get("updatets").toString();

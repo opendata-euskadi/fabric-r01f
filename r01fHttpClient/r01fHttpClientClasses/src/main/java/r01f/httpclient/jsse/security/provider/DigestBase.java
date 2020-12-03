@@ -25,8 +25,8 @@
 
 package r01f.httpclient.jsse.security.provider;
 
-import java.security.MessageDigestSpi;
 import java.security.DigestException;
+import java.security.MessageDigestSpi;
 import java.security.ProviderException;
 
 /**

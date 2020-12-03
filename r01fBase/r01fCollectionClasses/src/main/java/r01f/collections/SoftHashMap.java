@@ -27,23 +27,23 @@ import java.util.Set;
  * 
  * - Una WeakReference es una referencia a un objeto que permite al GC liberar el objeto al que referencia la WeakReference
  * 			WeakReference<Object> wr = new WeakReference<Object>(obj)	
- *   en este caso obj tiene una WeakReference sobre �l, lo que permite al GC liberar obj (al llamar a wr.get() se devuelve null)
+ *   en este caso obj tiene una WeakReference sobre l, lo que permite al GC liberar obj (al llamar a wr.get() se devuelve null)
  *   Un WeakHashMap es un mapa "normal" en el que las CLAVES (no los valores!) son WeakReferences. Cuando las CLAVES dejan de ser utilizadas
  *   (no hay ninguna StringReference sobre ellas), pueden ser liberadas por el GC
- *   Esto hace que un WeakHashMap NO sea la estructura m�s adecuada para implementar una cache ya que es raro mantener StrongReferences sobre las claves y 
+ *   Esto hace que un WeakHashMap NO sea la estructura ms adecuada para implementar una cache ya que es raro mantener StrongReferences sobre las claves y 
  *   por lo tanto las entradas del WeakHashMap son liberadas casi de inmediato (en segundos o milisegundos) si NO se utilizan
  * 
  * - Una SoftReference es como una WeakReference salvo que es menos "propensa" a que el objeto que referencia sea liberado por el GC
  * 		* En el caso de una WeakReference sobre un objeto, el GC libera el objeto en cuanto no tiene ninguna StrongReference sobre el mismo
  * 		* En el caso de una SoftReference sobre un objeto, el GC libera el objeto en cuanto necesita memoria
  *  	  
- *  Por lo tanto, las SoftReferences son adecuadas para la construcci�n de caches... en especial mucho m�s que las WeakReferences puesto que un 
+ *  Por lo tanto, las SoftReferences son adecuadas para la construccin de caches... en especial mucho ms que las WeakReferences puesto que un 
  *  WeakHashMap contiene WeakReferences a las CLAVES y normalmente NO se guardan StrongReferences sobre las claves, por lo que enseguida (en el siguiente ciclo GC)
- *  se libera el objeto de la cache. Un SoftHashMap es mucho m�s adecuado pues la entrada permanece hasta que es necesaria la memoria.  
+ *  se libera el objeto de la cache. Un SoftHashMap es mucho ms adecuado pues la entrada permanece hasta que es necesaria la memoria.  
  *  
- *  El problema es que la JVM NO proporciona una implementaci�n de un SoftHasMap.
- *  Esta clase es una implementaci�n de la misma en base a la implementacion de WeakHashMap cambiando WeakReference por SoftReference	
- *  	As� como en el WeakHashMap se guardan WeakReferences a las CLAVES, en esta clase se guardan SoftReferences tambien a las CLAVES
+ *  El problema es que la JVM NO proporciona una implementacin de un SoftHasMap.
+ *  Esta clase es una implementacin de la misma en base a la implementacion de WeakHashMap cambiando WeakReference por SoftReference	
+ *  	As como en el WeakHashMap se guardan WeakReferences a las CLAVES, en esta clase se guardan SoftReferences tambien a las CLAVES
  *  	de forma que una clave (y por tanto el objeto referenciado) se liberan en cuanto se necesita memoria, a diferencia de un WeakHashMap 
  *  	que se libera en cuanto la clave no tiene StrongReferences... es decir, habitualmente muy pronto.
  *  
@@ -52,7 +52,7 @@ import java.util.Set;
  * del cache son eliminadas "transparentemente" por el GC, la clase se comporta como si 
  * un thread silenciosamente liberara entradas:
  * 		En particular, aunque se haga un synchronize sobre una instancia de <code>SoftCache</code>
- * 		y se llame a uno de los m�todo mutadores, es posible obtener resultados "extra�os":
+ * 		y se llame a uno de los mtodo mutadores, es posible obtener resultados "extraos":
  * 			- <code>size</code> puede devolver valores distintos
  * 			- <code>isEmpty</code> puede devolver primero false y luego true
  * 			- <code>containsKey</code> para una clave puede devolver primero true y luego false
@@ -78,7 +78,7 @@ public final class SoftHashMap<K,V>
 	/**
 	 * Array subyacente que contiene las entradas del mapa
 	 * Las entradas son un objeto Entry<K,V> que extiende de SoftReference<K> (es decir, la clave es una SoftReference) y que
-	 * adem�s almacena:
+	 * adems almacena:
 	 * 		- El value
 	 * 		- Un hash de la clave
 	 * 		- Una referencia a otro objeto Entry<K,V> con la misma clave (en realidad el mismo hash de la clave)
@@ -95,7 +95,7 @@ public final class SoftHashMap<K,V>
 	private final ReferenceQueue<K> _queue = new ReferenceQueue<K>();
 	
 	private volatile int _modCount;		// simplemente se incrementa cada vez que se llama a un metodo mutator de la tabla subyacente
-										// sirve para validar si la tabla se ha modificado cuando se est� iterando (ver HashIterator)
+										// sirve para validar si la tabla se ha modificado cuando se est iterando (ver HashIterator)
 	private transient Set<Map.Entry<K,V>> _entrySet = null;
 	private transient volatile Set<K> _keySet = null;
 	private transient volatile Collection<V> _values = null;
@@ -156,7 +156,7 @@ public final class SoftHashMap<K,V>
 	@Override
 	public int size() {
 		if (_size == 0) return 0;
-		_expungeStaleEntries();		// antes de devolver el tama�o borrar las entradas reclamadas por el GC
+		_expungeStaleEntries();		// antes de devolver el tamao borrar las entradas reclamadas por el GC
 		return _size;
 	}
 	@Override
@@ -171,7 +171,7 @@ public final class SoftHashMap<K,V>
 		int index = _indexFor(h,tab.length);
 		Entry<K,V> e = tab[index];
 		while (e != null) {
-			if (e.hash == h && eq(k,e.get())) return e.value;	// varios elementos con el mismo hash est�n enlazados en una lista
+			if (e.hash == h && eq(k,e.get())) return e.value;	// varios elementos con el mismo hash estn enlazados en una lista
 			e = e.next;
 		}
 		return null;
