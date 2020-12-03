@@ -3,7 +3,6 @@ package r01f.securitycontext;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import r01f.guids.CommonOIDs.UserCode;
 import r01f.guids.CommonOIDs.WorkPlaceCode;
 import r01f.locale.Language;
 import r01f.objectstreamer.annotations.MarshallField;
@@ -25,10 +24,6 @@ public abstract class SecurityContextUserDataBase
 /////////////////////////////////////////////////////////////////////////////////////////
 //  FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
-	@MarshallField(as="user",
-			   	   whenXml=@MarshallFieldAsXml(attr=true))
-	@Getter private final UserCode _user;
-
 	@MarshallField(as="workPlace",
 			   	   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter private final WorkPlaceCode _workPlace;
@@ -56,12 +51,11 @@ public abstract class SecurityContextUserDataBase
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-	public SecurityContextUserDataBase(final UserCode userCode,final WorkPlaceCode workPlace,
+	public SecurityContextUserDataBase(final WorkPlaceCode workPlace,
 									   final String name,final String surname,
 									   final String displayName,
 									   final Language prefLang,
 									   final EMail email,final Phone phone) {
-		_user = userCode;
 		_workPlace = workPlace;
 
 		_name = name;
@@ -73,61 +67,61 @@ public abstract class SecurityContextUserDataBase
 		_email = email;
 		_phone = phone;
 	}
-	public SecurityContextUserDataBase(final UserCode userCode,final WorkPlaceCode workPlace,
+	public SecurityContextUserDataBase(final WorkPlaceCode workPlace,
 									   final String name,final String surname,
 									   final String displeyName,
 									   final EMail email,final Phone phone) {
-		this(userCode,workPlace,
+		this(workPlace,
 			 name,surname,
 			 displeyName,
 			 Language.DEFAULT,
 			 email,phone);
 	}
-	public SecurityContextUserDataBase(final UserCode userCode,final WorkPlaceCode workPlace,
+	public SecurityContextUserDataBase(final WorkPlaceCode workPlace,
 									   final String name,final String surname,
 									   final Language prefLang,
 									   final EMail email,final Phone phone) {
-		this(userCode,workPlace,
+		this(workPlace,
 			 name,surname,
 			 _displayNameFrom(name,surname),			// display name
 			 prefLang,
 			 email,phone);
 	}
-	public SecurityContextUserDataBase(final UserCode userCode,final WorkPlaceCode workPlace,
+	public SecurityContextUserDataBase(final WorkPlaceCode workPlace,
 									   final String name,final String surname,
 									   final EMail email,final Phone phone) {
-		this(userCode,workPlace,
+		this(workPlace,
 			 name,surname,
 			 Language.DEFAULT,
 			 email,phone);
 	}
-	public SecurityContextUserDataBase(final UserCode userCode,final WorkPlaceCode workPlace,
+	public SecurityContextUserDataBase(final WorkPlaceCode workPlace,
 									   final String name,final String surname,
 									   final Language prefLang) {
-		this(userCode,workPlace,
+		this(workPlace,
 			 name,surname,
 			 _displayNameFrom(name,surname),			// display name
 			 prefLang,
 			 null,null);	// phone & email
 	}
-	public SecurityContextUserDataBase(final UserCode userCode,final WorkPlaceCode workPlace,
+	public SecurityContextUserDataBase(final WorkPlaceCode workPlace,
 									   final String name,final String surname) {
-		this(userCode,workPlace,
+		this(workPlace,
 			 name,surname,
 			 Language.DEFAULT);
 	}
-	public SecurityContextUserDataBase(final UserCode userCode,final WorkPlaceCode workPlace,
+	public SecurityContextUserDataBase(final WorkPlaceCode workPlace,
 									   final String name,
 									   final Language prefLang) {
-		this(userCode,workPlace,
+		this(workPlace,
 			 name,null,
 			 name,			// display name
 			 prefLang,
 			 null,null);	// phone & email
 	}
-	public SecurityContextUserDataBase(final UserCode userCode,final WorkPlaceCode workPlace,
+	public SecurityContextUserDataBase(final WorkPlaceCode workPlace,
 									   final String name) {
-		this(userCode,workPlace,
+		this(workPlace,
 			 name,
 			 Language.DEFAULT);
 	}

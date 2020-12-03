@@ -2,9 +2,10 @@ package r01f.model.builders.facets;
 
 import java.util.Date;
 
-import r01f.guids.CommonOIDs.UserCode;
 import r01f.model.ModelObjectTracking;
 import r01f.model.TrackableModelObject.HasTrackableFacet;
+import r01f.securitycontext.SecurityIDS.LoginID;
+import r01f.securitycontext.SecurityOIDs.UserOID;
 
 
 public class TrackableModelObjectBuilder<CONTAINER_TYPE,
@@ -21,8 +22,9 @@ public class TrackableModelObjectBuilder<CONTAINER_TYPE,
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CREATE
 /////////////////////////////////////////////////////////////////////////////////////////    
-	public TrackableModelObjectBuilderCreatedAtStep createdBy(final UserCode creatorUser) {
+	public TrackableModelObjectBuilderCreatedAtStep createdBy(final UserOID creatorUserOid,final LoginID creatorUser) {
 		if (_modelObject.getTrackingInfo() == null) _modelObject.setTrackingInfo(new ModelObjectTracking());	// lazy create object
+		_modelObject.getTrackingInfo().setCreatorUserOid(creatorUserOid);
 		_modelObject.getTrackingInfo().setCreatorUserCode(creatorUser);
 		return new TrackableModelObjectBuilderCreatedAtStep();
 	}
@@ -39,9 +41,9 @@ public class TrackableModelObjectBuilder<CONTAINER_TYPE,
 /////////////////////////////////////////////////////////////////////////////////////////
 //  UPDATE
 /////////////////////////////////////////////////////////////////////////////////////////
-	public TrackableModelObjectBuilderLastUpdatedAtStep lastUpdatedBy(final UserCode updateUser) {
+	public TrackableModelObjectBuilderLastUpdatedAtStep lastUpdatedBy(final UserOID updatorUserOid,final LoginID updatorUser) {
 		if (_modelObject.getTrackingInfo() == null) _modelObject.setTrackingInfo(new ModelObjectTracking());	// lazy create object
-		_modelObject.getTrackingInfo().setModifiedBy(updateUser);
+		_modelObject.getTrackingInfo().setModifiedBy(updatorUserOid,updatorUser);
 		return new TrackableModelObjectBuilderLastUpdatedAtStep();
 	}
 	public class TrackableModelObjectBuilderLastUpdatedAtStep {

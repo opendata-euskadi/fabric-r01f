@@ -14,7 +14,7 @@ import r01f.model.metadata.annotations.Storage;
 
 @MetaDataForType(modelObjTypeCode = HasFieldsMetaData.HAS_OID_MODEL_OBJECT_TYPE_CODE,
 			     description = {
-						@DescInLang(language=Language.SPANISH, value="Un objeto de modelo que tiene un identificador �nico"),
+						@DescInLang(language=Language.SPANISH, value="Un objeto de modelo que tiene un identificador nico"),
 						@DescInLang(language=Language.BASQUE, value="[eu] A model object that has an unique identifier"),
 						@DescInLang(language=Language.ENGLISH, value="sA model object that has an unique identifier")
 			     })

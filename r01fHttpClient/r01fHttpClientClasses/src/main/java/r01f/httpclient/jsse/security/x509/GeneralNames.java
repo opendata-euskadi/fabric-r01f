@@ -25,11 +25,13 @@
 
 package r01f.httpclient.jsse.security.x509;
 
-import java.util.*;
-
-import r01f.httpclient.jsse.security.util.*;
-
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import r01f.httpclient.jsse.security.util.DerOutputStream;
+import r01f.httpclient.jsse.security.util.DerValue;
 
 /**
  * This object class represents the GeneralNames type required in

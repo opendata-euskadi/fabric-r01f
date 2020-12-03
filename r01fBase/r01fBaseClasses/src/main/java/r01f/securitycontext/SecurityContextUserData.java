@@ -2,7 +2,6 @@ package r01f.securitycontext;
 
 import java.io.Serializable;
 
-import r01f.guids.CommonOIDs.UserCode;
 import r01f.guids.CommonOIDs.WorkPlaceCode;
 import r01f.locale.Language;
 import r01f.types.contact.EMail;
@@ -15,7 +14,6 @@ import r01f.types.contact.Phone;
  */
 public interface SecurityContextUserData 
 		 extends Serializable {
-	public UserCode getUser();
 	public WorkPlaceCode getWorkPlace();
 	
 	public String getName();

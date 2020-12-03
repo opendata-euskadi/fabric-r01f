@@ -25,9 +25,9 @@
 
 package r01f.httpclient.jsse.net;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.net.URL;
 
 /**
  * ProgressMonitor is a class for monitoring progress in network input stream.

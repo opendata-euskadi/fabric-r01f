@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 import r01f.debug.Debuggable;
-import r01f.guids.CommonOIDs.UserCode;
-import r01f.guids.CommonOIDs.UserGroupCode;
+import r01f.securitycontext.SecurityIDS.LoginID;
+import r01f.securitycontext.SecurityIDS.UserGroupCode;
 import r01f.types.Path;
 
 public interface FileProperties 
@@ -47,8 +47,8 @@ public interface FileProperties
 	public void setAccessTimeStamp(final long ts);
 	public Date getAccessDate();
 	
-	public UserCode getOwner();
-	public void setOwner(final UserCode userCode);
+	public LoginID getOwner();
+	public void setOwner(final LoginID userCode);
 	
 	public UserGroupCode getGroup();
 	public void setGroup(final UserGroupCode group);

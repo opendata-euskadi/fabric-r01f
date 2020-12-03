@@ -13,10 +13,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import r01f.aspects.interfaces.dirtytrack.ConvertToDirtyStateTrackable;
-import r01f.guids.CommonOIDs.UserCode;
 import r01f.locale.Language;
 import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallType;
+import r01f.securitycontext.SecurityIDS.LoginID;
 import r01f.types.geo.GeoFacets.HasGeoPosition;
 import r01f.types.geo.GeoPosition;
 import r01f.types.url.Url;
@@ -445,7 +445,7 @@ public class ContactInfo
 		return false;
 	}
 	public boolean hasSocialNetwork(final ContactSocialNetworkType type,
-									final UserCode user) {
+									final LoginID user) {
 		ContactSocialNetwork searchedNet = Iterables.tryFind(_contactSocialNetworks,
 															 new Predicate<ContactSocialNetwork>() {
 																	@Override
@@ -464,7 +464,7 @@ public class ContactInfo
 	 * @return
 	 */
 	public ContactSocialNetwork getSocialNetworkFor(final ContactSocialNetworkType type,
-													final UserCode user) {
+													final LoginID user) {
 		if (CollectionUtils.isNullOrEmpty(_contactSocialNetworks)) return null;
 		return FluentIterable.from(_contactSocialNetworks)
 							 .firstMatch(new Predicate<ContactSocialNetwork>() {

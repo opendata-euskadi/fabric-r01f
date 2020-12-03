@@ -26,13 +26,16 @@
 package r01f.httpclient.jsse.security.util;
 
 import java.io.IOException;
-import java.util.*;
-
 import java.security.Principal;
-import java.security.cert.*;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateParsingException;
+import java.security.cert.X509Certificate;
+import java.util.Collection;
+import java.util.List;
+import java.util.StringTokenizer;
 
-import javax.security.auth.x500.X500Principal;
 import javax.security.auth.kerberos.KerberosPrincipal;
+import javax.security.auth.x500.X500Principal;
 
 import r01f.httpclient.jsse.misc.IPAddressUtil;
 import r01f.httpclient.jsse.security.krb5.PrincipalName;

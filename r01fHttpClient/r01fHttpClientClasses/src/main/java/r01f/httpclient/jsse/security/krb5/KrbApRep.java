@@ -30,11 +30,17 @@
 
 package r01f.httpclient.jsse.security.krb5;
 
-import r01f.httpclient.jsse.security.krb5.internal.*;
-import r01f.httpclient.jsse.security.krb5.internal.crypto.KeyUsage;
-import r01f.httpclient.jsse.security.util.*;
-
 import java.io.IOException;
+
+import r01f.httpclient.jsse.security.krb5.internal.EncAPRepPart;
+import r01f.httpclient.jsse.security.krb5.internal.KRBError;
+import r01f.httpclient.jsse.security.krb5.internal.KerberosTime;
+import r01f.httpclient.jsse.security.krb5.internal.Krb5;
+import r01f.httpclient.jsse.security.krb5.internal.KrbApErrException;
+import r01f.httpclient.jsse.security.krb5.internal.LocalSeqNumber;
+import r01f.httpclient.jsse.security.krb5.internal.SeqNumber;
+import r01f.httpclient.jsse.security.krb5.internal.crypto.KeyUsage;
+import r01f.httpclient.jsse.security.util.DerValue;
 
 /**
  * This class encapsulates a KRB-AP-REP sent from the service to the

@@ -31,10 +31,18 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.security.cert.CertificateException;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
 
 import r01f.httpclient.jsse.misc.HexDumpEncoder;
-import r01f.httpclient.jsse.security.util.*;
+import r01f.httpclient.jsse.security.util.Debug;
+import r01f.httpclient.jsse.security.util.DerInputStream;
+import r01f.httpclient.jsse.security.util.DerOutputStream;
+import r01f.httpclient.jsse.security.util.DerValue;
 
 /**
  * This class defines the Extensions attribute for the Certificate.

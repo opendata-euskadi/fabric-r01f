@@ -31,11 +31,21 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.security.AccessController;
 import java.text.Normalizer;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import r01f.httpclient.jsse.security.action.GetBooleanAction;
 import r01f.httpclient.jsse.security.pkcs.PKCS9Attribute;
-import r01f.httpclient.jsse.security.util.*;
+import r01f.httpclient.jsse.security.util.Debug;
+import r01f.httpclient.jsse.security.util.DerEncoder;
+import r01f.httpclient.jsse.security.util.DerInputStream;
+import r01f.httpclient.jsse.security.util.DerOutputStream;
+import r01f.httpclient.jsse.security.util.DerValue;
+import r01f.httpclient.jsse.security.util.ObjectIdentifier;
 
 
 /**

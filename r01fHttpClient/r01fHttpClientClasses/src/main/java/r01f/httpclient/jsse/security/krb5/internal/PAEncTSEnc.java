@@ -29,11 +29,12 @@
 
 package r01f.httpclient.jsse.security.krb5.internal;
 
-import r01f.httpclient.jsse.security.krb5.Asn1Exception;
-import r01f.httpclient.jsse.security.util.*;
-
 import java.io.IOException;
 import java.math.BigInteger;
+
+import r01f.httpclient.jsse.security.krb5.Asn1Exception;
+import r01f.httpclient.jsse.security.util.DerOutputStream;
+import r01f.httpclient.jsse.security.util.DerValue;
 
 /**
  * Implements the ASN.1 PAEncTSEnc type.

@@ -7,10 +7,10 @@ import com.google.common.base.Objects;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import r01f.guids.CommonOIDs.UserCode;
-import r01f.guids.CommonOIDs.UserGroupCode;
 import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
+import r01f.securitycontext.SecurityIDS.LoginID;
+import r01f.securitycontext.SecurityIDS.UserGroupCode;
 import r01f.types.Path;
 import r01f.util.types.Dates;
 import r01f.util.types.Strings;
@@ -51,7 +51,7 @@ public abstract class FilePropertiesBase
 	
 	@MarshallField(as="owner",
 				  whenXml=@MarshallFieldAsXml(attr=true))
-	@Getter @Setter protected UserCode _owner;
+	@Getter @Setter protected LoginID _owner;
 	
 	@MarshallField(as="group",
 				  whenXml=@MarshallFieldAsXml(attr=true))

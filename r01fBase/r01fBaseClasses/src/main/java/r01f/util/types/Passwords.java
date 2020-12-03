@@ -16,8 +16,8 @@ import com.google.common.io.BaseEncoding;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
-import r01f.guids.CommonOIDs.Password;
-import r01f.guids.CommonOIDs.PasswordHash;
+import r01f.securitycontext.SecurityIDS.Password;
+import r01f.securitycontext.SecurityIDS.PasswordHash;
 
 /**
  * Hash passwords for storage, and test passwords against password tokens.

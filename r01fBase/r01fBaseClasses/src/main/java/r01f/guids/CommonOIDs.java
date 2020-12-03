@@ -1,21 +1,12 @@
 package r01f.guids;
 
-import java.io.Serializable;
-
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 import r01f.annotations.Immutable;
 import r01f.internal.Env;
-import r01f.objectstreamer.annotations.MarshallField;
-import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 import r01f.objectstreamer.annotations.MarshallType;
-import r01f.patterns.Memoized;
-import r01f.util.types.Passwords;
+import r01f.securitycontext.SecurityIDS.LoginID;
 import r01f.util.types.Strings;
 
 @NoArgsConstructor(access=AccessLevel.PRIVATE)
@@ -105,7 +96,6 @@ public abstract class CommonOIDs {
 	/**
 	 * AppCode
 	 */
-	@EqualsAndHashCode(callSuper=true)
 	@NoArgsConstructor
 	public static abstract class AppCodeBase
 	                     extends OIDBaseMutable<String> {
@@ -114,12 +104,24 @@ public abstract class CommonOIDs {
 		public AppCodeBase(final String oid) {
 			super(oid);
 		}
+		@Override
+		public boolean equals(final Object obj) {
+			if (obj == null) return false;
+			if (this == obj) return true;
+			if (!(obj instanceof AppCodeBase)) return false;
+			
+			AppCodeBase other = (AppCodeBase)obj;
+			boolean eqs = this.getId() != null && other.getId() != null ? this.getId().equals(other.getId())
+																		: this.getId() != null && other.getId() == null ? false
+																				 										: this.getId() == null && other.getId() != null ? false
+																				 												 										: true;	// both null
+			return eqs;
+		}
 	}
 	/**
 	 * AppCode
 	 */
 	@MarshallType(as="appCode")
-	@EqualsAndHashCode(callSuper=true)
 	@NoArgsConstructor
 	public static class AppCode
 	            extends AppCodeBase {
@@ -141,10 +143,18 @@ public abstract class CommonOIDs {
 		public static AppCode named(final String id) {
 			return AppCode.forId(id);
 		}
-		public static AppCode forAuthenticatedUserId(final AuthenticatedActorID authActorId) {
-			return new AppCode(authActorId.asString());
+		public static AppCode forLogin(final LoginID loginId) {
+			return AppCode.forId(loginId.asString());
 		}
-	}
+		@Override
+		public int hashCode() {
+			return super.hashCode();
+		}
+		@Override
+		public boolean equals(final Object obj) {
+			return super.equals(obj);
+		}
+	}	
 	/**
 	 * AppCode component
 	 */
@@ -172,15 +182,17 @@ public abstract class CommonOIDs {
 			
 			AppComponentBase other = (AppComponentBase)obj;
 			// compare objects of the same type, otherwise equals will fail
-			AppComponent thisAppComponent = this.asAppComponent();
-			AppComponent otherAppComponent = other.asAppComponent();
-			return thisAppComponent.equals(otherAppComponent);
+			return this.getId() != null && other.getId() != null ? this.getId().equals(other.getId())
+																 : this.getId() != null && other.getId() == null ? false
+																		 										 : this.getId() == null && other.getId() != null ? false
+																		 												 										 : true;	// both null
 		}
 	}
 	/**
 	 * AppCode component
 	 */
 	@MarshallType(as="appComponent")
+	@EqualsAndHashCode(callSuper=true)
 	@NoArgsConstructor
 	public static class AppComponent
 	            extends AppComponentBase {
@@ -218,18 +230,6 @@ public abstract class CommonOIDs {
 		public AppComponent asAppComponent() {
 			return this;
 		}
-		@Override
-		public boolean equals(final Object obj) {
-			if (obj == null) return false;
-			if (this == obj) return true;
-			if (!(obj instanceof AppComponent)) return false;
-			
-			AppComponent other = (AppComponent)obj;
-			return this.getId() != null && other.getId() != null ? this.getId().equals(other.getId())
-																 : this.getId() != null && other.getId() == null ? false
-																		 										 : this.getId() == null && other.getId() != null ? false
-																		 												 										 : true;	// both null
-		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	WORKPLACE
@@ -250,9 +250,6 @@ public abstract class CommonOIDs {
 		}
 		public static WorkPlaceCode valueOf(final String id) {
 			return WorkPlaceCode.forId(id);
-		}
-		public static WorkPlaceCode forAuthenticatedUserId(final AuthenticatedActorID authActorId) {
-			return new WorkPlaceCode(authActorId.asString());
 		}
 		public static final WorkPlaceCode UNKNOWN = WorkPlaceCode.forId("unknown");
 		public boolean isUnknown() {
@@ -280,9 +277,6 @@ public abstract class CommonOIDs {
 		}
 		public static BuildingCode valueOf(final String id) {
 			return BuildingCode.forId(id);
-		}
-		public static BuildingCode forAuthenticatedUserId(final AuthenticatedActorID authActorId) {
-			return new BuildingCode(authActorId.asString());
 		}
 		public static final BuildingCode ANONYMOUS = BuildingCode.forId("anonymous");
 		public boolean isAnonymous() {
@@ -314,273 +308,7 @@ public abstract class CommonOIDs {
 			return new Role(id);
 		}
 	}
-	@Immutable
-	@MarshallType(as="userGroupCode")
-	@EqualsAndHashCode(callSuper=true)
-	@NoArgsConstructor
-	public static final class UserGroupCode
-	     		      extends OIDBaseMutable<String> {
 
-		private static final long serialVersionUID = -8145305261344081383L;
-
-		public UserGroupCode(final String oid) {
-			super(oid);
-		}
-		public static UserGroupCode forId(final String id) {
-			return new UserGroupCode(id);
-		}
-		public static UserGroupCode valueOf(final String id) {
-			return UserGroupCode.forId(id);
-		}
-	}
-	@Immutable
-	@MarshallType(as="userCode")
-	@EqualsAndHashCode(callSuper=true)
-	@NoArgsConstructor
-	public static final class UserCode
-	     		      extends OIDBaseMutable<String> {
-
-		private static final long serialVersionUID = -8145305261344081383L;
-
-		public UserCode(final String oid) {
-			super(oid);
-		}
-		public static UserCode forId(final String id) {
-			return new UserCode(id);
-		}
-		public static UserCode valueOf(final String id) {
-			return UserCode.forId(id);
-		}
-		public static UserCode forAuthenticatedUserId(final AuthenticatedActorID authActorId) {
-			return new UserCode(authActorId.asString());
-		}
-		public static final UserCode ANONYMOUS = UserCode.forId("anonymous");
-		public boolean isAnonymous() {
-			return this.is(ANONYMOUS);
-		}
-		public static final UserCode SYSTEM = UserCode.forId("system");
-		public boolean isSystem() {
-			return this.is(SYSTEM);
-		}
-		public static final UserCode ADMIN = UserCode.forId("admin");
-		public boolean isAdmin() {
-			return this.is(ADMIN);
-		}
-		public static final UserCode TEST = UserCode.forId("test");
-		public boolean isTest() {
-			return this.is(TEST);
-		}
-		// Use [system] for operations performed internally by the system
-		@Deprecated
-		public static final UserCode MASTER = UserCode.forId("master");
-		@Deprecated
-		public boolean isMaster() {
-			return this.is(MASTER);
-		}
-	}
-	@Immutable
-	@MarshallType(as="userRole")
-	@EqualsAndHashCode(callSuper=true)
-	@NoArgsConstructor
-	public static final class UserRole
-	     		      extends OIDBaseMutable<String>
-				   implements IsRole {
-		private static final long serialVersionUID = 4547730052420260613L;
-		public UserRole(final String oid) {
-			super(oid);
-		}
-		public static UserRole forId(final String id) {
-			return new UserRole(id);
-		}
-		public static UserRole valueOf(final String id) {
-			return new UserRole(id);
-		}
-		public static UserRole named(final String id) {
-			return new UserRole(id); 
-		}
-	}
-	@Immutable
-	@MarshallType(as="password")
-	@EqualsAndHashCode(callSuper=true)
-	@Accessors(prefix="_")
-	@NoArgsConstructor
-	public static final class Password
-	     			  extends OIDBaseMutable<String> {
-
-		private static final long serialVersionUID = -4110070527400569196L;
-
-		private final transient Memoized<PasswordHash> _hash = new Memoized<PasswordHash>() {
-																		@Override
-																		public PasswordHash supply() {
-																			return PasswordHash.fromPassword(Password.this);
-																		}
-															   };
-		public Password(final String pwd) {
-			super(pwd);
-		}
-		public static Password forId(final String id) {
-			return new Password(id);
-		}
-		public static Password valueOf(final String id) {
-			return Password.forId(id);
-		}
-		public PasswordHash hash() {
-			return _hash.get();
-		}
-		public char[] toCharArray() {
-			return this.asString().toCharArray();
-		}
-		public boolean matchesHash(final PasswordHash hash) {
-			return Passwords.createWithDefaultCost()
-							.authenticate(this,			// the password
-										  hash);		// the hash
-		}
-	}
-	@Immutable
-	@MarshallType(as="passwordHash")
-	@EqualsAndHashCode(callSuper=true)
-	@NoArgsConstructor
-	public static final class PasswordHash
-	     		      extends OIDBaseMutable<String> {
-		private static final long serialVersionUID = -4102923783713904433L;
-
-		public PasswordHash(final String oid) {
-			super(oid);
-		}
-		public static PasswordHash forId(final String id) {
-			return new PasswordHash(id);
-		}
-		public static PasswordHash valueOf(final String id) {
-			return PasswordHash.forId(id);
-		}
-		public static PasswordHash fromHash(final String hash) {
-			return PasswordHash.forId(hash);
-		}
-		public static PasswordHash fromPassword(final String password) {
-			return PasswordHash.fromPassword(new Password(password));
-		}
-		public static PasswordHash fromPassword(final Password password) {
-			return Passwords.createWithDefaultCost()
-							.hash(password);
-		}
-		public boolean matches(final Password password) {
-			return Passwords.createWithDefaultCost()
-							.authenticate(password,		// the received password
-										  this);		// the stored hash
-		}
-		public char[] toCharArray() {
-			return this.asString().toCharArray();
-		}
-		public byte[] getBytes() {
-			return this.asString().getBytes();
-		}
-	}
-	@Immutable
-	@MarshallType(as="userAndPassword")
-	@Accessors(prefix="_")
-	@NoArgsConstructor @AllArgsConstructor
-	public static final class UserAndPassword
-			       implements Serializable {
-		private static final long serialVersionUID = 1549566021138557737L;
-
-		@MarshallField(as="user",
-					   whenXml=@MarshallFieldAsXml(attr=true))
-		@Getter @Setter private UserCode _user;
-
-		@MarshallField(as="password",
-					   whenXml=@MarshallFieldAsXml(attr=true))
-		@Getter @Setter private Password _password;
-	}
-	@Immutable
-	@MarshallType(as="authenticatedActor")
-	@EqualsAndHashCode(callSuper=true)
-	@NoArgsConstructor
-	public static final class AuthenticatedActorID
-	     		      extends OIDBaseMutable<String> {
-
-		private static final long serialVersionUID = -7186228864961079493L;
-
-		@Deprecated	// use SYSTEM
-		public static final AuthenticatedActorID MASTER = AuthenticatedActorID.forUser(UserCode.MASTER,false);	// it's an app
-
-		public static final AuthenticatedActorID SYSTEM = AuthenticatedActorID.forUser(UserCode.SYSTEM,false);	// it's an app
-
-		private boolean _app;	// sets if the auth actor is a physical user or an app
-
-		public AuthenticatedActorID(final String id) {
-			super(id);
-		}
-		public AuthenticatedActorID(final String id,
-									final boolean isUser) {
-			super(id);
-			_app = !isUser;
-		}
-		public static AuthenticatedActorID forId(final String id,
-												 final boolean isUser) {
-			return new AuthenticatedActorID(id,isUser);
-		}
-		public static AuthenticatedActorID valueOf(final String id) {
-			return new AuthenticatedActorID(id);
-		}
-		public static AuthenticatedActorID forUser(final UserCode userCode) {
-			return new AuthenticatedActorID(userCode.asString(),
-											true);		// phisical user
-		}
-		public static AuthenticatedActorID forUser(final UserCode userCode,
-												   final boolean isUser) {
-			return new AuthenticatedActorID(userCode.asString(),
-											isUser);
-		}
-		public static AuthenticatedActorID forApp(final AppCode appCode) {
-			return new AuthenticatedActorID(appCode.asString(),
-											false);		// app
-		}
-		public boolean isApp() {
-			return _app;
-		}
-		public boolean isUser() {
-			return !this.isApp();
-		}
-	}
-	@Immutable
-	@MarshallType(as="securityId")
-	@EqualsAndHashCode(callSuper=true)
-	@NoArgsConstructor
-	public static final class SecurityID
-	     		      extends OIDBaseMutable<String> {
-		private static final long serialVersionUID = -8145305261344081383L;
-
-		public SecurityID(final String oid) {
-			super(oid);
-		}
-		public static SecurityID forId(final String id) {
-			return new SecurityID(id);
-		}
-		public static SecurityID valueOf(final String id) {
-			return new SecurityID(id);
-		}
-	}
-	@Immutable
-	@MarshallType(as="securityToken")
-	@EqualsAndHashCode(callSuper=true)
-	@NoArgsConstructor
-	public static final class SecurityToken
-	     		      extends TokenBase {
-		private static final long serialVersionUID = -6056892755877680637L;
-
-		public SecurityToken(final String oid) {
-			super(oid);
-		}
-		public static SecurityToken from(final String id) {
-			return new SecurityToken(id);
-		}
-		public static SecurityToken forId(final String id) {
-			return new SecurityToken(id);
-		}
-		public static SecurityToken valueOf(final String id) {
-			return new SecurityToken(id);
-		}
-	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	GENERIC TOKEN
 /////////////////////////////////////////////////////////////////////////////////////////

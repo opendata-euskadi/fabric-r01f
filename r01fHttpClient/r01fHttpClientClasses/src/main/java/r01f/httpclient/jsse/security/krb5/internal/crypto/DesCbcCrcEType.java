@@ -32,7 +32,7 @@ package r01f.httpclient.jsse.security.krb5.internal.crypto;
 import r01f.httpclient.jsse.security.krb5.Checksum;
 import r01f.httpclient.jsse.security.krb5.EncryptedData;
 import r01f.httpclient.jsse.security.krb5.KrbCryptoException;
-import r01f.httpclient.jsse.security.krb5.internal.*;
+import r01f.httpclient.jsse.security.krb5.internal.KrbApErrException;
 
 public class DesCbcCrcEType extends DesCbcEType {
 

@@ -25,9 +25,16 @@
 
 package r01f.httpclient.jsse.security.provider;
 
-import static r01f.httpclient.jsse.security.provider.ByteArrayAccess.*;
+import static r01f.httpclient.jsse.security.provider.ByteArrayAccess.b2iLittle64;
+import static r01f.httpclient.jsse.security.provider.ByteArrayAccess.i2bLittle;
+import static r01f.httpclient.jsse.security.provider.ByteArrayAccess.i2bLittle4;
 
-import java.security.*;
+import java.security.AccessController;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivilegedAction;
+import java.security.Provider;
+import java.security.ProviderException;
 
 /**
  * The MD4 class is used to compute an MD4 message digest over a given

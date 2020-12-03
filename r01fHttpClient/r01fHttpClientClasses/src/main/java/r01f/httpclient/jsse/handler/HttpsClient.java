@@ -35,11 +35,11 @@ final class HttpsClient
 	extends HttpClient
  implements HandshakeCompletedListener {
 /////////////////////////////////////////////////////////////////////////////////////////
-//
+//	CONSTANTS
 /////////////////////////////////////////////////////////////////////////////////////////
 	private static final int DEFAULT_PORT = 443;
 /////////////////////////////////////////////////////////////////////////////////////////
-//
+//	FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
 	private HostnameVerifier _hostNameVerifier;
 	private SSLSocketFactory _sslSocketFactory;
@@ -47,7 +47,7 @@ final class HttpsClient
 	private int _proxyPortUsed;
 	private SSLSession _sslSession;
 /////////////////////////////////////////////////////////////////////////////////////////
-//
+//	BUILDERS
 /////////////////////////////////////////////////////////////////////////////////////////
 	static HttpClient getHTTPSClient(final SSLSocketFactory sslSocketFactory,
 									 final URL url,
@@ -89,7 +89,7 @@ final class HttpsClient
 		HttpsClient httpsClient = null;
 		if (useCache) {
 			log.debug("...uses cache!");
-			httpsClient = (HttpsClient) HttpClient.kac.get(url, sslSocketFactory);
+			httpsClient = (HttpsClient)HttpClient.kac.get(url,sslSocketFactory);
 			if (httpsClient != null) {
 				httpsClient.cachedHttpClient = true;
 			}
@@ -110,7 +110,7 @@ final class HttpsClient
 		return httpsClient;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//
+//	CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
 	@SuppressWarnings("deprecation")
 	public HttpsClient(final SSLSocketFactory sslsocketfactory,
@@ -156,19 +156,23 @@ final class HttpsClient
 	}
 
 	@Override
-	public void afterConnect() throws IOException, UnknownHostException {
+	public void afterConnect() throws IOException,UnknownHostException {
 		if (!isCachedConnection()) {
 			SSLSocket sslsocket = null;
 			SSLSocketFactory sslsocketfactory = _sslSocketFactory;
 			try {
 				if (!(super.serverSocket instanceof SSLSocket)) {
-					sslsocket = (SSLSocket) sslsocketfactory.createSocket(super.serverSocket, super.host, super.port, true);
+					sslsocket = (SSLSocket)sslsocketfactory.createSocket(super.serverSocket, 
+																		 super.host, 
+																		 super.port, 
+																		 true);
 				} else {
-					sslsocket = (SSLSocket) super.serverSocket;
+					sslsocket = (SSLSocket)super.serverSocket;
 				}
 			} catch (IOException ioexception) {
 				try {
-					sslsocket = (SSLSocket) sslsocketfactory.createSocket(super.host, super.port);
+					sslsocket = (SSLSocket)sslsocketfactory.createSocket(super.host, 
+																		 super.port);
 				} catch (IOException ioexception1) {
 					throw ioexception;
 				}
@@ -193,7 +197,7 @@ final class HttpsClient
 			}
 			this.checkURLSpoofing(_hostNameVerifier);
 		} else {
-			_sslSession = ((SSLSocket) super.serverSocket).getSession();
+			_sslSession = ((SSLSocket)super.serverSocket).getSession();
 		}
 	}
 	@Override
@@ -236,7 +240,7 @@ final class HttpsClient
 		if (!needsTunneling()) return null;
 		return _proxyHostUsed;
 	}
-	void setProxy(String proxyHost, int proxyPort) {
+	void setProxy(final String proxyHost, final int proxyPort) {
 		_proxyHostUsed = proxyHost;
 		_proxyPortUsed = proxyPort >= 0 ? proxyPort : getDefaultPort();
 	}
@@ -247,13 +251,13 @@ final class HttpsClient
 		return _sslSession.getLocalCertificates();
 	}
 	@Override
-	public void handshakeCompleted(HandshakeCompletedEvent handshakecompletedevent) {
+	public void handshakeCompleted(final HandshakeCompletedEvent handshakecompletedevent) {
 		_sslSession = handshakecompletedevent.getSession();
 	}
-	void setHostNameVerifier(HostnameVerifier hostNameVerifier) {
+	void setHostNameVerifier(final HostnameVerifier hostNameVerifier) {
 		_hostNameVerifier = hostNameVerifier;
 	}
-	private void checkURLSpoofing(HostnameVerifier hostnameVerifier) throws IOException {
+	private void checkURLSpoofing(final HostnameVerifier hostnameVerifier) throws IOException {
 		String theHost = super.url.getHost();
 		if (theHost != null && theHost.startsWith("[") && theHost.endsWith("]")) {
 			theHost = theHost.substring(1, theHost.length() - 1);
@@ -287,7 +291,7 @@ final class HttpsClient
 	SSLSocketFactory getSSLSocketFactory() {
 		return _sslSocketFactory;
 	}
-	void setSSLSocketFactory(SSLSocketFactory sslSocketFactory) {
+	void setSSLSocketFactory(final SSLSocketFactory sslSocketFactory) {
 		_sslSocketFactory = sslSocketFactory;
 	}
 	public javax.security.cert.X509Certificate[] getPeerCertificateChain() throws SSLPeerUnverifiedException {
@@ -352,10 +356,10 @@ final class HttpsClient
 		}
 		return regexppool;
 	}
-	static int getProxyPortUsed(HttpsClient httpsclient) {
+	static int getProxyPortUsed(final HttpsClient httpsclient) {
 		return httpsclient._proxyPortUsed;
 	}
-	static String getProxyHostUsed(HttpsClient httpsclient) {
+	static String getProxyHostUsed(final HttpsClient httpsclient) {
 		return httpsclient._proxyHostUsed;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////

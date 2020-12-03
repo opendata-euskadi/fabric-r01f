@@ -30,12 +30,15 @@
 
 package r01f.httpclient.jsse.security.krb5;
 
-import r01f.httpclient.jsse.security.krb5.internal.*;
+import java.io.IOException;
+
+import r01f.httpclient.jsse.security.krb5.internal.ASReq;
+import r01f.httpclient.jsse.security.krb5.internal.EncASRepPart;
+import r01f.httpclient.jsse.security.krb5.internal.KRBError;
+import r01f.httpclient.jsse.security.krb5.internal.Krb5;
 import r01f.httpclient.jsse.security.krb5.internal.crypto.EType;
 import r01f.httpclient.jsse.security.krb5.internal.crypto.KeyUsage;
-import r01f.httpclient.jsse.security.util.*;
-
-import java.io.IOException;
+import r01f.httpclient.jsse.security.util.DerValue;
 
 /**
  * This class encapsulates a AS-REP message that the KDC sends to the

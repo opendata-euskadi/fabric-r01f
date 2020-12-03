@@ -30,14 +30,15 @@
 
 package r01f.httpclient.jsse.security.krb5.internal.ktab;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import r01f.httpclient.jsse.security.krb5.PrincipalName;
 import r01f.httpclient.jsse.security.krb5.Realm;
 import r01f.httpclient.jsse.security.krb5.RealmException;
-import r01f.httpclient.jsse.security.krb5.internal.*;
+import r01f.httpclient.jsse.security.krb5.internal.KerberosTime;
+import r01f.httpclient.jsse.security.krb5.internal.Krb5;
 import r01f.httpclient.jsse.security.krb5.internal.util.KrbDataInputStream;
-
-import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * This class implements a buffered input stream. It is used for parsing key table

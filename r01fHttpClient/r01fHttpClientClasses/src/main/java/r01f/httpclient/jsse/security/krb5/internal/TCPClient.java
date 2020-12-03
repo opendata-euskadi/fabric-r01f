@@ -30,8 +30,10 @@
 
 package r01f.httpclient.jsse.security.krb5.internal;
 
-import java.io.*;
-import java.net.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.net.Socket;
 
 public class TCPClient {
 

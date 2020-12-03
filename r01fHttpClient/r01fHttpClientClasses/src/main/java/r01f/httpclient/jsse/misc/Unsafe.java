@@ -25,8 +25,9 @@
 
 package r01f.httpclient.jsse.misc;
 
-import java.security.*;
-import java.lang.reflect.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.security.ProtectionDomain;
 
 
 /**

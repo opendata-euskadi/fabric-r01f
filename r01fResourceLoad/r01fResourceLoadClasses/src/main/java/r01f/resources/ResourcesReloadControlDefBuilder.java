@@ -7,11 +7,11 @@ import java.util.regex.Matcher;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import r01f.guids.CommonOIDs.Password;
-import r01f.guids.CommonOIDs.UserCode;
 import r01f.patterns.IsBuilder;
 import r01f.resources.ResourcesLoaderDef.ResourcesLoaderType;
 import r01f.resources.ResourcesReloadControlDef.ResourcesReloadPolicy;
+import r01f.securitycontext.SecurityIDS.LoginID;
+import r01f.securitycontext.SecurityIDS.Password;
 import r01f.types.Path;
 import r01f.types.TimeLapse;
 import r01f.util.types.Strings;
@@ -164,7 +164,7 @@ public abstract class ResourcesReloadControlDefBuilder
 		}
 		public ResourcesReloadControlBuilderBBDDLoaderPropertiesLoadSqlStep conectingUsing(final String driverClass,
 																						   final String conxUri,
-																						   final UserCode user,final Password password) {
+																						   final LoginID user,final Password password) {
 			_reloadControlDef.setControlProps(new HashMap<String,String>(6));
 			_reloadControlDef.getControlProps().put(ResourcesLoaderFromBBDD.CLASS,driverClass);
 			_reloadControlDef.getControlProps().put(ResourcesLoaderFromBBDD.URI,conxUri);

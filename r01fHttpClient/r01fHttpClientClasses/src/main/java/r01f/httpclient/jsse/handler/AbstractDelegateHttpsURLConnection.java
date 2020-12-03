@@ -53,7 +53,7 @@ public abstract class AbstractDelegateHttpsURLConnection
 		return ((HttpsClient) super.http).b();
 	}
 	@Override
-	public void setNewClient(URL url) throws IOException {
+	public void setNewClient(final URL url) throws IOException {
 		setNewClient(url, false);
 	}
 	@Override
@@ -84,14 +84,20 @@ public abstract class AbstractDelegateHttpsURLConnection
 		this.setProxiedClient(url,s,i,false);
 	}
 	@Override
-	protected void proxiedConnect(final URL aUrl,final String s,final int i,final boolean flag) throws IOException {
+	protected void proxiedConnect(final URL aUrl,
+								  final String proxyHost,final int proxyPort,
+								  final boolean useCache) throws IOException {
 		if (super.connected) return;
 
 		SecurityManager securitymanager = System.getSecurityManager();
 		if (securitymanager != null) {
-			securitymanager.checkConnect(s, i);
+			securitymanager.checkConnect(proxyHost, proxyPort);
 		}
-		super.http = HttpsClient.getHTTPSClient(getSSLSocketFactory(),aUrl,getHostnameVerifier(), s, i, flag);
+		super.http = HttpsClient.getHTTPSClient(this.getSSLSocketFactory(),
+												aUrl,
+												this.getHostnameVerifier(), 
+												proxyHost,proxyPort, 	// proxy host & port
+												useCache);
 		super.connected = true;
 	}
 	@Override
@@ -103,7 +109,7 @@ public abstract class AbstractDelegateHttpsURLConnection
 		((HttpsClient) super.http).afterConnect();
 	}
 
-	protected AbstractDelegateHttpsURLConnection(URL url, Handler handler) throws IOException {
+	protected AbstractDelegateHttpsURLConnection(final URL url, final Handler handler) throws IOException {
 		super(url, handler);
 	}
 }

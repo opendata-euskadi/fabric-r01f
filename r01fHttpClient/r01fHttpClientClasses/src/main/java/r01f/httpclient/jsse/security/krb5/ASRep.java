@@ -29,18 +29,13 @@
 
 package r01f.httpclient.jsse.security.krb5;
 
-import r01f.httpclient.jsse.security.krb5.Asn1Exception;
-import r01f.httpclient.jsse.security.krb5.EncryptedData;
-import r01f.httpclient.jsse.security.krb5.PrincipalName;
-import r01f.httpclient.jsse.security.krb5.Realm;
-import r01f.httpclient.jsse.security.krb5.RealmException;
+import java.io.IOException;
+
 import r01f.httpclient.jsse.security.krb5.internal.KDCRep;
 import r01f.httpclient.jsse.security.krb5.internal.Krb5;
 import r01f.httpclient.jsse.security.krb5.internal.KrbApErrException;
 import r01f.httpclient.jsse.security.krb5.internal.PAData;
-import r01f.httpclient.jsse.security.util.*;
-
-import java.io.IOException;
+import r01f.httpclient.jsse.security.util.DerValue;
 
 public class ASRep extends KDCRep {
 

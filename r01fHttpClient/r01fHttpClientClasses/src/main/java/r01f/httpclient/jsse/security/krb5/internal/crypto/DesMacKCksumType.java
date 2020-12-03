@@ -29,12 +29,13 @@
 
 package r01f.httpclient.jsse.security.krb5.internal.crypto;
 
-import r01f.httpclient.jsse.security.krb5.Checksum;
-import r01f.httpclient.jsse.security.krb5.KrbCryptoException;
-import r01f.httpclient.jsse.security.krb5.internal.*;
+import java.security.InvalidKeyException;
 
 import javax.crypto.spec.DESKeySpec;
-import java.security.InvalidKeyException;
+
+import r01f.httpclient.jsse.security.krb5.Checksum;
+import r01f.httpclient.jsse.security.krb5.KrbCryptoException;
+import r01f.httpclient.jsse.security.krb5.internal.Krb5;
 
 public class DesMacKCksumType extends CksumType {
 

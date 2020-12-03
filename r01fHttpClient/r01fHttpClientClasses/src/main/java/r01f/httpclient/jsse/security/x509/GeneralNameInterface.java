@@ -27,7 +27,7 @@ package r01f.httpclient.jsse.security.x509;
 
 import java.io.IOException;
 
-import r01f.httpclient.jsse.security.util.*;
+import r01f.httpclient.jsse.security.util.DerOutputStream;
 
 /**
  * This interface specifies the abstract methods which have to be

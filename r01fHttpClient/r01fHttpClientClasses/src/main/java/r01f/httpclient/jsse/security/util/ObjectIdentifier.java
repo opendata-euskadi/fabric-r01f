@@ -25,7 +25,8 @@
 
 package r01f.httpclient.jsse.security.util;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.Serializable;
 
 
 /**

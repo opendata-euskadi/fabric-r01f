@@ -25,9 +25,26 @@
 
 package r01f.httpclient.jsse.security.provider.ec;
 
-import java.security.*;
-import java.security.interfaces.*;
-import java.security.spec.*;
+import java.security.AccessController;
+import java.security.GeneralSecurityException;
+import java.security.InvalidKeyException;
+import java.security.Key;
+import java.security.KeyFactory;
+import java.security.KeyFactorySpi;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PrivilegedAction;
+import java.security.Provider;
+import java.security.PublicKey;
+import java.security.interfaces.ECKey;
+import java.security.interfaces.ECPrivateKey;
+import java.security.interfaces.ECPublicKey;
+import java.security.spec.ECPrivateKeySpec;
+import java.security.spec.ECPublicKeySpec;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 
 /**
  * KeyFactory for EC keys. Keys must be instances of PublicKey or PrivateKey

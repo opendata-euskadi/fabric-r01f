@@ -24,7 +24,7 @@
  */
 
 package r01f.httpclient.jsse.misc;
-import java.io.*;
+import java.io.PrintStream;
 
 /**
  * A class to represent a pool of regular expressions.  A string

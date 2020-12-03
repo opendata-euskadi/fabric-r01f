@@ -11,7 +11,9 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 import r01f.guids.CommonOIDs.AppCode;
+import r01f.guids.CommonOIDs.AppCodeBase;
 import r01f.guids.CommonOIDs.AppComponent;
+import r01f.guids.CommonOIDs.AppComponentBase;
 import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 import r01f.objectstreamer.annotations.MarshallFrom;
@@ -26,7 +28,7 @@ public abstract class ServiceIDs {
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Accessors(prefix="_")
 	@RequiredArgsConstructor(access=AccessLevel.PRIVATE)
-	private static abstract class AppCodeAndModuleBase<A,M> {
+	private static abstract class AppCodeAndModuleBase<A extends AppCodeBase,M extends AppComponentBase> {
 		@MarshallField(as="appCode",whenXml=@MarshallFieldAsXml(attr=true))
 		@Getter private final A _appCode;
 		
@@ -50,7 +52,10 @@ public abstract class ServiceIDs {
 			if (obj == this) return true;
 			if (obj instanceof AppCodeAndModuleBase) {
 				AppCodeAndModuleBase<?,?> otherAppCodeAndModule = (AppCodeAndModuleBase<?,?>)obj;
-				return otherAppCodeAndModule.toString().equals(this.toString());		
+				AppCodeBase appCode = otherAppCodeAndModule.getAppCode();
+				AppComponentBase module = otherAppCodeAndModule.getModule();
+				return appCode.equals(_appCode)
+					&& module.equals(_module);
 			} else if (obj instanceof String) {
 				return obj.toString().equals(this.toString());
 			} 
@@ -64,7 +69,6 @@ public abstract class ServiceIDs {
 	 * AppCode
 	 */
 	@MarshallType(as="clientApiAppCode")
-	@EqualsAndHashCode(callSuper=true)
 	@NoArgsConstructor
 	public static final class ClientApiAppCode 
 	                  extends AppCode {
@@ -84,6 +88,14 @@ public abstract class ServiceIDs {
 		public AppCode asAppCode() {
 			return AppCode.forId(this.getId());
 		}
+		@Override
+		public int hashCode() {
+			return super.hashCode();
+		}
+		@Override
+		public boolean equals(final Object obj) {
+			return super.equals(obj);
+		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CORE
@@ -92,7 +104,6 @@ public abstract class ServiceIDs {
 	 * AppCode
 	 */
 	@MarshallType(as="coreAppCode")
-	@EqualsAndHashCode(callSuper=true)
 	@NoArgsConstructor
 	public static final class CoreAppCode 
 	                  extends AppCode {
@@ -115,12 +126,19 @@ public abstract class ServiceIDs {
 		public AppCode asAppCode() {
 			return AppCode.forId(this.getId());
 		}
+		@Override
+		public int hashCode() {
+			return super.hashCode();
+		}
+		@Override
+		public boolean equals(final Object obj) {
+			return super.equals(obj);
+		}
 	}
 	/**
 	 * AppCode component
 	 */
 	@MarshallType(as="coreModule")
-	@EqualsAndHashCode(callSuper=true)
 	@NoArgsConstructor
 	public static final class CoreModule 
 	                  extends AppComponent {
@@ -140,6 +158,7 @@ public abstract class ServiceIDs {
 		public static CoreModule named(final String id) {
 			return CoreModule.forId(id);
 		}
+		@Override
 		public AppComponent asAppComponent() {
 			return AppComponent.forId(this.getId());
 		}
@@ -152,6 +171,15 @@ public abstract class ServiceIDs {
 		public static final CoreModule BUSINESS = CoreModule.forId("business");
 		public static final CoreModule SECURITY = CoreModule.forId("security");
 		public static final CoreModule CMS = CoreModule.forId("cms");
+		
+		@Override
+		public int hashCode() {
+			return super.hashCode();
+		}
+		@Override
+		public boolean equals(final Object obj) {
+			return super.equals(obj);
+		}
 	}
 	@MarshallType(as="coreAppAndModule")
 	@EqualsAndHashCode(callSuper=true)

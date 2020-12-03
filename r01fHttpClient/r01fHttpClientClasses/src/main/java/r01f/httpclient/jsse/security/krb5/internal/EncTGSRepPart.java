@@ -29,10 +29,16 @@
 
 package r01f.httpclient.jsse.security.krb5.internal;
 
-import r01f.httpclient.jsse.security.krb5.*;
-import r01f.httpclient.jsse.security.util.*;
-
 import java.io.IOException;
+
+import r01f.httpclient.jsse.security.krb5.Asn1Exception;
+import r01f.httpclient.jsse.security.krb5.EncKDCRepPart;
+import r01f.httpclient.jsse.security.krb5.EncryptionKey;
+import r01f.httpclient.jsse.security.krb5.KrbException;
+import r01f.httpclient.jsse.security.krb5.PrincipalName;
+import r01f.httpclient.jsse.security.krb5.Realm;
+import r01f.httpclient.jsse.security.krb5.TicketFlags;
+import r01f.httpclient.jsse.security.util.DerValue;
 
 public class EncTGSRepPart extends EncKDCRepPart {
 

@@ -208,7 +208,7 @@ public abstract class Dates {
 	}
 	/**
 	 * Returns a date from it's milis representation
-	 * @param milis formato num�rico
+	 * @param milis formato numrico
 	 * @return string dd/mm/yyyy
 	 */
 	public static Date fromMillis(final long milis) {
@@ -544,7 +544,7 @@ public abstract class Dates {
 	/**
 	 * Returns the current date as a String
 	 * @param language El lenguaje 0=Castellano, 1=Euskara
-	 * @return La fecha actual como una cadena formateada seg�n el lenguaje
+	 * @return La fecha actual como una cadena formateada segn el lenguaje
 	 */
 	@GwtIncompatible
 	public static String currentDate(final Language language) {

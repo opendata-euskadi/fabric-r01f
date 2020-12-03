@@ -35,7 +35,9 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-import r01f.httpclient.jsse.security.util.*;
+import r01f.httpclient.jsse.security.util.DerInputStream;
+import r01f.httpclient.jsse.security.util.DerOutputStream;
+import r01f.httpclient.jsse.security.util.DerValue;
 
 
 /**

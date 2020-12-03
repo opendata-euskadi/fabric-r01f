@@ -25,15 +25,14 @@
 
 package r01f.httpclient.jsse.www.protocol.http;
 
+import java.net.PasswordAuthentication;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.apache.commons.codec.binary.Base64;
 
 import r01f.httpclient.jsse.www.HeaderParser;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.PasswordAuthentication;
 
 
 /**
