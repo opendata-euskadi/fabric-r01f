@@ -14,15 +14,15 @@ import r01f.util.types.collections.CollectionUtils;
 
 
 /**
- * Implementaci�n de la pol�tica de recarga de propiedades en base a un token en BBDD.<br>
- * <p>En los par�metros de configuraci�n de la pol�tica de recarga se ha de identificar:<br>
+ * Implementacin de la poltica de recarga de propiedades en base a un token en BBDD.<br>
+ * <p>En los parmetros de configuracin de la poltica de recarga se ha de identificar:<br>
  * <ul>
- * 		<li>El dataSource para obtener la conexi�n con la BBDD.</li>
- * 		<li>El nombre de la tabla y columna que contienen el TimeStamp de �ltima modificaci�n de las propiedades.</li>
- * 		<li>El periodo de comprobaci�n de la recarga
- * 	  		(el sistema comprueba la del TimeStamp y si es POSTERIOR a la �ltima vez que se revis� este TimeStamp, recarga las propiedades).</li>
+ * 		<li>El dataSource para obtener la conexin con la BBDD.</li>
+ * 		<li>El nombre de la tabla y columna que contienen el TimeStamp de ltima modificacin de las propiedades.</li>
+ * 		<li>El periodo de comprobacin de la recarga
+ * 	  		(el sistema comprueba la del TimeStamp y si es POSTERIOR a la ltima vez que se revis este TimeStamp, recarga las propiedades).</li>
  * </ul>
- * La definici�n ser�a de esta forma:
+ * La definicin sera de esta forma:
  * <pre class="brush:xml">
  * <reloadControl impl='BBDD' enabled='true' checkInterval='2s'>
  * 		<props>
@@ -41,7 +41,7 @@ import r01f.util.types.collections.CollectionUtils;
  * 				]]>
  * 			</reloadFlagQuerySql>
  * 			<reloadFlagUpdateSql>
- * 				<!-- Actualizaci�n del flag, para desactivarlo. -->
+ * 				<!-- Actualizacin del flag, para desactivarlo. -->
  * 				<![CDATA[
  * 				UPDATE PROPERTIES_CFG
  * 					SET RELOAD_01 = 0
@@ -54,7 +54,7 @@ import r01f.util.types.collections.CollectionUtils;
  * </reloadControl>
  * </pre>
  *
- * <p>Ejemplo de conexi�n con Datasource:
+ * <p>Ejemplo de conexin con Datasource:
  * <pre class="brush:xml">
  * <reloadControl impl='BBDD' enabled='true' checkInterval='2s'>
  * 		<props>
@@ -71,7 +71,7 @@ import r01f.util.types.collections.CollectionUtils;
  * 				]]>
  * 			</reloadFlagQuerySql>
  * 			<reloadFlagUpdateSql>
- * 				<!-- Actualizaci�n del flag, para desactivarlo. -->
+ * 				<!-- Actualizacin del flag, para desactivarlo. -->
  * 				<![CDATA[
  * 				UPDATE PROPERTIES_CFG
  * 					SET RELOAD_01 = 0

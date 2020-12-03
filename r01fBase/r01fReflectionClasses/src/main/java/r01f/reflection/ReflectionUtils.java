@@ -904,10 +904,10 @@ public class ReflectionUtils {
 	}
 	/**
 	 * Devuelve un metodo ESTATICO de una clase
-	 * @param type La definici�n de la clase que contiene el metodo estatico
+	 * @param type La definicin de la clase que contiene el metodo estatico
 	 * @param methodName nombre del metodo 
 	 * @param argsTypes tipos de los argumentos del metodo
-	 * @throws ReflectionException si ocurre algun error o el m�todo no existe
+	 * @throws ReflectionException si ocurre algun error o el mtodo no existe
 	 */
 	public static Method staticMethod(final Class<?> type,
 									  final String methodName,final Class<?>... argsTypes) {
@@ -916,7 +916,7 @@ public class ReflectionUtils {
 	}
 	/**
 	 * Devuelve un metodo ESTATICO de una clase
-	 * @param type La definici�n de la clase que contiene el metodo estatico
+	 * @param type La definicin de la clase que contiene el metodo estatico
 	 * @param methodName nombre del metodo 
 	 * @param argsTypes tipos de los argumentos del metodo
 	 * @throws ReflectionException si ocurre algun error
@@ -928,7 +928,7 @@ public class ReflectionUtils {
 	}
 	/**
 	 * Devuelve un metodo ESTATICO de una clase
-	 * @param type La definici�n de la clase que contiene el metodo estatico
+	 * @param type La definicin de la clase que contiene el metodo estatico
 	 * @param methodName nombre del metodo 
 	 * @throws ReflectionException si ocurre algun error
 	 */
@@ -952,8 +952,8 @@ public class ReflectionUtils {
 		Method outMethod = ReflectionUtils.methodMatchingParamTypes(type,
 																  	methodName,
 																  	paramTypes);
-		// Segunda opci�n comprobar �nicamente el nombre... pasar de los parametros
-		// (puede devolver un m�todo con distintos parametros a los deseados)
+		// Segunda opcin comprobar nicamente el nombre... pasar de los parametros
+		// (puede devolver un mtodo con distintos parametros a los deseados)
 		if (outMethod == null) outMethod = ReflectionUtils.methodNotMatchingParamTypes(type,
 																					   methodName);
 		if (outMethod == null) throw ReflectionException.noMethodException(type,
@@ -1033,7 +1033,7 @@ public class ReflectionUtils {
 	}
 	/**
 	 * Invoca un metodo sobre un objeto
-	 * @param obj El objeto sobre el que se invoca el metodo (si es null se intenta llamar a un m�todo est�tico)
+	 * @param obj El objeto sobre el que se invoca el metodo (si es null se intenta llamar a un mtodo esttico)
 	 * @param methodName nombre del metodo a invocar
 	 * @param argsTypes tipos de los argumentos a invocar
 	 * @param argsValues valores de los argumentos
@@ -1568,7 +1568,7 @@ public class ReflectionUtils {
 			} catch (ReflectionException nsmEx) {
 				if (nsmEx.isNoMethodException()) {
 					// Error, el desarrollador NO ha nombrado el metodo de la forma
-					// estandar y ha utilizado get[fieldName] (ej: getMyBoolean cuando deber�a ser getIsMyBoolean() o isMyBoolean()
+					// estandar y ha utilizado get[fieldName] (ej: getMyBoolean cuando debera ser getIsMyBoolean() o isMyBoolean()
 					getter = "is" + (theFieldName.startsWith("is") ? StringUtils.capitalize(theFieldName.substring(2))	// quitar el is
 																   : StringUtils.capitalize(theFieldName));   
 					try {
@@ -1600,11 +1600,11 @@ public class ReflectionUtils {
 	 * Devuelve el valor de un miembro SIN utilizar metodos get/set
 	 * @param obj el bean del que devolver el valor del campo
 	 * @param fieldName nombre del campo
-	 * @throws ReflectionException si se produce alguna excepci�n en el proceso
+	 * @throws ReflectionException si se produce alguna excepcin en el proceso
 	 */
 	@SuppressWarnings("unchecked")
 	private static <T> T _getFieldValueWithoutUsingAccessors(final Object obj,final String fieldName) {
-		// No utilizar m�todos de acceso, directamente establecer el valor del miembro...
+		// No utilizar mtodos de acceso, directamente establecer el valor del miembro...
 		T outObj = null;
 		Field memberField = ReflectionUtils.field(obj.getClass(),fieldName,true);
 		try {
@@ -1618,16 +1618,16 @@ public class ReflectionUtils {
 	 * Devuelve el valor de un miembro estatico
 	 * @param type definicion de la clase
 	 * @param fieldName nombre del campo
-	 * @return el valor del miembro est�tico
-	 * @throws ReflectionException si se produce alguna excepci�n en el proceso
+	 * @return el valor del miembro esttico
+	 * @throws ReflectionException si se produce alguna excepcin en el proceso
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T getStaticFieldValue(final Class<?> type,final String fieldName) {
-		// No utilizar m�todos de acceso, directamente establecer el valor del miembro...
+		// No utilizar mtodos de acceso, directamente establecer el valor del miembro...
 		T outObj = null;
 		Field memberField = ReflectionUtils.field(type,fieldName,true);
 		try {
-			outObj = (T)memberField.get( null );	// es un tield est�tico
+			outObj = (T)memberField.get( null );	// es un tield esttico
 		} catch (Throwable th) {
 			throw ReflectionException.of(th); 
 		}
@@ -1738,7 +1738,7 @@ public class ReflectionUtils {
 	/**
 	 * Obtiene todos los fields de una clase relacionados con su anotacion
 	 * @param type el tipo
-	 * @return un mapa de campos anotados indexados por la anotaci�n
+	 * @return un mapa de campos anotados indexados por la anotacin
 	 */
 	@SuppressWarnings({ "rawtypes","unchecked" })
 	public static Map<Class<? extends Annotation>,FieldAnnotated<? extends Annotation>[]> fieldsAnnotated(final Class<?> type) {
@@ -1965,17 +1965,17 @@ public class ReflectionUtils {
 //  METODOS DE ACCESO A MIEMBROS EN BASE A UN PATH
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
-	 * Funcion que se encarga de establecer el valor de un miembro en una jerarqu�a de objetos
+	 * Funcion que se encarga de establecer el valor de un miembro en una jerarqua de objetos
 	 * El path al miembro se pasa como parametro en la variable memberPath que
 	 * tiene la siguiente estructura:
 	 *	  obj.member.member.member...
 	 * NOTAS:
-	 *	  - Se comprueba si alg�n miembro de la cadena est� creado o no, en cuyo caso se crea
+	 *	  - Se comprueba si algn miembro de la cadena est creado o no, en cuyo caso se crea
 	 *	  - NO se contemplan arrays o listas...
 	 * @param obj
 	 * @param memberPath
 	 * @param memberValue el valor del miembro final del path
-	 * @param useAccesors si hay que utilizar m�todos get/set
+	 * @param useAccesors si hay que utilizar mtodos get/set
 	 * @throws ReflectionException Si se da alguna excepcion al acceder al miembro
 	 * @throws InvocationTargetException
 	 * @throws IllegalAccessException
@@ -1993,7 +1993,7 @@ public class ReflectionUtils {
 		do {
 			currFieldName = st.nextToken();	// Siguiente token en el path
 			if (st.hasMoreTokens()) {
-				// No es el elemento final... comprobar si el miembro padre est� creado y si no es as� hacerlo
+				// No es el elemento final... comprobar si el miembro padre est creado y si no es as hacerlo
 				Object instance = ReflectionUtils.fieldValue(currObj,currFieldName,useAccesors,
 															 null);
 				if (instance == null) {
@@ -2014,7 +2014,7 @@ public class ReflectionUtils {
 				}
 				currObj = instance;
 			} else {
-				// Es el �ltimo elemento.. establecer directamente el resultado
+				// Es el ltimo elemento.. establecer directamente el resultado
 				ReflectionUtils.setFieldValue(currObj,currFieldName,
 											  memberValue,useAccesors);
 			}
@@ -2027,24 +2027,24 @@ public class ReflectionUtils {
 	 *	  obj.member.member.member...
 	 * Casos especiales:
 	 *	  - Si un miembro de la jerarquia es un array o lista, la nomenclatura es:
-	 *		  obj.member.member[2].member.... (entre corchetes va el �ndice en el array o lista)
-	 *	  - Si un miembro de la jerarqu�a es un mapa, la nomenclatura es:
+	 *		  obj.member.member[2].member.... (entre corchetes va el ndice en el array o lista)
+	 *	  - Si un miembro de la jerarqua es un mapa, la nomenclatura es:
 	 *		  obj.member.member(oid).member...(entre corchetes va una CADENA con la clave en el mapa)
 	 *		  (obviamente, se restringe a mapas indexados por strings)
 	 *
 	 * @param obj El objeto en el cual se ha de obtener el miembro
 	 * @param memberPath El path del miembro ej: member.innnerMember.member...
-	 * @param useAccesors si hay que utilizar m�todos de acceso al usuario
+	 * @param useAccesors si hay que utilizar mtodos de acceso al usuario
 	 * @return El objeto solicitado
 	 * @throws ReflectionException Si se da alguna excepcion al acceder al miembro;
-	 *		 ArrayIndexOutOfBoundsException Si un miembro del path es un array y el indice solicitado se sale de los l�mites
+	 *		 ArrayIndexOutOfBoundsException Si un miembro del path es un array y el indice solicitado se sale de los lmites
 	 *		 IllegalAccessException Si no se puede acceder a un miembro especificado en el path
 	 *		 NoSuchFieldException Si el miembro solicitado en el path no existe
-	 *		 NumberFormatException Si el formato para un �ndice en un array o lista no es valido
+	 *		 NumberFormatException Si el formato para un ndice en un array o lista no es valido
 	 */
 	public static Object fieldValueUsingPath(final Object obj,final String memberPath,
 											 final boolean useAccesors) {
-		if (obj == null || memberPath == null) throw new IllegalArgumentException("El objeto o el path NO son v�lidos");
+		if (obj == null || memberPath == null) throw new IllegalArgumentException("El objeto o el path NO son vlidos");
 
 		// No utilizar accessors...Tokenizar el path e ir escarbando...
 		StringTokenizer st = new StringTokenizer(memberPath,".");
@@ -2127,8 +2127,8 @@ public class ReflectionUtils {
 	 * de que elemento del path sea una referencia a array, lista o mapa
 	 * @param pathElem El elemento del path
 	 * @return Un array de dos posiciones con Strings
-	 *			  - En la primera posici�n va el nombre del miembro
-	 *			  - En la segunda posici�n va el indice o clave si lo hay
+	 *			  - En la primera posicin va el nombre del miembro
+	 *			  - En la segunda posicin va el indice o clave si lo hay
 	 *				o null si no hay indice o clave
 	 */
 	private static String[] _parsePathElem(final String pathElem) {
@@ -2209,7 +2209,7 @@ public class ReflectionUtils {
 		return outSignature.toString();
 	}
 	/**
-	 * Imprime informaci�n de debug sobre los metodos de una clase
+	 * Imprime informacin de debug sobre los metodos de una clase
 	 * @param type La definicion de la clase
 	 * @return una cadena con informacion de debug con la signatura de todos los metodos de la clase
 	 */
@@ -2228,7 +2228,7 @@ public class ReflectionUtils {
 		} else {
 			strDebug.append("<La clase ");
 			strDebug.append(type);
-			strDebug.append(" NO tiene m�todos definidos>");
+			strDebug.append(" NO tiene mtodos definidos>");
 		}
 		return strDebug.toString();
 	}
@@ -2236,9 +2236,9 @@ public class ReflectionUtils {
 //  METODOS ELIMINADOS
 /////////////////////////////////////////////////////////////////////////////////////////
 //	/**
-//	 * Devuelve si una clase es una clase gen�rica parametrizada
+//	 * Devuelve si una clase es una clase genrica parametrizada
 //	 * @param type el tipo 
-//	 * @return false si el tipo no es la parametrizaci�n de una clase generica
+//	 * @return false si el tipo no es la parametrizacin de una clase generica
 //	 */
 //	public static boolean isGenericTypeParameterized(final Class<?> type) {
 //		boolean outIsParametrized = false;
@@ -2260,11 +2260,11 @@ public class ReflectionUtils {
 //		return outIsParametrized;
 //	}
 //	/**
-//	 * Devuelve los par�metros actuales (el tipo concreto) de una clase gen�rica parametrizada
+//	 * Devuelve los parmetros actuales (el tipo concreto) de una clase genrica parametrizada
 //	 * IMPORTANTE:
 //	 * <pre>
-//	 * 		public class MyGenericType<T>		:-- NO es una clase generica parametrizada: NO se puede obtener informaci�n del tipo
-//	 * 												en tiempo de ejecuci�n debido al type-erasure
+//	 * 		public class MyGenericType<T>		:-- NO es una clase generica parametrizada: NO se puede obtener informacin del tipo
+//	 * 												en tiempo de ejecucin debido al type-erasure
 //	 * 		public class MyParametrizedGenericType extends MyGenericType<String>	:-- SI es una clase generica parametrizada
 //	 * 		MyGenericType<String> 	:-- SI es una clase generica parametrizada
 //	 * 		
@@ -2310,7 +2310,7 @@ public class ReflectionUtils {
 //	}
 //	/**
 //	 * Intenta averiguar el tipo concreto de field generico de una clase
-//	 * Por ejemplo, se puede tener la siguiente jerarqu�a de clases:
+//	 * Por ejemplo, se puede tener la siguiente jerarqua de clases:
 //	 * <pre class='brush:java'>
 //	 * 		public abstract class BaseType<E extends Serializable> {
 //	 * 			private E serializableField;
@@ -2327,22 +2327,22 @@ public class ReflectionUtils {
 //	 * basta con:
 //	 * 		1. Obtener las clases que hay entre ConcreteType y la clase que define el miembro 'serializableField'
 //	 * 		   (en el caso del ejemplo {ConcreteType,BaseSubType,BaseType}
-//	 * 		2. Obtener los par�metros de cada clase de la jerarquia y ver si son asignables al miembro 'serializableField'
-//	 * 		   (en el caso del ejemplo la clase BaseSubType tiene un par�metro <String> que es asignable a 'serializableField')  
+//	 * 		2. Obtener los parmetros de cada clase de la jerarquia y ver si son asignables al miembro 'serializableField'
+//	 * 		   (en el caso del ejemplo la clase BaseSubType tiene un parmetro <String> que es asignable a 'serializableField')  
 //	 * @param type el tipo 
-//	 * @param f el campo (no tiene por qu� estar definido en type sino que puede estar definido en una super-clase
+//	 * @param f el campo (no tiene por qu estar definido en type sino que puede estar definido en una super-clase
 //	 * @return el tipo concreto del campo
 //	 */
 //	public static Class<?> guessGenericFieldActualType(final Class<?> type,final Field f) {
 //		// Si el field NO es generico... se puede devolver directamente su tipo
 //		if (!ReflectionUtils.isGenericField(f)) return f.getType();	// El campo NO es generico
 //		
-//		// Obtener la jerarqu�a de clases entre el tipo y la clase donde est� definido el field
+//		// Obtener la jerarqua de clases entre el tipo y la clase donde est definido el field
 //		Set<Class<?>> hierarchy = ReflectionUtils.typeHierarchyBetween(type,f.getDeclaringClass());
 //		return _guessGenericActualType(hierarchy,f.getType());
 //	}
 //	/**
-//	 * Intenta obtener el tipo actual de un tipo gen�rico a partir de los par�metros de la clase
+//	 * Intenta obtener el tipo actual de un tipo genrico a partir de los parmetros de la clase
 //	 * Por ejemplo:
 //	 * <pre class='brush:java'>
 //	 * 		public abstract class BaseType<E extends Serializable> {
@@ -2358,10 +2358,10 @@ public class ReflectionUtils {
 //	 * Si se quiere conocer cual es el tipo concreto de los elementos del mapa Map<String,E> hay que:
 //	 * 		1. Obtener las clases que hay entre ConcreteType y la clase generica BaseType
 //	 * 		   (en el caso del ejemplo {ConcreteType,BaseSubType,BaseType}
-//	 * 		2. Obtener los par�metros de cada clase de la jerarquia y ver si son asignables a E
-//	 * 		   (en el caso del ejemplo la clase BaseSubType tiene un par�metro <String> que es asignable a E)
-//	 * @param typeHierarchy jerarqu�a de herencia de tipos desde la clase donde se encuentra el tipo
-//	 * 						(es necesaria para intentar encontrar la parametrizaci�n)  
+//	 * 		2. Obtener los parmetros de cada clase de la jerarquia y ver si son asignables a E
+//	 * 		   (en el caso del ejemplo la clase BaseSubType tiene un parmetro <String> que es asignable a E)
+//	 * @param typeHierarchy jerarqua de herencia de tipos desde la clase donde se encuentra el tipo
+//	 * 						(es necesaria para intentar encontrar la parametrizacin)  
 //	 * @param type el tipo del que se quiere conocer el tipo concreto
 //	 * @return
 //	 */

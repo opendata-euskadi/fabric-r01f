@@ -60,8 +60,8 @@ public class LazyCollectionsInterfaces {
 //	Collections suppliersO
 ////////////////////////////////////////////////////////////////////////////////////////////
 	/**
-	 * Supplier de values para una colecci�n
-	 * @param <V> tipo de los valores de la colecci�n
+	 * Supplier de values para una coleccin
+	 * @param <V> tipo de los valores de la coleccin
 	 */
 	public static interface CollectionValuesSupplier<V> {
 		public Collection<V> loadValues();

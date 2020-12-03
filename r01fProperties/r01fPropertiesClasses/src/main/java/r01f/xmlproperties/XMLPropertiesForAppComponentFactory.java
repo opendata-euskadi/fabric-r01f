@@ -1,7 +1,7 @@
 package r01f.xmlproperties;
 
 /**
- * Factor�a de objetos {@link XMLPropertiesForAppComponent}
+ * Factora de objetos {@link XMLPropertiesForAppComponent}
  */
 public interface XMLPropertiesForAppComponentFactory {
 	/**
