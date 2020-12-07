@@ -79,7 +79,7 @@ public class HttpRequestQueryStringParamsWrapper {
      * Returns a query string parameter value
      * @param paramName param name
      * @return the param value encoded in the given {@link Charset}
-     * @exception ServletRequestParameterNotFoundException si el parametro no se encuentra o es una cadena vac�a
+     * @exception ServletRequestParameterNotFoundException si el parametro no se encuentra o es una cadena vaca
      */
     private String _getParameterValueAsString(final String paramName) {
     	String outValue = null;
