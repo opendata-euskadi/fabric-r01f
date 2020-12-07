@@ -109,7 +109,8 @@ public abstract class SecurityOIDs {
 	@MarshallType(as="loginOid")
 	public static final class LoginOID
 				      extends SecurityObjectOIDBase
-			       implements SecurityObjectOID {
+			       implements SecurityObjectOID,
+			       			  FactDimension {
 
 		private static final long serialVersionUID = -2162289370851262116L;
 
