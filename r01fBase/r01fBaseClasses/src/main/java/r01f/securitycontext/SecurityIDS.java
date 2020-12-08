@@ -305,6 +305,16 @@ public abstract class SecurityIDS {
 			Phone phone = Phone.of(this.asString());
 			return phone == null || !phone.isValid();
 		}
+		
+		public EMail asEMail() {
+			return EMail.of(this.getId());
+		}
+		public Phone asPhone() {
+			return Phone.of(this.getId());
+		}
+		public AppCode asAppCode() {
+			return AppCode.forId(this.getId());
+		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	

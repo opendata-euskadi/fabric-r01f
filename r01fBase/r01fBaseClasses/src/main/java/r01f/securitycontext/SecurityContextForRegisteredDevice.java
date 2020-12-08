@@ -1,5 +1,7 @@
 package r01f.securitycontext;
 
-public interface SecurityContextForRegisteredDevice<O> {
+import r01f.guids.OID;
+
+public interface SecurityContextForRegisteredDevice<O extends OID> {
 	public O getDeviceOid();
 }

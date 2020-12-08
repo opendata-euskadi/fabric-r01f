@@ -3,6 +3,8 @@ package r01f.securitycontext;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.google.common.reflect.TypeToken;
+
 import r01f.guids.OID;
 import r01f.patterns.FactoryFrom;
 import r01f.securitycontext.SecurityIDS.LoginID;
@@ -17,12 +19,23 @@ import r01f.types.url.Url;
 public interface SecurityContext
 		 extends Serializable {
 /////////////////////////////////////////////////////////////////////////////////////////
-//	FIELDS
+//	CAST
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * @return this object casted to a {@link SecurityContext} impl
 	 */
 	public <CTX extends SecurityContext> CTX as(final Class<CTX> type);
+	/**
+	 * @return the {@link SecurityContextAuthenticatedActor} casted
+	 */
+	public <A extends SecurityContextAuthenticatedActor> A getAuthenticatedActorAs(final Class<A> actorType);
+	/**
+	 * @return the {@link SecurityContextAuthenticatedActor} casted
+	 */
+	public <A extends SecurityContextAuthenticatedActor> A getAuthenticatedActorAs(final TypeToken<A> actorType);
+/////////////////////////////////////////////////////////////////////////////////////////
+//	FIELDS
+/////////////////////////////////////////////////////////////////////////////////////////	
 	/**
 	 * Get the [security provider] that created this [security context]
 	 * @return
@@ -59,6 +72,19 @@ public interface SecurityContext
 	 */
 	public SecurityContextForHasUserOID asForHasUserOid();
 /////////////////////////////////////////////////////////////////////////////////////////
+//	API KEY
+/////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Returns true if this is an api key context
+	 * @return
+	 */
+	public boolean isForApiKey();
+	/**
+	 * Returns the {@link SecurityContext} as an [api key] {@link SecurityContext}
+	 * @return
+	 */
+	public SecurityContextForApiKey asForApiKey();
+/////////////////////////////////////////////////////////////////////////////////////////
 //	APP
 /////////////////////////////////////////////////////////////////////////////////////////	
 	/**
@@ -71,30 +97,6 @@ public interface SecurityContext
 	 */
 	public SecurityContextForApp asForApp();
 /////////////////////////////////////////////////////////////////////////////////////////
-//	USER
-/////////////////////////////////////////////////////////////////////////////////////////	
-	/**
-	 * @return true if this is an user context
-	 */
-	public boolean isForUser();
-	/**
-	 * Returns the {@link SecurityContext} as an [user] {@link SecurityContext}
-	 * @return
-	 */
-	public SecurityContextForUser asForUser();
-/////////////////////////////////////////////////////////////////////////////////////////
-//	PAIRED PHONE
-/////////////////////////////////////////////////////////////////////////////////////////	
-	/**
-	 * @return true f this is a paired phone security context
-	 */
-	public boolean isForPairedPhone();
-	/**
-	 * Returns the {@link SecurityContext} as a [phone] {@link SecurityContext}
-	 * @return
-	 */
-	public SecurityContextForPairedPhone asForPairedPhone();
-/////////////////////////////////////////////////////////////////////////////////////////
 //	REGISTERED DEVICE
 /////////////////////////////////////////////////////////////////////////////////////////	
 	/**
@@ -106,4 +108,11 @@ public interface SecurityContext
 	 * @return
 	 */
 	public <O extends OID> SecurityContextForRegisteredDevice<O> asForRegisteredDevice(final FactoryFrom<LoginID,O> deviceOidFactory);
+/////////////////////////////////////////////////////////////////////////////////////////
+//	SYSTEM
+/////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * @return true if this is a SYSTEM context
+	 */
+	public boolean isForSystem();
 }
