@@ -148,8 +148,8 @@ public class ModelObjectTracking
 			_lastUpdateDate = _createDate;
 			if (_creatorUserOid == null) {
 				_creatorUserOid = other.getCreatorUserOid() != null ? other.getCreatorUserOid()
-																    : securityContext.hasUserOid() ? securityContext.asForHasUserOid()
-																    											    .getUserOid()
+																    : securityContext.isForUser() ? securityContext.asForUser()
+																    											   .getUserOid()
 																    							  : null;
 			}
 			if (_creatorUserCode == null) {
@@ -160,8 +160,8 @@ public class ModelObjectTracking
 		}
 		else if (op == PersistencePerformedOperation.UPDATED) {
 			_lastUpdateDate = new Date();
-			_lastUpdatorUserOid = securityContext.hasUserOid() ? securityContext.asForHasUserOid()
-																			    .getUserOid()
+			_lastUpdatorUserOid = securityContext.isForUser() ? securityContext.asForUser()
+																			   .getUserOid()
 															  : null;
 			_lastUpdatorUserCode = securityContext.getLoginId();
 		}

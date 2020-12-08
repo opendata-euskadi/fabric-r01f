@@ -67,15 +67,10 @@ public interface SecurityContext
 	 */
 	public boolean isForUser();
 	/**
-	 * Returns true if the [security context] has {@link UserOID} info
-	 * @return
-	 */
-	public boolean hasUserOid();
-	/**
 	 * Returns the {@link SecurityContext} as an object that has {@link UserOID}
 	 * @return
 	 */
-	public SecurityContextForHasUserOID asForHasUserOid();
+	public SecurityContextForUser asForUser();
 /////////////////////////////////////////////////////////////////////////////////////////
 //	API KEY
 /////////////////////////////////////////////////////////////////////////////////////////
