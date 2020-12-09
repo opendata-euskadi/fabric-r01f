@@ -1,6 +1,6 @@
 package r01f.types;
 
-import java.io.Serializable;
+import java.util.Comparator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,8 +14,11 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import r01f.annotations.Immutable;
 import r01f.aspects.interfaces.dirtytrack.ConvertToDirtyStateTrackable;
+import r01f.guids.OID;
+import r01f.guids.VersionID;
 import r01f.objectstreamer.annotations.MarshallType;
 import r01f.util.types.Strings;
+import r01f.util.types.collections.CollectionUtils;
 
 @Immutable
 @ConvertToDirtyStateTrackable
@@ -25,7 +28,7 @@ import r01f.util.types.Strings;
 @AllArgsConstructor
 public class AppVersion 
   implements CanBeRepresentedAsString,
-  			 Serializable {
+  			 VersionID {
 
 	private static final long serialVersionUID = 3935180518462516439L;
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -38,6 +41,18 @@ public class AppVersion
 /////////////////////////////////////////////////////////////////////////////////////////
 //  BUILDER
 /////////////////////////////////////////////////////////////////////////////////////////
+	public AppVersion(final String appVersionStr) {
+		if (Strings.isNullOrEmpty(appVersionStr)) throw new IllegalArgumentException(appVersionStr + " is NOT a valid version strign (does NOT match " + APP_VERSION_PATTERN);
+		Matcher m = APP_VERSION_PATTERN.matcher(appVersionStr);
+		if (m.find()) {
+			_major = Integer.parseInt(m.group(1));
+			_minor = Integer.parseInt(m.group(2));
+			_patch = Integer.parseInt(m.group(3));
+			_alias = m.groupCount() == 4 ? m.group(4) : null;
+		} else {
+			throw new IllegalArgumentException(appVersionStr + " is NOT a valid version strign (does NOT match " + APP_VERSION_PATTERN);
+		}
+	}
 	@GwtIncompatible
 	public static AppVersion fromString(final String appVersionStr) {
 		return AppVersion.valueOf(appVersionStr);
@@ -62,7 +77,9 @@ public class AppVersion
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 // 	PARSING
-/////////////////////////////////////////////////////////////////////////////////////////	
+/////////////////////////////////////////////////////////////////////////////////////////
+	private static final transient Pattern APP_VERSION_PATTERN = Pattern.compile("([0-9]+).([0-9]+).([0-9]+)(-[0-9a-zA-Z_])?");
+	
 	public interface AppVersionParser {
 		public boolean canBe(final String appVersionStr);
 		public AppVersion parse(final String appVersionStr);		
@@ -70,7 +87,6 @@ public class AppVersion
 	@GwtIncompatible	// not gwt-compatible BUT can be emulated (see [r01fbGWTClasses])
 	public static class DefaultAppVersionParser 
 			 implements AppVersionParser {
-		private static final Pattern APP_VERSION_PATTERN = Pattern.compile("([0-9]+).([0-9]+).([0-9]+)(-[0-9a-zA-Z_])?");
 		
 		@Override
 		public boolean canBe(final String appVersionStr) {
@@ -79,56 +95,58 @@ public class AppVersion
 		}
 		@Override
 		public AppVersion parse(final String appVersionStr) {
-			AppVersion outAppVersion = null;
-			if (Strings.isNullOrEmpty(appVersionStr)) _notValidAppVersionString(appVersionStr);
-			Matcher m = APP_VERSION_PATTERN.matcher(appVersionStr);
-			if (m.find()) {
-				int major = Integer.parseInt(m.group(1));
-				int minor = Integer.parseInt(m.group(2));
-				int patch = Integer.parseInt(m.group(3));
-				String alias = m.groupCount() == 4 ? m.group(4) : null;
-				outAppVersion = new AppVersion(major,minor,patch,
-											   alias);
-			} 
-			if (outAppVersion == null) _notValidAppVersionString(appVersionStr);
+			AppVersion outAppVersion = new AppVersion(appVersionStr);
 			return outAppVersion;
-		}
-		private static void _notValidAppVersionString(final String appVersionStr) {
-			throw new IllegalArgumentException(appVersionStr + " is NOT a valid version strign (does NOT match " + APP_VERSION_PATTERN);
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  
 /////////////////////////////////////////////////////////////////////////////////////////
 	public boolean hasSameMajorVersion(final AppVersion other) {
+		if (other == null) return false;
+		
 		return _major == other.getMajor();
 	}
 	public boolean hasGreaterMajorVersion(final AppVersion other) {
 		return _major > other.getMajor();
 	}
 	public boolean hasSameMinorVersion(final AppVersion other) {
+		if (other == null) return false;
+		
 		return _minor == other.getMinor();
 	}
 	public boolean hasGreaterMinorVersion(final AppVersion other) {
+		if (other == null) return true;
+		
 		return _minor > other.getMinor();
 	}
 	public boolean hasSamePatchLevel(final AppVersion other) {
+		if (other == null) return false;
+		
 		return _patch == other.getPatch();
 	}
 	public boolean hasGreaterPathLevel(final AppVersion other) {
+		if (other == null) return true;
+		
 		return _patch > other.getPatch();
 	}
 	public boolean hasSameAlias(final AppVersion other) {
+		if (other == null) return false;
+		
 		return _alias != null ? _alias.equals(other.getAlias())
 							  : other.getAlias() != null ? false
 									  					 : true;	// both null
 	}
 	public boolean isSameAs(final AppVersion other) {
+		if (other == null) return false;
+		
 		return this.hasSameMajorVersion(other)
 			&& this.hasSameMinorVersion(other)
 			&& this.hasSamePatchLevel(other);
 	}
 	public boolean isGreaterThan(final AppVersion other) {
+		if (other == null) return true;
+		
 		if (this.hasGreaterMajorVersion(other)) return true;
 		if (this.hasSameMajorVersion(other) 
 		 && this.hasGreaterMinorVersion(other)) return true;
@@ -138,7 +156,22 @@ public class AppVersion
 		return false;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//	COMPARATOR
+/////////////////////////////////////////////////////////////////////////////////////////
+	public static transient Comparator<AppVersion> COMPARATOR = _createCompartor();
+	
+	protected static <V extends AppVersion> Comparator<V> _createCompartor() {
+		return new Comparator<V>() {
+					@Override
+					public int compare(final V v1,final V v2) {
+						if (v1.isSameAs(v2)) return 0;
+						if (v1.isGreaterThan(v2)) return 1;
+						return -1;
+					}
+				};
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//  TO STRING
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public String asString() {
@@ -169,5 +202,65 @@ public class AppVersion
 		return Objects.hashCode(_major,_minor,_patch,
 								_alias);
 	}
-	
+/////////////////////////////////////////////////////////////////////////////////////////
+//	VersionID
+/////////////////////////////////////////////////////////////////////////////////////////	
+	@Override
+	public <O extends OID> boolean is(final O other) {
+		return this.equals(other);
+	}
+	@Override
+	public <O extends OID> boolean isNOT(final O other) {
+		return !this.is(other);
+	}
+	@Override @SuppressWarnings("unchecked") 
+	public <O extends OID> boolean isContainedIn(final O... oids) {
+		if (CollectionUtils.isNullOrEmpty(oids)) return false;
+		boolean isContained = false;
+		for (O oid : oids) {
+			if (this.is(oid)) {
+				isContained = true;
+				break;
+			}
+		}
+		return isContained;
+	}
+	@Override @SuppressWarnings("unchecked") 
+	public <O extends OID> boolean isNOTContainedIn(final O... oids) {
+		return !this.isContainedIn(oids);
+	}
+	@Override
+	public <O extends OID> boolean isContainedIn(final Iterable<O> oids) {
+		if (oids == null) return false;
+		boolean isContained = false;
+		for (O oid : oids) {
+			if (this.is(oid)) {
+				isContained = true;
+				break;
+			}
+		}
+		return isContained;
+	}
+	@Override
+	public <O extends OID> boolean isNOTContainedIn(final Iterable<O> oids) {
+		return !this.isContainedIn(oids);
+	}
+	@Override
+	public <O extends OID> boolean isIgnoringCase(final O other) {
+		return this.is(other);
+	}
+	@Override
+	public boolean isValid() {
+		return AppVersion.canBe(this.asString());
+	}
+	@Override @SuppressWarnings("unchecked")
+	public <O extends OID> O cast() {
+		return (O)this;
+	}
+	@Override
+	public int compareTo(final OID o) {
+		if (!(o instanceof AppVersion)) return -1;
+		AppVersion ov = (AppVersion)o;
+		return COMPARATOR.compare(this,ov);
+	}
 }

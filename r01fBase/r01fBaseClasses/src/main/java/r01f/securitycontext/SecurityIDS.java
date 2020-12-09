@@ -112,6 +112,7 @@ public abstract class SecurityIDS {
 		public static final SecurityProviderID XLNETS = SecurityProviderID.forId("xlnets");
 		public static final SecurityProviderID PAIRED_PHONE = SecurityProviderID.forId("pairedphone");
 		public static final SecurityProviderID REGISTERED_DEVICE = SecurityProviderID.forId("registered-device");
+		public static final SecurityProviderID API_KEY = SecurityProviderID.forId("api-key");
 		public static final SecurityProviderID SYSTEM = SecurityProviderID.forId("system");		// ie: app login
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -304,7 +305,20 @@ public abstract class SecurityIDS {
 			Phone phone = Phone.of(this.asString());
 			return phone == null || !phone.isValid();
 		}
+		
+		public EMail asEMail() {
+			return EMail.of(this.getId());
+		}
+		public Phone asPhone() {
+			return Phone.of(this.getId());
+		}
+		public AppCode asAppCode() {
+			return AppCode.forId(this.getId());
+		}
 	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	
+/////////////////////////////////////////////////////////////////////////////////////////	
 	@Immutable
 	@MarshallType(as="userLoginEntryID")
 	@NoArgsConstructor
@@ -317,20 +331,27 @@ public abstract class SecurityIDS {
 		public static UserLoginEntryID forId(final String id) {
 			return new UserLoginEntryID(id);
 		}
+		
+		public static final UserLoginEntryID NOT_CONFIRMED = new UserLoginEntryID("NOT_CONFIRMED");
+		public static final UserLoginEntryID LOGIN_OK = new UserLoginEntryID("LOGIN_OK"); 
+		public static final UserLoginEntryID LOGIN_ERROR = new UserLoginEntryID("LOGIN_ERROR");
+		public static final UserLoginEntryID PASSWORD_RECORVERY_REQUEST = new UserLoginEntryID("PASSWORD_RECOVERY_REQUEST");
+		public static final UserLoginEntryID PASSWORD_CHANGED = new UserLoginEntryID("PASSWORD_CHANGED");
+		
 		public static final UserLoginEntryID forUserNotConfirmed() {
-			return new UserLoginEntryID("NOT_CONFIRMED");
+			return NOT_CONFIRMED;
 		}
 		public static final UserLoginEntryID forLoginOk() {
-			return new UserLoginEntryID("LOGIN_OK");
+			return LOGIN_OK;
 		}
 		public static final UserLoginEntryID forLoginError() {
-			return new UserLoginEntryID("LOGIN_ERROR");
+			return LOGIN_ERROR;
 		}
 		public static final UserLoginEntryID forPasswordRecoveryRequest() {
-			return new UserLoginEntryID("PASSWORD_RECOVERY_REQUEST");
+			return PASSWORD_RECORVERY_REQUEST;
 		}
 		public static final UserLoginEntryID forPasswordChanged() {
-			return new UserLoginEntryID("PASSWORD_CHANGED");
+			return PASSWORD_CHANGED;
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////

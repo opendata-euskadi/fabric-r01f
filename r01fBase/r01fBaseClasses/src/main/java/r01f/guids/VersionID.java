@@ -1,8 +1,6 @@
 package r01f.guids;
 
 
-
-
 /**
  * A version oid
  */

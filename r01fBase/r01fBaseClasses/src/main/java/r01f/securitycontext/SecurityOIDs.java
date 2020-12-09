@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import lombok.NoArgsConstructor;
 import r01f.annotations.Immutable;
+import r01f.facts.FactDimension;
 import r01f.guids.OIDBaseMutable;
 import r01f.guids.OIDTyped;
 import r01f.guids.PersistableObjectOID;
@@ -108,7 +109,8 @@ public abstract class SecurityOIDs {
 	@MarshallType(as="loginOid")
 	public static final class LoginOID
 				      extends SecurityObjectOIDBase
-			       implements SecurityObjectOID {
+			       implements SecurityObjectOID,
+			       			  FactDimension {
 
 		private static final long serialVersionUID = -2162289370851262116L;
 
@@ -138,6 +140,9 @@ public abstract class SecurityOIDs {
 																				}
 																		 };
 	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	USER PASSWORD LOGIN
+/////////////////////////////////////////////////////////////////////////////////////////	
 	@Immutable
 	@MarshallType(as="userLoginEntryOid")
 	public static final class UserLoginEntryOID
@@ -171,12 +176,14 @@ public abstract class SecurityOIDs {
 																								}
 																						};
 	}
-
+/////////////////////////////////////////////////////////////////////////////////////////
+//	PAIRED PHONE LOGIN
+/////////////////////////////////////////////////////////////////////////////////////////	
 	@Immutable
 	@MarshallType(as="pairedPhoneLoginConsentOid")
 	public static final class PairedPhoneLoginConsentOID
-			extends SecurityObjectOIDBase
-		implements SecurityObjectOID {
+					  extends SecurityObjectOIDBase
+				   implements SecurityObjectOID {
 	
 		private static final long serialVersionUID = -2162289370851262116L;
 		
@@ -204,9 +211,38 @@ public abstract class SecurityOIDs {
 						return PairedPhoneLoginConsentOID.forId(oid);
 					}
 			};
-	}		
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//	                                                                          
+//	API-KEY LOGIN
+/////////////////////////////////////////////////////////////////////////////////////////
+	@Immutable
+	@MarshallType(as="apiKeyVersionOid")
+	public static final class ApiKeyVersionOID
+					  extends SecurityObjectOIDBase
+				   implements SecurityObjectOID,
+				   			  FactDimension {
+		private static final long serialVersionUID = 1158729335397111474L;
+		public ApiKeyVersionOID() {
+			super();
+		}
+		public ApiKeyVersionOID(final String oid) {
+			super(oid);
+		}
+		public static ApiKeyVersionOID valueOf(final String s) {
+			return ApiKeyVersionOID.forId(s);
+		}
+		public static ApiKeyVersionOID fromString(final String s) {
+			return ApiKeyVersionOID.forId(s);
+		}
+		public static ApiKeyVersionOID forId(final String id) {
+			return new ApiKeyVersionOID(id);
+		}
+		public static ApiKeyVersionOID supply() {
+			return ApiKeyVersionOID.forId	(SecurityObjectOIDBase.supplyId());
+		}
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	USER AUTHORIZATION ON RESOURCE                                                                          
 /////////////////////////////////////////////////////////////////////////////////////////	
 	@Immutable
 	@MarshallType(as="authorizationOnResourceOid")
@@ -241,6 +277,9 @@ public abstract class SecurityOIDs {
 																										}
 																								};
 	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	AUTHORIZATION TARGET RESOURCE
+/////////////////////////////////////////////////////////////////////////////////////////	
 	@Immutable
 	@MarshallType(as="authorizationTargetResourceOid")
 	public static final class AuthorizationTargetResourceOID
