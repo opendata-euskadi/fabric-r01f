@@ -300,11 +300,11 @@ public abstract class SecurityIDS {
 
 		public boolean isEMail() {
 			EMail email = EMail.of(this.asString());
-			return email == null || !email.isValid();
+			return email != null && email.isValid();
 		}
 		public boolean isPhone() {
 			Phone phone = Phone.of(this.asString());
-			return phone == null || !phone.isValid();
+			return phone != null && phone.isValid();
 		}
 
 		public EMail asEMail() {
