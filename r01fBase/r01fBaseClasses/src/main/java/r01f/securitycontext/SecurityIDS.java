@@ -47,14 +47,14 @@ public abstract class SecurityIDS {
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//	
-/////////////////////////////////////////////////////////////////////////////////////////	
+//
+/////////////////////////////////////////////////////////////////////////////////////////
 	@Immutable
 	@MarshallType(as="securityId")
 	@EqualsAndHashCode(callSuper=true)
 	@NoArgsConstructor
 	public static final class SecurityID
-	     		      extends OIDBaseMutable<String> 
+	     		      extends OIDBaseMutable<String>
 				   implements IsSecurityID {
 		private static final long serialVersionUID = -8145305261344081383L;
 
@@ -97,16 +97,16 @@ public abstract class SecurityIDS {
 	@NoArgsConstructor
 	public static class SecurityProviderID
 		 		extends SecurityIDBase  {
-	
+
 		private static final long serialVersionUID = -3633101002845530783L;
-		
+
 		public SecurityProviderID(final String id) {
 			super(id);
 		}
 		public static SecurityProviderID forId(final String idAsString) {
 			return new SecurityProviderID(idAsString);
 		}
-		
+
 		public static final SecurityProviderID USER_PASSWORD = SecurityProviderID.forId("usrpwd");
 		public static final SecurityProviderID GOOGLE = SecurityProviderID.forId("google");
 		public static final SecurityProviderID XLNETS = SecurityProviderID.forId("xlnets");
@@ -116,7 +116,7 @@ public abstract class SecurityIDS {
 		public static final SecurityProviderID SYSTEM = SecurityProviderID.forId("system");		// ie: app login
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//	
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Immutable
 	@MarshallType(as="userGroupCode")
@@ -155,7 +155,7 @@ public abstract class SecurityIDS {
 			return new UserRole(id);
 		}
 		public static UserRole named(final String id) {
-			return new UserRole(id); 
+			return new UserRole(id);
 		}
 	}
 	@Immutable
@@ -194,6 +194,7 @@ public abstract class SecurityIDS {
 							.authenticate(this,			// the password
 										  hash);		// the hash
 		}
+		public static final Password CHANGE_ME = Password.forId("/change__me/");
 	}
 	@Immutable
 	@MarshallType(as="passwordHash")
@@ -288,7 +289,7 @@ public abstract class SecurityIDS {
 		public boolean isMaster() {
 			return this.is(MASTER);
 		}
-		public static final LoginID ADMIN = LoginID.forId("admin");;
+		public static final LoginID ADMIN = LoginID.forId("admin");
 		public boolean isAdmin() {
 			return this.is(ADMIN);
 		}
@@ -296,7 +297,7 @@ public abstract class SecurityIDS {
 		public boolean isSystem() {
 			return this.is(SYSTEM);
 		}
-		
+
 		public boolean isEMail() {
 			EMail email = EMail.of(this.asString());
 			return email == null || !email.isValid();
@@ -305,7 +306,7 @@ public abstract class SecurityIDS {
 			Phone phone = Phone.of(this.asString());
 			return phone == null || !phone.isValid();
 		}
-		
+
 		public EMail asEMail() {
 			return EMail.of(this.getId());
 		}
@@ -317,8 +318,8 @@ public abstract class SecurityIDS {
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//	
-/////////////////////////////////////////////////////////////////////////////////////////	
+//
+/////////////////////////////////////////////////////////////////////////////////////////
 	@Immutable
 	@MarshallType(as="userLoginEntryID")
 	@NoArgsConstructor
@@ -331,13 +332,13 @@ public abstract class SecurityIDS {
 		public static UserLoginEntryID forId(final String id) {
 			return new UserLoginEntryID(id);
 		}
-		
+
 		public static final UserLoginEntryID NOT_CONFIRMED = new UserLoginEntryID("NOT_CONFIRMED");
-		public static final UserLoginEntryID LOGIN_OK = new UserLoginEntryID("LOGIN_OK"); 
+		public static final UserLoginEntryID LOGIN_OK = new UserLoginEntryID("LOGIN_OK");
 		public static final UserLoginEntryID LOGIN_ERROR = new UserLoginEntryID("LOGIN_ERROR");
 		public static final UserLoginEntryID PASSWORD_RECORVERY_REQUEST = new UserLoginEntryID("PASSWORD_RECOVERY_REQUEST");
 		public static final UserLoginEntryID PASSWORD_CHANGED = new UserLoginEntryID("PASSWORD_CHANGED");
-		
+
 		public static final UserLoginEntryID forUserNotConfirmed() {
 			return NOT_CONFIRMED;
 		}
@@ -355,8 +356,8 @@ public abstract class SecurityIDS {
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//	                                                                          
-/////////////////////////////////////////////////////////////////////////////////////////	
+//
+/////////////////////////////////////////////////////////////////////////////////////////
 	@Immutable
 	@MarshallType(as="authorizationCode")
 	@NoArgsConstructor
@@ -371,8 +372,8 @@ public abstract class SecurityIDS {
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//	                                                                          
-/////////////////////////////////////////////////////////////////////////////////////////	
+//
+/////////////////////////////////////////////////////////////////////////////////////////
 	@Immutable
 	@MarshallType(as="securityGroup")
 	@NoArgsConstructor
