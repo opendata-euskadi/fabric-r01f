@@ -5,11 +5,13 @@ import java.util.Date;
 
 import com.google.common.reflect.TypeToken;
 
+import r01f.guids.CommonOIDs.AppComponent;
 import r01f.guids.OID;
 import r01f.patterns.FactoryFrom;
 import r01f.securitycontext.SecurityIDS.LoginID;
 import r01f.securitycontext.SecurityIDS.SecurityProviderID;
 import r01f.securitycontext.SecurityIDS.SecurityToken;
+import r01f.securitycontext.SecurityIDS.UserRole;
 import r01f.securitycontext.SecurityOIDs.UserOID;
 import r01f.types.url.Url;
 
@@ -59,7 +61,30 @@ public interface SecurityContext
 	 */
 	public Url getLoginUrl();
 /////////////////////////////////////////////////////////////////////////////////////////
-//	USER OID
+//	USER ROLES (just for USER authenticated actors)
+/////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Returns true if the user has the given system-wide role at the given component
+	 * @param appComp
+	 * @param role
+	 * @return
+	 */
+	public boolean userHasSystemWideRoleIn(final AppComponent appComp,
+									   	   final UserRole role);
+	/**
+	 * Returns true if the user has ANY system-wide role at the given component
+	 * @param module
+	 * @return
+	 */
+	public boolean userHasAnySystemWideRoleIn(final AppComponent module);
+	/**
+	 * Returns the user's system-wide role (if any) at the given component
+	 * @param module
+	 * @return
+	 */
+	public UserRole getUserSystemWideRoleIn(final AppComponent module);
+/////////////////////////////////////////////////////////////////////////////////////////
+//	USER
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * true if this is a user
