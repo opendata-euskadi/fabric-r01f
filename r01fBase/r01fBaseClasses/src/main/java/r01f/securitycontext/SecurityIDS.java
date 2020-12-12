@@ -278,8 +278,16 @@ public abstract class SecurityIDS {
 		public static LoginID fromPhone(final Phone phone) {
 			return LoginID.forId(phone.asString());
 		}
+		public static LoginID fromPhone(final String phone) {
+			if (!Phone.validate(phone)) throw new IllegalArgumentException(phone + " is NOT a valid phone!");
+			return LoginID.fromPhone(Phone.of(phone));
+		}
 		public static LoginID fromEMail(final EMail mail) {
 			return LoginID.forId(mail.asString());
+		}
+		public static LoginID fromEMail(final String mail) {
+			if (!EMail.validate(mail)) throw new IllegalArgumentException(mail + " is NOT a valid email!");
+			return LoginID.fromEMail(EMail.of(mail));
 		}
 		public static final LoginID ANONYMOUS = LoginID.forId("anonymous");
 		public boolean isAnonymous() {
@@ -334,10 +342,15 @@ public abstract class SecurityIDS {
 		}
 
 		public static final UserLoginEntryID NOT_CONFIRMED = new UserLoginEntryID("NOT_CONFIRMED");
+		
 		public static final UserLoginEntryID LOGIN_OK = new UserLoginEntryID("LOGIN_OK");
 		public static final UserLoginEntryID LOGIN_ERROR = new UserLoginEntryID("LOGIN_ERROR");
+		
 		public static final UserLoginEntryID PASSWORD_RECORVERY_REQUEST = new UserLoginEntryID("PASSWORD_RECOVERY_REQUEST");
 		public static final UserLoginEntryID PASSWORD_CHANGED = new UserLoginEntryID("PASSWORD_CHANGED");
+		
+		public static final UserLoginEntryID IMPERSONATION_PENDING = new UserLoginEntryID("IMPERSONATION_PENDING");
+		public static final UserLoginEntryID IMPERSONATION_NOT_VALID = new UserLoginEntryID("IMPERSONATION_NOT_VALID");
 
 		public static final UserLoginEntryID forUserNotConfirmed() {
 			return NOT_CONFIRMED;
@@ -353,6 +366,12 @@ public abstract class SecurityIDS {
 		}
 		public static final UserLoginEntryID forPasswordChanged() {
 			return PASSWORD_CHANGED;
+		}
+		public static final UserLoginEntryID forImpersonationPending() {
+			return IMPERSONATION_PENDING;
+		}
+		public static final UserLoginEntryID forImpersonationNotValid() {
+			return IMPERSONATION_NOT_VALID;
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
