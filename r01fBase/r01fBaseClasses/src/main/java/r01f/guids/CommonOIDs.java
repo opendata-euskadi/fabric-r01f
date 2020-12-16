@@ -430,20 +430,20 @@ public abstract class CommonOIDs {
 //	WEB
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Immutable
-	@MarshallType(as="webSessionOid")
+	@MarshallType(as="webSessionId")
 	@EqualsAndHashCode(callSuper=true)
 	@NoArgsConstructor
-	public static final class WebSessionOID
+	public static final class WebSessionID
 	     		      extends OIDBaseMutable<String> {
 		private static final long serialVersionUID = 1860937925564750174L;
-		public WebSessionOID(final String oid) {
+		public WebSessionID(final String oid) {
 			super(oid);
 		}
-		public static WebSessionOID forId(final String id) {
-			return new WebSessionOID(id);
+		public static WebSessionID forId(final String id) {
+			return new WebSessionID(id);
 		}
-		public static WebSessionOID valueOf(final String id) {
-			return WebSessionOID.forId(id);
+		public static WebSessionID valueOf(final String id) {
+			return WebSessionID.forId(id);
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////

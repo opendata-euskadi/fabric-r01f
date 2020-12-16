@@ -16,22 +16,22 @@ import r01f.util.types.Strings;
  * 	 1. Anotate  at REST Resource: @CharsetResponseFilter
  *   2. Register at REST Bootstraping :
  */
-public abstract  class CharsetResponseServletFilters {
+public abstract class CharsetResponseServletFilters {
 	
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CharsetResponseServletFilterBase
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 	@Accessors(prefix="_")
 	public static abstract class CharsetResponseServletFilterBase
-				implements ContainerResponseFilter,
-						   RESTFilter {
+					  implements ContainerResponseFilter,
+						   		 RESTFilter {
 		private final String _charset;
 
 		public CharsetResponseServletFilterBase(final String charset) {
 			_charset = charset;
 		}
 		@Override
-		public void filter(ContainerRequestContext request, ContainerResponseContext response) {
+		public void filter(final ContainerRequestContext request, final ContainerResponseContext response) {
 			MediaType type = response.getMediaType();
 			if (type != null) {
 				String contentType = type.toString();
