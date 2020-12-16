@@ -89,9 +89,9 @@ public class ContactInfo
 	 * @return true if there are none private mail addresses associated with the contact info
 	 */
 	public boolean hasNonePrivateMails() {
-		if(hasMails()) {
-			for(ContactMail contactMail : _contactMails) {
-				if(!contactMail.isPrivate()) {
+		if (hasMails()) {
+			for (ContactMail contactMail : _contactMails) {
+				if (!contactMail.isPrivate()) {
 					return true;
 				}
 			};
@@ -435,9 +435,9 @@ public class ContactInfo
 	 * @return true if there are none private social networks associated with the contact info
 	 */
 	public boolean hasNonePrivateSocialNetworks() {
-		if(hasSocialNetworks()) {
-			for(ContactSocialNetwork contactSocialNetwork : _contactSocialNetworks) {
-				if(!contactSocialNetwork.isPrivate()) {
+		if (hasSocialNetworks()) {
+			for (ContactSocialNetwork contactSocialNetwork : _contactSocialNetworks) {
+				if (!contactSocialNetwork.isPrivate()) {
 					return true;
 				}
 			};
@@ -528,9 +528,9 @@ public class ContactInfo
 	 * @return true if there are none private  web sites associated with the contact info
 	 */
 	public boolean hasNonePrivateWebSites() {
-		if(hasWebSites()) {
-			for(ContactWeb contactWebSite : _contactWebSites) {
-				if(!contactWebSite.isPrivate()) {
+		if (hasWebSites()) {
+			for (ContactWeb contactWebSite : _contactWebSites) {
+				if (!contactWebSite.isPrivate()) {
 					return true;
 				}
 			};
