@@ -200,6 +200,11 @@ This behavior can be disabled at `[Team] > [Git] > [Projects]` and **deselect** 
 	> java -jar d:\app-server\wls_10.3.6\modules\com.bea.core.jarbuilder_1.7.0.0.jar
 ```
 
+**BEWARE Some maven artifacts are loaded form EJIE reports and the IZENPE certs are needed** 
+
+Import the [IZENPE CERTS] at the [jdk] used to start eclipse (seee -vm param above)  
+see [Maven certs install](../maven/maven_certs.read.me)
+
 
 c) **[Java]**
 
