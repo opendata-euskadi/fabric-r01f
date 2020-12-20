@@ -110,6 +110,8 @@ When asked for the `[workspace]` location select: `/{dev_home}/eclipse_workspace
 
 a) **AJDT: AspectJ Development Tools** > 	http://download.eclipse.org/tools/ajdt/410/dev/update
 
+(the LATEST build of AJDT can be found just opening https://download.eclipse.org/tools/ajdt/410/dev/update/ and looking for the ajdt-e410-2.2.4.xxx folder)
+
 b) **Eclipse GIT plugins** (from eclipse update site https://download.eclipse.org/egit/updates) (install Git Client https://git-scm.com/download/gui/windows)
 
 ```
