@@ -34,19 +34,19 @@ public abstract class Files {
 //  
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
-     * Returns the file size with it's unit
-     * <ul>
-     * 		<li>If the file size is less than 1024 bytes: 'x b.'</li>
-     * 		<li>If the file size is between 1024 bytes and 1048576 bytes :'x Kb.'</li>
-     * 		<li>If the file size is between 1048576 bytes and 1073741824 bytes : 'x Mb.'</li>
-     * 		<li>If the file size is greater than 1073741824 bytes: 'x Gb.'</li>
-     * </ul>
-     * @param fileBytes file size in bytes
-     * @return the formatted file size 
-     */
-    public static String formatFileSize(final long fileBytes) {
-    	return FilePropertiesBase.formatSize(fileBytes);
-    }
+	 * Returns the file size with it's unit
+	 * <ul>
+	 * 		<li>If the file size is less than 1024 bytes: 'x b.'</li>
+	 * 		<li>If the file size is between 1024 bytes and 1048576 bytes :'x Kb.'</li>
+	 * 		<li>If the file size is between 1048576 bytes and 1073741824 bytes : 'x Mb.'</li>
+	 * 		<li>If the file size is greater than 1073741824 bytes: 'x Gb.'</li>
+	 * </ul>
+	 * @param fileBytes file size in bytes
+	 * @return the formatted file size 
+	 */
+	public static String formatFileSize(final long fileBytes) {
+		return FilePropertiesBase.formatSize(fileBytes);
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -76,52 +76,52 @@ public abstract class Files {
 /////////////////////////////////////////////////////////////////////////////////////////
 //  
 /////////////////////////////////////////////////////////////////////////////////////////
-    /**
-     * Returns true if the file is a symbolic link
-     * @param file
-     * @return
-     * @throws IOException
-     */
-    public static boolean isSymLink(final File file) throws IOException {
-    	File canon;
-    	if (file.getParent() == null) {
-    		canon = file;
-    	} else {
-    		File canonDir = file.getParentFile().getCanonicalFile();
-    		canon = new File(canonDir,
-    						 file.getName());
-    	}
-    	return !canon.getCanonicalFile().equals(canon.getAbsoluteFile());
-    }
-    /**
-     * Returns the symbolic link target if the file is a symbolic link; false otherwise
-     * @param file
-     * @return
-     * @throws IOException
-     */
-    public static Path symLinkTarget(final File file) throws IOException {
-    	if (!Files.isSymLink(file)) return null;
-    	File canon;
-    	if (file.getParent() == null) {
-    		canon = file;
-    	} else {
-    		File canonDir = file.getParentFile().getCanonicalFile();
-    		canon = new File(canonDir,
-    						 file.getName());
-    	}
-    	return Path.from(canon.getCanonicalFile());
-    }
+	/**
+	 * Returns true if the file is a symbolic link
+	 * @param file
+	 * @return
+	 * @throws IOException
+	 */
+	public static boolean isSymLink(final File file) throws IOException {
+		File canon;
+		if (file.getParent() == null) {
+			canon = file;
+		} else {
+			File canonDir = file.getParentFile().getCanonicalFile();
+			canon = new File(canonDir,
+							 file.getName());
+		}
+		return !canon.getCanonicalFile().equals(canon.getAbsoluteFile());
+	}
+	/**
+	 * Returns the symbolic link target if the file is a symbolic link; false otherwise
+	 * @param file
+	 * @return
+	 * @throws IOException
+	 */
+	public static Path symLinkTarget(final File file) throws IOException {
+		if (!Files.isSymLink(file)) return null;
+		File canon;
+		if (file.getParent() == null) {
+			canon = file;
+		} else {
+			File canonDir = file.getParentFile().getCanonicalFile();
+			canon = new File(canonDir,
+							 file.getName());
+		}
+		return Path.from(canon.getCanonicalFile());
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 // 	WRAPPER
 /////////////////////////////////////////////////////////////////////////////////////////
-    /**
-     * Returns an utility type that wraps a {@link FileStoreAPI}
-     * @param api
-     * @return
-     */
-    public static FileStoreAPIWrapper wrap(final FileStoreAPI api) {
-    	return new FileStoreAPIWrapper(api);
-    }
+	/**
+	 * Returns an utility type that wraps a {@link FileStoreAPI}
+	 * @param api
+	 * @return
+	 */
+	public static FileStoreAPIWrapper wrap(final FileStoreAPI api) {
+		return new FileStoreAPIWrapper(api);
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  ZIP FILE EXTRACT
 /////////////////////////////////////////////////////////////////////////////////////////
