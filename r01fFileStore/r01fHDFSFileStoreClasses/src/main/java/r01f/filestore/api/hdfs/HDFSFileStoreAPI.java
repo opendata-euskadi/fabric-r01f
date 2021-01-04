@@ -369,7 +369,7 @@ public class HDFSFileStoreAPI
 			if (offset >= size) return null; // End of file
 
 			int theLen = len;
-			if (theLen > ((size-offset) + 1)) {
+			if (theLen >= ((size-offset) + 1)) {
 				theLen = (int)(size - offset);
 			}
 			btbuffer = new byte[theLen];
