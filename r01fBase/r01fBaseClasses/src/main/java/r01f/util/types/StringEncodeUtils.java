@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.EncoderException;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.net.URLCodec;
 
 import com.google.common.base.Predicate;
@@ -345,5 +346,20 @@ public abstract class StringEncodeUtils {
 			log.error("Could NOT url decode {}",str,encEx);
 		}
 		return outDecoded;
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+// ENCODE BYTES TO HEX.
+/////////////////////////////////////////////////////////////////////////////////////////
+	public static String encodeAsHexString(byte[] data) {
+		return Hex.encodeHexString(data);
+	}
+	public static byte[] decodeHex(char[] data) {
+		byte[] bytes = null;
+		try {
+			bytes = Hex.decodeHex(data);
+		} catch (DecoderException e) {
+			log.error("Could NOT  decode {}",new String(data));
+		}
+		return bytes;
 	}
 }

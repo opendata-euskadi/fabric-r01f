@@ -16,7 +16,7 @@ public class UrlParserNoRegExp
 	@Override
 	UrlComponents _parse(final String url) {
 		UrlProtocol protocol = UrlProtocol.of(url);
-		String urlWithoutProtocol = protocol != null ? UrlProtocol.removeFrom(url)//< was buggy.
+		String urlWithoutProtocol = protocol != null ? UrlProtocol.removeFrom(url)	// < was buggy.
 													 : url;
 
 		int pathBeginIndex = urlWithoutProtocol.indexOf('/');

@@ -33,7 +33,6 @@ public class StringBase64
 //	FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
 	private final String _stringBase64;
-
 /////////////////////////////////////////////////////////////////////////////////////////
 //	CONSTRUCTOR & BUILDER
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -70,7 +69,7 @@ public class StringBase64
 		byte[] deflatedRawBytes = _deflate(rawString.getBytes());
 
 		// [2] - Encode base 64
-		return StringBase64.encode(encoder.apply(new String(deflatedRawBytes)));
+		return StringBase64.encode(deflatedRawBytes);
 	}
 	@SneakyThrows
 	public static StringBase64 deflateAndEncode(final byte[] rawBytes) {
