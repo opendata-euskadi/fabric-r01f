@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 import r01f.annotations.Immutable;
 import r01f.guids.OIDBaseMutable;
+import r01f.objectstreamer.annotations.MarshallType;
 import r01f.util.types.collections.CollectionUtils;
 
 /**
@@ -85,6 +86,7 @@ public class ObjectValidationResults {
 /////////////////////////////////////////////////////////////////////////////////////////
 //  
 /////////////////////////////////////////////////////////////////////////////////////////
+	@MarshallType(as="objValidationErrorSourceId")
 	@Immutable
 	public static class ObjectValidationErrorSourceID
 	            extends OIDBaseMutable<String> { 	// normally this should extend OIDBaseImutable BUT it MUST have a default no-args constructor to be serializable
