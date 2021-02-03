@@ -38,6 +38,12 @@ public enum PersistencePerformedOperation
 	public boolean is(final PersistencePerformedOperation el) {
 		return WRAPPER.is(this,el);
 	}
+	public boolean is(final COREServiceMethod method) {
+		return this.getCOREServiceMethod().is(method);
+	}
+	public boolean isIn(final COREServiceMethod... methods) {
+		return this.getCOREServiceMethod().isIn(methods);
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
