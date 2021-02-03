@@ -1,11 +1,13 @@
 package r01f.model.services;
 
 import r01f.guids.OIDBaseMutable;
+import r01f.objectstreamer.annotations.MarshallType;
 import r01f.util.types.collections.CollectionUtils;
 
 /**
  * An id of the called [core service] method
  */
+@MarshallType(as="coreServiceMethod")
 public class COREServiceMethod 
      extends OIDBaseMutable<String> {
 	

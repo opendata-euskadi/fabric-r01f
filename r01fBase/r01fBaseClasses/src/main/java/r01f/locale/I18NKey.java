@@ -2,10 +2,13 @@ package r01f.locale;
 
 import r01f.guids.OID;
 import r01f.guids.OIDBaseMutable;
+import r01f.objectstreamer.annotations.MarshallType;
+import r01f.objectstreamer.annotations.MarshallType;
 
 /**
  * A view key
  */
+@MarshallType(as="i18nKey")
 public class I18NKey 
 	 extends OIDBaseMutable<String> {
 
