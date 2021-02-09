@@ -142,7 +142,7 @@ public abstract class HtmlLinkRenderer {
 			String outLink = "<a href=''></a>";
 			if (_link != null) {
 				String urlStr = _link.getUrl().asStringNotUrlEncodingQueryStringParamsValues();
-				if (_link.getUrl().getProtocol() == null) urlStr = "http://" + urlStr;
+				if (_link.getUrl().getHost() != null && _link.getUrl().getProtocol() == null) urlStr = "http://" + urlStr;
 				outLink = Strings.customized("<a href='{}' {}>{}</a>",
 											   		urlStr,
 											   		_renderPresentationData(_link.getText() != null ? _link.getTitle() : null,
