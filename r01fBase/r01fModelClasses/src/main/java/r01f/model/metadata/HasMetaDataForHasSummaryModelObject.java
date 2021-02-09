@@ -31,7 +31,7 @@ public interface HasMetaDataForHasSummaryModelObject<S extends Summary>
 	@RequiredArgsConstructor
 	public static enum SEARCHABLE_METADATA
 			implements FieldIDToken {
-		SUMMARY ("summary");
+		SUMMARY("summary");
 
 		@Getter private final String _token;
 	}
