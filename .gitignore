@@ -26,11 +26,6 @@ tmp/
 *.class
 bin/
 
-# Maven
-# ===============================
-!maven-wrapper.jar
-target/
-
 # Misc
 # ===============================
 release.properties
@@ -63,11 +58,15 @@ workingCopy*
 # File-based project format
 *.iws
 
-# Gradle and Maven with auto-import
+# Gradle and Maven
+=================================
+!maven-wrapper.jar
+target/
 # When using Gradle or Maven with auto-import, you should exclude module files,
 # since they will be recreated, and may cause churn.
 *.iml
 *.ipr
+.mvn/
 
 # STS
 # ===============================
