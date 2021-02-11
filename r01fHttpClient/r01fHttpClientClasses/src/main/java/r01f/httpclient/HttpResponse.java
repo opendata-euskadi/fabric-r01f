@@ -60,11 +60,18 @@ public class HttpResponse {
 	 * @return 
 	 */
 	public String loadAsString() {
+		return  loadAsString(Charset.defaultCharset());
+	}
+	/**
+	 * Load data as a {@link String}
+	 * @return 
+	 */
+	public String loadAsString(final Charset charset) {
 		String outStr = null;
 		try {
 			@Cleanup InputStream responseIs = _inputStream;
 			outStr = IOUtils.toString(responseIs,
-									  Charset.defaultCharset());
+									  charset);
 			return outStr;
 		} catch (IOException ioEx) {
 			ioEx.printStackTrace(System.out);
