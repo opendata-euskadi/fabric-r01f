@@ -30,7 +30,7 @@ public interface HasMetaDataForHasFullTextSummaryModelObject<S extends Summary>
 	@RequiredArgsConstructor
 	public enum SEARCHABLE_METADATA
 	 implements FieldIDToken {
-		FULL_TEXT ("fullTextSummary");
+		FULL_TEXT("fullTextSummary");
 
 		@Getter private final String _token;
 	}

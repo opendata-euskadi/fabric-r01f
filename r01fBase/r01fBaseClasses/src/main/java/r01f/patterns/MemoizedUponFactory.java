@@ -4,7 +4,7 @@ import lombok.Setter;
 
 /**
  * Memoization pattern implementation (Memoization is similar to LazyLoading) 
- * based on a factory that can be handy wen the basic {@link Memoized} type cannot be used
+ * based on a factory that can be handy when the basic {@link Memoized} type cannot be used
  * The normal usage is:
  * <pre class='brush:java'>
  * public class AnyClass {

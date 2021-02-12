@@ -95,9 +95,16 @@ public abstract class SearchResultItemForModelObjectBase<M extends IndexableMode
 	public SearchResultItemForModelObjectBase(final Class<M> objType) {
 		_modelObjectType = objType;
 	}
-	@SuppressWarnings("unchecked")
 	public <O extends PersistableObjectOID,
 			P extends PersistableModelObject<O>> SearchResultItemForModelObjectBase(final P obj) {
+		_setSearchResultItemDataFrom(obj);
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	
+/////////////////////////////////////////////////////////////////////////////////////////
+	@SuppressWarnings("unchecked")
+	protected <O extends PersistableObjectOID,
+			   P extends PersistableModelObject<O>> void _setSearchResultItemDataFrom(final P obj) {
 		_modelObjectType = (Class<M>)obj.getClass();
 		_numericId = obj.getNumericId();
 		_entityVersion = obj.getEntityVersion();

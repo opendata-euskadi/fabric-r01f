@@ -1,7 +1,10 @@
 package r01f.types.contact;
 
+import java.util.Collection;
+
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Function;
+import com.google.common.collect.FluentIterable;
 
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -9,6 +12,7 @@ import r01f.annotations.Immutable;
 import r01f.exceptions.Throwables;
 import r01f.objectstreamer.annotations.MarshallType;
 import r01f.util.types.Strings;
+import r01f.util.types.collections.CollectionUtils;
 
 @MarshallType(as="phone")
 @Immutable
@@ -148,7 +152,26 @@ public class Phone
 		String outPhone = phoneAsString.replaceAll("[^0-9^\\+]","");
 		return outPhone;
 	}
-
+/////////////////////////////////////////////////////////////////////////////////////////
+//	STATIC COLLECTION UTIL METHODS
+/////////////////////////////////////////////////////////////////////////////////////////
+	public static String phonesAsString(final Collection<Phone> phones) {
+		return ValidatedContactMean.colToString(phones);
+	}
+	/**
+	 * Compose phone collection from string phones separated by comma, semicolon or space character.
+	 * @param splitedPhonesStr
+	 * @return phones collection or null if empty.
+	 */
+	public static Collection<ContactPhone> phonesCollectionFromString(final String splitedPhonesStr) {
+		Collection<String> phones = _split(splitedPhonesStr);
+		if (CollectionUtils.isNullOrEmpty(phones)) return null;
+		return FluentIterable.from(phones)
+							 .transform(str -> Phone.of(str))
+							 .transform(phone -> ContactPhone.createToBeUsedFor(ContactInfoUsage.ANY)
+									 						 .withNumber(phone))
+							 .toList();
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	TRANSFORM
 /////////////////////////////////////////////////////////////////////////////////////////

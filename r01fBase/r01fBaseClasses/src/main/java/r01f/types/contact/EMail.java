@@ -1,9 +1,11 @@
 package r01f.types.contact;
 
+import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.google.common.base.Function;
+import com.google.common.collect.FluentIterable;
 
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -14,6 +16,7 @@ import r01f.patterns.Supplier;
 import r01f.securitycontext.SecurityIDS.LoginID;
 import r01f.types.url.Host;
 import r01f.util.types.Strings;
+import r01f.util.types.collections.CollectionUtils;
 
 
 
@@ -130,6 +133,26 @@ public class EMail
 //			}
 		}
 		return outValid;
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	STATIC COLLECTION UTIL METHODS
+/////////////////////////////////////////////////////////////////////////////////////////
+	public static String emailsAsString(final Collection<EMail> emails) {
+		return ValidatedContactMean.colToString(emails);
+	}
+	/**
+	 * Compose emails collection from string emails separated by comma, semicolon or space character.
+	 * @param splitedEmailsStr
+	 * @return emails collection or null if empty.
+	 */
+	public static Collection<ContactMail> emailsCollectionFromString(final String splitedEmailsStr) {
+		Collection<String> emails = _split(splitedEmailsStr);
+		if (CollectionUtils.isNullOrEmpty(emails)) return null;
+		return FluentIterable.from(emails)
+							 .transform(str -> EMail.of(str))
+							 .transform(email -> ContactMail.createToBeUsedFor(ContactInfoUsage.ANY)
+									 						.mailTo(email))
+							 .toList();
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	TRANSFORM
