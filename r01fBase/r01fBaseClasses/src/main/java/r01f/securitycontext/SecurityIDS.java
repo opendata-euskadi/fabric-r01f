@@ -96,7 +96,7 @@ public abstract class SecurityIDS {
 	@MarshallType(as="loginId")
 	@NoArgsConstructor
 	public static class SecurityProviderID
-		 		extends SecurityIDBase  {
+		 		extends SecurityIDBase {
 
 		private static final long serialVersionUID = -3633101002845530783L;
 
