@@ -159,19 +159,19 @@ public abstract class OIDBase<T>
 												   		  final String oidAsString) {
 		Preconditions.checkArgument(oidAsString != null,
 									"an oid cannot have a null id");
-        O outOid = null;
-        try {
-        	outOid = (O)MethodUtils.invokeStaticMethod(oidType,
-        		   								       "forId",
-        		   								       new Object[] {oidAsString},new Class<?>[] {String.class});
-        } catch (NoSuchMethodException nsmEx) {
-        	throw new IllegalArgumentException(String.format("Type %s is NOT a valid OID: it does NOT have a forId(String) static builder method",
-        													 oidType));
-        } catch (Throwable th) {
-        	th.printStackTrace();
-        	throw new IllegalStateException(String.format("Could NOT create an OID instance of type %s: %s",oidType,th.getMessage()),
-        									th);
-        }
+		O outOid = null;
+		try {
+			outOid = (O)MethodUtils.invokeStaticMethod(oidType,
+				   									   "forId",
+				   									   new Object[] {oidAsString},new Class<?>[] {String.class});
+		} catch (NoSuchMethodException nsmEx) {
+			throw new IllegalArgumentException(String.format("Type %s is NOT a valid OID: it does NOT have a forId(String) static builder method",
+															 oidType));
+		} catch (Throwable th) {
+			th.printStackTrace();
+			throw new IllegalStateException(String.format("Could NOT create an OID instance of type %s: %s",oidType,th.getMessage()),
+											th);
+		}
 		return outOid;
 	}
 }

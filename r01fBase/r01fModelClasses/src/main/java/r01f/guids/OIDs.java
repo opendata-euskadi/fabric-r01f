@@ -87,6 +87,12 @@ public class OIDs {
 									   			   	  new Class<?>[] {},new Object[] {});
 		return oid;
 	}
+	public static <O extends OID> String fragmentAt(final O oid,
+													final int pos) {
+		String[] items = oid.asString().split("-");
+		if (pos < 0 || pos >= items.length) throw new IllegalArgumentException("the given pos=" + pos + " is NOT valid: it must be contained in [0.." + (items.length - 1) + "]");
+		return items[pos];
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 // 	OIDs
 /////////////////////////////////////////////////////////////////////////////////////////
