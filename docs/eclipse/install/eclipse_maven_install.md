@@ -65,16 +65,9 @@ d) Edit the `/{dev_home}/eclipse/[instance-name]/eclipse.ini` file and set this 
 	--launcher.defaultAction
 	openFile
 	--launcher.appendVmargs
+```
 
-	# JDK 1.8 <<<<<<<< USE JDK8 if runninig OEPE (Oracle Enterprise Pack)
-	-vm
-	d:/java/jdk8/jre/bin/server/jvm.dll
-	-vmargs
-
-	# JDK > 9: see  https://wiki.eclipse.org/Configure_Eclipse_for_Java_9
-	--launcher.appendVmargs
-	-vm
-	d:/java/jdk12/bin/server/jvm.dll
+```
 	-vmargs
 	--add-modules=ALL-SYSTEM
 
@@ -97,6 +90,19 @@ d) Edit the `/{dev_home}/eclipse/[instance-name]/eclipse.ini` file and set this 
 	-Xms256m
 	-Xmx1024m
 	-Xverify:none
+```
+
+NOTE: latest versions of eclipse have an embeded JRE so this is **NOT necessary** (see eclipse.ini) 
+```
+	# JDK 1.8 <<<<<<<< USE JDK8 if runninig OEPE (Oracle Enterprise Pack)
+	-vm
+	d:/java/jdk8/jre/bin/server/jvm.dll
+	-vmargs
+
+	# JDK > 9: see  https://wiki.eclipse.org/Configure_Eclipse_for_Java_9
+	--launcher.appendVmargs
+	-vm
+	d:/java/jdk15/bin/server/jvm.dll
 ```
 
 ## [3]: Launch Eclipse
@@ -205,7 +211,23 @@ This behavior can be disabled at `[Team] > [Git] > [Projects]` and **deselect** 
 **BEWARE Some maven artifacts are loaded form EJIE reports and the IZENPE certs are needed** 
 
 Import the [IZENPE CERTS] at the [jdk] used to start eclipse (seee -vm param above)  
-see [Maven certs install](../maven/maven_certs.read.me)
+see [Maven certs install](../maven/maven_certs.read.me) for details
+
+open the `eclipse.ini` file and locate the JRE folder, something like: 
+
+	-vm
+	plugins/org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_15.0.2.v20210201-0955/jre/bin
+
+open a terminal and using this path:
+
+	cd {develop_home}/eclipse/{eclipse-version}/plugins/{jre-version}/jre/bin
+	
+then install the certs:
+
+	keytool -keystore ..\lib\security\cacerts -import -file {develop_home}\projects\fabric\r01f\docs\eclipse\maven\certs\izenpe.com.cer -alias izenpe_root -storepass changeit
+	keytool -keystore ..\lib\security\cacerts -import -file {develop_home}\projects\fabric\r01f\docs\eclipse\maven\certs\CAAAPPVascas.cer -alias CAAAPPVascas -storepass changeit
+	keytool -keystore ..\lib\security\cacerts -import -file {develop_home}\projects\fabric\r01f\docs\eclipse\maven\certs\builds1.alm02.itbatera.euskadi.eus.cer -alias builds1.alm02.itbatera.euskadi.eus -storepass changeit
+
 
 
 c) **[Java]**
