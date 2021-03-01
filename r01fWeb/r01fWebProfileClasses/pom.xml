@@ -42,17 +42,17 @@
 			<artifactId>r01fReflectionClasses</artifactId>
 			<version>${revision}</version>
 		</dependency>
-		
+
 		<!-- ///////////////////////////////////////// -->
 		<!-- ServletAPI                                -->
 		<!-- ///////////////////////////////////////// -->
 		<dependency>
 		    <groupId>javax.servlet</groupId>
 		    <artifactId>javax.servlet-api</artifactId>
-		    <version>3.1.0</version>
+		    <version>4.0.1</version>
 		    <scope>provided</scope>		<!-- BEWARE!!! -->
 		</dependency>
-		
+
 		<!-- ///////////////////////////////////////// -->
 		<!-- R01F: Proxy Servlet                       -->
 		<!-- 			> httpclient & file upload     -->
@@ -76,7 +76,7 @@
 		    </exclusions>
 		</dependency>
 	</dependencies>
-	
+
 <!-- ====================================================================== -->
 <!-- BUILD                                                                  -->
 <!-- ====================================================================== -->
@@ -94,7 +94,7 @@
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
 					<version>1.0.0</version>
-					<configuration> 
+					<configuration>
 						<lifecycleMappingMetadata>
 							<pluginExecutions>
 								<!-- flatten plugin -->
