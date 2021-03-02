@@ -72,6 +72,9 @@ public abstract class CommonOIDs {
 		}
 		public static final UsageID DEFAULT = UsageID.forId("default");
 	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////////////////
 	@Immutable
 	@MarshallType(as="systemId")
 	@EqualsAndHashCode(callSuper=true)
@@ -93,12 +96,46 @@ public abstract class CommonOIDs {
 			return new SystemID(id);
 		}
 	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////////////////
+	public static interface IsAppIdentifier
+					extends OIDTyped<String> {
+		// just extend
+	}
+	/**
+	 * App Identifier
+	 */
+	@NoArgsConstructor
+	public static abstract class AppIdentifierBase
+	                     extends OIDBaseMutable<String>
+					  implements IsAppIdentifier {
+
+		private static final long serialVersionUID = -969239391418430799L;
+
+		public AppIdentifierBase(final String oid) {
+			super(oid);
+		}
+		@Override
+		public boolean equals(final Object obj) {
+			if (obj == null) return false;
+			if (this == obj) return true;
+			if (!(obj instanceof AppIdentifierBase)) return false;
+
+			AppIdentifierBase other = (AppIdentifierBase)obj;
+			boolean eqs = this.getId() != null && other.getId() != null ? this.getId().equals(other.getId())
+																		: this.getId() != null && other.getId() == null ? false
+																				 										: this.getId() == null && other.getId() != null ? false
+																				 												 										: true;	// both null
+			return eqs;
+		}
+	}
 	/**
 	 * AppCode
 	 */
 	@NoArgsConstructor
 	public static abstract class AppCodeBase
-	                     extends OIDBaseMutable<String> {
+	                     extends AppIdentifierBase {
 		private static final long serialVersionUID = 4050287656751295712L;
 
 		public AppCodeBase(final String oid) {
@@ -109,7 +146,7 @@ public abstract class CommonOIDs {
 			if (obj == null) return false;
 			if (this == obj) return true;
 			if (!(obj instanceof AppCodeBase)) return false;
-			
+
 			AppCodeBase other = (AppCodeBase)obj;
 			boolean eqs = this.getId() != null && other.getId() != null ? this.getId().equals(other.getId())
 																		: this.getId() != null && other.getId() == null ? false
@@ -154,13 +191,13 @@ public abstract class CommonOIDs {
 		public boolean equals(final Object obj) {
 			return super.equals(obj);
 		}
-	}	
+	}
 	/**
 	 * AppCode component
 	 */
 	@NoArgsConstructor
 	public static abstract class AppComponentBase
-	                     extends OIDBaseMutable<String> {
+	                     extends AppIdentifierBase {
 		private static final long serialVersionUID = 2884200091000668089L;
 
 		public static final AppComponent DEFAULT = AppComponent.forId("default");
@@ -173,13 +210,13 @@ public abstract class CommonOIDs {
 			return this.is(NO_COMPONENT);
 		}
 		public abstract AppComponent asAppComponent();
-		
+
 		@Override
 		public boolean equals(final Object obj) {
 			if (obj == null) return false;
 			if (this == obj) return true;
 			if (!(obj instanceof AppComponentBase)) return false;
-			
+
 			AppComponentBase other = (AppComponentBase)obj;
 			// compare objects of the same type, otherwise equals will fail
 			return this.getId() != null && other.getId() != null ? this.getId().equals(other.getId())
@@ -321,7 +358,7 @@ public abstract class CommonOIDs {
 	public static abstract class TokenBase
 	     		      	 extends OIDBaseMutable<String>
 					  implements IsToken {
-		
+
 		private static final long serialVersionUID = 2597097651034832977L;
 
 		public TokenBase(final String oid) {
