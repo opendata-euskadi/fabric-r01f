@@ -31,10 +31,10 @@ public abstract class ServiceIDs {
 	private static abstract class AppCodeAndModuleBase<A extends AppCodeBase,M extends AppComponentBase> {
 		@MarshallField(as="appCode",whenXml=@MarshallFieldAsXml(attr=true))
 		@Getter private final A _appCode;
-		
+
 		@MarshallField(as="module",whenXml=@MarshallFieldAsXml(attr=true))
 		@Getter private final M _module;
-		
+
 		public String asString() {
 			return this.toString();
 		}
@@ -58,7 +58,7 @@ public abstract class ServiceIDs {
 					&& module.equals(_module);
 			} else if (obj instanceof String) {
 				return obj.toString().equals(this.toString());
-			} 
+			}
 			return super.equals(obj);
 		}
 	}
@@ -70,7 +70,7 @@ public abstract class ServiceIDs {
 	 */
 	@MarshallType(as="clientApiAppCode")
 	@NoArgsConstructor
-	public static final class ClientApiAppCode 
+	public static final class ClientApiAppCode
 	                  extends AppCode {
 		private static final long serialVersionUID = 7093516452073951301L;
 		public ClientApiAppCode(final String oid) {
@@ -105,7 +105,7 @@ public abstract class ServiceIDs {
 	 */
 	@MarshallType(as="coreAppCode")
 	@NoArgsConstructor
-	public static final class CoreAppCode 
+	public static final class CoreAppCode
 	                  extends AppCode {
 		private static final long serialVersionUID = 7498970290219115981L;
 		public CoreAppCode(final String oid) {
@@ -140,7 +140,7 @@ public abstract class ServiceIDs {
 	 */
 	@MarshallType(as="coreModule")
 	@NoArgsConstructor
-	public static final class CoreModule 
+	public static final class CoreModule
 	                  extends AppComponent {
 		private static final long serialVersionUID = -8935025566081906908L;
 		public CoreModule(final String oid) {
@@ -170,8 +170,9 @@ public abstract class ServiceIDs {
 		public static final CoreModule NOTIFIER = CoreModule.forId("notifier");
 		public static final CoreModule BUSINESS = CoreModule.forId("business");
 		public static final CoreModule SECURITY = CoreModule.forId("security");
+		public static final CoreModule HISTORY = CoreModule.forId("history");
 		public static final CoreModule CMS = CoreModule.forId("cms");
-		
+
 		@Override
 		public int hashCode() {
 			return super.hashCode();
@@ -184,7 +185,7 @@ public abstract class ServiceIDs {
 	@MarshallType(as="coreAppAndModule")
 	@EqualsAndHashCode(callSuper=true)
 	@Accessors(prefix="_")
-	public static final class CoreAppAndModule 
+	public static final class CoreAppAndModule
 				      extends AppCodeAndModuleBase<CoreAppCode,CoreModule> {
 		public CoreAppAndModule(@MarshallFrom("appCode") final CoreAppCode api,@MarshallFrom("module") final CoreModule module) {
 			super(api,module);
