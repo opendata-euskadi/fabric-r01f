@@ -37,6 +37,7 @@ import r01f.model.metadata.annotations.ModelObjectData;
 import r01f.reflection.ReflectionUtils;
 import r01f.reflection.outline.TypeOutline;
 import r01f.reflection.scanner.ScannerFilter;
+import r01f.types.JavaPackage;
 import r01f.util.types.Strings;
 import r01f.util.types.collections.CollectionUtils;
 
@@ -52,8 +53,11 @@ public class TypeMetaDataInspector
 		// nothing
 	}
 	public TypeMetaDataInspector(final AppCode appCode) {
+		this(JavaPackage.of(appCode));
+	}
+	public TypeMetaDataInspector(final JavaPackage pckg) {
 		this();
-		this.init(appCode);
+		this.init(pckg);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  SINGLETON
@@ -77,16 +81,20 @@ public class TypeMetaDataInspector
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CACHE
 /////////////////////////////////////////////////////////////////////////////////////////
-	@Getter private ConcurrentMap<Class<? extends MetaDataDescribable>,TypeMetaData<? extends MetaDataDescribable>> _inspectedTypes = Maps.newConcurrentMap();
+	@Getter private final ConcurrentMap<Class<? extends MetaDataDescribable>,TypeMetaData<? extends MetaDataDescribable>> _inspectedTypes = Maps.newConcurrentMap();
 
-	@Getter private Map<AppCode,Boolean> _initialized = Maps.newHashMapWithExpectedSize(2);
+	@Getter private final Map<JavaPackage,Boolean> _initialized = Maps.newHashMapWithExpectedSize(2);
 
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 	public static Reflections buildAnnotationsScanner(final AppCode appCode) {
-		final String modelObjPackage = Strings.customized("{}.model",
-														  appCode);
+		return TypeMetaDataInspector.buildAnnotationsScanner(JavaPackage.of(Strings.customized("{}.model",
+														  									   appCode)));
+	}
+	public static Reflections buildAnnotationsScanner(final JavaPackage pckg) {
+		String modelObjPackage = pckg.asString();
+
 		List<URL> modelObjTypesUrl = new ArrayList<URL>();
 		modelObjTypesUrl.addAll(ClasspathHelper.forPackage(modelObjPackage));	// xxx.model.*
 		Reflections ref = new Reflections(new ConfigurationBuilder()
@@ -122,22 +130,32 @@ public class TypeMetaDataInspector
 	 * BEWARE! all types annotated with @ModelObjectData MUST implement {@link MetaDataDescribable}
 	 * @param appCode
 	 */
-	@SuppressWarnings("unchecked")
 	public void init(final AppCode appCode) {
-		log.info("Finding model objects for {} api at {}.model.*",
-				 appCode,appCode);
+		this.init(JavaPackage.of(appCode));
+	}
+	/**
+	 * Finds all @ModelObjectData annotated types at package {appCode}.model.*
+	 * for each found type, the {@link #inspect(Class)} method is called
+	 * A CACHE is used to avoid inspecting types all over again
+	 *
+	 * BEWARE! all types annotated with @ModelObjectData MUST implement {@link MetaDataDescribable}
+	 * @param appCode
+	 */
+	@SuppressWarnings("unchecked")
+	public void init(final JavaPackage pckg) {
+		log.info("Finding model objects at {}",
+				 pckg);
 
 		// [0] - Avoid duplicate initialization
-		Boolean initialized = _initialized.get(appCode);
+		Boolean initialized = _initialized.get(pckg);
 		if (initialized != null
 		&& initialized == true) {
-			log.info("The inspector was already initialized! for {}",appCode);
+			log.info("The [type metadata inspector] was already initialized! for {}",pckg);
 //			throw new IllegalStateException("The inspector was already initialized! for " + apiAppAndModule);
 		}
 
-
 		// [1] - Find every type annotated with ModelObjectData
-		Reflections reflections = TypeMetaDataInspector.buildAnnotationsScanner(appCode);
+		Reflections reflections = TypeMetaDataInspector.buildAnnotationsScanner(pckg);
 		Set<Class<?>> modelObjTypes = reflections.getTypesAnnotatedWith(ModelObjectData.class);
 
 		// [2] - For every found type, look at the @ModelObjectData annotation and load the ModelObjectMetaData
@@ -153,7 +171,7 @@ public class TypeMetaDataInspector
 		}
 
 		// [3] - The inspector is initialized
-		_initialized.put(appCode,true);
+		_initialized.put(pckg,true);
 	}
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -294,6 +312,7 @@ public class TypeMetaDataInspector
 
 		// [3] - Introspect fields of the type containing the metadata
 		//		 (consider all fields, including those in the type hierarchy)
+		@SuppressWarnings("rawtypes")
 		TypeSet hasMetaDataTypeSet = TypeToken.of(hasMetaDataType)
 											  .getTypes();
 		Iterator<TypeToken<?>> typeTokenIt = hasMetaDataTypeSet.iterator();
@@ -324,7 +343,7 @@ public class TypeMetaDataInspector
 			boolean isIface = ReflectionUtils.isInterface(hasMetaDataTypeToken.getRawType());
 			boolean isAbstract = ReflectionUtils.isAbstract(hasMetaDataTypeToken.getRawType());
 			if (!isIface && !isAbstract) continue;
-			
+
 			final Method[] methods = hasMetaDataTypeToken.getRawType()
 														 .getDeclaredMethods();
 			Collection<TypeFieldMetaData> nodeMethodsMetaData = FluentIterable.from(methods)
