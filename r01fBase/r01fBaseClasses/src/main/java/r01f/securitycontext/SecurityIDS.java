@@ -289,6 +289,7 @@ public abstract class SecurityIDS {
 			if (!EMail.validate(mail)) throw new IllegalArgumentException(mail + " is NOT a valid email!");
 			return LoginID.fromEMail(EMail.of(mail));
 		}
+
 		public static final LoginID ANONYMOUS = LoginID.forId("anonymous");
 		public boolean isAnonymous() {
 			return this.is(ANONYMOUS);
@@ -342,13 +343,13 @@ public abstract class SecurityIDS {
 		}
 
 		public static final UserLoginEntryID NOT_CONFIRMED = new UserLoginEntryID("NOT_CONFIRMED");
-		
+
 		public static final UserLoginEntryID LOGIN_OK = new UserLoginEntryID("LOGIN_OK");
 		public static final UserLoginEntryID LOGIN_ERROR = new UserLoginEntryID("LOGIN_ERROR");
-		
+
 		public static final UserLoginEntryID PASSWORD_RECORVERY_REQUEST = new UserLoginEntryID("PASSWORD_RECOVERY_REQUEST");
 		public static final UserLoginEntryID PASSWORD_CHANGED = new UserLoginEntryID("PASSWORD_CHANGED");
-		
+
 		public static final UserLoginEntryID IMPERSONATION_PENDING = new UserLoginEntryID("IMPERSONATION_PENDING");
 		public static final UserLoginEntryID IMPERSONATION_NOT_VALID = new UserLoginEntryID("IMPERSONATION_NOT_VALID");
 
