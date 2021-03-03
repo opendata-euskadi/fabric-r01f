@@ -68,11 +68,10 @@
 		<!-- ///////////////////////////////////////// -->
 		<!-- Apache commons							   -->
 		<!-- ///////////////////////////////////////// -->
-		<!--  commons-lang3: Keep this version, otherwise XLNets does not work  -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>3.3.2</version>
+			<version>3.11</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-codec</groupId>
