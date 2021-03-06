@@ -36,17 +36,18 @@ public enum Language
 
 	DEUTCH		(40,"de","deu"),
 
-	KOREAN		(50,"ko","kor"),
+	ITALIAN		(58,"it","ita"),
+	PORTUGUESE	(59,"pt","por"),
 	POLISH		(51,"pl","pol"),
 	SWEDISH		(52,"sv","swe"),
 	HUNGARIAN	(53,"hu","hun"),
 	CZECH		(54,"cs","ces"),
 	ROMANIAN	(55,"ro","ron"),
-	JAPANESE	(56,"ja","jpn"),
+	
 	RUSSIAN		(57,"ru","rus"),
-	ITALIAN		(58,"it","ita"),
-	PORTUGUESE	(59,"pt","por"),
-
+	
+	KOREAN		(50,"ko","kor"),
+	JAPANESE	(56,"ja","jpn"),
 
 	ANY			(0,null,null);
 
