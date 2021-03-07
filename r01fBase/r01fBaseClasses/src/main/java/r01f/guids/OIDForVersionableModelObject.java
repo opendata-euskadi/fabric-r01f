@@ -9,12 +9,12 @@ public interface OIDForVersionableModelObject
 	/**
 	 * @return the version independent oid
 	 */
-	public VersionIndependentOID getOid();
+	public VersionIndependentOID getVersionIndependentOid();
 //	/**
 //	 * Sets the version independent oid
 //	 * @param versionIndependentOid
 //	 */
-//	public void setOid(final VersionIndependentOID versionIndependentOid);
+//	public void setVersionIndependentOid(final VersionIndependentOID versionIndependentOid);
 	/**
 	 * @return the version
 	 */

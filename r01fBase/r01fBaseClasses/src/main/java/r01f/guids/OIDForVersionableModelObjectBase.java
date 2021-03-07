@@ -20,8 +20,48 @@ public abstract class OIDForVersionableModelObjectBase
 
 	private static final long serialVersionUID = -6745951154429443045L;
 /////////////////////////////////////////////////////////////////////////////////////////
-//  METHODS
+//  
 /////////////////////////////////////////////////////////////////////////////////////////
+	@Override @GwtIncompatible("gwt does NOT supports reflection")
+	protected Object clone() throws CloneNotSupportedException {
+		if (this.getVersionIndependentOid() == null || this.getVersion() == null) throw new IllegalStateException(Strings.customized("The oid of type {} has NO state",this.getClass()));
+		VersionIndependentOID clonedVersionIndependentOid = ObjectUtils.clone(this.getVersionIndependentOid());
+		VersionOID clonedVersionOid = ObjectUtils.clone(this.getVersion());
+		Object outOid = _createVersionableOIDFromString((Class<? extends VersionIndependentOID>)clonedVersionIndependentOid.getClass(),(Class<? extends VersionOID>)clonedVersionOid.getClass(),
+														clonedVersionIndependentOid,clonedVersionOid);
+		return outOid;
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	
+/////////////////////////////////////////////////////////////////////////////////////////	
+	@Override
+	public int compareTo(final OID o) {
+		if (o == null) return -1;
+		if (this.getVersionIndependentOid() == null) return 1;
+		return this.toString().compareTo(o.toString());
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	
+/////////////////////////////////////////////////////////////////////////////////////////	
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(this.getVersionIndependentOid(),this.getVersion());
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	
+/////////////////////////////////////////////////////////////////////////////////////////	
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == null) return false;
+		if (obj == this) return true;
+		if (obj instanceof OIDForVersionableModelObjectBase) {
+			OIDForVersionableModelObjectBase otherVersionable = (OIDForVersionableModelObjectBase)obj;
+			boolean oidEquals = Objects.equal(otherVersionable.getVersionIndependentOid(),this.getVersionIndependentOid()); 
+			boolean versionEquals = Objects.equal(otherVersionable.getVersion(),this.getVersion());
+			return oidEquals && versionEquals;
+		} 
+		return false;
+	}
 	@Override
 	public <O extends OID> boolean is(final O other) {
 		return this.equals(other);
@@ -32,80 +72,41 @@ public abstract class OIDForVersionableModelObjectBase
 	}
 	@Override
 	public <O extends OID> boolean isIgnoringCase(final O other) {
+		if (this == other) return true;
+		if (other == null) return false;
 		if (other instanceof OIDForVersionableModelObjectBase) {
-			OIDForVersionableModelObjectBase versionable = (OIDForVersionableModelObjectBase)other;
-			boolean oidEquals = versionable.getOid().isIgnoringCase(this.getOid()); 
-			boolean versionEquals = versionable.getVersion().isIgnoringCase(this.getVersion());
-			return oidEquals && versionEquals;
+			OIDForVersionableModelObjectBase otherVersionable = (OIDForVersionableModelObjectBase)other;
+			boolean versionIndOidEquals = otherVersionable.getVersionIndependentOid().isIgnoringCase(this.getVersionIndependentOid()); 
+			boolean versionEquals = otherVersionable.getVersion().isIgnoringCase(this.getVersion());
+			return versionIndOidEquals && versionEquals;
 		} 
 		return false;
 	}
-	@Override
-	public String toString() {
-		String outStr = null;
-		if (this.getOid() != null && this.getVersion() != null) {
-			outStr = Strings.customized("{}/{}",this.getOid(),this.getVersion());
-		} else {
-			throw new IllegalStateException(Strings.customized("A {} without oid (only oid or version is NOT allowed",this.getClass()));
-		} 
-		return outStr;
-	}
-	@Override @GwtIncompatible("gwt does NOT supports reflection")
-	protected Object clone() throws CloneNotSupportedException {
-		if (this.getOid() == null || this.getVersion() == null) throw new IllegalStateException(Strings.customized("The oid of type {} has NO state",this.getClass()));
-		VersionIndependentOID clonedVersionIndependentOid = ObjectUtils.clone(this.getOid());
-		VersionOID clonedVersionOid = ObjectUtils.clone(this.getVersion());
-		Object outOid = _createVersionableOIDFromString((Class<? extends VersionIndependentOID>)clonedVersionIndependentOid.getClass(),(Class<? extends VersionOID>)clonedVersionOid.getClass(),
-														clonedVersionIndependentOid,clonedVersionOid);
-		return outOid;
-	}
-	@Override
-	public int compareTo(final OID o) {
-		if (o == null) return -1;
-		if (this.getOid() == null) return 1;
-		return this.toString().compareTo(o.toString());
-	}
-	@Override
-	public int hashCode() {
-		return Objects.hashCode(this.getOid(),this.getVersion());
-	}
-	@Override
-	public boolean equals(final Object obj) {
-		if (obj == null) return false;
-		if (obj == this) return true;
-		if (obj instanceof OIDForVersionableModelObjectBase) {
-			OIDForVersionableModelObjectBase versionable = (OIDForVersionableModelObjectBase)obj;
-			boolean oidEquals = Objects.equal(versionable.getOid(),this.getOid()); 
-			boolean versionEquals = Objects.equal(versionable.getVersion(),this.getVersion());
-			return oidEquals && versionEquals;
-		} 
-		return false;
-	}
-	@Override
+	@Override @SuppressWarnings("unchecked")
 	public <O extends OID> boolean isContainedIn(final O... oids) {
 		return oids != null ? this.isContainedIn(Arrays.asList(oids))
 							: false;
 	}
-	@Override
+	@Override @SuppressWarnings("unchecked")
 	public <O extends OID> boolean isNOTContainedIn(final O... oids) {
 		return !this.isContainedIn(oids);
 	}
 	@Override
 	public <O extends OID> boolean isContainedIn(final Iterable<O> oids) {
-    	boolean outIsContained = false;
-    	if (oids != null) {
-    		for (O oid : oids) {
-    			if (oid.equals(this)) {
-    				outIsContained = true;
-    				break;
-    			}
-    		}
-    	}
-    	return outIsContained;
+		boolean outIsContained = false;
+		if (oids != null) {
+			for (O oid : oids) {
+				if (oid.equals(this)) {
+					outIsContained = true;
+					break;
+				}
+			}
+		}
+		return outIsContained;
 	}
 	@Override
 	public <O extends OID> boolean isNOTContainedIn(final Iterable<O> oids) {
-    	return !this.isContainedIn(oids);
+		return !this.isContainedIn(oids);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  
@@ -118,15 +119,28 @@ public abstract class OIDForVersionableModelObjectBase
 //  
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
+	public String toString() {
+		String outStr = null;
+		if (this.getVersionIndependentOid() != null && this.getVersion() != null) {
+			outStr = Strings.customized("{}/{}",this.getVersionIndependentOid(),this.getVersion());
+		} else {
+			throw new IllegalStateException(Strings.customized("A {} without oid (only oid or version is NOT allowed",this.getClass()));
+		} 
+		return outStr;
+	}
+	@Override
 	public String asString() {
 		return this.toString();
 	}
 	public String memoCode() {
 		return this.toString();
 	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	
+/////////////////////////////////////////////////////////////////////////////////////////	
 	@Override
 	public boolean isValid() {
-		return this.getOid() != null && this.getOid().isValid() 
+		return this.getVersionIndependentOid() != null && this.getVersionIndependentOid().isValid() 
 			&& this.getVersion() != null && this.getVersion().isValid();
 	}
 ///////////////////////////////////////////////////////////////////////////////
@@ -138,27 +152,27 @@ public abstract class OIDForVersionableModelObjectBase
 		Preconditions.checkArgument(versionIndependentOid != null && versionOid != null,
 									"an OIDForVersionableModelObject cannot have a null VersionIndependentOID nor a null VersionOID");
 		// find the constructor
-        Constructor<?> constructor = null;
-        try {
-            constructor = this.getClass()
-            				  .getDeclaredConstructor(new Class<?>[] {versionIndependentOidType,versionOidType}); 	// Constructor
-        } catch (NoSuchMethodException nsmEx) {
-        	throw new IllegalArgumentException(Strings.customized("Type {} is NOT a valid {}: it does NOT have a {}({},{}) constructor",
-        													 	  this.getClass(),OIDForVersionableModelObject.class.getSimpleName(),
-        													 	  this.getClass().getSimpleName(),VersionIndependentOID.class,VersionOID.class));        	
-        }
+		Constructor<?> constructor = null;
+		try {
+			constructor = this.getClass()
+							  .getDeclaredConstructor(new Class<?>[] {versionIndependentOidType,versionOidType}); 	// Constructor
+		} catch (NoSuchMethodException nsmEx) {
+			throw new IllegalArgumentException(Strings.customized("Type {} is NOT a valid {}: it does NOT have a {}({},{}) constructor",
+															 	  this.getClass(),OIDForVersionableModelObject.class.getSimpleName(),
+															 	  this.getClass().getSimpleName(),VersionIndependentOID.class,VersionOID.class));			
+		}
 		// create the oid
-        O outOid = null;
-        try {
-        	outOid = (O)constructor.newInstance(new Object[] {versionIndependentOid,versionOid});
-        } catch (Throwable th) {
-        	th.printStackTrace();
-        	throw new IllegalStateException(Strings.customized("Could NOT create a {} instance using the {}({},{}) constructor: {}",
-        												  	   this.getClass(),
-        												  	   this.getClass().getSimpleName(),VersionIndependentOID.class,VersionOID.class,
-        												  	   th.getMessage()),
-        									th);
-        }
+		O outOid = null;
+		try {
+			outOid = (O)constructor.newInstance(new Object[] {versionIndependentOid,versionOid});
+		} catch (Throwable th) {
+			th.printStackTrace();
+			throw new IllegalStateException(Strings.customized("Could NOT create a {} instance using the {}({},{}) constructor: {}",
+														  	   this.getClass(),
+														  	   this.getClass().getSimpleName(),VersionIndependentOID.class,VersionOID.class,
+														  	   th.getMessage()),
+											th);
+		}
 		return outOid;
 	}
 }
