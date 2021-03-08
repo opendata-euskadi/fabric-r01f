@@ -17,7 +17,7 @@ public interface OID
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-	public static final int OID_LENGTH = 50;
+	public static final int OID_LENGTH = 100;
 	public static final String STATIC_FACTORY_METHOD_NAME = "forId";
 	public static final String STATIC_SUPPLIER_METHOD_NAME = "supply";
 	public static final String REGEX_NOCAPTURE = "[0-9A-Za-z_-]+";
