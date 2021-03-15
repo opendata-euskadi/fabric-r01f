@@ -2,9 +2,11 @@ package r01f.util.types;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Set;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -75,6 +77,12 @@ public abstract class StringSplitter {
 	 */
 	public Collection<String> toCollection() {
 		return Lists.newArrayList(this.toArray());
+	}
+	/**
+	 * @return the iterator as a {@link Set}
+	 */
+	public Set<String> toSet() {
+		return Sets.newLinkedHashSet(this.split());
 	}
 	/**
 	 * Returns one of the element of the splitted string
