@@ -62,7 +62,11 @@ This GLOBAL logback.xml is NOT ENVIRONMENT DEPENDENT
 	-->
 	<appender name="app_log" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-			<level>TRACE</level>
+			<!-- filters events below the specified threshold: 
+					- if set to a high level (TRACE) the level is determined by the package config
+				 	- if set to a low level (ERROR) no log will be logged below this, no matter the package config.
+			-->
+			<level>TRACE</level> 
 		</filter>
 		<!-- When in a weblogic cluster and logs located in a NAS, if the log file name does NOT include something
 			 for each cluster node (like the server's name), N JVMs will be writing at the same file; this is a performance botlenect.
@@ -87,6 +91,13 @@ This GLOBAL logback.xml is NOT ENVIRONMENT DEPENDENT
 	<!-- <consolePlugin /> -->
 
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<!-- filters events below the specified threshold: 
+					- if set to a high level (TRACE) the level is determined by the package config
+				 	- if set to a low level (ERROR) no log will be logged below this, no matter the package config.
+			-->
+			<level>TRACE</level> 
+		</filter>
 		<!-- encoders are assigned the type
 		     ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
 		<encoder>
