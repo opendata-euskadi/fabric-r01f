@@ -1,9 +1,18 @@
 package r01f.types.url;
 
+import java.util.Set;
+
+import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Sets;
+
 import lombok.experimental.Accessors;
 import r01f.guids.OIDBaseMutable;
 import r01f.objectstreamer.annotations.MarshallIgnoredField;
 import r01f.objectstreamer.annotations.MarshallType;
+import r01f.util.types.StringSplitter;
+import r01f.util.types.Strings;
+import r01f.util.types.collections.CollectionUtils;
 
 @MarshallType(as="host")
 @Accessors(prefix="_")
@@ -89,5 +98,33 @@ public class Host
 		if (!this.getId().contains(".")) return null;
 		int lastDotPos = this.getId().lastIndexOf('.');
 		return this.getId().substring(lastDotPos+1);
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	
+/////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Try to match domains ignoring environments
+	 * @param h1
+	 * @param h2
+	 * @return
+	 */
+	public static boolean areSameHostIgnoringEnv(final Host h1,final Host h2,
+												 final String... envParts) {
+		if (CollectionUtils.isNullOrEmpty(envParts)) return h1.is(h2);
+		
+		Set<String> h1Parts = StringSplitter.using(Splitter.on("."))
+											.at(h1.asString())
+											.toSet();
+		Set<String> h2Parts = StringSplitter.using(Splitter.on("."))
+											.at(h2.asString())
+											.toSet();
+		Set<String> inh1notinh2 = Sets.difference(h1Parts,h2Parts);
+		Set<String> inh2notinh1 = Sets.difference(h2Parts,h1Parts);
+		Set<String> difs = Sets.union(inh1notinh2,inh2notinh1);
+		
+		if (difs.size() == 0) return true;	// no differences
+		if (difs.size() > 1) return false;	// different!
+		if (Strings.isContainedWrapper(Iterables.getFirst(difs,"")).containsAny(envParts)) return true;
+		return false;
 	}
 }

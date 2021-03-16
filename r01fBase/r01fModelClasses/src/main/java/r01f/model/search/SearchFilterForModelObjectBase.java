@@ -147,6 +147,14 @@ public abstract class SearchFilterForModelObjectBase<SELF_TYPE extends SearchFil
 		_UILanguage = lang;
 		return (SELF_TYPE)this;
 	}
+	/**
+	 * Returns the UI language or the provided default one if the stored UI language is null
+	 * @param def
+	 * @return
+	 */
+	public Language getUILanguageOrDefault(final Language def) {
+		return _UILanguage != null ? _UILanguage : def;
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  FILTERED OBJECT TYPES
 /////////////////////////////////////////////////////////////////////////////////////////

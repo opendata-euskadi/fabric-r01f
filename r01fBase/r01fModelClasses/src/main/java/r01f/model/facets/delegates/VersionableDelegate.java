@@ -29,12 +29,12 @@ public class VersionableDelegate<V extends HasVersionableFacet & HasOID<? extend
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
-	public VersionOID getVersionOid() {
-		return _modelObject.getOid().getVersion();
+	public VersionIndependentOID getVersionIndependentOid() {
+		return _modelObject.getOid().getVersionIndependentOid();
 	}
 	@Override
-	public VersionIndependentOID getVersionIndependentOid() {
-		return _modelObject.getOid().getOid();
+	public VersionOID getVersionOid() {
+		return _modelObject.getOid().getVersion();
 	}
 	@Override
 	public Date getStartOfUseDate() {
