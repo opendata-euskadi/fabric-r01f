@@ -120,8 +120,8 @@ public abstract class TypeScan {
 	 * @param baseClass
 	 * @return
 	 */
-	public synchronized static <T> Set<Class<? extends T>> findSubTypesOfInJavaPackages(final Class<T> baseClass,
-															 			   			    final Collection<JavaPackage> javaPackages) {
+	public static <T> Set<Class<? extends T>> findSubTypesOfInJavaPackages(final Class<T> baseClass,
+															 			   final Collection<JavaPackage> javaPackages) {
 		// find the sub-types
 		Set<Class<? extends T>> outSubTypes = SubTypeOfScanner.findSubTypesAt(baseClass,
 																			  javaPackages);

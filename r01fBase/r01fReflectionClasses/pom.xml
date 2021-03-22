@@ -37,8 +37,8 @@
 		<!-- ///////////////////////////////////////// -->
 		<dependency>
 			<groupId>org.reflections</groupId>
-			<artifactId>reflections</artifactId>
-			<version>0.9.10</version>
+			<artifactId>reflections</artifactId>	
+			<version>0.9.10</version>	<!-- v0.9.12 fixes a concurrency issue BUT does REQUIRES JDK8 -->
 
 			<exclusions>
 				<exclusion>
