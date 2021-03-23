@@ -3,7 +3,7 @@
 		xmlns="http://maven.apache.org/POM/4.0.0"
 			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
-	
+
 <!-- ====================================================================== -->
 <!-- PARENT                                                                 -->
 <!-- ====================================================================== -->
@@ -12,13 +12,13 @@
 		<artifactId>r01fBase</artifactId>
 		<version>${revision}</version>
 	</parent>
-	
+
 <!-- ====================================================================== -->
 <!-- ARTIFACT                                                               -->
 <!-- ====================================================================== -->
 	<name>r01fReflectionClasses</name>
 	<artifactId>r01fReflectionClasses</artifactId>
-	
+
 <!-- ====================================================================== -->
 <!-- DEPENDENCIES                                                           -->
 <!-- ====================================================================== -->
@@ -31,15 +31,18 @@
 			<artifactId>r01fBaseClasses</artifactId>
 			<version>${revision}</version>
 		</dependency>
-		
+
 		<!-- ///////////////////////////////////////// -->
 		<!-- org.reflections                           -->
 		<!-- ///////////////////////////////////////// -->
 		<dependency>
+		   <!-- Downgraded to 0.9.9 becasuse of multithread issues on version 0.9.10, 0.9.11
+		        https://github.com/ronmamo/reflections/issues/81
+		        v0.9.12 fixes a concurrency issue BUT does REQUIRES JDK
+		      -->
 			<groupId>org.reflections</groupId>
-			<artifactId>reflections</artifactId>	
-			<version>0.9.10</version>	<!-- v0.9.12 fixes a concurrency issue BUT does REQUIRES JDK8 -->
-
+			<artifactId>reflections</artifactId>
+			<version>0.9.9</version>
 			<exclusions>
 				<exclusion>
 					<groupId>com.google.guava</groupId>
@@ -64,7 +67,7 @@
 			</exclusions>
 		</dependency>
 	</dependencies>
-	
+
 <!-- ====================================================================== -->
 <!-- BUILD                                                                  -->
 <!-- ====================================================================== -->
@@ -82,7 +85,7 @@
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
 					<version>1.0.0</version>
-					<configuration> 
+					<configuration>
 						<lifecycleMappingMetadata>
 							<pluginExecutions>
 								<!-- flatten plugin -->
