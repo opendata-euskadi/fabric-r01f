@@ -36,13 +36,13 @@
 		<!-- org.reflections                           -->
 		<!-- ///////////////////////////////////////// -->
 		<dependency>
-		   <!-- Downgraded to 0.9.9 becasuse of multithread issues on version 0.9.10, 0.9.11
+		   <!-- Beware! 0.9.10 and 0.9.11 has multithreading issues that are 
+		   				NOT pressent at 0.9.9 and 0.9.12 (but the later requires JDK 8) 
 		        https://github.com/ronmamo/reflections/issues/81
-		        v0.9.12 fixes a concurrency issue BUT does REQUIRES JDK
 		      -->
 			<groupId>org.reflections</groupId>
 			<artifactId>reflections</artifactId>
-			<version>0.9.9</version>
+			<version>0.9.10</version>
 			<exclusions>
 				<exclusion>
 					<groupId>com.google.guava</groupId>
