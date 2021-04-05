@@ -15,31 +15,20 @@ public interface IsSelectable
 	 */
 	public boolean isSelected();
 	/**
-	 * @return true if the data is selected
+	 * Sets the selection status
+	 * @param status
 	 */
-	public boolean isPrimarySelected();
+	public void setSelectionTo(final boolean status);
 	/**
-	 * @return true if the data is selected BUT because of a secondary selection
+	 * Selects this item.
 	 */
-	public boolean isSecondarySelected();
+	public void setSelected();
 	/**
-	 * Selects the label as selected as a primary pick
-	 * This might select other labels as secondary selected depending on the selection policy
+	 * DeSelect this item
 	 */
-	public void primarySelect();
+	public void setDeSelected();
 	/**
-	 * Sets the data as not selected as a primary pick
-	 * This might deSelect other labels as secondary selected depending on the selection policy
+	 * Toggles the selection status
 	 */
-	public void primaryDeSelect();
-	/**
-	 * DeSelects the data as a secondary selection (because of a primary pick)
-	 * (it's selected because the same data is selected in other place)
-	 */
-	public void secondaryDeSelect();
-	/**
-	 * DeSelects the data as a secondary selection (because of a primary de-selection)
-	 * (it's selected because the same label is selected in other place)
-	 */
-	public void secondarySelect();
+	public void toggleSelected();
 }
