@@ -28,7 +28,7 @@ public class SecurityContextProviderFromThreadLocalStorage
 			log.trace("got a [security context] attached to the [thread local] storage for login={}",
 					  outSecurityContext.getLoginId());
 		} else {
-			log.warn("NO [security context] attached to the [thread local] storage: no security filter in use!!");
+			log.info("NO [security context] attached to the [thread local] storage: no security filter in use!!");
 		}
 		return outSecurityContext;
 	}
