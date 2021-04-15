@@ -20,6 +20,7 @@ import r01f.filestore.api.FileFilter;
 import r01f.filestore.api.FileStoreChecksDelegate;
 import r01f.filestore.api.FileStoreFilerAPI;
 import r01f.types.IsPath;
+import r01f.types.TimeLapse;
 import r01f.util.types.collections.CollectionUtils;
 
 @Slf4j
@@ -34,8 +35,14 @@ public class HDFSFileStoreFilerAPI
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
-	public HDFSFileStoreFilerAPI(final Configuration conf) throws IOException {
-		super(new HDFSFileSystemProvider(conf));
+	public HDFSFileStoreFilerAPI(final Configuration conf) {
+		this(conf,
+			 null);		// no credentials refresh period
+	}
+	public HDFSFileStoreFilerAPI(final Configuration conf,
+								 final TimeLapse credentialsRefreshPeriod) {
+		super(new HDFSFileSystemProvider(conf,
+										 credentialsRefreshPeriod));
 		_api = new HDFSFileStoreAPI(this.getHDFSFileSystemProvider(),this); // reuse the filesystem provider
 		_check = new FileStoreChecksDelegate(_api,this);
 		

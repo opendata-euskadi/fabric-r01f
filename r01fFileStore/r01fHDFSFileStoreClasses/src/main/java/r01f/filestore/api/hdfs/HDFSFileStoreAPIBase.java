@@ -79,7 +79,7 @@ abstract class HDFSFileStoreAPIBase {
 	 * @param io
 	 * @return true if the 
 	 */
-	protected static boolean _isCredentialExpiredError(final IOException io) {
+	protected boolean _isCredentialExpiredError(final IOException io) throws IOException {
 		if (io.getCause() == null || !(io.getCause() instanceof IOException)) return false;
 		
 		Throwable rootCause = io.getCause().getCause();
@@ -87,12 +87,13 @@ abstract class HDFSFileStoreAPIBase {
 											&& rootCause instanceof SaslException;
 		if (isExpiredCredentialException) {
 			log.warn("[refresh hdfs user credential]: CAUSE ticket expired: {}",io.getMessage());
+			
+			// refresh the credential!!!
+			this.getHDFSFileSystemProvider()
+				.refreshCredentials();
 		} else {
 			if (log.isTraceEnabled()) log.trace("[refresh hdfs user credential]: NO NEED to refresh credential > IOException has another root cause!");
 		}
 		return isExpiredCredentialException; 
-	}
-	protected synchronized void _refreshAuthCredential() {
-		
 	}
 }

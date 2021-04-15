@@ -41,10 +41,10 @@ class HDFSFileSystemProvider {
 			  null);
 	 }
 	 HDFSFileSystemProvider(final Configuration conf,
-			 				final TimeLapse credentialsRefreshTimeLapse) {
+			 				final TimeLapse credentialsRefreshPeriod) {
 		_hdfsConf = conf;
-		_credentialsRefreshPeriodMilis = credentialsRefreshTimeLapse != null ? credentialsRefreshTimeLapse.asMilis()
-																		   	 : -1;
+		_credentialsRefreshPeriodMilis = credentialsRefreshPeriod != null ? credentialsRefreshPeriod.asMilis()
+																		  : -1;
 	 }
 /////////////////////////////////////////////////////////////////////////////////////////
 //	

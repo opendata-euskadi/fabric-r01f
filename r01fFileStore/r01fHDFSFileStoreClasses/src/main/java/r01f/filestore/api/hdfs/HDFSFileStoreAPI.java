@@ -21,6 +21,7 @@ import r01f.file.FileID;
 import r01f.file.FileProperties;
 import r01f.filestore.api.FileStoreAPI;
 import r01f.filestore.api.FileStoreChecksDelegate;
+import r01f.types.TimeLapse;
 import r01f.util.types.Strings;
 
 /**
@@ -111,8 +112,14 @@ public class HDFSFileStoreAPI
 /////////////////////////////////////////////////////////////////////////////////////////
 // 	FILESYSTEM STATIC INIT
 /////////////////////////////////////////////////////////////////////////////////////////
-	public HDFSFileStoreAPI(final Configuration conf) throws IOException {
-		super(new HDFSFileSystemProvider(conf));
+	public HDFSFileStoreAPI(final Configuration conf) {
+		this(conf,
+			 null);	// no credentials refresh period
+	}
+	public HDFSFileStoreAPI(final Configuration conf,
+							final TimeLapse credentialsRefreshPeriod) {
+		super(new HDFSFileSystemProvider(conf,
+										 credentialsRefreshPeriod));
 		_check = new FileStoreChecksDelegate(this,
 										  	 new HDFSFileStoreFilerAPI(this.getHDFSFileSystemProvider(),this));	// reuse the filesystem provider
 	}
