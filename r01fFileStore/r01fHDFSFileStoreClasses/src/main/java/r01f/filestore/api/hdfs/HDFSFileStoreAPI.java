@@ -160,6 +160,7 @@ public class HDFSFileStoreAPI
 				outExists = this.getHDFSFileSystem().exists(theHDFSFilePath) 
 					     && this.getHDFSFileSystem().isFile(theHDFSFilePath);
 				// ------------------------------------------------------------
+				retry = false;
 			} catch (IOException ioEx) {
 				retry = _isCredentialExpiredError(ioEx);
 				if (!retry) throw ioEx;
@@ -191,6 +192,7 @@ public class HDFSFileStoreAPI
 												overwrite,	// overwrite
 												this.getHDFSConfiguration());
 				// ------------------------------------------------------------
+				retry = false;
 			} catch (IOException ioEx) {
 				retry = _isCredentialExpiredError(ioEx);
 				if (!retry) throw ioEx;
@@ -216,6 +218,7 @@ public class HDFSFileStoreAPI
 								.rename(_fileIdToHDFSPath(srcFileId),
 									    _fileIdToHDFSPath(dstFileId));
 				// ------------------------------------------------------------
+				retry = false;
 			} catch (IOException ioEx) {
 				retry = _isCredentialExpiredError(ioEx);
 				if (!retry) throw ioEx;
@@ -256,6 +259,7 @@ public class HDFSFileStoreAPI
 											   false,		// append
 											   overwrite);
 				// ------------------------------------------------------------
+				retry = false;
 			} catch (IOException ioEx) {
 				retry = _isCredentialExpiredError(ioEx);
 				if (!retry) throw ioEx;
@@ -283,6 +287,7 @@ public class HDFSFileStoreAPI
 								  true);	// close the streams after writing
 				out.flush();
 				// ------------------------------------------------------------
+				retry = false;
 			} catch (IOException ioEx) {
 				retry = _isCredentialExpiredError(ioEx);
 				if (!retry) throw ioEx;
@@ -316,6 +321,7 @@ public class HDFSFileStoreAPI
 												  true,			// append
 												  false);		// overwrite
 				// ------------------------------------------------------------
+				retry = false;
 			} catch (IOException ioEx) {
 				retry = _isCredentialExpiredError(ioEx);
 				if (!retry) throw ioEx;
@@ -343,6 +349,7 @@ public class HDFSFileStoreAPI
 								  true);	// close after write
 				out.flush();
 				// ------------------------------------------------------------
+				retry = false;
 			} catch (IOException ioEx) {
 				retry = _isCredentialExpiredError(ioEx);
 				if (!retry) throw ioEx;
@@ -374,6 +381,7 @@ public class HDFSFileStoreAPI
 								  true);	// close after write
 				out.flush();
 				// ------------------------------------------------------------
+				retry = false;
 			} catch (IOException ioEx) {
 				retry = _isCredentialExpiredError(ioEx);
 				if (!retry) throw ioEx;
@@ -418,6 +426,7 @@ public class HDFSFileStoreAPI
 							  .create(theFilePath);
 				}
 				// ------------------------------------------------------------
+				retry = false;
 			} catch (IOException ioEx) {
 				retry = _isCredentialExpiredError(ioEx);
 				if (!retry) throw ioEx;
@@ -457,6 +466,7 @@ public class HDFSFileStoreAPI
 					throw new IllegalArgumentException("file offset MUST be > 0");
 				}
 				// ------------------------------------------------------------
+				retry = false;
 			} catch (IOException ioEx) {
 				retry = _isCredentialExpiredError(ioEx);
 				if (!retry) throw ioEx;
@@ -507,6 +517,7 @@ public class HDFSFileStoreAPI
 					if (in != null) in.close();
 				}
 				// ------------------------------------------------------------
+				retry = false;
 			} catch (IOException ioEx) {
 				retry = _isCredentialExpiredError(ioEx);
 				if (!retry) throw ioEx;
@@ -536,6 +547,7 @@ public class HDFSFileStoreAPI
 							  .delete(_fileIdToHDFSPath(fileId),
 								      false);		// recursive=false (it's NOT a folder)
 				// ------------------------------------------------------------
+				retry = false;
 			} catch (IOException ioEx) {
 				retry = _isCredentialExpiredError(ioEx);
 				if (!retry) throw ioEx;
@@ -564,6 +576,7 @@ public class HDFSFileStoreAPI
 											.getFileStatus(theFilePath);
 				outProps = HDFSFileProperties.from(hdfsStatus);
 				// ------------------------------------------------------------
+				retry = false;
 			} catch (IOException ioEx) {
 				retry = _isCredentialExpiredError(ioEx);
 				if (!retry) throw ioEx;
@@ -587,6 +600,7 @@ public class HDFSFileStoreAPI
 							  modifiedTimeInMillis,
 							  -1); // A value of -1 means that this call should not set access time.
 				// ------------------------------------------------------------
+				retry = false;
 			} catch (IOException ioEx) {
 				retry = _isCredentialExpiredError(ioEx);
 				if (!retry) throw ioEx;

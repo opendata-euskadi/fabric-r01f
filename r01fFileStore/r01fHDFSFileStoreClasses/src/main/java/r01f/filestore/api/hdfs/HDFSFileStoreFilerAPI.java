@@ -72,6 +72,7 @@ public class HDFSFileStoreFilerAPI
 									  .getFileStatus(theHDFSFilePath);
 				outProps = HDFSFileProperties.from(file);
 				// ------------------------------------------------------------
+				retry = false;
 			} catch (IOException ioEx) {
 				retry = _isCredentialExpiredError(ioEx);
 				if (!retry) throw ioEx;
@@ -93,6 +94,7 @@ public class HDFSFileStoreFilerAPI
 				outExists = this.getHDFSFileSystem().exists(theHDFSFilePath) 
 						 && this.getHDFSFileSystem().isDirectory(theHDFSFilePath);
 				// ------------------------------------------------------------
+				retry = false;
 			} catch (IOException ioEx) {
 				retry = _isCredentialExpiredError(ioEx);
 				if (!retry) throw ioEx;
@@ -148,6 +150,7 @@ public class HDFSFileStoreFilerAPI
 			    									  this.getHDFSConfiguration());
 				}
 				// ------------------------------------------------------------
+				retry = false;
 			} catch (IOException ioEx) {
 				retry = _isCredentialExpiredError(ioEx);
 				if (!retry) throw ioEx;
@@ -179,6 +182,7 @@ public class HDFSFileStoreFilerAPI
 		        								overwrite,	// overwrite
 		        								this.getHDFSConfiguration());
 				// ------------------------------------------------------------
+		        retry = false;
 			} catch (IOException ioEx) {
 				retry = _isCredentialExpiredError(ioEx);
 				if (!retry) throw ioEx;
@@ -210,6 +214,7 @@ public class HDFSFileStoreFilerAPI
 								 .rename(HDFSFileStoreAPIBase.r01fPathToHDFSPath(existingPath),
 						   		  		 HDFSFileStoreAPIBase.r01fPathToHDFSPath(dstPath));
 				// ------------------------------------------------------------
+				retry = false;
 			} catch (IOException ioEx) {
 				retry = _isCredentialExpiredError(ioEx);
 				if (!retry) throw ioEx;
@@ -238,6 +243,7 @@ public class HDFSFileStoreFilerAPI
 				outCreated = this.getHDFSFileSystem()
 								 .mkdirs(HDFSFileStoreAPIBase.r01fPathToHDFSPath(path));
 				// ------------------------------------------------------------
+				retry = false;
 			} catch (IOException ioEx) {
 				retry = _isCredentialExpiredError(ioEx);
 				if (!retry) throw ioEx;
@@ -266,6 +272,7 @@ public class HDFSFileStoreFilerAPI
 							  .delete(HDFSFileStoreAPIBase.r01fPathToHDFSPath(path),
 									  true);		// recursive
 				// ------------------------------------------------------------
+				retry = false;
 			} catch (IOException ioEx) {
 				retry = _isCredentialExpiredError(ioEx);
 				if (!retry) throw ioEx;
@@ -335,6 +342,7 @@ public class HDFSFileStoreFilerAPI
 					}
 		        }
 				// ------------------------------------------------------------
+		        retry = false;
 			} catch (IOException ioEx) {
 				retry = _isCredentialExpiredError(ioEx);
 				if (!retry) throw ioEx;
