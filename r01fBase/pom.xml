@@ -33,6 +33,6 @@
 		<module>r01fGuiceClasses</module>
 		<module>r01fMimeClasses</module>
 		<module>r01fRXJavaClasses</module>
-    <module>r01fLocatorRenderClasses</module>
+        <module>r01fLocatorRenderClasses</module>
   </modules>
 </project>

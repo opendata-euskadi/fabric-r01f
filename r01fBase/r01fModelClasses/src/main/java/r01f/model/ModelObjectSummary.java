@@ -40,6 +40,14 @@ public class ModelObjectSummary
 //  CONSTRUCTOR & BUILDER
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
+	 * Clones another summary
+	 * @param other
+	 * @return
+	 */
+	public static ModelObjectSummary create(final ModelObjectSummary other) {
+		return new ModelObjectSummary(other.getOid(),other.getSummary());
+	}
+	/**
 	 * Creates a {@link ModelObjectSummary} from a summary
 	 * @param oid
 	 * @param summary

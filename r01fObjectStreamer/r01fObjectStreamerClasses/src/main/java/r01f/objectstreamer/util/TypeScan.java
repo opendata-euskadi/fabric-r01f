@@ -115,6 +115,8 @@ public abstract class TypeScan {
 	}
 	/**
 	 * Finds subtypes of a certain base (abstract / interface class)
+	 * BEWARE! this type is synchronized because SubTypeOfScanner.findSubTypesAt(...) is NOT thread safe
+	 * 		   (this method is just called ONCE from MarshallerAnnotationIntrospector when the Marshalling is bootstrapped)
 	 * @param baseClass
 	 * @return
 	 */
@@ -123,7 +125,6 @@ public abstract class TypeScan {
 		// find the sub-types
 		Set<Class<? extends T>> outSubTypes = SubTypeOfScanner.findSubTypesAt(baseClass,
 																			  javaPackages);
-
 		// filter instanciable types
 		return FluentIterable.from(outSubTypes)
 							 .filter(new Predicate<Object>() {

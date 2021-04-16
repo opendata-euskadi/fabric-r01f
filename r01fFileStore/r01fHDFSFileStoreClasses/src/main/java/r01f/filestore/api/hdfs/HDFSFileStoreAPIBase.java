@@ -2,13 +2,21 @@ package r01f.filestore.api.hdfs;
 
 import java.io.IOException;
 
+import javax.security.sasl.SaslException;
+
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 
+import lombok.extern.slf4j.Slf4j;
 import r01f.filestore.api.FileStoreChecksDelegate;
 
+@Slf4j
 abstract class HDFSFileStoreAPIBase {
+/////////////////////////////////////////////////////////////////////////////////////////
+//	CONSTANTS
+/////////////////////////////////////////////////////////////////////////////////////////	
+	protected static final int AUTH_CREDENTIAL_REFRESH_RETRY_NUM = 2;		// try 2 times to refresh the auth credential
 /////////////////////////////////////////////////////////////////////////////////////////
 // 	FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -30,24 +38,26 @@ abstract class HDFSFileStoreAPIBase {
 	 * - FTPFileSystem: To access HDFS file FTP client
 	 * - WebHdfsFileSystem: To access HDFS file over the web
 	 */
-	protected final FileSystem _fs;
-	/**
-	 * Configuration class that stores the Hadoop config needed by FileSystem type.
-	 * It loads the core-site and core-default.xml files using the class loader
-	 * and keeps Hadoop configuration information such as fs.defaultFS, fs.default.name etc.
-	 */
-	 protected final Configuration _conf;
+	private final HDFSFileSystemProvider _fsProvider;
+	
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//  CONSTRUCTOR / BUILDER
 /////////////////////////////////////////////////////////////////////////////////////////
-	 HDFSFileStoreAPIBase(final Configuration conf) throws IOException {
-		_conf = conf;
-		_fs = FileSystem.get(_conf);
-	 }
-	 HDFSFileStoreAPIBase(final FileSystem fs) throws IOException {
-		 _fs = fs;
-		_conf = fs.getConf();
-	 }
+	 HDFSFileStoreAPIBase(final HDFSFileSystemProvider fsProvider) {
+		 _fsProvider = fsProvider;
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	GET
+/////////////////////////////////////////////////////////////////////////////////////////	 
+	public HDFSFileSystemProvider getHDFSFileSystemProvider() {
+		return _fsProvider;
+	}
+	public FileSystem getHDFSFileSystem() throws IOException {
+		return _fsProvider.getHDFSFileSystem();
+	}
+	public Configuration getHDFSConfiguration() {
+		return _fsProvider.getHDFSConfiguration();
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -57,5 +67,33 @@ abstract class HDFSFileStoreAPIBase {
 	protected static r01f.types.Path hdfsPathToR01FPath(final Path path) {
 		Path hdfsPath = Path.getPathWithoutSchemeAndAuthority(path);
 		return r01f.types.Path.from(hdfsPath);
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	
+/////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Handles an {@link IOException} so it checks if the root cause is that the 
+	 * [kerberos] credential has expired and has to be refreshed
+	 * If the ticket is refreshed, the method returns true so the operation 
+	 * can be retried
+	 * @param io
+	 * @return true if the 
+	 */
+	protected boolean _isCredentialExpiredError(final IOException io) throws IOException {
+		if (io.getCause() == null || !(io.getCause() instanceof IOException)) return false;
+		
+		Throwable rootCause = io.getCause().getCause();
+		boolean isExpiredCredentialException = rootCause != null 
+											&& rootCause instanceof SaslException;
+		if (isExpiredCredentialException) {
+			log.warn("[refresh hdfs user credential]: CAUSE ticket expired: {}",io.getMessage());
+			
+			// refresh the credential!!!
+			this.getHDFSFileSystemProvider()
+				.refreshCredentials();
+		} else {
+			if (log.isTraceEnabled()) log.trace("[refresh hdfs user credential]: NO NEED to refresh credential > IOException has another root cause!");
+		}
+		return isExpiredCredentialException; 
 	}
 }

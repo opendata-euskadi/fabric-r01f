@@ -5,7 +5,6 @@ import java.util.Collection;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileStatus;
-import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.FileUtil;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.fs.PathFilter;
@@ -21,6 +20,7 @@ import r01f.filestore.api.FileFilter;
 import r01f.filestore.api.FileStoreChecksDelegate;
 import r01f.filestore.api.FileStoreFilerAPI;
 import r01f.types.IsPath;
+import r01f.types.TimeLapse;
 import r01f.util.types.collections.CollectionUtils;
 
 @Slf4j
@@ -35,15 +35,21 @@ public class HDFSFileStoreFilerAPI
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
-	public HDFSFileStoreFilerAPI(final Configuration conf) throws IOException {
-		super(conf);
-		_api = new HDFSFileStoreAPI(_fs,this); // reuse the filesystem
-		_check = new FileStoreChecksDelegate(_api, this);
+	public HDFSFileStoreFilerAPI(final Configuration conf) {
+		this(conf,
+			 null);		// no credentials refresh period
+	}
+	public HDFSFileStoreFilerAPI(final Configuration conf,
+								 final TimeLapse credentialsRefreshPeriod) {
+		super(new HDFSFileSystemProvider(conf,
+										 credentialsRefreshPeriod));
+		_api = new HDFSFileStoreAPI(this.getHDFSFileSystemProvider(),this); // reuse the filesystem provider
+		_check = new FileStoreChecksDelegate(_api,this);
 		
 	}
-	HDFSFileStoreFilerAPI(final FileSystem fs,
-						  final HDFSFileStoreAPI fileApi) throws IOException {
-		super(fs);
+	HDFSFileStoreFilerAPI(final HDFSFileSystemProvider fsProvider,
+						  final HDFSFileStoreAPI fileApi) {
+		super(fsProvider);
 		_api = fileApi;
 		_check = new FileStoreChecksDelegate(fileApi,
 					  					  	 this);
@@ -51,190 +57,290 @@ public class HDFSFileStoreFilerAPI
 /////////////////////////////////////////////////////////////////////////////////////////
 //  EXISTS
 /////////////////////////////////////////////////////////////////////////////////////////
-	@Override
+	@Override @SuppressWarnings("resource")
 	public FileProperties getFolderProperties(final r01f.types.Path path) throws IOException {
-		// check
-		_check.checkFolderExists(path);
-		Path theHDFSFilePath = HDFSFileStoreAPIBase.r01fPathToHDFSPath(path);
-		FileStatus file = _fs.getFileStatus(theHDFSFilePath);
-		return HDFSFileProperties.from(file);
+		FileProperties outProps = null;
+		
+		boolean retry = true; 	// retry
+		for (int retryCount = 0; retry && retryCount < AUTH_CREDENTIAL_REFRESH_RETRY_NUM; retryCount++) {
+			try {
+				// ------------------------------------------------------------
+				// check
+				_check.checkFolderExists(path);
+				Path theHDFSFilePath = HDFSFileStoreAPIBase.r01fPathToHDFSPath(path);
+				FileStatus file = this.getHDFSFileSystem()
+									  .getFileStatus(theHDFSFilePath);
+				outProps = HDFSFileProperties.from(file);
+				// ------------------------------------------------------------
+			} catch (IOException ioEx) {
+				retry = _isCredentialExpiredError(ioEx);
+				if (!retry) throw ioEx;
+			}
+		} // retry
+		
+		return outProps;
 	}
-	@Override
-	public boolean existsFolder(r01f.types.Path path) throws IOException {
-		// exists?
-    	Path theHDFSFilePath = HDFSFileStoreAPIBase.r01fPathToHDFSPath(path);
-		return _fs.exists(theHDFSFilePath) && _fs.isDirectory(theHDFSFilePath);
+	@Override @SuppressWarnings("resource")
+	public boolean existsFolder(final r01f.types.Path path) throws IOException {
+		boolean outExists = false;
+		
+		boolean retry = true; 	// retry
+		for (int retryCount = 0; retry && retryCount < AUTH_CREDENTIAL_REFRESH_RETRY_NUM; retryCount++) {
+			try {
+				// ------------------------------------------------------------
+				// exists?
+		    	Path theHDFSFilePath = HDFSFileStoreAPIBase.r01fPathToHDFSPath(path);
+				outExists = this.getHDFSFileSystem().exists(theHDFSFilePath) 
+						 && this.getHDFSFileSystem().isDirectory(theHDFSFilePath);
+				// ------------------------------------------------------------
+			} catch (IOException ioEx) {
+				retry = _isCredentialExpiredError(ioEx);
+				if (!retry) throw ioEx;
+			}
+		} // retry
+		return outExists;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  COPY / MOVE / RENAME
 /////////////////////////////////////////////////////////////////////////////////////////
-	@Override
+	@Override @SuppressWarnings("resource")
     public boolean copyFolder(final r01f.types.Path srcPath,final r01f.types.Path dstPath,
     						  final FileFilter fileFilter,
     						  final boolean overwrite) throws IOException {
-    	log.trace("Copying from {} to {}",
-    			  srcPath,dstPath);    	
-
-		// check
-		_check.checkBeforeCopyFolder(srcPath,dstPath,
-									 overwrite);
+		boolean copyFolderStateOK = false;
 		
-		boolean copyFolderStateOK = true;
+		boolean retry = true; 	// retry
+		for (int retryCount = 0; retry && retryCount < AUTH_CREDENTIAL_REFRESH_RETRY_NUM; retryCount++) {
+			try {
+				// ------------------------------------------------------------
+		    	log.trace("Copying from {} to {}",
+		    			  srcPath,dstPath);    	
 		
-		if (fileFilter != null) {
-			
-			// copy folder applying filter (recursive)
-			FileProperties[] filteredFiles = this.listFolderContents(srcPath,fileFilter,
-																	 false);	// not recursive
-			for (int i=0; i<filteredFiles.length; i++) {
-				FileProperties currentFileOrFolder = filteredFiles[i];
-
-				r01f.types.Path effectiveDstPath = dstPath.joinedWith(currentFileOrFolder.getPath()
-																						 .remainingPathFrom(srcPath));
-				if (currentFileOrFolder.isFile()) {
-					boolean copyFileStateOK = _api.copyFile(filteredFiles[i].getPath(),effectiveDstPath, 
-															overwrite);
-					if (!copyFileStateOK) copyFolderStateOK = false;
+				// check
+				_check.checkBeforeCopyFolder(srcPath,dstPath,
+											 overwrite);
+				if (fileFilter != null) {
+					// copy folder applying filter (recursive)
+					FileProperties[] filteredFiles = this.listFolderContents(srcPath,fileFilter,
+																			 false);	// not recursive
+					for (int i=0; i<filteredFiles.length; i++) {
+						FileProperties currentFileOrFolder = filteredFiles[i];
+		
+						r01f.types.Path effectiveDstPath = dstPath.joinedWith(currentFileOrFolder.getPath()
+																								 .remainingPathFrom(srcPath));
+						if (currentFileOrFolder.isFile()) {
+							boolean copyFileStateOK = _api.copyFile(filteredFiles[i].getPath(),effectiveDstPath, 
+																	overwrite);
+							copyFolderStateOK = copyFileStateOK;
+						} else {
+							copyFolderStateOK = this.copyFolder(currentFileOrFolder.getPath(),effectiveDstPath, 
+												   				fileFilter,
+												   				overwrite);
+						}
+					}
 				} else {
-					return this.copyFolder(currentFileOrFolder.getPath(),effectiveDstPath, 
-										   fileFilter,
-										   overwrite);
+					// copy folder without applying filter
+			    	// If needed: The method FileUtils.stat2Path convert an array of FileStatus to an array of Path
+			        copyFolderStateOK = FileUtil.copy(this.getHDFSFileSystem(),HDFSFileStoreAPIBase.r01fPathToHDFSPath(srcPath),
+			    									  this.getHDFSFileSystem(),HDFSFileStoreAPIBase.r01fPathToHDFSPath(dstPath),
+			    									  false, 		// delete source
+			    									  overwrite,	// overwrite
+			    									  this.getHDFSConfiguration());
 				}
+				// ------------------------------------------------------------
+			} catch (IOException ioEx) {
+				retry = _isCredentialExpiredError(ioEx);
+				if (!retry) throw ioEx;
 			}
-			
-		} else {
-			// copy folder without applying filter
-	    	// If needed: The method FileUtils.stat2Path convert an array of FileStatus to an array of Path
-	        copyFolderStateOK = FileUtil.copy(_fs,HDFSFileStoreAPIBase.r01fPathToHDFSPath(srcPath),
-	    									  _fs,HDFSFileStoreAPIBase.r01fPathToHDFSPath(dstPath),
-	    									  false, 		// delete source
-	    									  overwrite,	// overwrite
-	    									  _conf);
-		}
-		
-        return copyFolderStateOK;
+		} // retry
+		return copyFolderStateOK;
     }
-	@Override
+	@Override @SuppressWarnings("resource")
     public boolean moveFolder(final r01f.types.Path srcPath,final r01f.types.Path dstPath,
     						  final boolean overwrite) throws IOException {
-    	log.trace("Moving folder from {} to {}",
-    			  srcPath,dstPath);
-
-		// check
-		_check.checkBeforeMoveFolder(srcPath,dstPath,
-									 overwrite);
-
-		// copy
-    	// If needed: The method FileUtils.stat2Path convert an array of FileStatus to an array of Path
-        boolean copyFileStateOK = FileUtil.copy(_fs,HDFSFileStoreAPIBase.r01fPathToHDFSPath(srcPath),
-        										_fs,HDFSFileStoreAPIBase.r01fPathToHDFSPath(dstPath),
-        										true, 		// delete source
-        										overwrite,	// overwrite
-        										_conf);
+		boolean copyFileStateOK = false;
+		
+		boolean retry = true; 	// retry
+		for (int retryCount = 0; retry && retryCount < AUTH_CREDENTIAL_REFRESH_RETRY_NUM; retryCount++) {
+			try {
+				// ------------------------------------------------------------
+		    	log.trace("Moving folder from {} to {}",
+		    			  srcPath,dstPath);
+		
+				// check
+				_check.checkBeforeMoveFolder(srcPath,dstPath,
+											 overwrite);
+		
+				// copy
+		    	// If needed: The method FileUtils.stat2Path convert an array of FileStatus to an array of Path
+		        copyFileStateOK = FileUtil.copy(this.getHDFSFileSystem(),HDFSFileStoreAPIBase.r01fPathToHDFSPath(srcPath),
+		        								this.getHDFSFileSystem(),HDFSFileStoreAPIBase.r01fPathToHDFSPath(dstPath),
+		        								true, 		// delete source
+		        								overwrite,	// overwrite
+		        								this.getHDFSConfiguration());
+				// ------------------------------------------------------------
+			} catch (IOException ioEx) {
+				retry = _isCredentialExpiredError(ioEx);
+				if (!retry) throw ioEx;
+			}
+		} // retry
         return copyFileStateOK;
     }
-	@Override
+	@Override @SuppressWarnings("resource")
 	public boolean renameFolder(final r01f.types.Path existingPath,final FileNameAndExtension newName) throws IOException {
-    	log.trace("Renaming folder from {} to {}",
-    			  existingPath,newName);
-
-
-		@SuppressWarnings("cast")
-		r01f.types.Path dstPath = r01f.types.Path.from((IsPath)existingPath.withoutLastPathElement())
-						  						 .joinedWith(newName);
-
-		// check
-		_check.checkBeforeMoveFolder(existingPath,dstPath,
-									 false);		// DO NOT overwrite
-
-		// rename
-		return _fs.rename(HDFSFileStoreAPIBase.r01fPathToHDFSPath(existingPath),
-				   		  HDFSFileStoreAPIBase.r01fPathToHDFSPath(dstPath));
+		boolean outRenamed = false;
+		
+		boolean retry = true; 	// retry
+		for (int retryCount = 0; retry && retryCount < AUTH_CREDENTIAL_REFRESH_RETRY_NUM; retryCount++) {
+			try {
+				// ------------------------------------------------------------
+		    	log.trace("Renaming folder from {} to {}",
+		    			  existingPath,newName);
+		
+				@SuppressWarnings("cast")
+				r01f.types.Path dstPath = r01f.types.Path.from((IsPath)existingPath.withoutLastPathElement())
+								  						 .joinedWith(newName);
+		
+				// check
+				_check.checkBeforeMoveFolder(existingPath,dstPath,
+											 false);		// DO NOT overwrite
+		
+				// rename
+				outRenamed = this.getHDFSFileSystem()
+								 .rename(HDFSFileStoreAPIBase.r01fPathToHDFSPath(existingPath),
+						   		  		 HDFSFileStoreAPIBase.r01fPathToHDFSPath(dstPath));
+				// ------------------------------------------------------------
+			} catch (IOException ioEx) {
+				retry = _isCredentialExpiredError(ioEx);
+				if (!retry) throw ioEx;
+			}
+		} // retry
+		return outRenamed;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CREATE & DELETE
 /////////////////////////////////////////////////////////////////////////////////////////
-	@Override
+	@Override @SuppressWarnings("resource")
     public boolean createFolder(final r01f.types.Path path) throws IOException {
-		log.trace("Creating a folder at {}",
-				   path);
-
-		if (this.existsFolder(path)) return true;	// already created
-
-		// check
-		_check.checkBeforeCreateFolder(path);
-		return _fs.mkdirs(HDFSFileStoreAPIBase.r01fPathToHDFSPath(path));
+		boolean outCreated = false;
+		
+		boolean retry = true; 	// retry
+		for (int retryCount = 0; retry && retryCount < AUTH_CREDENTIAL_REFRESH_RETRY_NUM; retryCount++) {
+			try {
+				// ------------------------------------------------------------
+				log.trace("Creating a folder at {}",
+						   path);
+		
+				if (this.existsFolder(path)) return true;	// already created
+		
+				// check
+				_check.checkBeforeCreateFolder(path);
+				outCreated = this.getHDFSFileSystem()
+								 .mkdirs(HDFSFileStoreAPIBase.r01fPathToHDFSPath(path));
+				// ------------------------------------------------------------
+			} catch (IOException ioEx) {
+				retry = _isCredentialExpiredError(ioEx);
+				if (!retry) throw ioEx;
+			}
+		} // retry
+		return outCreated;
     }
-	@Override
+	@Override @SuppressWarnings("resource")
     public boolean deleteFolder(final r01f.types.Path path) throws IOException {
-		log.trace("Deleting a folder at {}",
-				  path);
-
-		if (!this.existsFolder(path)) return true;	// does NOT exists
-
-		// check
-		_check.checkBeforeRemoveFolder(path);
-
-		// delete
-		boolean opState = _fs.delete(HDFSFileStoreAPIBase.r01fPathToHDFSPath(path),
-									 true);		// recursive
+		boolean opState = false;
+		
+		boolean retry = true; 	// retry
+		for (int retryCount = 0; retry && retryCount < AUTH_CREDENTIAL_REFRESH_RETRY_NUM; retryCount++) {
+			try {
+				// ------------------------------------------------------------
+				log.trace("Deleting a folder at {}",
+						  path);
+		
+				if (!this.existsFolder(path)) return true;	// does NOT exists
+		
+				// check
+				_check.checkBeforeRemoveFolder(path);
+		
+				// delete
+				opState = this.getHDFSFileSystem()
+							  .delete(HDFSFileStoreAPIBase.r01fPathToHDFSPath(path),
+									  true);		// recursive
+				// ------------------------------------------------------------
+			} catch (IOException ioEx) {
+				retry = _isCredentialExpiredError(ioEx);
+				if (!retry) throw ioEx;
+			}
+		} // retry
 		return opState;
     }
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-	@Override
+	@Override @SuppressWarnings("resource")
     public FileProperties[] listFolderContents(final r01f.types.Path folderPath,
     										   final FileFilter fileFilter,
     										   final boolean recursive) throws IOException {
-    	log.debug("Listing folder {} contents",
-    			  folderPath);
-
-		// check
-		_check.checkBeforeListFolderContents(folderPath);
-		
-		// filter
-		PathFilter hdfsPathFilter = null;
-		if (fileFilter != null) {
-			hdfsPathFilter = new PathFilter() {
-									@Override
-									public boolean accept(final Path path) {
-										r01f.types.Path r01fPath = HDFSFileStoreAPIBase.hdfsPathToR01FPath(path);
-										return fileFilter.accept(r01fPath);				
-									}
-							};
-		}
-		// list
 		FileProperties[] out = null;
-        if (recursive) {
-        	HDFSFolderRecursiveListing recursiveList = new HDFSFolderRecursiveListing(_fs,
-        																			  fileFilter);
-			Collection<FileProperties> allContents = recursiveList.recurseFolderContents(HDFSFileStoreAPIBase.r01fPathToHDFSPath(folderPath));
-			out = CollectionUtils.hasData(allContents)
-						? allContents.toArray(new FileProperties[allContents.size()])
-						: null;
-        } else {
-        	FileStatus[] statusFiles = null;
-        	if (hdfsPathFilter != null) {
-        		statusFiles = _fs.listStatus(HDFSFileStoreAPIBase.r01fPathToHDFSPath(folderPath),
-        									 hdfsPathFilter);
-        	} else {
-        		statusFiles = _fs.listStatus(HDFSFileStoreAPIBase.r01fPathToHDFSPath(folderPath));
-        	}
-			if (CollectionUtils.hasData(statusFiles)) {
-				out = FluentIterable.from(statusFiles)
-						  .transform(new Function<FileStatus,FileProperties>() {
+		
+		boolean retry = true; 	// retry
+		for (int retryCount = 0; retry && retryCount < AUTH_CREDENTIAL_REFRESH_RETRY_NUM; retryCount++) {
+			try {
+				// ------------------------------------------------------------
+		    	log.debug("Listing folder {} contents",
+		    			  folderPath);
+				// check
+				_check.checkBeforeListFolderContents(folderPath);
+				
+				// filter
+				PathFilter hdfsPathFilter = null;
+				if (fileFilter != null) {
+					hdfsPathFilter = new PathFilter() {
 											@Override
-											public FileProperties apply(final FileStatus hdfsFile) {
-												return HDFSFileProperties.fromOrNull(hdfsFile);
+											public boolean accept(final Path path) {
+												r01f.types.Path r01fPath = HDFSFileStoreAPIBase.hdfsPathToR01FPath(path);
+												return fileFilter.accept(r01fPath);				
 											}
-						  			 })
-						  .filter(Predicates.notNull())
-						  .toArray(FileProperties.class);
-			} else {
-				out = new FileProperties[] { /* empty */ };
+									};
+				}
+				// list
+		        if (recursive) {
+		        	HDFSFolderRecursiveListing recursiveList = new HDFSFolderRecursiveListing(this.getHDFSFileSystem(),
+		        																			  fileFilter);
+					Collection<FileProperties> allContents = recursiveList.recurseFolderContents(HDFSFileStoreAPIBase.r01fPathToHDFSPath(folderPath));
+					out = CollectionUtils.hasData(allContents)
+								? allContents.toArray(new FileProperties[allContents.size()])
+								: null;
+		        } else {
+		        	FileStatus[] statusFiles = null;
+		        	if (hdfsPathFilter != null) {
+		        		statusFiles = this.getHDFSFileSystem()
+		        						  .listStatus(HDFSFileStoreAPIBase.r01fPathToHDFSPath(folderPath),
+		        									  hdfsPathFilter);
+		        	} else {
+		        		statusFiles = this.getHDFSFileSystem()
+		        						  .listStatus(HDFSFileStoreAPIBase.r01fPathToHDFSPath(folderPath));
+		        	}
+					if (CollectionUtils.hasData(statusFiles)) {
+						out = FluentIterable.from(statusFiles)
+								  .transform(new Function<FileStatus,FileProperties>() {
+													@Override
+													public FileProperties apply(final FileStatus hdfsFile) {
+														return HDFSFileProperties.fromOrNull(hdfsFile);
+													}
+								  			 })
+								  .filter(Predicates.notNull())
+								  .toArray(FileProperties.class);
+					} else {
+						out = new FileProperties[] { /* empty */ };
+					}
+		        }
+				// ------------------------------------------------------------
+			} catch (IOException ioEx) {
+				retry = _isCredentialExpiredError(ioEx);
+				if (!retry) throw ioEx;
 			}
-        }
+		} // retry
+		
         return out;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
