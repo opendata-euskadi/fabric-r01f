@@ -79,7 +79,7 @@ class HDFSFileSystemProvider {
 	}
 	private void _refreshCredentialsIfExpired() throws IOException {
 		if (_fs != null && _credentialsRefreshPeriodMilis <= 0) {
-			log.warn("[hdfs filesystem provider] The credentials WILL NOT be refreshed: the refresh timelapse was NOT set!");
+			log.trace("[hdfs filesystem provider] The credentials WILL NOT be refreshed: the refresh timelapse was NOT set!");
 			return;
 		}
 		// if the file system is null, just create it
