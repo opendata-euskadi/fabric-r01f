@@ -255,13 +255,21 @@ public abstract class CommonOIDs {
 			return AppComponent.forId(Strings.customized("{}.{}",
 														 one,other));
 		}
-		public static AppComponent compose(final AppComponent one,final String other) {
-			return AppComponent.forId(Strings.customized("{}.{}",
-														 one,other));
+		public static AppComponent compose(final AppComponent one,final AppComponent two,final AppComponent three) {
+			return AppComponent.forId(Strings.customized("{}.{}.{}",
+														 one,two,three));
 		}
-		public static AppComponent compose(final String one,final String other) {
+		public static AppComponent compose(final AppComponent one,final String two) {
 			return AppComponent.forId(Strings.customized("{}.{}",
-														 one,other));
+														 one,two));
+		}
+		public static AppComponent compose(final String one,final String three) {
+			return AppComponent.forId(Strings.customized("{}.{}",
+														 one,three));
+		}
+		public static AppComponent compose(final String one,final String two,final String three) {
+			return AppComponent.forId(Strings.customized("{}.{}.{}",
+														 one,two,three));
 		}
 		@Override
 		public AppComponent asAppComponent() {
