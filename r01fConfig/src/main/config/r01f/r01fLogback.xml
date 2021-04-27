@@ -1,5 +1,5 @@
-<!-- 
-================================================================================ 
+<!--
+================================================================================
 	 R01F LOGBACK CONFIG (see r01fbClasses/logback.xml)
 ================================================================================
 -->
@@ -21,7 +21,7 @@
 	<logger name="org.apache.http.wire" level="OFF" additivity="false">
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="app_log" />
-	</logger>	
+	</logger>
 	<logger name="org.apache.http" level="WARN" additivity="false">
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="app_log" />
@@ -30,12 +30,12 @@
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="app_log" />
 	</logger>
-	<!-- Mute c3p0 logs -->	
+	<!-- Mute c3p0 logs -->
 	<logger name="com.mchange.v2" level="OFF" additivity="false">
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="app_log" />
 	</logger>
-	
+
 	<!-- R01F -->
 	<logger name="r01f" level="WARN" additivity="false">
 		<appender-ref ref="STDOUT" />
@@ -58,6 +58,10 @@
 		<appender-ref ref="app_log" />
 	</logger>
 	<logger name="r01f.io" level="WARN" additivity="false">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="app_log" />
+	</logger>
+	<logger name="r01f.filestore.api.hdfs" level="TRACE" additivity="false">
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="app_log" />
 	</logger>
