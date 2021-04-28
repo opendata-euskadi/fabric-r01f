@@ -110,6 +110,7 @@ public abstract class SecurityIDS {
 		public static final SecurityProviderID USER_PASSWORD = SecurityProviderID.forId("usrpwd");
 		public static final SecurityProviderID GOOGLE = SecurityProviderID.forId("google");
 		public static final SecurityProviderID XLNETS = SecurityProviderID.forId("xlnets");
+		public static final SecurityProviderID SAML = SecurityProviderID.forId("saml");
 		public static final SecurityProviderID PAIRED_PHONE = SecurityProviderID.forId("pairedphone");
 		public static final SecurityProviderID REGISTERED_DEVICE = SecurityProviderID.forId("registered-device");
 		public static final SecurityProviderID API_KEY = SecurityProviderID.forId("api-key");
