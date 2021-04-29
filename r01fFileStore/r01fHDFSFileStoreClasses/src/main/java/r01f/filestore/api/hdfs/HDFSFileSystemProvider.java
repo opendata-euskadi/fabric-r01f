@@ -47,7 +47,7 @@ class HDFSFileSystemProvider {
 																		  : -1;
 	 }
 /////////////////////////////////////////////////////////////////////////////////////////
-//	
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Configuration class that stores the Hadoop config needed by FileSystem type.
@@ -70,14 +70,15 @@ class HDFSFileSystemProvider {
 	 */
 	public synchronized void refreshCredentials() throws IOException {
 		log.warn("[hdfs filesystem provider] Refresh credentials!!!!!!");
-		
+
 		// create a new FileSystem
 		_fs = FileSystem.get(_hdfsConf);
-		
+
 		// store the credentials
 		_lastCredentialsRefreshTimeStamp = new Date().getTime();
 	}
 	private void _refreshCredentialsIfExpired() throws IOException {
+		log.trace("[hdfs filesystem provider] The credentials refresh period in milis is: {}", _credentialsRefreshPeriodMilis);
 		if (_fs != null && _credentialsRefreshPeriodMilis <= 0) {
 			log.trace("[hdfs filesystem provider] The credentials WILL NOT be refreshed: the refresh timelapse was NOT set!");
 			return;
@@ -86,7 +87,7 @@ class HDFSFileSystemProvider {
 		if (_fs == null) {
 			this.refreshCredentials();
 			return;
-		} 
+		}
 		// check if the timelapse is over
 		long currTimeStamp = new Date().getTime();
 		long elapsed = currTimeStamp - _lastCredentialsRefreshTimeStamp;
