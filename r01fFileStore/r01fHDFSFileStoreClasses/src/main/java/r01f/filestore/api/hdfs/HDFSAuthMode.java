@@ -1,6 +1,6 @@
 package r01f.filestore.api.hdfs;
 
 public enum HDFSAuthMode {
-	NO_CREDENTIALS,
-	KERBEROS;
+	BASIC_AUTH_MODE, // User/Pwd authentication mode
+	KERBEROS_AUTH_MODE;
 }
