@@ -20,6 +20,7 @@ import com.google.common.collect.Multimap;
 import com.google.common.reflect.TypeToken;
 
 import r01f.patterns.CommandOn;
+import r01f.patterns.ProviderFrom;
 import r01f.types.CanBeRepresentedAsString;
 import r01f.util.types.Strings;
 import r01f.util.types.collections.CollectionWrappers.WrappedCollection;
@@ -348,6 +349,21 @@ public class CollectionUtils {
 		return CollectionUtils.<T>pickOneAndOnlyElement(theCol,errMsg,vars);
 	}
 	/**
+	 * Picks the one and only element from the collection
+	 * If the collection has more than one element, a custom exception is thrown
+	 * @param <T>
+	 * @param theCol
+	 * @param throableProvider
+	 * @return
+	 * @throws Throwable 
+	 */
+	public static <T,E extends Throwable> T pickOneAndOnlyElementOrThrow(final Collection<?> theCol,
+													 					 final ProviderFrom<String,E> throableProvider) throws E {
+		if (CollectionUtils.isNullOrEmpty(theCol)) throw throableProvider.from("The collection is null or empty");
+		if (theCol.size() > 1) throw throableProvider.from("The one and only element of a collection has been requested but the collection has MORE THAN ONE element");
+		return CollectionUtils.<T>pickOneElement(theCol);
+	}
+	/** 
 	 * Picks one element from the collection 
 	 * @param theCol
 	 * @return
