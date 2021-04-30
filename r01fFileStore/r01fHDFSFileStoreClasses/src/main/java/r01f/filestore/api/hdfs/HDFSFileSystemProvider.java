@@ -43,6 +43,7 @@ class HDFSFileSystemProvider {
 	 HDFSFileSystemProvider(final Configuration conf,
 			 				final TimeLapse credentialsRefreshPeriod) {
 		_hdfsConf = conf;
+		log.trace("[hdfs filesystem provider] The credentials refresh period is: {}", credentialsRefreshPeriod != null ? credentialsRefreshPeriod : "NULLLLL");
 		_credentialsRefreshPeriodMilis = credentialsRefreshPeriod != null ? credentialsRefreshPeriod.asMilis()
 																		  : -1;
 	 }
