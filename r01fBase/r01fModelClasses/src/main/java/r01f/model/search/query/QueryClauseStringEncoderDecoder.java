@@ -5,10 +5,6 @@ import java.util.regex.Pattern;
 
 import com.google.common.annotations.GwtIncompatible;
 
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.Accessors;
-import r01f.enums.EnumExtended;
-import r01f.enums.EnumExtendedWrapper;
 import r01f.exceptions.Throwables;
 import r01f.model.metadata.FieldID;
 import r01f.model.metadata.FieldMetaData;
@@ -68,7 +64,7 @@ class QueryClauseStringEncoderDecoder {
 			outEncodedQry = Strings.customized("{}.{}.{}({})",
 								   			   qry.getClause().getFieldId(),			// [1] field id
 										  	   qry.getOccur().name(),					// [2] must / must_not / should
-										  	   CONDITION.fromQuery(qry.getClause()),	// [3] hasData
+										  	   QueryCondition.fromQuery(qry.getClause()),	// [3] hasData
 										  	   "");										// [4] NO value (hasData)
 										  	   //"{}")									// [5] NO datatype (hasData)
 		} else {
@@ -76,7 +72,7 @@ class QueryClauseStringEncoderDecoder {
 			outEncodedQry = Strings.customized("{}.{}.{}({})",
 								    		   qry.getClause().getFieldId(),													// [1] field id
 										  	   qry.getOccur().name(),															// [2] must / must_not / should
-										  	   CONDITION.fromQuery(qry.getClause()),											// [3] beEqualTo / beInsideRange / beInsideRange / beginWith / endWith / contain / fullText
+										  	   QueryCondition.fromQuery(qry.getClause()),											// [3] beEqualTo / beInsideRange / beInsideRange / beginWith / endWith / contain / fullText
 										  	   QueryClauseSerializerUtils.serializeValue(qry.getClause(),STRING_ESCAPE.NONE));	// [4] value
 										  	   //"{" + qry.getClause().getValueType().getName() + "}")							// [5] dataType
 		}
@@ -88,7 +84,7 @@ class QueryClauseStringEncoderDecoder {
 	// ie: (.+)\.(MUST|MUST_NOT|SHOULD)\.beEqualTo\((.+)\)
 	private static final Pattern CLAUSE_URL_PATTERN = Pattern.compile("(.+)" + 								// [1] fieldName
 																	  "\\.(MUST|MUST_NOT|SHOULD)\\." +		// [2] must / must_not / should
-																	  "(" + CONDITION.pattern() + ")" +		// [3] beEqualTo / beInsideRange / beInsideRange / contain 
+																	  "(" + QueryCondition.pattern() + ")" +		// [3] beEqualTo / beInsideRange / beInsideRange / contain 
 																	  "\\((.*)\\)");						// [4] value
 																	  //"\\{([^}]*)\\}");					// [5] dataType
 	@SuppressWarnings({ "unchecked","rawtypes" })
@@ -99,10 +95,10 @@ class QueryClauseStringEncoderDecoder {
 		if (m.find()) {
 			FieldID fieldId = new FieldID(m.group(1));
 			QueryClauseOccur occur = QueryClauseOccur.fromName(m.group(2));
-			CONDITION condition = CONDITION.fromName(m.group(3));
+			QueryCondition condition = QueryCondition.fromName(m.group(3));
 			String value = m.group(4);
 			
-			if (Strings.isNullOrEmpty(value) && condition != CONDITION.haveData) throw new IllegalArgumentException(encodedQry + " is NOT a valid encoded query clause");
+			if (Strings.isNullOrEmpty(value) && condition != QueryCondition.haveData) throw new IllegalArgumentException(encodedQry + " is NOT a valid encoded query clause");
 			// Class<?> dataType = Strings.isNOTNullOrEmpty(m.group(5)) ? ReflectionUtils.typeFromClassName(m.group(5))
 			//														 : null;
 			TypeFieldMetaData typeField = metaData.findFieldByIdOrThrow(fieldId);
@@ -171,58 +167,5 @@ class QueryClauseStringEncoderDecoder {
 			throw new IllegalArgumentException(encodedQry + " is NOT a valid encoded query clause");
 		}
 		return outQry;
-	}
-/////////////////////////////////////////////////////////////////////////////////////////
-//  
-/////////////////////////////////////////////////////////////////////////////////////////
-	@Accessors(prefix="_")
-	@RequiredArgsConstructor
-	private enum CONDITION 
-	  implements EnumExtended<CONDITION> {
-		beEqualTo,
-		beInsideRange,
-		beWithin,
-		contain,
-		haveData;
-		
-		
-		private static EnumExtendedWrapper<CONDITION> _enums = EnumExtendedWrapper.wrapEnumExtended(CONDITION.class);
-		
-		public static String pattern() {
-			return CollectionUtils.of(CONDITION.values()).toStringSeparatedWith('|');
-		}
-		public static CONDITION fromName(final String name) {
-			return _enums.fromName(name);
-		}
-		public static CONDITION fromQuery(final QueryClause clause) {
-			CONDITION outPredicate = null;
-			if (clause instanceof EqualsQueryClause) {
-				outPredicate = beEqualTo;
-				
-			} else if (clause instanceof ContainsTextQueryClause) {
-				outPredicate = contain;
-				
-			} else if (clause instanceof ContainedInQueryClause) {
-				outPredicate = beWithin;
-				
-			} else if (clause instanceof RangeQueryClause) {
-				outPredicate = beInsideRange;
-				
-			} else if (clause instanceof HasDataQueryClause) {
-				outPredicate = haveData;
-				
-			} else if (clause instanceof BooleanQueryClause) {
-				throw new IllegalStateException("NOT currently supported!!");
-			}
-			return outPredicate;
-		}
-		@Override
-		public boolean isIn(CONDITION... els) {
-			return _enums.isIn(this,els);
-		}
-		@Override
-		public boolean is(CONDITION el) {
-			return _enums.is(this,el);
-		}
 	}
 }
