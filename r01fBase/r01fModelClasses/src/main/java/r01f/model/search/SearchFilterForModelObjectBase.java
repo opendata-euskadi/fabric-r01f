@@ -113,7 +113,7 @@ public abstract class SearchFilterForModelObjectBase<SELF_TYPE extends SearchFil
 		if (CollectionUtils.hasData(modelObjectTypes)) {
 			Collection<Class<? extends ModelObject>> col = FluentIterable.from(modelObjectTypes)
 																  .transform(new Function<Class<? extends M>,Class<? extends ModelObject>>() {
-																					@Override @SuppressWarnings("cast")
+																					@Override 
 																					public Class<? extends ModelObject> apply(final Class<? extends M> type) {
 																						return type;
 																					}

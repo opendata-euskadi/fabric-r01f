@@ -8,24 +8,24 @@ import lombok.extern.slf4j.Slf4j;
 import r01f.exceptions.Throwables;
 
 /**
- * Wrapper of a {@link CharBuffer} that exposes a method that automatically 
+ * Wrapper of a {@link CharBuffer} that exposes a method that automatically
  * makes space at the internal {@link CharBuffer} if required
  * To do so, sub types just have to call {@link #_makeSpaceIfRequired(int)} method
  * before storing something
  */
 @Slf4j
-public class AutoGrowCharBufferWrapper 
+public class AutoGrowCharBufferWrapper
 	 extends AutoGrowBufferWrapperBase<CharBuffer,
-	 							       AutoGrowCharBufferWrapper> 
+	 								   AutoGrowCharBufferWrapper>
   implements Appendable,
-			 CharSequence, 
+			 CharSequence,
 			 Comparable<CharBuffer>,
 			 Readable {
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
-	 * Creates a buffer that at most can grow maxGrowthRate times the 
+	 * Creates a buffer that at most can grow maxGrowthRate times the
 	 * initial size (1024)
 	 * @param maxGrowthRate
 	 */
@@ -33,7 +33,7 @@ public class AutoGrowCharBufferWrapper
 		super(maxGrowthRate);
 	}
 	/**
-	 * Creates a buffer that at most can grow maxGrowthRate times the 
+	 * Creates a buffer that at most can grow maxGrowthRate times the
 	 * initial size
 	 * @param initialSize
 	 * @param maxGrowthRate
@@ -44,8 +44,8 @@ public class AutoGrowCharBufferWrapper
 			  maxGrowthRate);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
-/////////////////////////////////////////////////////////////////////////////////////////	
+//
+/////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	protected CharBuffer _allocateNew(final int size) {
 		return CharBuffer.allocate(size);
@@ -55,42 +55,42 @@ public class AutoGrowCharBufferWrapper
 		wrappedDstBuffer.put(srcBuffer);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
-    /**
-     * Tries to fill the buffer (writes data to the buffer) from the {@link Readable} input
-     * May block
-     * see http://howtodoinjava.com/2015/01/15/java-nio-2-0-working-with-buffers/    
-     * see http://tutorials.jenkov.com/java-nio/buffers.html
-     */
-    public int fillFrom(final Readable source,
-    					final int required) {
+	/**
+	 * Tries to fill the buffer (writes data to the buffer) from the {@link Readable} input
+	 * May block
+	 * see http://howtodoinjava.com/2015/01/15/java-nio-2-0-working-with-buffers/
+	 * see http://tutorials.jenkov.com/java-nio/buffers.html
+	 */
+	public int fillFrom(final Readable source,
+						final int required) {
 
-    	// [0]: Prepare to receive data (put the buffer into WRITE mode)        
-        this.switchToWriteMode();
+		// [0]: Prepare to receive data (put the buffer into WRITE mode)
+		this.switchToWriteMode();
 
-        // [1]: If the buffer is full, increase the space
-        this.ensureSpaceFor(required);
-        
-        // [2]: Read from the source
-        if (log.isTraceEnabled()) log.trace("filling the buffer of {} with {} > {}",
-        									(_buf.limit() - _buf.position()),required,this.debugInfo() + " ");
-        
-        int numReaded = -1;
-        try {
-        	// underlying buffer
-        	numReaded = source.read(_buf);		// it's sure there's room for the readed chars though the source can send less chars        	
-        } catch (IOException ioEx) {
-        	Throwables.throwUnchecked(ioEx);
-        }
+		// [1]: If the buffer is full, increase the space
+		this.ensureSpaceFor(required);
 
-        // [4]: Restore current position and limit for reading (put the buffer into READ mode)
-        this.switchToReadMode();
+		// [2]: Read from the source
+		if (log.isTraceEnabled()) log.trace("filling the buffer of {} with {} > {}",
+											(_buf.limit() - _buf.position()),required,this.debugInfo() + " ");
 
-        if (log.isTraceEnabled()) log.trace("readed {} > {}",
-        									numReaded,this.debugInfo());	// read mode
-        return numReaded;
-    }
+		int numReaded = -1;
+		try {
+			// underlying buffer
+			numReaded = source.read(_buf);		// it's sure there's room for the readed chars though the source can send less chars
+		} catch (IOException ioEx) {
+			Throwables.throwUnchecked(ioEx);
+		}
+
+		// [4]: Restore current position and limit for reading (put the buffer into READ mode)
+		this.switchToReadMode();
+
+		if (log.isTraceEnabled()) log.trace("readed {} > {}",
+											numReaded,this.debugInfo());	// read mode
+		return numReaded;
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  READABLE
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -102,12 +102,12 @@ public class AutoGrowCharBufferWrapper
 		return outChar;
 	}
 	/**
-	 * Moves the read position backwards 
+	 * Moves the read position backwards
 	 * @param length
 	 */
 	public void unread(final int length) {
 		if (!_readMode) throw new IllegalStateException("NOT in read mode");
-		_readPosition = (_readPosition - length) > 0 ? (_readPosition - length) 
+		_readPosition = (_readPosition - length) > 0 ? (_readPosition - length)
 													 : 0;
 		_buf.position(_readPosition);
 	}
@@ -118,7 +118,7 @@ public class AutoGrowCharBufferWrapper
 	public void skip(final int length) throws IOException {
 		if (!_readMode) throw new IllegalStateException("NOT in read mode");
 		if (_readPosition + length >= _buf.limit()) {
-			// read and discard 
+			// read and discard
 			CharBuffer buf = CharBuffer.allocate(length);
 			int totalReaded = 0;
 			int numReaded = 0;
@@ -303,7 +303,7 @@ public class AutoGrowCharBufferWrapper
 		return _buf.compareTo(chars);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//  
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public String toString() {

@@ -1,7 +1,5 @@
 package r01f.model.search;
 
-import java.io.Serializable;
-
 import com.google.common.annotations.GwtIncompatible;
 
 import lombok.AllArgsConstructor;
@@ -20,8 +18,7 @@ import r01f.util.types.Strings;
 @Accessors(prefix="_")
 @NoArgsConstructor @AllArgsConstructor
 public class SearchFilterAsCriteriaString
-  implements CanBeRepresentedAsString,
-  			 Serializable {
+  implements CanBeRepresentedAsString {
 	
 	private static final long serialVersionUID = 3196015344923111354L;
 /////////////////////////////////////////////////////////////////////////////////////////
