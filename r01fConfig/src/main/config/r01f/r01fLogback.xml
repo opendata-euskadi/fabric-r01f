@@ -53,7 +53,7 @@
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="app_log" />
 	</logger>
-	<logger name="r01f.lucene" level="TRACE" additivity="false">
+	<logger name="r01f.lucene" level="WARN" additivity="false">
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="app_log" />
 	</logger>
@@ -61,7 +61,7 @@
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="app_log" />
 	</logger>
-	<logger name="r01f.filestore.api.hdfs" level="TRACE" additivity="false">
+	<logger name="r01f.filestore.api.hdfs" level="WARN" additivity="false">
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="app_log" />
 	</logger>
