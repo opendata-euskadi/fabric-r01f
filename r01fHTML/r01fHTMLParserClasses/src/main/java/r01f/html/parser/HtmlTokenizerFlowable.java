@@ -11,17 +11,17 @@ import r01f.io.CharacterStreamSource;
 
 /**
  * Creates an {@link Flowable} of {@link HtmlParserToken}s
- * Usage: 
+ * Usage:
  * <pre class='brush:java'>
  *		String src = HttpClient.forUrl("http://www.euskadi.eus")
  *							   .GET()
  *							   .loadAsString();
  *		CharacterReader charReader = new CharacterReader(new ByteArrayInputStream(src.getBytes()),
- *														 Charset.defaultCharset());		
+ *														 Charset.defaultCharset());
  *		Flowable<HtmlParserToken> flowable = HtmlTokenizerFlowable.createFrom(charReader);
  *		flowable.blockingSubscribe(new ResourceSubscriber<HtmlParserToken>() {{
  *					               		    @Override
- *					               		    public void onNext(final HtmlParserToken t) {		
+ *					               		    public void onNext(final HtmlParserToken t) {
  *					               		    	String tokenText = t.asString().trim();
  *					               		    	System.out.println(t.getType() + " token \t\t:{" + tokenText + "}");
  *					               		    }
@@ -30,13 +30,13 @@ import r01f.io.CharacterStreamSource;
  *					               		    	th.printStackTrace();
  *					               		    }
  *										    @Override
- *										    public void onComplete() { 
+ *										    public void onComplete() {
  *										    }
  *					               });
  * </pre>
  */
 @Accessors(prefix="_")
-public class HtmlTokenizerFlowable 
+public class HtmlTokenizerFlowable
 	 extends HtmlTokenizerFlowableBase<HtmlParserToken,
 	 								   HtmlTokenizer> {
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -63,7 +63,7 @@ public class HtmlTokenizerFlowable
 	}
 	public static Flowable<HtmlParserToken> createFrom(final String str) {
 		CharacterStreamSource charReader = new CharacterStreamSource(new ByteArrayInputStream(str.getBytes()),
-		 														 			 Charset.defaultCharset());
+		 														 			 				  Charset.defaultCharset());
 		return HtmlTokenizerFlowable.createFrom(charReader);
 	}
 }
