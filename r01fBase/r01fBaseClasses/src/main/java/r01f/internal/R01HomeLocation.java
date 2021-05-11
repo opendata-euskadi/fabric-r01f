@@ -19,25 +19,25 @@ import r01f.util.types.collections.CollectionUtils;
  * 		  linux: R01_HOME = /develop
  * The R01_HOME var is set as a JVM environment var:
  * 		-DR01_HOME=/develop
- * 
+ *
  *  If the property is not set, a default value is used:
- *   
- * 
- * 
+ *
+ *
+ *
  * This location is used in many places:
  * 		- Logs location (see r01f/r01fLogbackGlobal.xml)
- * 		- ... 
+ * 		- ...
  */
 @Slf4j
 @RequiredArgsConstructor(access=AccessLevel.PRIVATE)
 public abstract class R01HomeLocation {
 /////////////////////////////////////////////////////////////////////////////////////////
-//	
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 	public static final Path HOME_PATH = R01HomeLocation._guessDefaultHomeLocation();
 /////////////////////////////////////////////////////////////////////////////////////////
-//	                                                                          
-/////////////////////////////////////////////////////////////////////////////////////////	
+//
+/////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Guess the {@link Environment} value from a system wide property
 	 * @return
@@ -52,7 +52,7 @@ public abstract class R01HomeLocation {
 																public Path supply() {
 																	return _guessDefaultHomeLocation();
 																}
-		
+
 													  };
 	private static Path _guessDefaultHomeLocation() {
 		Path outPath = null;
@@ -74,10 +74,10 @@ public abstract class R01HomeLocation {
 		}
 		if (outPath == null) outPath = Path.from("/develop");
 		log.info("R01_HOME jvm envrionment var was NOT set: the default value for {} is {}",
-				 os);
+				 os,outPath);
 		return outPath;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//	 
+//
 /////////////////////////////////////////////////////////////////////////////////////////
 }
