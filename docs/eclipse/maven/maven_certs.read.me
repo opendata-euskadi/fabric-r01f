@@ -40,7 +40,7 @@
 				from/to central (https://repo.maven.apache.org/maven2): sun.security.validator.ValidatorException: PKIX path building failed:
 				sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target -> [Help 1]
 
-,install another cert (from https://repo.maven.apache.org/maven2) as follow:
+install another cert (from https://repo.maven.apache.org/maven2) as follow:
 			- If JRE <= 8
 					$>keytool -keystore {jdk_root}\jre\lib\security\cacerts -import -file {develop_root}\projects\fabric\r01f\docs\eclipse\maven\certs\McAffeeWebGatewayEuskoJaurlaritza.cer -alias mcaffee_eus_root -storepass changeit
 			- If JRE > 8
