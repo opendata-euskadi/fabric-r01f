@@ -38,9 +38,9 @@ public class AutoGrowByteArrayOutputStream
 
 	// Is the stream closed?
 	private boolean _closed = false;
-
+	
 /////////////////////////////////////////////////////////////////////////////////////////
-//
+//	CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
 	public AutoGrowByteArrayOutputStream(final int maxBufferSize) {
 		this(DEFAULT_BLOCK_SIZE,
@@ -135,11 +135,7 @@ public class AutoGrowByteArrayOutputStream
 	}
 	/**
 	 * Convert the stream's data to a byte array and return the byte array.
-	 * Also replaces the internal structures with the byte array to conserve memory:
-	 * if the byte array is being made anyways, mind as well as use it. This approach
-	 * also means that if this method is called twice without any writes in between,
-	 * the second call is a no-op.
-	 *
+	 * 
 	 * This method is "unsafe" as it returns the internal buffer.
 	 * Callers should not modify the returned buffer.
 	 * @return the current contents of this output stream, as a byte array.
@@ -150,7 +146,7 @@ public class AutoGrowByteArrayOutputStream
 		int totalSize = size();
 		if (totalSize == 0) return new byte[0];
 
-		this.resize(totalSize);
+		this.resizeAndCompact(totalSize);	// compact all buffers into a single one
 		return _buffers.getFirst();
 	}
 	/**
@@ -166,18 +162,6 @@ public class AutoGrowByteArrayOutputStream
 		return bytesUnsafe.clone();
 	}
 	/**
-	 * Reset the contents of this <code>FastByteArrayOutputStream</code>.
-	 * <p>All currently accumulated output in the output stream is discarded.
-	 * The output stream can be used again.
-	 */
-	public void reset() {
-		_buffers.clear();
-		_nextBlockSize = _initialBlockSize;
-		_closed = false;
-		_currentBufferIndex = 0;
-		_alreadyBufferedBytesCount = 0;
-	}
-	/**
 	 * Get an {@link InputStream} to retrieve the data in this {@link OutputStream}
 	 * Note that if any methods are called on the {@link OutputStream}
 	 * (including, but not limited to, any of the write methods, {@link #reset()},
@@ -188,6 +172,18 @@ public class AutoGrowByteArrayOutputStream
 	public InputStream getInputStream() {
 		return new AutoGrowByteArrayInputStream(_buffers,
 												_currentBufferIndex);
+	}
+	/**
+	 * Reset the contents of this <code>FastByteArrayOutputStream</code>.
+	 * <p>All currently accumulated output in the output stream is discarded.
+	 * The output stream can be used again.
+	 */
+	public void reset() {
+		_buffers.clear();
+		_nextBlockSize = _initialBlockSize;
+		_closed = false;
+		_currentBufferIndex = 0;
+		_alreadyBufferedBytesCount = 0;
 	}
 	/**
 	 * Write the buffers content to the given OutputStream.
@@ -217,7 +213,7 @@ public class AutoGrowByteArrayOutputStream
 	 * @param targetCapacity the desired size of the buffer
 	 * @throws IllegalArgumentException if the given capacity is smaller than the actual size of the content stored in the buffer already
 	 */
-	public void resize(final int targetCapacity) {
+	public void resizeAndCompact(final int targetCapacity) {
 		if (targetCapacity < this.size()) throw new IllegalArgumentException("New capacity must not be smaller than current size");
 
 		if (_buffers.peekFirst() == null) {
