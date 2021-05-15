@@ -41,6 +41,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 
+import com.google.common.base.Splitter;
 import com.google.common.collect.Maps;
 
 import lombok.Cleanup;
@@ -54,6 +55,7 @@ import r01f.types.url.UrlPath;
 import r01f.types.url.UrlProtocol;
 import r01f.types.url.UrlProtocol.StandardUrlProtocol;
 import r01f.types.url.UrlQueryString;
+import r01f.util.types.StringSplitter;
 import r01f.util.types.Strings;
 import r01f.util.types.collections.CollectionUtils;
 
@@ -139,16 +141,22 @@ public class HttpProxy {
 	/**
 	 * Performs an HTTP POST request
 	 * @param originalRequest  The {@link HttpServletRequest} object passed
-	 *					 	  in by the servlet engine representing the
+	 *					 	   in by the servlet engine representing the
 	 *					 	  client request to be proxied
 	 * @param responseToClient The {@link HttpServletResponse} object by which
-	 *						 we can send a proxied response to the client
+	 *						   we can send a proxied response to the client
 	 */
 	public void proxyPOST(final HttpServletRequest originalRequest,
 						  final HttpServletResponse responseToClient) throws IOException,
 					   													  	 ServletException {
 		// [1] Create the POST request
-		ContentType contentType = ContentType.create(originalRequest.getContentType());
+		ContentType contentType = Strings.isNOTNullOrEmpty(originalRequest.getContentType())
+												// beware that content type might be like [application/x-www-form-urlencoded; charset=UTF-8]
+												// ... but the content-type is just the first part
+												? ContentType.create(StringSplitter.using(Splitter.on(';'))
+														   						   .at(originalRequest.getContentType())
+														   						   .group(0))
+												: null;
 		Url destinationUrl = _getTargetURL(originalRequest);
 		String theDestinationUrlStr = originalRequest.getRequestURL().toString().endsWith("/")
 											? destinationUrl.asString() + "/"
