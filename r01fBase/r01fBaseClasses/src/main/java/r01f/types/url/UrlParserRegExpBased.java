@@ -28,6 +28,7 @@ public class UrlParserRegExpBased
 	private static final transient String ANCHOR_REGEX = "(?:#(.*))?";
 
 	private static final transient Pattern FILE_URL_PATTERN = Pattern.compile("^file://(.+)$");
+	private static final transient Pattern MAILTO_URL_PATTERN = Pattern.compile("^mailto:(.+)$");
 	private static final transient Pattern FULL_URL_PATTERN = Pattern.compile("^" + PROTOCOL_REGEX + SITE_REGEX + PORT_REGEX + "/*" + PATH_REGEX + QUERY_REGEX + ANCHOR_REGEX + "$");
 	private static final transient Pattern PATH_URL_PATTERN = Pattern.compile("^" + PATH_REGEX + QUERY_REGEX + ANCHOR_REGEX + "$");
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -68,19 +69,26 @@ public class UrlParserRegExpBased
 			}
 		}
 		return outUrlComponents;
-
 	}
-	private UrlComponents _parseFullUrl(final String urlStr) {
+	private static UrlComponents _parseFullUrl(final String urlStr) {
 		UrlComponents outComponents = null;
 		if (UrlProtocol.is(urlStr,StandardUrlProtocol.FILE)) {
 			Matcher m = FILE_URL_PATTERN.matcher(urlStr);
 			if (m.find()) {
 				String pathStr = m.group(1);
-
 				outComponents = new UrlComponents(StandardUrlProtocol.FILE.toUrlProtocol(),null,0,
 												  UrlPath.preservingTrailingSlash()		// BEWARE!!
 												  		 .from(pathStr),
-												  null,null);
+												  null,null);	// no query string or path fragment
+			}
+		}
+		else if (UrlProtocol.is(urlStr,StandardUrlProtocol.MAIL)) {
+			Matcher m = MAILTO_URL_PATTERN.matcher(urlStr);
+			if (m.find()) {
+				String email = m.group(1);
+				outComponents = new UrlComponents(StandardUrlProtocol.MAIL.toUrlProtocol(),Host.forId(email),0,		// WTF! a mailto:<email> is NOT really an Url but an URI!!
+												  null,			// no path
+												  null,null);	// no query string or path fragment
 			}
 		}
 		else {
@@ -126,7 +134,7 @@ public class UrlParserRegExpBased
 	 * @param pathUrl
 	 * @return true if it's a valid url
 	 */
-	private UrlComponents _parsePathUrl(final String pathUrl) {
+	private static UrlComponents _parsePathUrl(final String pathUrl) {
 		UrlComponents outComponents = null;
 		Matcher m = PATH_URL_PATTERN.matcher(pathUrl);
 		if (m.find()) {
