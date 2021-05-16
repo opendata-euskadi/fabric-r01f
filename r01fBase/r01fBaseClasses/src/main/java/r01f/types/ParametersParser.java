@@ -3,7 +3,7 @@ package r01f.types;
 import java.util.Map;
 
 /**
- * Parameters parser inteface 
+ * Parameters parser interface 
  */
 public interface ParametersParser {
 	public ParamValueEncoderDecoder getParamValueEncoderDecoder();

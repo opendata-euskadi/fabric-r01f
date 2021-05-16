@@ -30,7 +30,7 @@ abstract class ParametersParserBase
 	 * @param str
 	 * @return
 	 */
-	private CharSequence _urlEncodeNoThrow(final CharSequence str) {
+	private static CharSequence _urlEncodeNoThrow(final CharSequence str) {
 		if (str == null) return null;
 		try {
 			URLCodec codec = new URLCodec();

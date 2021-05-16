@@ -131,22 +131,39 @@ public abstract class ParametersWrapperBase<SELF_TYPE extends ParametersWrapperB
 		_paramsParser = new ParametersParserRegexBased();
 		if (CollectionUtils.hasData(params)) {
 			_params = ImmutableMap.<String,String>copyOf(FluentIterable.from(params.entrySet())
+																	   // filter entries without value
 																	   .filter(new Predicate<Map.Entry<String,String>>() {
 																						@Override
-																						public boolean apply(Entry<String,String> entry) {
+																						public boolean apply(final Entry<String,String> entry) {
 																							return entry != null
 																								&& entry.getKey() != null
 																								&& entry.getValue() != null;
 																						}
 																				})
+																	   // encode the param split chars
 																	   .transform(new Function<Map.Entry<String,String>,Map.Entry<String,String>>() {
+																						private final String paramSplitCharEncoded = _paramsParser.getParamValueEncoderDecoder()
+																																				  .encodeValue(String.valueOf(DEFAULT_PARAM_SPLIT_CHAR));
 																						@Override
-																						public Entry<String, String> apply(Entry<String, String> t) {
-																							t.setValue(t.getValue().replaceAll(String.valueOf(DEFAULT_PARAM_SPLIT_CHAR),
-																															   _paramsParser.getParamValueEncoderDecoder().encodeValue(String.valueOf(DEFAULT_PARAM_SPLIT_CHAR))));
-																							return t;
+																						public Entry<String,String> apply(final Entry<String,String> me) {
+																							return new Entry<String,String>() {
+																								@Override
+																								public String getKey() {
+																									return me.getKey();
+																								}
+																								@Override
+																								public String getValue() {
+																									return me.getValue()
+																											.replaceAll(String.valueOf(DEFAULT_PARAM_SPLIT_CHAR),
+																														paramSplitCharEncoded);
+																								}
+																								@Override
+																								public String setValue(final String value) {
+																									throw new UnsupportedOperationException();
+																								}
+																							};
 																						}
-																	   })
+																	   			  })
 																	   .toList());
 		} else {
 			_params = null;
