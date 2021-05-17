@@ -127,7 +127,7 @@ public class HDFSFileStoreAPI
 					 final HDFSFileStoreFilerAPI filerApi) {
 		super(fsProvider);
 		_check = new FileStoreChecksDelegate(this,
-										  	 filerApi);	
+										  	 filerApi);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -147,17 +147,17 @@ public class HDFSFileStoreAPI
 	@Override @SuppressWarnings("resource")
 	public boolean existsFile(final FileID fileId) throws IOException {
 		boolean outExists = false;
-		
+
 		boolean retry = true; // retry
 		for (int retryCount = 0; retry && retryCount < AUTH_CREDENTIAL_REFRESH_RETRY_NUM; retryCount++) {
 			try {
 				// ------------------------------------------------------------
 				// check
 				_check.checkFileId(fileId);
-		
+
 				// exists?
 				Path theHDFSFilePath = new Path(_fileIdToPath(fileId).asAbsoluteString());
-				outExists = this.getHDFSFileSystem().exists(theHDFSFilePath) 
+				outExists = this.getHDFSFileSystem().exists(theHDFSFilePath)
 					     && this.getHDFSFileSystem().isFile(theHDFSFilePath);
 				// ------------------------------------------------------------
 				retry = false;
@@ -175,7 +175,7 @@ public class HDFSFileStoreAPI
 	public boolean copyFile(final FileID srcFileId,final FileID dstFileId,
 							final boolean overwrite) throws IOException {
 		boolean copyFileStateOK = false;
-		
+
 		boolean retry = true;	// retry
 		for (int retryCount = 0; retry && retryCount < AUTH_CREDENTIAL_REFRESH_RETRY_NUM; retryCount++) {
 			try {
@@ -184,7 +184,7 @@ public class HDFSFileStoreAPI
 				_check.checkFileId(srcFileId,dstFileId);
 				_check.checkBeforeCopyFile(srcFileId,dstFileId,
 										   overwrite);
-		
+
 				// copy
 				copyFileStateOK = FileUtil.copy(this.getHDFSFileSystem(),_fileIdToHDFSPath(srcFileId),
 												this.getHDFSFileSystem(),_fileIdToHDFSPath(dstFileId),
@@ -192,7 +192,10 @@ public class HDFSFileStoreAPI
 												overwrite,	// overwrite
 												this.getHDFSConfiguration());
 				// ------------------------------------------------------------
+<<<<<<< HEAD
 				retry = false;
+=======
+>>>>>>> branch 'master' of https://src1.alm02.itbatera.euskadi.eus/fabric/r01f.git
 			} catch (IOException ioEx) {
 				retry = _isCredentialExpiredError(ioEx);
 				if (!retry) throw ioEx;
@@ -203,7 +206,7 @@ public class HDFSFileStoreAPI
 	@Override @SuppressWarnings("resource")
 	public boolean renameFile(final FileID srcFileId,final FileID dstFileId) throws IOException {
 		boolean isRenamed = false;
-		
+
 		boolean retry = true; 	// retry
 		for (int retryCount = 0; retry && retryCount < AUTH_CREDENTIAL_REFRESH_RETRY_NUM; retryCount++) {
 			try {
@@ -212,13 +215,16 @@ public class HDFSFileStoreAPI
 				_check.checkFileId(srcFileId,dstFileId);
 				_check.checkBeforeMoveFile(srcFileId,dstFileId,
 										   false);		// DO NOT overwrite
-		
+
 				// rename
 				isRenamed = this.getHDFSFileSystem()
 								.rename(_fileIdToHDFSPath(srcFileId),
 									    _fileIdToHDFSPath(dstFileId));
 				// ------------------------------------------------------------
+<<<<<<< HEAD
 				retry = false;
+=======
+>>>>>>> branch 'master' of https://src1.alm02.itbatera.euskadi.eus/fabric/r01f.git
 			} catch (IOException ioEx) {
 				retry = _isCredentialExpiredError(ioEx);
 				if (!retry) throw ioEx;
@@ -240,7 +246,7 @@ public class HDFSFileStoreAPI
 	public OutputStream getFileOutputStreamForWriting(final FileID dstFileId,final long offset,
 													  final boolean overwrite) throws IOException {
 		FSDataOutputStream out = null;
-		
+
 		boolean retry = true; 	// retry
 		for (int retryCount = 0; retry && retryCount < AUTH_CREDENTIAL_REFRESH_RETRY_NUM; retryCount++) {
 			try {
@@ -248,18 +254,21 @@ public class HDFSFileStoreAPI
 				log.trace("get outputstream for writing file {} (overwrite={})",
 						  dstFileId,overwrite);
 				if (offset > 0) throw new UnsupportedOperationException("HDFS does NOT supports random writes (only sequential writing from the beginning of the file or appending are supported)");
-		
+
 				// check
 				_check.checkFileId(dstFileId);
 				_check.checkBeforeWriteToFile(dstFileId,
 											  overwrite);
-		
+
 				// write
 				out = _prepareFileOutputStream(dstFileId,
 											   false,		// append
 											   overwrite);
 				// ------------------------------------------------------------
+<<<<<<< HEAD
 				retry = false;
+=======
+>>>>>>> branch 'master' of https://src1.alm02.itbatera.euskadi.eus/fabric/r01f.git
 			} catch (IOException ioEx) {
 				retry = _isCredentialExpiredError(ioEx);
 				if (!retry) throw ioEx;
@@ -276,7 +285,7 @@ public class HDFSFileStoreAPI
 			try {
 				// ------------------------------------------------------------
 				Preconditions.checkArgument(srcIS != null,"The source input stream cannot be null");
-		
+
 				// prepare source & destination
 				InputStream in = new BufferedInputStream(srcIS);
 				OutputStream out = this.getFileOutputStreamForWriting(dstFileId,0,		// offset = 0 > start writing at the beginning of the file
@@ -287,7 +296,10 @@ public class HDFSFileStoreAPI
 								  true);	// close the streams after writing
 				out.flush();
 				// ------------------------------------------------------------
+<<<<<<< HEAD
 				retry = false;
+=======
+>>>>>>> branch 'master' of https://src1.alm02.itbatera.euskadi.eus/fabric/r01f.git
 			} catch (IOException ioEx) {
 				retry = _isCredentialExpiredError(ioEx);
 				if (!retry) throw ioEx;
@@ -306,7 +318,7 @@ public class HDFSFileStoreAPI
 	@Override @SuppressWarnings("resource")
 	public OutputStream getFileOutputStreamForAppending(final FileID dstFileId) throws IOException {
 		OutputStream dstFOS = null;
-		
+
 		boolean retry = true; 	// retry
 		for (int retryCount = 0; retry && retryCount < AUTH_CREDENTIAL_REFRESH_RETRY_NUM; retryCount++) {
 			try {
@@ -315,13 +327,16 @@ public class HDFSFileStoreAPI
 				// check
 				_check.checkFileId(dstFileId);
 				_check.checkBeforeAppendToFile(dstFileId);
-		
+
 				// write
 				dstFOS = _prepareFileOutputStream(dstFileId,
 												  true,			// append
 												  false);		// overwrite
 				// ------------------------------------------------------------
+<<<<<<< HEAD
 				retry = false;
+=======
+>>>>>>> branch 'master' of https://src1.alm02.itbatera.euskadi.eus/fabric/r01f.git
 			} catch (IOException ioEx) {
 				retry = _isCredentialExpiredError(ioEx);
 				if (!retry) throw ioEx;
@@ -337,11 +352,11 @@ public class HDFSFileStoreAPI
 			try {
 				// ------------------------------------------------------------
 				Preconditions.checkArgument(srcIS != null,"The source input stream cannot be null");
-		
+
 				// prepare source & destination
 				InputStream in = new BufferedInputStream(srcIS);
 				OutputStream out = this.getFileOutputStreamForAppending(dstFileId);
-		
+
 				// write
 				// IOUtils.copyBytes close input and output streams unless it was tell to
 				IOUtils.copyBytes(in,out,
@@ -349,7 +364,10 @@ public class HDFSFileStoreAPI
 								  true);	// close after write
 				out.flush();
 				// ------------------------------------------------------------
+<<<<<<< HEAD
 				retry = false;
+=======
+>>>>>>> branch 'master' of https://src1.alm02.itbatera.euskadi.eus/fabric/r01f.git
 			} catch (IOException ioEx) {
 				retry = _isCredentialExpiredError(ioEx);
 				if (!retry) throw ioEx;
@@ -369,11 +387,11 @@ public class HDFSFileStoreAPI
 					log.warn("The data to write in file is NULL!!!");
 					return;
 				}
-		
+
 				// Prepare source and destination
 				InputStream srcIS = new BufferedInputStream(new ByteArrayInputStream(srcDataChunk));
 				OutputStream out = this.getFileOutputStreamForAppending(dstFileId);
-		
+
 				// write
 				// IOUtils.copyBytes close input and output streams unless it was tell to
 				IOUtils.copyBytes(srcIS,out,
@@ -381,7 +399,10 @@ public class HDFSFileStoreAPI
 								  true);	// close after write
 				out.flush();
 				// ------------------------------------------------------------
+<<<<<<< HEAD
 				retry = false;
+=======
+>>>>>>> branch 'master' of https://src1.alm02.itbatera.euskadi.eus/fabric/r01f.git
 			} catch (IOException ioEx) {
 				retry = _isCredentialExpiredError(ioEx);
 				if (!retry) throw ioEx;
@@ -398,14 +419,14 @@ public class HDFSFileStoreAPI
 			try {
 				// ------------------------------------------------------------
 				Path theFilePath = _fileIdToHDFSPath(dstFileId);
-		
+
 				log.trace("\tPrepare file {} to be written (append={}, overwrite={})",
 						  dstFileId,appendToFile,overwrite);
-		
+
 				// check if the file exists
 				boolean prevExists = this.getHDFSFileSystem()
 										 .exists(theFilePath);
-		
+
 				if (prevExists) {
 					log.debug("\tFile {} already exists",dstFileId);
 					if (appendToFile) {
@@ -426,7 +447,10 @@ public class HDFSFileStoreAPI
 							  .create(theFilePath);
 				}
 				// ------------------------------------------------------------
+<<<<<<< HEAD
 				retry = false;
+=======
+>>>>>>> branch 'master' of https://src1.alm02.itbatera.euskadi.eus/fabric/r01f.git
 			} catch (IOException ioEx) {
 				retry = _isCredentialExpiredError(ioEx);
 				if (!retry) throw ioEx;
@@ -445,17 +469,17 @@ public class HDFSFileStoreAPI
 	@Override @SuppressWarnings("resource")
 	public InputStream readFromFile(final FileID fileId,final long offset) throws IOException {
 		FSDataInputStream outIS = null;
-		
+
 		boolean retry = true; 	// retry
 		for (int retryCount = 0; retry && retryCount < AUTH_CREDENTIAL_REFRESH_RETRY_NUM; retryCount++) {
 			try {
 				// ------------------------------------------------------------
 				log.trace("Reading file {}",fileId);
-		
+
 				// check
 				_check.checkFileId(fileId);
 				_check.checkBeforeReadingFromFile(fileId);
-		
+
 				// read
 				Path theFilePath = new Path(_fileIdToPath(fileId).asAbsoluteString());
 				outIS = this.getHDFSFileSystem()
@@ -466,7 +490,10 @@ public class HDFSFileStoreAPI
 					throw new IllegalArgumentException("file offset MUST be > 0");
 				}
 				// ------------------------------------------------------------
+<<<<<<< HEAD
 				retry = false;
+=======
+>>>>>>> branch 'master' of https://src1.alm02.itbatera.euskadi.eus/fabric/r01f.git
 			} catch (IOException ioEx) {
 				retry = _isCredentialExpiredError(ioEx);
 				if (!retry) throw ioEx;
@@ -478,32 +505,32 @@ public class HDFSFileStoreAPI
 	public byte[] readChunkFromFile(final FileID fileId,
 			  		   				final long offset,final int len) throws IOException {
 		byte[] btbuffer = null;
-		
+
 		boolean retry = true; 	// retry
 		for (int retryCount = 0; retry && retryCount < AUTH_CREDENTIAL_REFRESH_RETRY_NUM; retryCount++) {
 			try {
 				// ------------------------------------------------------------
 				log.trace("Chunked reading {} bytes starting at {} from file at {}",len,offset,fileId);
-		
+
 				// check
 				_check.checkFileId(fileId);
 				_check.checkBeforeReadingFromFile(fileId);
-		
+
 				// read
 				FSDataInputStream in = null;
 				try {
 					Path theFilePath = _fileIdToHDFSPath(fileId);
 					in = this.getHDFSFileSystem()
 							 .open(theFilePath); //FSDataInputStream implements Seekable interface
-		
+
 					// Adjust num of bytes to read
 					FileStatus[] fstatus = this.getHDFSFileSystem()
 											   .listStatus(theFilePath);
 					long size = fstatus[0].getLen();
 					log.trace("\tfile size={},offset={},len={}",size,offset,len);
-		
+
 					if (offset >= size) return null; // End of file
-		
+
 					int theLen = len;
 					if (theLen >= ((size-offset) + 1)) {
 						theLen = (int)(size - offset);
@@ -517,7 +544,10 @@ public class HDFSFileStoreAPI
 					if (in != null) in.close();
 				}
 				// ------------------------------------------------------------
+<<<<<<< HEAD
 				retry = false;
+=======
+>>>>>>> branch 'master' of https://src1.alm02.itbatera.euskadi.eus/fabric/r01f.git
 			} catch (IOException ioEx) {
 				retry = _isCredentialExpiredError(ioEx);
 				if (!retry) throw ioEx;
@@ -531,23 +561,26 @@ public class HDFSFileStoreAPI
 	@Override @SuppressWarnings("resource")
 	public boolean deleteFile(final FileID fileId) throws IOException {
 		boolean opState = false;
-		
+
 		boolean retry = true; 	// retry
 		for (int retryCount = 0; retry && retryCount < AUTH_CREDENTIAL_REFRESH_RETRY_NUM; retryCount++) {
 			try {
 				// ------------------------------------------------------------
 				log.trace("Deleting file {}",fileId);
-		
+
 				// check
 				_check.checkFileId(fileId);
 				_check.checkBeforeDeleteFile(fileId);
-		
+
 				// delete
 				opState = this.getHDFSFileSystem()
 							  .delete(_fileIdToHDFSPath(fileId),
 								      false);		// recursive=false (it's NOT a folder)
 				// ------------------------------------------------------------
+<<<<<<< HEAD
 				retry = false;
+=======
+>>>>>>> branch 'master' of https://src1.alm02.itbatera.euskadi.eus/fabric/r01f.git
 			} catch (IOException ioEx) {
 				retry = _isCredentialExpiredError(ioEx);
 				if (!retry) throw ioEx;
@@ -561,22 +594,25 @@ public class HDFSFileStoreAPI
 	@Override @SuppressWarnings("resource")
 	public FileProperties getFileProperties(final FileID fileId) throws IOException {
 		FileProperties outProps = null;
-		
+
 		boolean retry = true; 	// retry
 		for (int retryCount = 0; retry && retryCount < AUTH_CREDENTIAL_REFRESH_RETRY_NUM; retryCount++) {
 			try {
 				// ------------------------------------------------------------
 				Path theFilePath = new Path(_fileIdToPath(fileId).asAbsoluteString());
-		
+
 				if (!this.getHDFSFileSystem()
 						 .exists(theFilePath)) throw new IOException(Strings.customized("The file {} does not exists!",fileId.asString()));
-		
+
 				// return the status as FileProperties
 				FileStatus hdfsStatus = this.getHDFSFileSystem()
 											.getFileStatus(theFilePath);
 				outProps = HDFSFileProperties.from(hdfsStatus);
 				// ------------------------------------------------------------
+<<<<<<< HEAD
 				retry = false;
+=======
+>>>>>>> branch 'master' of https://src1.alm02.itbatera.euskadi.eus/fabric/r01f.git
 			} catch (IOException ioEx) {
 				retry = _isCredentialExpiredError(ioEx);
 				if (!retry) throw ioEx;
@@ -591,16 +627,19 @@ public class HDFSFileStoreAPI
 			try {
 				// ------------------------------------------------------------
 				Path theFilePath = new Path(_fileIdToPath(fileId).asAbsoluteString());
-		
+
 				if (!this.getHDFSFileSystem()
 						 .exists(theFilePath)) throw new IOException(Strings.customized("The file {} does not exists!",fileId.asString()));
-		
+
 				this.getHDFSFileSystem()
 					.setTimes(theFilePath,
 							  modifiedTimeInMillis,
 							  -1); // A value of -1 means that this call should not set access time.
 				// ------------------------------------------------------------
+<<<<<<< HEAD
 				retry = false;
+=======
+>>>>>>> branch 'master' of https://src1.alm02.itbatera.euskadi.eus/fabric/r01f.git
 			} catch (IOException ioEx) {
 				retry = _isCredentialExpiredError(ioEx);
 				if (!retry) throw ioEx;

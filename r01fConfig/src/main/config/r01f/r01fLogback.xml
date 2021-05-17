@@ -61,7 +61,11 @@
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="app_log" />
 	</logger>
+<<<<<<< HEAD
 	<logger name="r01f.filestore.api.hdfs" level="WARN" additivity="false">
+=======
+	<logger name="r01f.filestore.api.hdfs" level="TRACE" additivity="false">
+>>>>>>> branch 'master' of https://src1.alm02.itbatera.euskadi.eus/fabric/r01f.git
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="app_log" />
 	</logger>
