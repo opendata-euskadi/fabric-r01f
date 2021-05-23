@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import lombok.experimental.Accessors;
+import r01f.patterns.FactoryFrom;
 
 
 
@@ -73,15 +74,21 @@ public class HttpProxyServlet
 /////////////////////////////////////////////////////////////////////////////////////////
 //	FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
+	private final FactoryFrom<ServletConfig,HttpProxyServletDelegate> _delegateFactory;
 	private HttpProxyServletDelegate _proxyServletDelegate;
 /////////////////////////////////////////////////////////////////////////////////////////
 //	CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
 	public HttpProxyServlet() {
-		// nothing
+		_delegateFactory = new FactoryFrom<ServletConfig,HttpProxyServletDelegate>() {
+									@Override
+									public HttpProxyServletDelegate from(final ServletConfig servletConfig) {
+										return new HttpProxyServletDelegate(new HttpProxyServletConfig(servletConfig));
+									}
+						   };
 	}
-	public HttpProxyServlet(final HttpProxyServletDelegate delegate) {
-		_proxyServletDelegate = delegate;
+	public HttpProxyServlet(final FactoryFrom<ServletConfig,HttpProxyServletDelegate> delegateFactory) {
+		_delegateFactory = delegateFactory;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -99,7 +106,7 @@ public class HttpProxyServlet
 	 */
 	@Override
 	public void init(final ServletConfig servletConfig) {
-		if (_proxyServletDelegate == null) _proxyServletDelegate = new HttpProxyServletDelegate(new HttpProxyServletConfig(servletConfig));
+		_proxyServletDelegate = _delegateFactory.from(servletConfig);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	GET

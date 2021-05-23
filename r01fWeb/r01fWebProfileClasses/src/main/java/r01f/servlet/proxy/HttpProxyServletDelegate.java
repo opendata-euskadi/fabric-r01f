@@ -26,6 +26,8 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
+import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -106,14 +108,14 @@ public class HttpProxyServletDelegate {
 					  	 final HttpServletResponse responseToClient) throws IOException,
 					  													 	ServletException {
 		// [0] Get the endpoint url 
-		Url endPointUrl = _getEndPointUrl(_config);
+		HttpProxyEndPoint endPoint = _chooseEndPoint();
 		
 		// [1] Create a GET request
 		//	   beware that R01F Url object when serialized to string does NOT include the final '/' char if present
 		UrlPath urlPath = _getTargetUrlPath(_config,
 											originalRequest);
 		UrlQueryString urlQueryString  = UrlQueryString.fromParamsString(originalRequest.getQueryString());
-		Url destinationUrl = Url.from(endPointUrl).joinWith(urlPath,urlQueryString);
+		Url destinationUrl = Url.from(urlPath,urlQueryString);
 		
 		String theDestinationUrlStr = originalRequest.getRequestURL().toString().endsWith("/")
 											? destinationUrl.asString() + "/"
@@ -126,15 +128,15 @@ public class HttpProxyServletDelegate {
 
 		// [2] Transfer the original request headers/cookies to the proxied request
 		_transferRequestHeaders(originalRequest,
-								endPointUrl,
+								endPoint.getUrl(),
 								getRequestToBeProxied);
 		_transferRequestCookies(originalRequest,
-								endPointUrl,
+								endPoint.getUrl(),
 								getRequestToBeProxied);
 
 		// [3] Execute the proxy request
 		_executeProxyRequest(originalRequest,responseToClient,
-							 endPointUrl,
+							 endPoint,
 							 _config.isFollowRedirects(),
 							 getRequestToBeProxied);
 	}
@@ -151,13 +153,13 @@ public class HttpProxyServletDelegate {
 						  final HttpServletResponse responseToClient) throws IOException,
 					   													  	 ServletException {
 		// [0] Get the endpoint url 
-		Url endPointUrl = _getEndPointUrl(_config);
+		HttpProxyEndPoint endPoint = _chooseEndPoint();
 		
 		// [1] Create the POST request
 		UrlPath urlPath = _getTargetUrlPath(_config,
 											originalRequest);
 		UrlQueryString urlQueryString  = UrlQueryString.fromParamsString(originalRequest.getQueryString());
-		Url destinationUrl = Url.from(endPointUrl).joinWith(urlPath,urlQueryString);
+		Url destinationUrl = Url.from(urlPath,urlQueryString);
 		
 		String theDestinationUrlStr = originalRequest.getRequestURL().toString().endsWith("/")
 											? destinationUrl.asString() + "/"
@@ -178,10 +180,10 @@ public class HttpProxyServletDelegate {
 
 		// [2] Transfer the original request headers/cookies to the proxied request
 		_transferRequestHeaders(originalRequest,
-								endPointUrl,
+								endPoint.getUrl(),
 								postRequestToBeProxied);
 		_transferRequestCookies(originalRequest,
-								endPointUrl,
+								endPoint.getUrl(),
 								postRequestToBeProxied);
 
 		// [3] Transfer the data depending on the post way:
@@ -190,23 +192,23 @@ public class HttpProxyServletDelegate {
 		//		- raw post
 		if (ServletFileUpload.isMultipartContent(originalRequest)) {
 			_transferMultipartPost(originalRequest,
-								   endPointUrl,
+								   endPoint.getUrl(),
 								   postRequestToBeProxied,
 								   _config.getMaxFileUploadSize());
 		} else if ((contentType == null)
 				|| (originalRequest.getContentType() != null && originalRequest.getContentType().contains("application/x-www-form-urlencoded"))) {
 			_transferFormUrlEncodedPost(originalRequest,
-										endPointUrl,
+										endPoint.getUrl(),
 										postRequestToBeProxied);
 		} else {
 			_transferContentPost(originalRequest,
-								 endPointUrl,
+								 endPoint.getUrl(),
 								 postRequestToBeProxied);
 		}
 
 		// [4] Execute the proxy request
 		_executeProxyRequest(originalRequest,responseToClient,
-							 endPointUrl,
+							 endPoint,
 							 _config.isFollowRedirects(),
 							 postRequestToBeProxied);
 	}
@@ -218,7 +220,7 @@ public class HttpProxyServletDelegate {
 	 * back to the client via the given {@link HttpServletResponse}
 	 * @param originalReq The origingal servlet request
 	 * @param responseToClient An object by which we can send the proxied response back to the client
-	 * @param endPointUrl the target endpoint url
+	 * @param endPoint the target endpoint url
 	 * @param followRedirects
 	 * @param requestToBeProxied An object representing the proxy request to be made
 	 * @throws IOException	  Can be thrown by the {@link HttpClient}.executeMethod
@@ -226,12 +228,13 @@ public class HttpProxyServletDelegate {
 	 */
 	@SuppressWarnings("resource")
 	private void _executeProxyRequest(final HttpServletRequest originalReq,final HttpServletResponse responseToClient,
-									  final Url endPointUrl,
+									  final HttpProxyEndPoint endPoint,
 									  final boolean followRedirects,
 									  final HttpRequestBase requestToBeProxied) throws IOException,
 									  											   	   ServletException {
 		// [1] - Get the [end point] respones
-		HttpResponse endPointResponse = _getEndPointResponse(requestToBeProxied);
+		HttpResponse endPointResponse = _getEndPointResponse(endPoint,
+															 requestToBeProxied);
 
 		// [2]  Handle redirects (301) or client cache usage advices (304)
 		if (followRedirects
@@ -240,7 +243,7 @@ public class HttpProxyServletDelegate {
 
 			boolean hasToContinue = _handleRedirection(originalReq,responseToClient,
 									   				   requestToBeProxied,
-									   				   endPointUrl,
+									   				   endPoint.getUrl(),
 									   				   endPointResponse);
 			if (!hasToContinue) return;	// there is a redirection... do not continue
 
@@ -269,15 +272,14 @@ public class HttpProxyServletDelegate {
 		// [3.1] transfer the status code sent by the proxied server to the response to client
 		responseToClient.setStatus(endPointResponse.getStatusLine().getStatusCode());
 
-
 		// [3.2] Copy the headers of the proxied server to the client response
 		_transferResponseHeaders(endPointResponse,
 								 responseToClient);
 
 		// [3.3] transfer the content sent by the proxied endpoint to the client
 		//		 (the response from the proxied endpoint could be ziped... unzip befor transfer it to the response to client)
-		InputStream  endPointResponseIS = endPointResponse.getEntity()
-														  .getContent();
+		InputStream endPointResponseIS = endPointResponse.getEntity()
+														 .getContent();
 
 		boolean endpointResponseIsGzipped = _isBodyParameterGzipped(endPointResponse);
 		if (endpointResponseIsGzipped) {
@@ -297,8 +299,9 @@ public class HttpProxyServletDelegate {
 		log.debug("Received status code: {} - Response: {}",endPointResponse,
 													  		endPointResponseIS);
 	}
-	@SuppressWarnings("resource")
-	protected HttpResponse _getEndPointResponse(final HttpRequestBase requestToBeProxied) throws IOException {
+	@SuppressWarnings( {"static-method","resource"} )
+	protected HttpResponse _getEndPointResponse(final HttpProxyEndPoint choosenEndPoint,
+												final HttpRequest requestToBeProxied) throws IOException {
 		// [1] - Create a default HttpClient
 		HttpClientBuilder clientBuilder = HttpClientBuilder.create();	// HttpParams httpClientParams = new BasicHttpParams();
 		clientBuilder.disableRedirectHandling();						// httpClientParams.setParameter(ClientPNames.HANDLE_REDIRECTS,false);
@@ -307,20 +310,22 @@ public class HttpProxyServletDelegate {
 		HttpClient httpClient = clientBuilder.build(); 					// HttpClient httpClient = new SystemDefaultHttpClient(httpClientParams);
 
 		// [2] - Execute the request
-		HttpResponse endPointResponse = httpClient.execute(requestToBeProxied);
+		HttpHost host = HttpHost.create(choosenEndPoint.getUrl().getHost().asString());
+		HttpResponse endPointResponse = httpClient.execute(host,
+														   requestToBeProxied);
 		return endPointResponse;
 	}
 	private static final SecureRandom RANDOM = new SecureRandom(UUID.randomUUID().toString().getBytes());
-	protected Url _getEndPointUrl(final HttpProxyServletConfig config) {
+	protected HttpProxyEndPoint _chooseEndPoint() {
 		Url url = null;
 		if (_config.getEndPoints().size() == 1) {
 			url = CollectionUtils.firstOf(_config.getEndPoints());
 		} else {
 			int index = RANDOM.nextInt(_config.getEndPoints().size());
-			return Iterables.get(_config.getEndPoints(),
-								 index);
+			url = Iterables.get(_config.getEndPoints(),
+								index);
 		}
-		return url;
+		return new HttpProxyEndPointUrlImpl(url);
 	}
 	private static UrlPath _getTargetUrlPath(final HttpProxyServletConfig config,
 									  		 final HttpServletRequest originalRequest) {
