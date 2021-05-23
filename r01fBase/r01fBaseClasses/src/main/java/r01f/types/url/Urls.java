@@ -1,6 +1,7 @@
 package r01f.types.url;
 
 import r01f.patterns.Provider;
+import r01f.types.url.UrlProtocol.StandardUrlProtocol;
 import r01f.util.types.Strings;
 
 
@@ -287,5 +288,14 @@ public class Urls {
 		if (other == null) return urlPath;
 		
 		return urlPath.joinedWith(other);
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	
+/////////////////////////////////////////////////////////////////////////////////////////
+	public static String serverAndPort(final Host host,final int port) {
+		if (port == StandardUrlProtocol.HTTP.getDefaultPort()) {
+			return host.asString();
+		}
+		return host + ":" + port;
 	}
 }

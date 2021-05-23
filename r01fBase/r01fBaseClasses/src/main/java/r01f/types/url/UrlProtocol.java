@@ -40,20 +40,6 @@ public class UrlProtocol
 	public String toString() {
 		return _asString;
 	}
-	@Override
-	public boolean equals(final Object other) {
-		if (other == null) return false;
-		if (other == this) return true;
-		if (other instanceof UrlProtocol) {
-			UrlProtocol otherProto = (UrlProtocol)other;
-			return this.is(otherProto);
-		}
-		else if (other instanceof StandardUrlProtocol) {
-			StandardUrlProtocol otherStdProto = (StandardUrlProtocol)other;
-			return this.is(otherStdProto);
-		}
-		return false;
-	}
 	/**
 	 * Checks if it's the same protocol
 	 * @param otherProto
@@ -79,10 +65,6 @@ public class UrlProtocol
 	}
 	public boolean isNOT(final StandardUrlProtocol proto) {
 		return !this.is(proto);
-	}
-	@Override
-	public int hashCode() {
-		return _asString != null ? _asString.hashCode() : 0;
 	}
 	/**
 	 * Checks if the protocol is an standard one
@@ -115,7 +97,7 @@ public class UrlProtocol
 		return outProto != null ? outProto : def;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//
+//	BUILDERS
 /////////////////////////////////////////////////////////////////////////////////////////
 	public static UrlProtocol fromProtocol(final String proto) {
 		return new UrlProtocol(proto);
@@ -222,6 +204,27 @@ public class UrlProtocol
 	public static boolean is(final String str,final StandardUrlProtocol proto) {
 		UrlProtocol p = UrlProtocol.of(str);
 		return p != null ? p.equals(proto) : false;
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	EQUALS & HASHCODE
+/////////////////////////////////////////////////////////////////////////////////////////
+	@Override
+	public boolean equals(final Object other) {
+		if (other == null) return false;
+		if (other == this) return true;
+		if (other instanceof UrlProtocol) {
+			UrlProtocol otherProto = (UrlProtocol)other;
+			return this.is(otherProto);
+		}
+		else if (other instanceof StandardUrlProtocol) {
+			StandardUrlProtocol otherStdProto = (StandardUrlProtocol)other;
+			return this.is(otherStdProto);
+		}
+		return false;
+	}
+	@Override
+	public int hashCode() {
+		return _asString != null ? _asString.hashCode() : 0;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  STANDARD PROTOCOLS
