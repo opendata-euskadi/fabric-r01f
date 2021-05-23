@@ -1,10 +1,11 @@
 package r01f.http.loadbalance;
 
+import com.google.common.base.Objects;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import r01f.http.loadbalance.LoadBalancerIDs.LoadBalancedBackEndServerID;
-import r01f.http.loadbalance.LoadBalancerIDs.LoadBalancedServiceID;
 import r01f.types.url.Url;
 
 @Accessors(prefix="_")
@@ -12,7 +13,6 @@ public class LoadBalancedBackEndServer {
 /////////////////////////////////////////////////////////////////////////////////////////
 //	
 /////////////////////////////////////////////////////////////////////////////////////////
-	@Getter private final LoadBalancedServiceID _serviceId;
 	@Getter private final LoadBalancedBackEndServerID _id;
 	@Getter private final Url _url;
 	
@@ -28,23 +28,19 @@ public class LoadBalancedBackEndServer {
 /////////////////////////////////////////////////////////////////////////////////////////
 //	CONSTRUCTOR & BUILDER
 /////////////////////////////////////////////////////////////////////////////////////////
-	public LoadBalancedBackEndServer(final LoadBalancedServiceID serviceId,
-							  		 final Url url) {
-		this(serviceId,LoadBalancedBackEndServerID.from(url),
+	public LoadBalancedBackEndServer(final Url url) {
+		this(LoadBalancedBackEndServerID.from(url),
 			 url,
 			 30000);	// 30 sg = default short-circuit duration
 	}
-	public LoadBalancedBackEndServer(final LoadBalancedServiceID serviceId,
-									 final Url url,
+	public LoadBalancedBackEndServer(final Url url,
 									 final long shortCircuitDuration) {
-		this(serviceId,LoadBalancedBackEndServerID.from(url),
+		this(LoadBalancedBackEndServerID.from(url),
 			 url,
 			 shortCircuitDuration);
 	}
-	public LoadBalancedBackEndServer(final LoadBalancedServiceID serviceId,
-									 final LoadBalancedBackEndServerID id,final Url url,
+	public LoadBalancedBackEndServer(final LoadBalancedBackEndServerID id,final Url url,
 									 final long shortCircuitDuration) {
-		_serviceId = serviceId;
 		_id = id;
 		_url = url;
 		_shortCircuitDuration = shortCircuitDuration;
@@ -132,9 +128,7 @@ public class LoadBalancedBackEndServer {
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public int hashCode() {
-		int result = _id.hashCode();
-		result = 31 * result + _serviceId.hashCode();
-		return result;
+		return Objects.hashCode(_id);
 	}
 	@Override
 	public boolean equals(final Object o) {
@@ -146,9 +140,6 @@ public class LoadBalancedBackEndServer {
 		boolean idEqs = _id != null ? _id.is(other.getId())
 									: other.getId() != null ? false
 															: true;	// both null
-		boolean nameEqs = _serviceId != null ? _serviceId.is(other.getServiceId())
-											   : other.getServiceId() != null ? false
-													   						  : true;		// both null
-		return idEqs && nameEqs;
+		return idEqs;
 	}
 }

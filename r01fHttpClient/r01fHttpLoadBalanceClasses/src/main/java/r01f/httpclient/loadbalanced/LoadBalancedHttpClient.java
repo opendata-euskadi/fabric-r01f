@@ -1,40 +1,49 @@
 package r01f.httpclient.loadbalanced;
 
 import java.io.IOException;
-import java.util.concurrent.TimeoutException;
 
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.protocol.HttpContext;
 
-import lombok.extern.slf4j.Slf4j;
 import r01f.exceptions.Throwables;
 import r01f.http.loadbalance.LoadBalancedBackEndServer;
 import r01f.http.loadbalance.LoadBalancedBackendServerStats;
+import r01f.http.loadbalance.LoadBalancerIDs.LoadBalancedServiceID;
 import r01f.http.loadbalance.LoadBalancerManager;
 import r01f.http.loadbalance.exception.LoadBalancerNOServerAvailableException;
 import r01f.http.loadbalance.exception.LoadBalancerRetriesExceededException;
+import r01f.httpclient.loadbalanced.LoadBalancedHttpClientUtil.LoadBalancerHttpRequestExecutor;
 import r01f.types.url.Url;
 import r01f.types.url.UrlPath;
 import r01f.types.url.UrlQueryString;
 
 /**
+ * Load balancer inspired by https://github.com/Kixeye/janus
+ * 
+ * Load balancing is splitted into two concerns:
+ * 		[1] - server selection
+ * 		[2] - interaction with the selected server
+ * 
  * Usage
  * <pre class='brush:java'>
  * 		// [1] - Create the load balancer
- *		LoadBalancerManager loadBalancer = LoadBalancerManager.builderForServiceWithName(LoadBalancedServiceID.named("test"))
- *															  .withServers(Url.from("http://www.google.com"),Url.from("http://www.google.es"))
- *															  .withRandomLoadBalancing()
- *															  .usingNewMetricRegistry()
+ * 		LoadBalancedServiceID serviceId = LoadBalancedServiceID.named("test");
+ *		LoadBalancerManager loadBalancer = LoadBalancerManager.builder()
+ *														  	  .usingNewMetricRegistry()
  *															  .withDefaultRefreshInterval()
+ *															  .withRandomLoadBalancing()
+ *															  .withServers(serviceId,
+ *																		   Url.from("http://www.google.com"),Url.from("http://www.google.es"))
  *															  .build();
- *		LoadBalancedHttpClient loadBalancedHttpClient = new LoadBalancedHttpClient(loadBalancer,2);
+ *		LoadBalancedHttpClient loadBalancedHttpClient = new LoadBalancedHttpClient(loadBalancer,
+ *																				   serviceId,
+ *																				   2);
  *
  *		// [2] - Execute load balanced
  *		for (int i=0; i < 10; i++) {
@@ -51,12 +60,12 @@ import r01f.types.url.UrlQueryString;
  *		}
  * </pre>
  */
-@Slf4j
 public class LoadBalancedHttpClient {
 /////////////////////////////////////////////////////////////////////////////////////////
 //	FILEDS
 /////////////////////////////////////////////////////////////////////////////////////////
 	private final LoadBalancerManager _loadBalancer;
+	private final LoadBalancedServiceID _serviceId;
 	private final int _numRetries;
 	
 	private final HttpClient _httpClient;
@@ -65,8 +74,10 @@ public class LoadBalancedHttpClient {
 /////////////////////////////////////////////////////////////////////////////////////////
 	@SuppressWarnings("resource")
 	public LoadBalancedHttpClient(final LoadBalancerManager loadBalancer,
+								  final LoadBalancedServiceID serviceId,
 								  final int numRetries) {
 		this(loadBalancer,
+			 serviceId,
 			 // create an http client with some timeouts
 			 HttpClientBuilder.create()
 			 				  .setDefaultRequestConfig(RequestConfig.custom()
@@ -78,9 +89,11 @@ public class LoadBalancedHttpClient {
 			 numRetries);
 	}
 	public LoadBalancedHttpClient(final LoadBalancerManager loadBalancer,
+								  final LoadBalancedServiceID serviceId,
 								  final HttpClient httpClient,
 								  final int numRetries) {
 		_loadBalancer = loadBalancer;
+		_serviceId = serviceId;
 		_httpClient = httpClient;
 		_numRetries = numRetries;
 	}
@@ -145,53 +158,24 @@ public class LoadBalancedHttpClient {
 /////////////////////////////////////////////////////////////////////////////////////////
 //	
 /////////////////////////////////////////////////////////////////////////////////////////	
-	private interface LoadBalancerHttpRequestExecutor {
-		public HttpResponse execute(final LoadBalancedBackEndServer choosenServer); 
-	}
 	private HttpResponse _executeWithLoadBalancer(final LoadBalancerHttpRequestExecutor executor) throws LoadBalancerNOServerAvailableException,
 																										 LoadBalancerRetriesExceededException {
-		long retries = _numRetries;
+		HttpResponse httpResponse = null;
+		
+		int retries = _numRetries;
 		do {
 			// get a load balanced server
-			LoadBalancedBackendServerStats chosenServerStats = _loadBalancer.chooseServer();
-			if (chosenServerStats == null) throw new LoadBalancerNOServerAvailableException(_loadBalancer.getServiceId());
+			LoadBalancedBackendServerStats choosenServerStats = _loadBalancer.chooseServerFor(_serviceId);
+			if (choosenServerStats == null) throw new LoadBalancerNOServerAvailableException(_serviceId);
 
 			// make the http request
-			HttpResponse httpResponse = null;
-			long latency = -1;
-			try {
-				// update the server stats
-				chosenServerStats.incrementSentMessages();
-				chosenServerStats.incrementOpenRequests();
-				
-				// make the request accounting time 
-				long startTime = System.currentTimeMillis();	
-				
-				httpResponse = executor.execute(chosenServerStats.getServerInstance());
-				
-				latency = System.currentTimeMillis() - startTime;
-
-				// exit if successful; retry if not
-				if (httpResponse == null) {
-					throw new TimeoutException("Timed out while waiting for a response.");
-				} else if (httpResponse.getStatusLine().getStatusCode() >= 500) {
-					throw new HttpResponseException(httpResponse.getStatusLine().getStatusCode(),"Unexpected response");
-				}
-				return httpResponse;
-				
-			} catch (Exception e) {
-				// unexpected exception
-				log.error("[load balancer] > unexpected exception: {}, retrying another server",
-						  e.getMessage(),e);
-				// account errors
-				chosenServerStats.incrementErrors();
-			} finally {
-				// update the server stats
-				chosenServerStats.decrementOpenRequests();
-				if (latency > 0) chosenServerStats.recordLatency(latency);
-			}
+			httpResponse = LoadBalancedHttpClientUtil.executeWithLoadBalancer(choosenServerStats,
+																			  executor);
 			retries = retries - 1;
-		} while (retries >= 0);
-		throw new LoadBalancerRetriesExceededException(_loadBalancer.getServiceId(),_numRetries);
+		} while (httpResponse == null
+			  && retries >= 0);
+		if (httpResponse == null) throw new LoadBalancerRetriesExceededException(_serviceId,_numRetries);
+		
+		return httpResponse;
 	}
 }

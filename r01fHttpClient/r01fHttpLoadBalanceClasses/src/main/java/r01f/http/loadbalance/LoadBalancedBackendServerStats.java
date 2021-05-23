@@ -15,6 +15,7 @@ import com.codahale.metrics.SlidingWindowReservoir;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
+import r01f.http.loadbalance.LoadBalancerIDs.LoadBalancedServiceID;
 
 @Slf4j
 @Accessors(prefix="_")
@@ -22,6 +23,7 @@ public class LoadBalancedBackendServerStats {
 /////////////////////////////////////////////////////////////////////////////////////////
 //	FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
+	@Getter private final LoadBalancedBackendServerStatsKey _key;
 	@Getter private final LoadBalancedBackEndServer _serverInstance;
 	@Getter private final MetricRegistry _metrics;
 	@Getter private final long _errorThreshold;
@@ -43,33 +45,35 @@ public class LoadBalancedBackendServerStats {
 /////////////////////////////////////////////////////////////////////////////////////////
 //	CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
-	public LoadBalancedBackendServerStats(final LoadBalancedBackEndServer server,
+	public LoadBalancedBackendServerStats(final LoadBalancedServiceID serviceId,
+										  final LoadBalancedBackEndServer server,
 										  final MetricRegistry metricRegistry) {
-		this(server,
+		this(serviceId,
+			 server,
 			 metricRegistry,
 			 10);
 	}
-	public LoadBalancedBackendServerStats(final LoadBalancedBackEndServer server,
+	public LoadBalancedBackendServerStats(final LoadBalancedServiceID serviceId,
+										  final LoadBalancedBackEndServer server,
 										  final MetricRegistry metricRegistry,
 										  final long errorThreshold) {
+		_key = new LoadBalancedBackendServerStatsKey(serviceId,server.getId());
 		_serverInstance = server;
 		_metrics = metricRegistry;
 		_errorThreshold = errorThreshold;
 		
 		// Init metrics
-		String serverId = _serverInstance.getId().asString();
-		
-		_openRequestCounter = _metrics.counter(MetricRegistry.name(serverId,
+		_openRequestCounter = _metrics.counter(MetricRegistry.name(_key.getServiceId().asString(),_key.getServerId().asString(),
 																   "open-requests"));
-		_openSessionsCounter = _metrics.counter(MetricRegistry.name(_serverInstance.getId().asString(),
+		_openSessionsCounter = _metrics.counter(MetricRegistry.name(_key.getServiceId().asString(),_key.getServerId().asString(),
 																	"open-sessions"));
-		_sentMessageMeter = _metrics.meter(MetricRegistry.name(serverId,
+		_sentMessageMeter = _metrics.meter(MetricRegistry.name(_key.getServiceId().asString(),_key.getServerId().asString(),
 															   "sent-messages"));
-		_receivedMessageMeter = _metrics.meter(MetricRegistry.name(serverId,
+		_receivedMessageMeter = _metrics.meter(MetricRegistry.name(_key.getServiceId().asString(),_key.getServerId().asString(),
 																   "received-messages"));
-		_errorMeter = _metrics.meter(MetricRegistry.name(serverId,
+		_errorMeter = _metrics.meter(MetricRegistry.name(_key.getServiceId().asString(),_key.getServerId().asString(),
 														 "errors"));
-		this.circuitBreakerTrippedCounter = _metrics.counter(MetricRegistry.name(serverId,
+		this.circuitBreakerTrippedCounter = _metrics.counter(MetricRegistry.name(_key.getServiceId().asString(),_key.getServerId().asString(),
 																				 "short-circuit-tripped"));
 		_circuitBreakerTimeGauge = new Gauge<Double>() {
 											@Override
@@ -78,10 +82,14 @@ public class LoadBalancedBackendServerStats {
 																			   : 0.0;
 											}
 								  };
-		_metrics.register(MetricRegistry.name(objectId,serverId,"short-circuit-time-remaining"),
+		_metrics.register(MetricRegistry.name(objectId,
+											  _key.getServiceId().asString(),_key.getServerId().asString(),
+											  "short-circuit-time-remaining"),
 											  _circuitBreakerTimeGauge);
 		_latencyHistogram = new Histogram(new SlidingWindowReservoir(100));
-		_metrics.register(MetricRegistry.name(objectId,serverId,"latency"),
+		_metrics.register(MetricRegistry.name(objectId,
+											  _key.getServiceId().asString(),_key.getServerId().asString(),
+											  "latency"),
 											  _latencyHistogram);
 
 		// internal metrics
