@@ -3,18 +3,23 @@ package r01f.servlet;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
+import java.util.Collection;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.google.common.base.Predicate;
 import com.google.common.base.Splitter;
+import com.google.common.collect.FluentIterable;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import r01f.types.url.Host;
 import r01f.util.types.StringSplitter;
 import r01f.util.types.Strings;
+import r01f.util.types.collections.CollectionUtils;
 
 /**
  * Utils about servlet request
@@ -180,5 +185,40 @@ public abstract class HttpServletRequestUtils {
 				throw new IllegalArgumentException("Failed to parse address" + address, e);
 			}
 		}
-	}	
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	COOKIE
+/////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Finds all cookies matching
+	 * @param req
+	 * @param pred
+	 * @return
+	 */
+	public static Collection<Cookie> cookiesMatching(final HttpServletRequest req,
+									 		 		 final Predicate<Cookie> pred) {
+		Cookie[] cookies = req.getCookies();
+		if (CollectionUtils.isNullOrEmpty(cookies)) return null;
+		
+		return FluentIterable.from(cookies)
+							 .filter(pred)
+							 .toList();
+	}
+	/**
+	 * Finds a cookie with the given name (no matter the domain)
+	 * @param req
+	 * @param cookieName
+	 * @return
+	 */
+	public static Cookie cookieWithName(final HttpServletRequest req,
+									    final String cookieName) {
+		Collection<Cookie> cookiesMatching = HttpServletRequestUtils.cookiesMatching(req,
+																					 new Predicate<Cookie>() {
+																								@Override
+																								public boolean apply(final Cookie cookie) {
+																									return cookie.getName().equals(cookieName);
+																								}
+																			  		 });
+		return CollectionUtils.hasData(cookiesMatching) ? CollectionUtils.firstOf(cookiesMatching) : null;
+	}
 }
