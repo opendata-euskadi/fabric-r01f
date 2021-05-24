@@ -16,5 +16,6 @@ public interface LoadBalancer {
 	 * so the load balancer implementation is responsible for filtering those out.
 	 * @return server if available, null otherwise
 	 */
-	LoadBalancedBackendServerStats chooseWithin(Collection<LoadBalancedBackendServerStats> availableServerStats);
+	LoadBalancedBackendServerStats chooseWithin(Collection<LoadBalancedBackendServerStats> availableServerStats,
+												LoadBalancerContext context);
 }

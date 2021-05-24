@@ -21,7 +21,8 @@ public class LoadBalancerRandomImpl
 //	
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
-	public LoadBalancedBackendServerStats chooseWithin(final Collection<LoadBalancedBackendServerStats> availableServerStats) {
+	public LoadBalancedBackendServerStats chooseWithin(final Collection<LoadBalancedBackendServerStats> availableServerStats,
+													   final LoadBalancerContext context) {
 		int index = RANDOM.nextInt(availableServerStats.size());
 		return Iterables.get(availableServerStats,
 							 index);

@@ -20,6 +20,7 @@ import r01f.http.loadbalance.LoadBalancerIDs.LoadBalancedBackEndServerID;
 import r01f.http.loadbalance.LoadBalancerIDs.LoadBalancedServiceID;
 import r01f.http.loadbalance.LoadBalancerManagerBuilder.LoadBalancerManagerBuilderMetricsRegistryStep;
 import r01f.http.loadbalance.balancer.LoadBalancer;
+import r01f.http.loadbalance.balancer.LoadBalancerContext;
 import r01f.http.loadbalance.serverlist.LoadBalancedServerList;
 import r01f.util.types.collections.CollectionUtils;
 
@@ -121,9 +122,11 @@ public class LoadBalancerManager {
 	/**
 	 * Get a single server instance chosen through the {@link LoadBalancerManager}
 	 * @param serviceId
+	 * @param context some context to help choosing
 	 * @return a server instance chosen through the load balancer.
 	 */
-	public LoadBalancedBackendServerStats chooseServerFor(final LoadBalancedServiceID serviceId) {
+	public LoadBalancedBackendServerStats chooseServerFor(final LoadBalancedServiceID serviceId,
+														  final LoadBalancerContext context) {
 		// update the server list > update server stats & tick servers (set availability)
 		_updateServerList(serviceId);
 
@@ -143,7 +146,8 @@ public class LoadBalancerManager {
 		if (CollectionUtils.isNullOrEmpty(availableServersStats)) return null;	// ...no available servers
 
 		// choose one
-		return _loadBalancer.chooseWithin(availableServersStats);
+		return _loadBalancer.chooseWithin(availableServersStats,
+										  context);
 	}
 	private void _updateServerList(final LoadBalancedServiceID serviceId) {
 		// only allow one thread to update the server list

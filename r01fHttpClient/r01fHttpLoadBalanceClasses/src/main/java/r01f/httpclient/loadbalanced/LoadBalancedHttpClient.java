@@ -11,6 +11,7 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.protocol.HttpContext;
 
+import lombok.extern.slf4j.Slf4j;
 import r01f.exceptions.Throwables;
 import r01f.http.loadbalance.LoadBalancedBackEndServer;
 import r01f.http.loadbalance.LoadBalancedBackendServerStats;
@@ -60,6 +61,7 @@ import r01f.types.url.UrlQueryString;
  *		}
  * </pre>
  */
+@Slf4j
 public class LoadBalancedHttpClient {
 /////////////////////////////////////////////////////////////////////////////////////////
 //	FILEDS
@@ -122,7 +124,10 @@ public class LoadBalancedHttpClient {
 		if (url.getHost() != null) throw new IllegalArgumentException("The [request uri] MUST NOT contain the host part in order to be load balanced!");
 		
 		// execute the request
-		return _executeWithLoadBalancer(new LoadBalancerHttpRequestExecutor() {
+		return _executeWithLoadBalancer(// context to help choosing the server
+										new LoadBalancerContextHttpRequestBased(req),
+										// request executor
+										new LoadBalancerHttpRequestExecutor() {
 													@Override
 													public HttpResponse execute(final LoadBalancedBackEndServer choosenServer) {
 														HttpHost host = HttpHost.create(choosenServer.getUrl().getHost().asString());
@@ -158,15 +163,20 @@ public class LoadBalancedHttpClient {
 /////////////////////////////////////////////////////////////////////////////////////////
 //	
 /////////////////////////////////////////////////////////////////////////////////////////	
-	private HttpResponse _executeWithLoadBalancer(final LoadBalancerHttpRequestExecutor executor) throws LoadBalancerNOServerAvailableException,
-																										 LoadBalancerRetriesExceededException {
+	protected HttpResponse _executeWithLoadBalancer(final LoadBalancerContextHttpRequestBased context,
+													final LoadBalancerHttpRequestExecutor executor) throws LoadBalancerNOServerAvailableException,
+																										   LoadBalancerRetriesExceededException {
 		HttpResponse httpResponse = null;
 		
 		int retries = _numRetries;
 		do {
 			// get a load balanced server
-			LoadBalancedBackendServerStats choosenServerStats = _loadBalancer.chooseServerFor(_serviceId);
+			LoadBalancedBackendServerStats choosenServerStats = _loadBalancer.chooseServerFor(_serviceId,
+																							  context);
 			if (choosenServerStats == null) throw new LoadBalancerNOServerAvailableException(_serviceId);
+			
+			if (log.isDebugEnabled()) log.debug("[load balance] > choosen sericeId/server={}",
+					  							choosenServerStats.getKey().asString());
 
 			// make the http request
 			httpResponse = LoadBalancedHttpClientUtil.executeWithLoadBalancer(choosenServerStats,
