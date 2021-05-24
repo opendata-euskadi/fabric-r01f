@@ -108,7 +108,7 @@ public class HttpProxyServletDelegate {
 					  	 final HttpServletResponse responseToClient) throws IOException,
 					  													 	ServletException {
 		// [0] Get the endpoint url 
-		HttpProxyEndPoint endPoint = _chooseEndPoint();
+		HttpProxyEndPoint endPoint = _chooseEndPoint(originalRequest);
 		
 		// [1] Create a GET request
 		//	   beware that R01F Url object when serialized to string does NOT include the final '/' char if present
@@ -153,7 +153,7 @@ public class HttpProxyServletDelegate {
 						  final HttpServletResponse responseToClient) throws IOException,
 					   													  	 ServletException {
 		// [0] Get the endpoint url 
-		HttpProxyEndPoint endPoint = _chooseEndPoint();
+		HttpProxyEndPoint endPoint = _chooseEndPoint(originalRequest);
 		
 		// [1] Create the POST request
 		UrlPath urlPath = _getTargetUrlPath(_config,
@@ -316,7 +316,7 @@ public class HttpProxyServletDelegate {
 		return endPointResponse;
 	}
 	private static final SecureRandom RANDOM = new SecureRandom(UUID.randomUUID().toString().getBytes());
-	protected HttpProxyEndPoint _chooseEndPoint() {
+	protected HttpProxyEndPoint _chooseEndPoint(final HttpServletRequest originalRequest) {
 		Url url = null;
 		if (_config.getEndPoints().size() == 1) {
 			url = CollectionUtils.firstOf(_config.getEndPoints());
