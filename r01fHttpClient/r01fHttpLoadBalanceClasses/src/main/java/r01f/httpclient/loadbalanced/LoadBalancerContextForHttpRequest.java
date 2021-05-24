@@ -12,7 +12,7 @@ import r01f.http.loadbalance.balancer.LoadBalancerContext;
  */
 @Accessors(prefix="_")
 @RequiredArgsConstructor
-public class LoadBalancerContextHttpRequestBased
+public class LoadBalancerContextForHttpRequest
   implements LoadBalancerContext {
 /////////////////////////////////////////////////////////////////////////////////////////
 //	FIELDS

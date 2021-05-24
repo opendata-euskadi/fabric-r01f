@@ -125,7 +125,7 @@ public class LoadBalancedHttpClient {
 		
 		// execute the request
 		return _executeWithLoadBalancer(// context to help choosing the server
-										new LoadBalancerContextHttpRequestBased(req),
+										new LoadBalancerContextForHttpRequest(req),
 										// request executor
 										new LoadBalancerHttpRequestExecutor() {
 													@Override
@@ -163,7 +163,7 @@ public class LoadBalancedHttpClient {
 /////////////////////////////////////////////////////////////////////////////////////////
 //	
 /////////////////////////////////////////////////////////////////////////////////////////	
-	protected HttpResponse _executeWithLoadBalancer(final LoadBalancerContextHttpRequestBased context,
+	protected HttpResponse _executeWithLoadBalancer(final LoadBalancerContextForHttpRequest context,
 													final LoadBalancerHttpRequestExecutor executor) throws LoadBalancerNOServerAvailableException,
 																										   LoadBalancerRetriesExceededException {
 		HttpResponse httpResponse = null;
