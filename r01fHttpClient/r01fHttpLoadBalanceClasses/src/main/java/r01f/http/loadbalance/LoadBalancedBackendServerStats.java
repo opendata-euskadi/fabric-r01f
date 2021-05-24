@@ -1,5 +1,6 @@
 package r01f.http.loadbalance;
 
+import java.util.Collection;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -11,11 +12,15 @@ import com.codahale.metrics.Meter;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.SlidingTimeWindowReservoir;
 import com.codahale.metrics.SlidingWindowReservoir;
+import com.google.common.base.Predicate;
+import com.google.common.collect.FluentIterable;
 
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
+import r01f.http.loadbalance.LoadBalancerIDs.LoadBalancedBackEndServerID;
 import r01f.http.loadbalance.LoadBalancerIDs.LoadBalancedServiceID;
+import r01f.util.types.collections.CollectionUtils;
 
 @Slf4j
 @Accessors(prefix="_")
@@ -168,5 +173,42 @@ public class LoadBalancedBackendServerStats {
 		LoadBalancedBackendServerStats other = (LoadBalancedBackendServerStats) o;
 		if (!_serverInstance.equals(other._serverInstance)) return false;
 		return true;
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	FILTERING UTILS
+/////////////////////////////////////////////////////////////////////////////////////////
+	public static LoadBalancedBackendServerStats filterServerStatsOf(final Collection<LoadBalancedBackendServerStats> stats,
+																	 final LoadBalancedServiceID serviceId,final LoadBalancedBackEndServerID serverId) {
+		Predicate<LoadBalancedBackendServerStats> pred = new Predicate<LoadBalancedBackendServerStats>() {
+																	@Override
+																	public boolean apply(final LoadBalancedBackendServerStats stat) {
+																		return stat.getKey().belongsTo(serviceId)
+																			&& stat.getKey().getServerId().is(serverId);
+																	}
+														 };
+		Collection<LoadBalancedBackendServerStats> filteredStats = LoadBalancedBackendServerStats.filterServerStatsMatching(stats,
+																														     pred);
+		return CollectionUtils.hasData(filteredStats) ? CollectionUtils.firstOf(filteredStats) : null;
+	}
+	public static Collection<LoadBalancedBackendServerStats> filterServerStatsWithKeyMatching(final Collection<LoadBalancedBackendServerStats> stats,
+																					   		  final Predicate<LoadBalancedBackendServerStatsKey> keyPred) {
+		return LoadBalancedBackendServerStats.filterServerStatsMatching(stats,
+																	    new Predicate<LoadBalancedBackendServerStats>() {
+																				@Override
+																				public boolean apply(final LoadBalancedBackendServerStats stat) {
+																					return keyPred.apply(stat.getKey());
+																				}
+																	    });
+	}
+	public static Collection<LoadBalancedBackendServerStats> filterServerStatsMatching(final Collection<LoadBalancedBackendServerStats> stats,
+																					   final Predicate<LoadBalancedBackendServerStats> pred) {
+		return FluentIterable.from(stats)
+							 .filter(new Predicate<LoadBalancedBackendServerStats>() {
+												@Override
+												public boolean apply(final LoadBalancedBackendServerStats stat) {
+													return pred.apply(stat);
+												}
+									  })
+							 .toList();
 	}
 }

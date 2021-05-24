@@ -2,7 +2,6 @@ package r01f.http.loadbalance;
 
 import java.util.Collection;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
@@ -130,7 +129,7 @@ public class LoadBalancerManager {
 		// update the server list > update server stats & tick servers (set availability)
 		_updateServerList(serviceId);
 
-		// filter the available servers
+		// filter the available servers for the given service
 		Collection<LoadBalancedBackendServerStats> serverStats = this.getServerStatsOf(serviceId);
 		Collection<LoadBalancedBackendServerStats> availableServersStats = FluentIterable.from(serverStats)
 																						 .filter(new Predicate<LoadBalancedBackendServerStats>() {
@@ -224,21 +223,11 @@ public class LoadBalancerManager {
 		return _serverStats.get(new LoadBalancedBackendServerStatsKey(serviceId,serverId));
 	}
 	public Collection<LoadBalancedBackendServerStats> getServerStatsWithKeyMatching(final Predicate<LoadBalancedBackendServerStatsKey> keyPred) {
-		return FluentIterable.from(_serverStats.entrySet())
-							 .filter(new Predicate<Map.Entry<LoadBalancedBackendServerStatsKey,LoadBalancedBackendServerStats>>() {
-												@Override
-												public boolean apply(final Entry<LoadBalancedBackendServerStatsKey,LoadBalancedBackendServerStats> me) {
-													return keyPred.apply(me.getKey());
-												}
-								 
-									  })
-							 .transform(new Function<Map.Entry<LoadBalancedBackendServerStatsKey,LoadBalancedBackendServerStats>,LoadBalancedBackendServerStats>() {
-												@Override
-												public LoadBalancedBackendServerStats apply(final Entry<LoadBalancedBackendServerStatsKey,LoadBalancedBackendServerStats> me) {
-													return me.getValue();
-												}
-								 
-										 })
-							 .toList();
+		return LoadBalancedBackendServerStats.filterServerStatsWithKeyMatching(_serverStats.values(),
+																			   keyPred);
+	}
+	public Collection<LoadBalancedBackendServerStats> getServerStatsMatching(final Predicate<LoadBalancedBackendServerStats> pred) {
+		return LoadBalancedBackendServerStats.filterServerStatsMatching(_serverStats.values(),
+																		pred);
 	}
 }
