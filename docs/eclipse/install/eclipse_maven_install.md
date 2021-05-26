@@ -13,19 +13,19 @@ The idea is:
 ## [1]: Create the file system structure
 ```
 /{dev_home} = d:\develop in windows or /develop in linux
-	+ develop
-		+ eclipse
-		    + .eclipse <-- will contain eclipse plugin config that usually is located at {user-home}/.eclipse
-			+ [instance-name]
-			+ ...
-		+ eclipse_workspaces
-			+ master-[instance-name]
-			+ ...
-		+ maven_libs
-		+ local_libs
-		+ projects
-		+ DB
-			+ ddl_scripts
+  + develop
+    + eclipse
+        + .eclipse <-- will contain eclipse plugin config that usually is located at {user-home}/.eclipse
+      + [instance-name]
+      + ...
+    + eclipse_workspaces
+      + master-[instance-name]
+      + ...
+    + maven_libs
+    + local_libs
+    + projects
+    + DB
+      + ddl_scripts
 ```
 
 ## [2]: Install Eclipse
@@ -49,60 +49,60 @@ d) Edit the `/{dev_home}/eclipse/[instance-name]/eclipse.ini` file and set this 
 > Download lombok.jar from this site https://projectlombok.org/download, and copy to eclipse instance root dir.
 
 ```
-	-clean
-	-startup
-	plugins/org.eclipse.equinox.launcher_1.3.200.v20160318-1642.jar
-	--launcher.library
-	plugins/org.eclipse.equinox.launcher.win32.win32.x86_64_1.1.400.v20160518-1444
-	-product
-	org.eclipse.epp.package.java.product
-	--launcher.defaultAction
-	openFile
-	--launcher.XXMaxPermSize
-	256M
-	-showsplash
-	org.eclipse.platform
-	--launcher.defaultAction
-	openFile
-	--launcher.appendVmargs
+  -clean
+  -startup
+  plugins/org.eclipse.equinox.launcher_1.3.200.v20160318-1642.jar
+  --launcher.library
+  plugins/org.eclipse.equinox.launcher.win32.win32.x86_64_1.1.400.v20160518-1444
+  -product
+  org.eclipse.epp.package.java.product
+  --launcher.defaultAction
+  openFile
+  --launcher.XXMaxPermSize
+  256M
+  -showsplash
+  org.eclipse.platform
+  --launcher.defaultAction
+  openFile
+  --launcher.appendVmargs
 ```
 
 ```
-	-vmargs
-	--add-modules=ALL-SYSTEM
+  -vmargs
+  --add-modules=ALL-SYSTEM
 
     # by default eclipse stores some plugin config at {USER_HOME}/.eclipse (ie c:/users/{user}/.eclipse in windows)
     # this vm argument CHANGES the location of these eclipse config
     -Duser.home={dev_home}/eclipse/.eclipse
-    
-	# see [Runtime Options] http://help.eclipse.org/mars/topic/org.eclipse.platform.doc.isv/reference/misc/index.html
-	# see http://stackoverflow.com/questions/316265/how-can-you-speed-up-eclipse/316535#316535
-	-Dosgi.requiredJavaVersion=1.8
-	-XX:+UseG1GC
-	-XX:+UseStringDeduplication
-	-Dosgi.requiredJavaVersion=1.8
-	-Dosgi.clean=true
-	-Duser.language=en
-	-Duser.country=US
-	-Dhelp.lucene.tokenizer=standard
-	-javaagent:lombok.jar
-	-Xbootclasspath/a:lombok.jar
-	-Xms256m
-	-Xmx1024m
-	-Xverify:none
+
+  # see [Runtime Options] http://help.eclipse.org/mars/topic/org.eclipse.platform.doc.isv/reference/misc/index.html
+  # see http://stackoverflow.com/questions/316265/how-can-you-speed-up-eclipse/316535#316535
+  -Dosgi.requiredJavaVersion=1.8
+  -XX:+UseG1GC
+  -XX:+UseStringDeduplication
+  -Dosgi.requiredJavaVersion=1.8
+  -Dosgi.clean=true
+  -Duser.language=en
+  -Duser.country=US
+  -Dhelp.lucene.tokenizer=standard
+  -javaagent:lombok.jar
+  -Xbootclasspath/a:lombok.jar
+  -Xms256m
+  -Xmx1024m
+  -Xverify:none
 ```
 
-NOTE: latest versions of eclipse have an embeded JRE so this is **NOT necessary** (see eclipse.ini) 
+NOTE: latest versions of eclipse have an embeded JRE so this is **NOT necessary** (see eclipse.ini)
 ```
-	# JDK 1.8 <<<<<<<< USE JDK8 if runninig OEPE (Oracle Enterprise Pack)
-	-vm
-	d:/java/jdk8/jre/bin/server/jvm.dll
-	-vmargs
+  # JDK 1.8 <<<<<<<< USE JDK8 if runninig OEPE (Oracle Enterprise Pack)
+  -vm
+  d:/java/jdk8/jre/bin/server/jvm.dll
+  -vmargs
 
-	# JDK > 9: see  https://wiki.eclipse.org/Configure_Eclipse_for_Java_9
-	--launcher.appendVmargs
-	-vm
-	d:/java/jdk15/bin/server/jvm.dll
+  # JDK > 9: see  https://wiki.eclipse.org/Configure_Eclipse_for_Java_9
+  --launcher.appendVmargs
+  -vm
+  d:/java/jdk15/bin/server/jvm.dll
 ```
 
 ## [3]: Launch Eclipse
@@ -136,40 +136,40 @@ b) **Eclipse GIT plugins** (from eclipse update site https://download.eclipse.or
 c) **Eclipse WTP tools** (from eclipse update site http://download.eclipse.org/releases/latest)
 
 ```
-		  Web, XML, Java EE and OSGi Enterprise Development
-			[X] Eclipse Faceted Project Framework
-			[X] Eclipse Faceted Project Framework JDT Enablement
-			[X] Eclipse Java EE developer tools
-			[X] Eclipse Java Web Developer Tools
-			[X] Eclipse Web Developer Tools
-			[X] Eclipse XML Editor and Tools
-			[X] Eclipse XSL Developer Tools
-			[X] JavaScript Development Tools
-			[X] JavaScript Development Tools Chromium/V8 Remote Debugger
-			[X] JST Server Adapters
-			[X] JST Server Adapters Extensions
-			[X] JST Server UI
-			[X] m2e connector for mavenarchiver pom properties
-			[X] m2e-wtp - JAX-RS configurator for WTP.
-			[X] m2e-wtp - JPA configurator for WTP.
-			[X] m2e-wtp - Maven Integration for WTP.
-			[x] Wild Web Developer
-			[X] WST Server Adapters
-			
-		General Purpouse Tools
-			[X] m2e - slf4j over logback logging (Optional)
+      Web, XML, Java EE and OSGi Enterprise Development
+      [X] Eclipse Faceted Project Framework
+      [X] Eclipse Faceted Project Framework JDT Enablement
+      [X] Eclipse Java EE developer tools
+      [X] Eclipse Java Web Developer Tools
+      [X] Eclipse Web Developer Tools
+      [X] Eclipse XML Editor and Tools
+      [X] Eclipse XSL Developer Tools
+      [X] JavaScript Development Tools
+      [X] JavaScript Development Tools Chromium/V8 Remote Debugger
+      [X] JST Server Adapters
+      [X] JST Server Adapters Extensions
+      [X] JST Server UI
+      [X] m2e connector for mavenarchiver pom properties
+      [X] m2e-wtp - JAX-RS configurator for WTP.
+      [X] m2e-wtp - JPA configurator for WTP.
+      [X] m2e-wtp - Maven Integration for WTP.
+      [x] Wild Web Developer
+      [X] WST Server Adapters
+
+    General Purpouse Tools
+      [X] m2e - slf4j over logback logging (Optional)
 ```
 If you have compatibility problems uninstall "Eclipse XML Editors and Tools" checking the option "Update my installation to be compatible with the items being installed".
 
 d) **[AnyEdit Tools]** either using the [eclipse marketplace] or from the update site at: http://andrei.gmxhome.de/eclipse/
 
-		[X] Eclipse 4.10-4.14 plugins
-			[X] AnyEditTools
+    [X] Eclipse 4.10-4.14 plugins
+      [X] AnyEditTools
 
 e) Optional ** Genuitec DevStyle** (darkest dark theme: https://www.genuitec.com/products/devstyle/)
 
-		Use update site: https://www.genuitec.com/updates/devstyle/ci/
-		
+    Use update site: https://www.genuitec.com/updates/devstyle/ci/
+
 
 ## [5]: Clone R01F Git repository
 
@@ -204,29 +204,29 @@ This behavior can be disabled at `[Team] > [Git] > [Projects]` and **deselect** 
 * create a weblogic fullclient jar to be used as external dependency:
 
 ```
-	> cd \app-server\wls_10.3.6\wlserver\server\lib
-	> java -jar d:\app-server\wls_10.3.6\modules\com.bea.core.jarbuilder_1.7.0.0.jar
+  > cd \app-server\wls_10.3.6\wlserver\server\lib
+  > java -jar d:\app-server\wls_10.3.6\modules\com.bea.core.jarbuilder_1.7.0.0.jar
 ```
 
-**BEWARE Some maven artifacts are loaded form EJIE reports and the IZENPE certs are needed** 
+**BEWARE Some maven artifacts are loaded form EJIE reports and the IZENPE certs are needed**
 
-Import the [IZENPE CERTS] at the [jdk] used to start eclipse (seee -vm param above)  
+Import the [IZENPE CERTS] at the [jdk] used to start eclipse (seee -vm param above)
 see [Maven certs install](../maven/maven_certs.read.me) for details
 
-open the `eclipse.ini` file and locate the JRE folder, something like: 
+open the `eclipse.ini` file and locate the JRE folder, something like:
 
-	-vm
-	plugins/org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_15.0.2.v20210201-0955/jre/bin
+  -vm
+  plugins/org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_15.0.2.v20210201-0955/jre/bin
 
 open a terminal and using this path:
 
-	cd {develop_home}/eclipse/{eclipse-version}/plugins/{jre-version}/jre/bin
-	
+  cd {develop_home}/eclipse/{eclipse-version}/plugins/{jre-version}/jre/bin
+
 then install the certs:
 
-	keytool -keystore ..\lib\security\cacerts -import -file {develop_home}\projects\fabric\r01f\docs\eclipse\maven\certs\izenpe.com.cer -alias izenpe_root -storepass changeit
-	keytool -keystore ..\lib\security\cacerts -import -file {develop_home}\projects\fabric\r01f\docs\eclipse\maven\certs\CAAAPPVascas.cer -alias CAAAPPVascas -storepass changeit
-	keytool -keystore ..\lib\security\cacerts -import -file {develop_home}\projects\fabric\r01f\docs\eclipse\maven\certs\builds1.alm02.itbatera.euskadi.eus.cer -alias builds1.alm02.itbatera.euskadi.eus -storepass changeit
+  keytool -keystore ..\lib\security\cacerts -import -file {develop_home}\projects\fabric\r01f\docs\eclipse\maven\certs\izenpe.com.cer -alias izenpe_root -storepass changeit
+  keytool -keystore ..\lib\security\cacerts -import -file {develop_home}\projects\fabric\r01f\docs\eclipse\maven\certs\CAAAPPVascas.cer -alias CAAAPPVascas -storepass changeit
+  keytool -keystore ..\lib\security\cacerts -import -file {develop_home}\projects\fabric\r01f\docs\eclipse\maven\certs\builds1.alm02.itbatera.euskadi.eus.cer -alias builds1.alm02.itbatera.euskadi.eus -storepass changeit
 
 
 
@@ -234,18 +234,18 @@ c) **[Java]**
 
 Create a new [JRE]: `[Java] > [Installed JREs] > [Add]` pointing to a JDK8 at  `{dev_home}/java/jdk8` **Make this JRE the DEFAULT one**
 
-Create another [JRE] pointing to a JDK8 hot-deploy *patched* JDK8 at `{dev_home}/java/jdk8-hotswap`  
-see [how to installa a hotswap jre](../../java/java-hotswap.md to patch the JDK  
+Create another [JRE] pointing to a JDK8 hot-deploy *patched* JDK8 at `{dev_home}/java/jdk8-hotswap`
+see [how to installa a hotswap jre](../../java/java-hotswap.md to patch the JDK
 set the JRE default JVM arguments: `-XXaltjvm=dcevm -javaagent:c:\develop\local-libs\hotswap-agent\hotswap-agent-1.4.0.jar`
 
-Preferences  
+Preferences
 > Import `[compiler preferences]`: `[File] > [Import] > [Preferences]` browse filesystem and select `/{dev_home}/projects/fabric-r01f/docs/eclipse/preferences/pci_compiler_preferences.epf`
 
 > `[Java] > [Editor] > [Templates]` add a NEW **Java** template named **_sep** with the following content
 
-	/////////////////////////////////////////////////////////////////////////////////////////
-	//	${cursor}
-	/////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////
+  //	${cursor}
+  /////////////////////////////////////////////////////////////////////////////////////////
 
 > `[Java] > [Editor] > [Typing]`
 
@@ -272,9 +272,28 @@ Just copy the _template_ workspace folder: `/{dev_home}/eclipse_workspaces/maste
 ## [8]: BEWARE antivirus! > https://www.genuitec.com/stop-slow-eclipse-myeclipse-startups/
 
 Exclude folder at the antivirus config:
- 
-- the ´{dev_home}´ folder 
+
+- the ´{dev_home}´ folder
 - %user_home%/.eclipse
 - %user_home%/.m2e
 - %user_home%/.p2
+
+
+## [9]: Tomcat config:
+
+Configure a NEW java runtime `window > preferences > java > installed JREs` > see [java hotswap](/docs/java/java-hotswap.md)
+Do NOT forget the JVM Default VM arg: `-XX:HotswapAgent=fatjar`
+
+Create a NEW [run time environment] named [tomcat9] using the previously created JRE
+
+Create a NEW [tomcat server] using the previously created [run time environment] and set:
+- UNCHECK [modules auto-reload by default]
+- Open [lauch configuration] and add to the [VM arguments]:  
+
+```
+-DEJIE_PROPERTIES_PATTERN=/default/[entityCode]/[entityCode].properties.xml -DEJIE_PROPERTY_LOADER=classPathLoader -Djava.endorsed.dirs="C:\develop\app-server\apache-tomcat-9.0.39\endorsed" -javaagent:c:/develop/local-libs/aspectj/lib/aspectjweaver.jar -Daj.weaving.verbose=true 
+```
+
+
+	 
 

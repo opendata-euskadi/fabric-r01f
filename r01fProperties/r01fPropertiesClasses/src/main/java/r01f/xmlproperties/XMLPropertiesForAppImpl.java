@@ -183,7 +183,7 @@ public final class XMLPropertiesForAppImpl
 	        						  String.class);
 	    }
     	@Override
-    	public String getString(final Path propXPath,XMLPropertyDefaultValueByEnv<String> valByEnv) {
+    	public String getString(final Path propXPath,final XMLPropertyDefaultValueByEnv<String> valByEnv) {
     		return _cache.getProperty(_component,this.getEnvironment(),propXPath,
     								  valByEnv,
     								  String.class);
@@ -381,8 +381,8 @@ public final class XMLPropertiesForAppImpl
 	    }
 	    @Override
         public <T> T getObject(final Path propXPath,
-					   final Marshaller marshaller,
-					   final TypeToken<T> typeToken) {
+					   		   final Marshaller marshaller,
+					   		   final TypeToken<T> typeToken) {
 	    	return this.getObject(propXPath,
 	    						  new Function<Node,T>() {
 											@Override
@@ -396,8 +396,8 @@ public final class XMLPropertiesForAppImpl
 		public <T> T getObject(final Path propXPath,
 							   final Function<Node,T> transformFuncion) {
 	    	T outObj = _cache.getProperty(_component,Path.from(propXPath),
-	    								  null,
-	    								  null,transformFuncion);
+	    								  null,		// default value
+	    								  transformFuncion);	
 			return outObj;
 		}
 		@Override

@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
+import r01f.patterns.FactoryFrom;
 
 
 
@@ -67,7 +67,6 @@ import lombok.experimental.Accessors;
  */
 @Singleton
 @Accessors(prefix="_")
-@RequiredArgsConstructor
 public class HttpProxyServlet
 	 extends HttpServlet {
 
@@ -75,8 +74,22 @@ public class HttpProxyServlet
 /////////////////////////////////////////////////////////////////////////////////////////
 //	FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
-	private HttpProxy _genericProxy;
-
+	private final FactoryFrom<ServletConfig,HttpProxyServletDelegate> _delegateFactory;
+	private HttpProxyServletDelegate _proxyServletDelegate;
+/////////////////////////////////////////////////////////////////////////////////////////
+//	CONSTRUCTOR
+/////////////////////////////////////////////////////////////////////////////////////////
+	public HttpProxyServlet() {
+		_delegateFactory = new FactoryFrom<ServletConfig,HttpProxyServletDelegate>() {
+									@Override
+									public HttpProxyServletDelegate from(final ServletConfig servletConfig) {
+										return new HttpProxyServletDelegate(new HttpProxyServletConfig(servletConfig));
+									}
+						   };
+	}
+	public HttpProxyServlet(final FactoryFrom<ServletConfig,HttpProxyServletDelegate> delegateFactory) {
+		_delegateFactory = delegateFactory;
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -93,7 +106,7 @@ public class HttpProxyServlet
 	 */
 	@Override
 	public void init(final ServletConfig servletConfig) {
-		_genericProxy = new HttpProxy(new HttpProxyServletConfig(servletConfig));
+		_proxyServletDelegate = _delegateFactory.from(servletConfig);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	GET
@@ -110,7 +123,7 @@ public class HttpProxyServlet
 	public void doGet(final HttpServletRequest originalRequest,
 					  final HttpServletResponse responseToClient) throws IOException,
 					  													 ServletException {
-		_genericProxy.proxyGET(originalRequest,
+		_proxyServletDelegate.proxyGET(originalRequest,
 							   responseToClient);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -128,7 +141,7 @@ public class HttpProxyServlet
 	public void doPost(final HttpServletRequest originalReqest,
 					   final HttpServletResponse responseToClient) throws IOException,
 					   													  ServletException {
-		_genericProxy.proxyPOST(originalReqest,
+		_proxyServletDelegate.proxyPOST(originalReqest,
 								responseToClient);
 	}
  }

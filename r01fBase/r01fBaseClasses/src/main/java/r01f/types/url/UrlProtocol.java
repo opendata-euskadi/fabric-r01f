@@ -17,13 +17,14 @@ public class UrlProtocol
   implements CanBeRepresentedAsString {
 
 	private static final long serialVersionUID = 4733528269894276864L;
-	/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
 //	CONSTANTS
 /////////////////////////////////////////////////////////////////////////////////////////
 	public static final UrlProtocol HTTP = StandardUrlProtocol.HTTP.toUrlProtocol();
 	public static final UrlProtocol HTTPS = StandardUrlProtocol.HTTPS.toUrlProtocol();
 	public static final UrlProtocol HTTPS_CLI = StandardUrlProtocol.HTTPS_CLI.toUrlProtocol();
 	public static final UrlProtocol FILE = StandardUrlProtocol.FILE.toUrlProtocol();
+	public static final UrlProtocol MAIL = StandardUrlProtocol.MAIL.toUrlProtocol();
 /////////////////////////////////////////////////////////////////////////////////////////
 //	FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -38,20 +39,6 @@ public class UrlProtocol
 	@Override
 	public String toString() {
 		return _asString;
-	}
-	@Override
-	public boolean equals(final Object other) {
-		if (other == null) return false;
-		if (other == this) return true;
-		if (other instanceof UrlProtocol) {
-			UrlProtocol otherProto = (UrlProtocol)other;
-			return this.is(otherProto);
-		}
-		else if (other instanceof StandardUrlProtocol) {
-			StandardUrlProtocol otherStdProto = (StandardUrlProtocol)other;
-			return this.is(otherStdProto);
-		}
-		return false;
 	}
 	/**
 	 * Checks if it's the same protocol
@@ -78,10 +65,6 @@ public class UrlProtocol
 	}
 	public boolean isNOT(final StandardUrlProtocol proto) {
 		return !this.is(proto);
-	}
-	@Override
-	public int hashCode() {
-		return _asString != null ? _asString.hashCode() : 0;
 	}
 	/**
 	 * Checks if the protocol is an standard one
@@ -114,7 +97,7 @@ public class UrlProtocol
 		return outProto != null ? outProto : def;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//
+//	BUILDERS
 /////////////////////////////////////////////////////////////////////////////////////////
 	public static UrlProtocol fromProtocol(final String proto) {
 		return new UrlProtocol(proto);
@@ -146,17 +129,28 @@ public class UrlProtocol
 	 * @param str
 	 * @return
 	 */
+	@SuppressWarnings("null")
 	public static UrlProtocol of(final String str) {
 		if (Strings.isNullOrEmpty(str)) {
 			return null;
 		}
+		UrlProtocol outProto = null;
+		
 		// [1] - Maybe it's a complete url like http://xxxx
 		int p = str.indexOf("://");
-		UrlProtocol outProto = p > 0 ? new UrlProtocol(str.substring(0,p).toLowerCase())
-					 				 : null;
-		// [2] - Maybe it's just the protocol as http or https
-		String strNormalized = _normalizeJustProtocolString(str);
+		if (outProto == null
+		 && p > 0) {
+			outProto = new UrlProtocol(str.substring(0,p).toLowerCase());
+		}
+		// [2] - try mailto:
+		if (outProto == null
+		 && str.toLowerCase().startsWith("mailto:")) {
+			outProto = UrlProtocol.MAIL;
+		}
+		// [3] - Maybe it's just the protocol as http or https and nothing else
 		if (outProto == null) {
+			String strNormalized = _normalizeJustProtocolString(str);
+			
 			// try an standard protocol
 			StandardUrlProtocol stdProto = null;
 			for (StandardUrlProtocol std : StandardUrlProtocol.values()) {
@@ -198,7 +192,7 @@ public class UrlProtocol
 					 : str;
 	}
 	/**
-	 * @param str  A protocol in different ways..but just the protocol, http, HTTPS, HTTP/1.1
+	 * @param str A protocol in different ways..but just the protocol, http, HTTPS, HTTP/1.1
 	 * @return
 	 */
 	private static String _normalizeJustProtocolString(final String str) {
@@ -212,6 +206,27 @@ public class UrlProtocol
 		return p != null ? p.equals(proto) : false;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
+//	EQUALS & HASHCODE
+/////////////////////////////////////////////////////////////////////////////////////////
+	@Override
+	public boolean equals(final Object other) {
+		if (other == null) return false;
+		if (other == this) return true;
+		if (other instanceof UrlProtocol) {
+			UrlProtocol otherProto = (UrlProtocol)other;
+			return this.is(otherProto);
+		}
+		else if (other instanceof StandardUrlProtocol) {
+			StandardUrlProtocol otherStdProto = (StandardUrlProtocol)other;
+			return this.is(otherStdProto);
+		}
+		return false;
+	}
+	@Override
+	public int hashCode() {
+		return _asString != null ? _asString.hashCode() : 0;
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
 //  STANDARD PROTOCOLS
 /////////////////////////////////////////////////////////////////////////////////////////
 	@SuppressWarnings("hiding")
@@ -222,7 +237,8 @@ public class UrlProtocol
 		HTTPS("https",443),
 		HTTPS_CLI("https",444),	// DO NOT move before HTTPS
 		FILE("file",80),
-		FTP("ftp",21);
+		FTP("ftp",21),
+		MAIL("mailto",80);
 
 		@Getter private final String _code;
 		@Getter private final int _defaultPort;

@@ -648,6 +648,10 @@ public class Url
 		 && urlComps.getProtocol().is(StandardUrlProtocol.FILE)) {
 			// file urls
 			sb.append(urlComps.getProtocol().asString()).append("://").append(urlComps.getUrlPath().asRelativeString());
+		} else if (urlComps.getProtocol() != null
+				&& urlComps.getProtocol().is(StandardUrlProtocol.MAIL)) {
+			// mailto urls
+			sb.append(urlComps.getProtocol().asString()).append(":").append(urlComps.getHost());
 		} else {
 			// usual http or https urls
 			if (urlComps.getHost() != null) {

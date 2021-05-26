@@ -92,7 +92,7 @@ class XMLPropertiesForAppComponentsContainer {
     /**
      * Cache that stores the component's XML DOM that stores the properties
      */
-    private Map<ComponentCacheKey,ComponentCacheXML> _componentsXMLCache;
+    private final Map<ComponentCacheKey,ComponentCacheXML> _componentsXMLCache;
 
     @Accessors(prefix="_")
   	@EqualsAndHashCode @ToString
@@ -343,12 +343,11 @@ class XMLPropertiesForAppComponentsContainer {
 	/**
 	 * @param component
 	 * @param propXPath
-	 * @param type
 	 * @param marshaller
 	 * @return
 	 */
 	public <T> T getBeanPropertyUsingTransformFunction(final AppComponent component,final Path propXPath,
-						 	       					   final Class<?> type,final Function<Node,T> transformFuncion) {
+						 	       					   final Function<Node,T> transformFuncion) {
 		T outObj = null;
 		if (transformFuncion == null) {
 			log.warn("Error transforming property {} from {}/{} to an object using a xml node to java object instance transform funcion: the provided function is null",

@@ -25,5 +25,6 @@
 <!-- ====================================================================== -->
 	<modules>
 		<module>r01fHttpClientClasses</module>
-	</modules>
+    <module>r01fHttpLoadBalanceClasses</module>
+  </modules>
 </project>

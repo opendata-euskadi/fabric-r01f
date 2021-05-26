@@ -9,8 +9,7 @@
 <!-- ====================================================================== -->
 	<properties>
 		<!-- Dependencies versions -->
-		<apache-http-client.version>4.5.13</apache-http-client.version>
-		<apache-http-core.version>4.4.14</apache-http-core.version>
+		<metrics.version>4.2.0</metrics.version>
 	</properties>
 <!-- ====================================================================== -->
 <!-- PARENT                                                                 -->
@@ -24,8 +23,8 @@
 <!-- ====================================================================== -->
 <!-- ARTIFACT                                                               -->
 <!-- ====================================================================== -->
-	<name>r01fHttpClientClasses</name>
-	<artifactId>r01fHttpClientClasses</artifactId>
+	<name>r01fHttpLoadBalanceClasses</name>
+	<artifactId>r01fHttpLoadBalanceClasses</artifactId>
 
 <!-- ====================================================================== -->
 <!-- DEPENDENCIES                                                           -->
@@ -39,39 +38,22 @@
 			<artifactId>r01fBaseClasses</artifactId>
 			<version>${revision}</version>
 		</dependency>
-		<dependency>
-			<groupId>r01.r01f.base</groupId>
-			<artifactId>r01fIOClasses</artifactId>
-			<version>${revision}</version>
-		</dependency>
-		<dependency>
-			<groupId>r01.r01f.base</groupId>
-			<artifactId>r01fMimeClasses</artifactId>
-			<version>${revision}</version>
-		</dependency>
-
 		<!-- ///////////////////////////////////////// -->
-		<!-- Apache http client                        -->
+		<!-- HttpClient                                -->
 		<!-- ///////////////////////////////////////// -->
 		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>${apache-http-client.version}</version>
+			<groupId>r01.r01f.httpclient</groupId>
+			<artifactId>r01fHttpClientClasses</artifactId>
+			<version>${revision}</version>
 		</dependency>
+		
+		<!-- ///////////////////////////////////////// -->
+		<!-- Metrics                                   -->
+		<!-- ///////////////////////////////////////// -->
 		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>fluent-hc</artifactId>
-			<version>${apache-http-client.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpmime</artifactId>
-			<version>${apache-http-client.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpcore</artifactId>
-			<version>${apache-http-core.version}</version>
+			<groupId>io.dropwizard.metrics</groupId>
+			<artifactId>metrics-core</artifactId>
+			<version>${metrics.version}</version>
 		</dependency>
 	</dependencies>
 	

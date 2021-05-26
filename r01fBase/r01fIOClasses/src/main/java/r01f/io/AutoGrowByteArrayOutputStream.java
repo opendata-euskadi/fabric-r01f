@@ -330,13 +330,16 @@ public class AutoGrowByteArrayOutputStream
 		}
 		@Override
 		public int read() {
-			if (_currentBuffer == null) return -1;	// This stream doesn't have any data in it...
+			if (_currentBuffer == null) {
+				return -1;	// This stream doesn't have any data in it...
+			}
 			if (_nextIndexInCurrentBuffer < _currentBufferLength) {
 				_totalBytesRead++;
-				return _currentBuffer[_nextIndexInCurrentBuffer++] & 0xFF;
+				int out = _currentBuffer[_nextIndexInCurrentBuffer++] & 0xFF;
+				return out;
 			}
+			// beware! 
 			_swithToNextBufferIfNeeded();
-
 			return this.read();
 		}
 		@Override
@@ -363,8 +366,8 @@ public class AutoGrowByteArrayOutputStream
 									 len - bytesToCopy);	// length
 				return bytesToCopy + Math.max(remaining,0);
 			}
+			// beware recursion!
 			_swithToNextBufferIfNeeded();
-
 			return this.read(b,off,	// source
 							 len);	// length
 		}
@@ -383,8 +386,8 @@ public class AutoGrowByteArrayOutputStream
 				_nextIndexInCurrentBuffer += bytesToSkip;
 				return (bytesToSkip + this.skip(len - bytesToSkip));
 			}
+			// beware recursion!
 			_swithToNextBufferIfNeeded();
-
 			return this.skip(len);
 		}
 		@Override
@@ -393,6 +396,14 @@ public class AutoGrowByteArrayOutputStream
 		}
 		private void _swithToNextBufferIfNeeded() {
 			Iterator<byte[]> buffersIt = _buffers.iterator();
+			
+			// find current buffer
+			if (_currentBuffer != null) {
+				for (; buffersIt.hasNext(); ) {
+					byte[] buff = buffersIt.next();
+					if (_currentBuffer == buff) break;
+				}
+			}
 
 			// set the current buffer > the next buffer
 			if (buffersIt.hasNext()) {

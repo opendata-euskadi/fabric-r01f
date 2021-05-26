@@ -91,15 +91,15 @@ public class XMLPropertiesForAppCache
 //  CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
 	public XMLPropertiesForAppCache(final Environment env,		// see XMLPropertiesGuiceModule
-							      	final AppCode appCode,
-							      	final int componentsNumberEstimation,
-							      	final boolean useCache) {
+								  	final AppCode appCode,
+								  	final int componentsNumberEstimation,
+								  	final boolean useCache) {
 		_appCode = appCode;
 		_systemSetEnvironment = env;
 		_useCache = useCache;	
 		_componentXMLManager = new XMLPropertiesForAppComponentsContainer(this,									// component loading listener
-																	      env,									// environment
-																	      _appCode,componentsNumberEstimation);	// appCode / props estimation
+																		  env,									// environment
+																		  _appCode,componentsNumberEstimation);	// appCode / props estimation
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  INTERFACE XMLPropertiesComponentLoadedListener
@@ -113,7 +113,7 @@ public class XMLPropertiesForAppCache
 	 * Ensures a certain cache capacity<br>
 	 * This function is called from {@link XMLPropertiesForAppComponentsContainer} when a new XML properties file is loaded
 	 * <ul>
-	 *      <li>The component definition sets the estimated props number</li>
+	 *	  <li>The component definition sets the estimated props number</li>
 	 * 		<li>When the component definition is loaded, this method is called to make space for the properties at the cache.</li>
 	 * </ul>
 	 * @param propertiesPerComponentEstimation estimated number of properties
@@ -130,7 +130,7 @@ public class XMLPropertiesForAppCache
 												//					entries-.
 												// 			2.- The table's capacity has been exceed and obviously at every table's position (bucket) more than a single entry
 												//				MUST be stored; in this situation, when a new entry is inserted, it's hashCode MUST be checked against the bucket 
-												//			    existing ones:
+												//				existing ones:
 												//					- if new entry's key's hashCode == any bucket entry's key's hash code the equals() method must be called
 												//					  and replace the entry if both key's hashcodes are equal
 												//					- if new entry's key's hashCode != any bucket entry's key's hash code a new entry is added to the bucket
@@ -164,15 +164,15 @@ public class XMLPropertiesForAppCache
 	public int clear() {
 		return this.clear(null);
 	}
-    /**
-     * Reloads properties of a component
-     * @param component
-     * <ul>
-     * 		<li> component != null only the given component is reloaded</li>
-     * 		<li> component == null all components are reloaded</li>
-     * </ul>
-     * @return number of reloaded components
-     */
+	/**
+	 * Reloads properties of a component
+	 * @param component
+	 * <ul>
+	 * 		<li> component != null only the given component is reloaded</li>
+	 * 		<li> component == null all components are reloaded</li>
+	 * </ul>
+	 * @return number of reloaded components
+	 */
 	public int clear(final AppComponent component) {
 		log.trace("clearing cached properties for component {} of {}",component,_appCode);
 		if (_cache == null) return 0;
@@ -238,23 +238,22 @@ public class XMLPropertiesForAppCache
 	public Document getXMLDocumentFor(final AppComponent component) {
 		return _componentXMLManager.getXMLDocumentFor(component);
 	}
-    /**
-     * Checks if a property exists
-     * @param component 
-     * @param propXPath 
-     * @return 
-     */
-    public boolean existProperty(final AppComponent component,final Path propXPath) {
-        Object propValue = _retrieve(component,
-        							 propXPath,
-        							 null,	// type=null: just check the cache; do NOT try to load the property from the xml
-        							 null);	// marshaller=null
-        if (propValue != null) return true;
-        // if false, the property MIGHT NOT EXIST or it MIGHT NOT BE ALREADY LOADED so in order to confirm
-        // it really does NOT exist, try to find the xml node
-        Node node = _componentXMLManager.getPropertyNode(component,propXPath);
-        return node != null;
-    }
+	/**
+	 * Checks if a property exists
+	 * @param component 
+	 * @param propXPath 
+	 * @return 
+	 */
+	public boolean existProperty(final AppComponent component,final Path propXPath) {
+		Object propValue = _retrieveLevel1Cached(component,propXPath);
+		
+		if (propValue != null) return true;
+		
+		// if false, the property MIGHT NOT EXIST or it MIGHT NOT BE ALREADY LOADED so in order to confirm
+		// it really does NOT exist, try to find the xml node
+		Node node = _componentXMLManager.getPropertyNode(component,propXPath);
+		return node != null;
+	}
 	/**
 	 * Returns a property
 	 * @param component the app component
@@ -263,15 +262,22 @@ public class XMLPropertiesForAppCache
 	 * @param type the property data type
 	 * @return The property or <code>null</code> if the property does NOT exists
 	 */
-    public <T> T getProperty(final AppComponent component,final Path propXPath,
-    						 final T defaultValue,
-    						 final Class<T> type) {
-    	T outObj = this.getProperty(component,propXPath,
-    								defaultValue,
-    								type,
-    								null);		// marshaller=null
-    	return outObj;
-    }
+	@SuppressWarnings("unchecked")
+	public <T> T getProperty(final AppComponent component,final Path propXPath,
+							 final T defaultValue,
+							 final Class<T> type) {
+		CacheValue cachedValue = _retrieve(component,propXPath,
+									 	   type);
+		T outObj = (T)cachedValue.getPropValue();
+		if (outObj == null && defaultValue != null) {
+			// The property does NOT exist but a default value was given... store the default value
+			outObj = defaultValue;
+			cachedValue.setValue(defaultValue,true);
+		} else if (outObj == null) {
+			// the property does NOT exist and NO default value was given
+		}
+		return outObj;
+	}
 	/**
 	 * Returns a property
 	 * @param component the app component
@@ -280,15 +286,15 @@ public class XMLPropertiesForAppCache
 	 * @param typeRef the property data type
 	 * @return The property or <code>null</code> if the property does NOT exists 
 	 */
-    @SuppressWarnings("unchecked")
-    public <T> T getProperty(final AppComponent component,final Path propXPath,
-    						 final T defaultValue,
-    						 final TypeToken<T> typeRef) {
-    	T outObj = this.getProperty(component,propXPath,
-    								defaultValue,
-    								(Class<T>)typeRef.getRawType());
-    	return outObj;
-    }
+	@SuppressWarnings("unchecked")
+	public <T> T getProperty(final AppComponent component,final Path propXPath,
+							 final T defaultValue,
+							 final TypeToken<T> typeRef) {
+		T outObj = this.getProperty(component,propXPath,
+									defaultValue,
+									(Class<T>)typeRef.getRawType());
+		return outObj;
+	}
 	/**
 	 * Returns a property
 	 * @param component the app component
@@ -298,17 +304,23 @@ public class XMLPropertiesForAppCache
 	 * @param typeRef the property data type
 	 * @return The property or <code>null</code> if the property does NOT exists 
 	 */
-    public <T> T getProperty(final AppComponent component,
-    						 final Environment env,final Path propXPath,
-    						 final XMLPropertyDefaultValueByEnv<T> valByEnv,
-    						 final Class<T> type) {
-    	T outObj = this.getProperty(component,
-    								env,propXPath,
-    								valByEnv,
-    								type,
-    								null);		// marshaller = null
-    	return outObj;
-    }
+	@SuppressWarnings("unchecked")
+	public <T> T getProperty(final AppComponent component,
+							 final Environment env,final Path propXPath,
+							 final XMLPropertyDefaultValueByEnv<T> valByEnv,
+							 final Class<T> type) {
+		CacheValue cachedValue = _retrieve(component,propXPath,
+									 	   type);
+		T outObj = (T)cachedValue.getPropValue();
+		if (outObj == null && valByEnv != null) {
+			// The property does NOT exist but a default value was given... store the default value
+			outObj = valByEnv.getFor(env);
+			cachedValue.setValue(outObj,true);
+		} else if (outObj == null) {
+			// the property does NOT exist and NO default value was given
+		}
+		return outObj;
+	}
 	/**
 	 * Returns a property
 	 * @param component the app component
@@ -318,71 +330,42 @@ public class XMLPropertiesForAppCache
 	 * @param typeRef the property data type
 	 * @return The property or <code>null</code> if the property does NOT exists 
 	 */
-    @SuppressWarnings("unchecked")
-    public <T> T getProperty(final AppComponent component,
-    						 final Environment env,final Path propXPath,
-    						 final XMLPropertyDefaultValueByEnv<T> valByEnv,
-    						 final TypeToken<T> typeRef) {
-    	T outObj = this.getProperty(component,
-    								env,propXPath,
-    								valByEnv,
-    								(Class<T>)typeRef.getRawType());
-    	return outObj;
-    }
+	@SuppressWarnings("unchecked")
+	public <T> T getProperty(final AppComponent component,
+							 final Environment env,final Path propXPath,
+							 final XMLPropertyDefaultValueByEnv<T> valByEnv,
+							 final TypeToken<T> typeRef) {
+		T outObj = this.getProperty(component,
+									env,propXPath,
+									valByEnv,
+									(Class<T>)typeRef.getRawType());
+		return outObj;
+	}
 	/**
 	 * Returns a property
 	 * @param component the app component
 	 * @param propXPath property xPath
 	 * @param defaultValue the property default value
 	 * @param type the property data type
-	 * @param marshaller the marshaller used to transform the property xml into a java object
+	 * @param transformFuncion the marshaller used to transform the property xml into a java object
 	 * @return The property or <code>null</code> if the property does NOT exists
 	 */
-    @SuppressWarnings("unchecked")
-    public <T> T getProperty(final AppComponent component,final Path propXPath,
-    						 final T defaultValue,
-    						 final Class<T> type,
-    						 final Function<Node,T> transformFuncion) {
-    	CacheValue cachedValue = _retrieve(component,propXPath,
-    								 	   type,transformFuncion);
-    	T outObj = (T)cachedValue.getPropValue();
-    	if (outObj == null && defaultValue != null) {
-    		// The property does NOT exist but a default value was given... store the default value
-    		outObj = defaultValue;
-    		cachedValue.setValue(defaultValue,true);
-    	} else if (outObj == null) {
-    		// the property does NOT exist and NO default value was given
-    	}
-    	return outObj;
-    }
-	/**
-	 * Returns a property
-	 * @param component the app component
-	 * @param env the environment
-	 * @param propXPath property xPath
-	 * @param the property value by environment to be used if the property value is not found (defined)
-	 * @param type the property data type
-	 * @param marshaller the marshaller used to transform the property xml into a java object
-	 * @return The property or <code>null</code> if the property does NOT exists
-	 */
-    @SuppressWarnings("unchecked")
-    public <T> T getProperty(final AppComponent component,
-    						 final Environment env,final Path propXPath,
-    						 final XMLPropertyDefaultValueByEnv<T> valByEnv,
-    						 final Class<T> type,
-    						 final Function<Node,T> transformFuncion) {
-    	CacheValue cachedValue = _retrieve(component,propXPath,
-    								 	   type,transformFuncion);
-    	T outObj = (T)cachedValue.getPropValue();
-    	if (outObj == null && valByEnv != null) {
-    		// The property does NOT exist but a default value was given... store the default value
-    		outObj = valByEnv.getFor(env);
-    		cachedValue.setValue(outObj,true);
-    	} else if (outObj == null) {
-    		// the property does NOT exist and NO default value was given
-    	}
-    	return outObj;
-    }
+	@SuppressWarnings("unchecked")
+	public <T> T getProperty(final AppComponent component,final Path propXPath,
+							 final T defaultValue,
+							 final Function<Node,T> transformFuncion) {
+		CacheValue cachedValue = _retrieve(component,propXPath,
+									 	   transformFuncion);
+		T outObj = (T)cachedValue.getPropValue();
+		if (outObj == null && defaultValue != null) {
+			// The property does NOT exist but a default value was given... store the default value
+			outObj = defaultValue;
+			cachedValue.setValue(defaultValue,true);
+		} else if (outObj == null) {
+			// the property does NOT exist and NO default value was given
+		}
+		return outObj;
+	}
 	/**
 	 * Returns the node containing the property
 	 * @param component
@@ -412,16 +395,16 @@ public class XMLPropertiesForAppCache
 // 		appCode2 / Component2A --> xPath_prop1 - obj1
 //								   ...
 /////////////////////////////////////////////////////////////////////////////////////////
-    /**
-     * Returns a cached value or null if the property is NOT cached
-     * @param component
-     * @param propXPath
-     * @return
-     */
-    @SuppressWarnings("unchecked")
+	/**
+	 * Returns a cached value or null if the property is NOT cached
+	 * @param component
+	 * @param propXPath
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
 	public <T> T getCachedPropertyOrNull(final AppComponent component,final Path propXPath) {
-    	T outValue = null;
-    	
+		T outValue = null;
+		
 		// Try to retrieve the cached value
 		CacheKey key = new CacheKey(component,propXPath);
 		CacheValue value = null;
@@ -431,7 +414,7 @@ public class XMLPropertiesForAppCache
 			outValue = (T)value.getPropValue();
 		}
 		return outValue;
-    }
+	}
 	/**
 	 * Retrieves a property value given it's XPath
 	 * TWO caches are in use:
@@ -441,12 +424,9 @@ public class XMLPropertiesForAppCache
 	 * @param component
 	 * @param xPath 
 	 * @param type 
-	 * @param marshaller
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
-	private <T> CacheValue _retrieve(final AppComponent component,final Path xPath,
-									 final Class<T> type,final Function<Node,T> transformFuncion) {
+	private CacheValue _retrieveLevel1Cached(final AppComponent component,final Path xPath) {
 		// [0] Check if a property reloading is needed
 		boolean hasToClear = _componentXMLManager.reloadIfNecessary(component);
 		if (hasToClear) this.clear(component);		// Remove all cache entries
@@ -459,6 +439,24 @@ public class XMLPropertiesForAppCache
 			outValue = _cache.get(key);
 			if (outValue != null) outValue.anotherHit();
 		}
+		return outValue;
+	}
+	/**
+	 * Retrieves a property value given it's XPath
+	 * TWO caches are in use:
+	 * - LEVEL1: a cache of values indexed by their XPath expression
+	 * - LEVEL2: a cache of components' XML documents
+	 * <b>BEWARE:</b><p>If type==null, just check the cache (do NOT try to load the property value from the xml).
+	 * @param component
+	 * @param xPath 
+	 * @param type 
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	private <T> CacheValue _retrieve(final AppComponent component,final Path xPath,
+									 final Class<T> type) {
+		// [1] - Get the level 1 cached value
+		CacheValue outValue = _retrieveLevel1Cached(component,xPath);
 		
 		// If type==null, just check the cache (do NOT try to load the property value from the xml)
 		if (type == null) return outValue;
@@ -468,45 +466,76 @@ public class XMLPropertiesForAppCache
 		if (outValue == null) {
 			// It's the first time the property is accessed so the cache is empty: go to the xml 
 			T obj = null;
-    		if (type.equals(String.class)) {
-    			// String
-    			obj = (T)_componentXMLManager.getStringProperty(component,xPath);
+			if (type.equals(String.class)) {
+				// String
+				obj = (T)_componentXMLManager.getStringProperty(component,xPath);
 
-    		} else if (type.equals(Number.class)) {
-    			// number (int, long, double, etc)
-    			String numStr = _componentXMLManager.getStringProperty(component,xPath);
-		    	try {
-		    		Number num = NumberUtils.createNumber(numStr);
-		    		obj = (T)num;
-		    	} catch (NumberFormatException nfEx) {
-		    		log.warn("Property {} from appCode/component={}/{}: {} cannot be converted to a Number!",
-		    			     xPath,_appCode.asString(),component,numStr);
-		    	}
+			} else if (type.equals(Number.class)) {
+				// number (int, long, double, etc)
+				String numStr = _componentXMLManager.getStringProperty(component,xPath);
+				try {
+					Number num = NumberUtils.createNumber(numStr);
+					obj = (T)num;
+				} catch (NumberFormatException nfEx) {
+					log.warn("Property {} from appCode/component={}/{}: {} cannot be converted to a Number!",
+							 xPath,_appCode.asString(),component,numStr);
+				}
 
-    		} else if (type.equals(Boolean.class)) {
-    			// Boolean
-    			String bolStr = _componentXMLManager.getStringProperty(component,xPath);
-		    	Boolean bool = BooleanUtils.toBooleanObject(bolStr);
-		    	if (bolStr != null && bool == null) {
-		    		log.debug("Property {} from appCode/component={}/{}: {} cannot be converted to a boolean!",
-		    				  xPath,_appCode.asString(),component,bolStr);
-		    	}
-		    	obj = (T)bool;
+			} else if (type.equals(Boolean.class)) {
+				// Boolean
+				String bolStr = _componentXMLManager.getStringProperty(component,xPath);
+				Boolean bool = BooleanUtils.toBooleanObject(bolStr);
+				if (bolStr != null && bool == null) {
+					log.debug("Property {} from appCode/component={}/{}: {} cannot be converted to a boolean!",
+							  xPath,_appCode.asString(),component,bolStr);
+				}
+				obj = (T)bool;
 
-    		} else if (CollectionUtils.isMap(type)) {
-    			// Map
-    			obj = (T)_componentXMLManager.getMapOfStringsProperty(component,xPath);
+			} else if (CollectionUtils.isMap(type)) {
+				// Map
+				obj = (T)_componentXMLManager.getMapOfStringsProperty(component,xPath);
 
-    		} else if (transformFuncion != null) {
-    			obj = _componentXMLManager.getBeanPropertyUsingTransformFunction(component,xPath,
-    														  				 	 type,
-    														  				 	 transformFuncion);
-    		} else {
-    			log.warn("{} type is not a supported for a property. Property {} from appCode/component={}/{}: cannot be converted",
-    					 type.getName(),xPath,_appCode.asString(),component);
-    		}
-	    	// Store the created object at the cache
-    		outValue = _store(component,xPath,obj,false);	// BEWARE!! obj can be NULL if the property DOES NOT EXISTS!!!!
+			} else {
+				log.warn("{} type is not a supported for a property. Property {} from appCode/component={}/{}: cannot be converted",
+						 type.getName(),xPath,_appCode.asString(),component);
+			}
+			// Store the created object at the cache
+			outValue = _store(component,xPath,
+							  obj,			// BEWARE!! obj can be NULL if the property DOES NOT EXISTS!!!!
+							  false);		// not the default value
+		}
+		// return
+		return outValue;
+	}
+	/**
+	 * Retrieves a property value given it's XPath
+	 * TWO caches are in use:
+	 * - LEVEL1: a cache of values indexed by their XPath expression
+	 * - LEVEL2: a cache of components' XML documents
+	 * <b>BEWARE:</b><p>If type==null, just check the cache (do NOT try to load the property value from the xml).
+	 * @param component
+	 * @param xPath 
+	 * @param transformFunction 
+	 * @return
+	 */
+	private <T> CacheValue _retrieve(final AppComponent component,final Path xPath,
+									 final Function<Node,T> transformFuncion) {
+		// [1] - Get the level 1 cached value
+		CacheValue outValue = _retrieveLevel1Cached(component,xPath);
+		
+		// If transformFuncion==null, just check the cache (do NOT try to load the property value from the xml)
+		if (transformFuncion == null) return outValue;
+		
+		// [2] LEVEL 2 cache: If the property is NOT at the values cache, load the component's XML
+		//	   				  and get the property
+		if (outValue == null) {
+			// It's the first time the property is accessed so the cache is empty: go to the xml 
+			T obj =  _componentXMLManager.getBeanPropertyUsingTransformFunction(component,xPath,
+															  				 	transformFuncion);
+			// Store the created object at the cache
+			outValue = _store(component,xPath,
+							  obj,			// BEWARE!! obj can be NULL if the property DOES NOT EXISTS!!!!
+							  false);		// not the default value
 		}
 		// return
 		return outValue;
@@ -555,47 +584,47 @@ public class XMLPropertiesForAppCache
 			return outKey;
 		}
   	}
-    /**
-     * Value stoed at the cache
-     */
+	/**
+	 * Value stoed at the cache
+	 */
   	@Accessors(prefix="_")
-    @NoArgsConstructor @AllArgsConstructor
-    private class CacheValue {
-    	@Getter private long _accessCount;
-    	@Getter private long _lastAcessTimeStamp;
-    	@Getter private Object _propValue;
-    	@Getter private boolean _defaultValue;
-    	public void anotherHit() {
-    		_accessCount++;
-    		_lastAcessTimeStamp = System.currentTimeMillis();
-    	}
-    	public void setValue(final Object val,final boolean defaultVal) {
-    		_propValue = val;
-    		_defaultValue = defaultVal;
-    	}
-    }
+	@NoArgsConstructor @AllArgsConstructor
+	private class CacheValue {
+		@Getter private long _accessCount;
+		@Getter private long _lastAcessTimeStamp;
+		@Getter private Object _propValue;
+		@Getter private boolean _defaultValue;
+		public void anotherHit() {
+			_accessCount++;
+			_lastAcessTimeStamp = System.currentTimeMillis();
+		}
+		public void setValue(final Object val,final boolean defaultVal) {
+			_propValue = val;
+			_defaultValue = defaultVal;
+		}
+	}
 ///////////////////////////////////////////////////////////////////////////////
 //	Cache statistics
 ///////////////////////////////////////////////////////////////////////////////
-    @Accessors(prefix="_")
+	@Accessors(prefix="_")
 	@NoArgsConstructor
-         class CacheStatistics 
-    implements Debuggable {
-    	@Getter @Setter private long _hitCount;		// total cache hits 
-    	@Getter @Setter private long _nonHitCount;	// total non hits (non-existents values)
-    	@Getter @Setter private long _invalidCount;	// total invalid
-    	@Getter @Setter private long _defaultCount;	// total default values
-    	
-    	@Override
-    	public String debugInfo() {
-    		StringBuilder dbg = new StringBuilder("");
-    		dbg.append("XMLProperties cache stats:")
-			   .append("\r\n     Hits: ").append(Long.toString(_hitCount))
+		 class CacheStatistics 
+	implements Debuggable {
+		@Getter @Setter private long _hitCount;		// total cache hits 
+		@Getter @Setter private long _nonHitCount;	// total non hits (non-existents values)
+		@Getter @Setter private long _invalidCount;	// total invalid
+		@Getter @Setter private long _defaultCount;	// total default values
+		
+		@Override
+		public String debugInfo() {
+			StringBuilder dbg = new StringBuilder("");
+			dbg.append("XMLProperties cache stats:")
+			   .append("\r\n	 Hits: ").append(Long.toString(_hitCount))
 			   .append("\r\n  NO-Hits: ").append(Long.toString(_nonHitCount))
 			   .append("\r\n Defaults: ").append(Long.toString(_defaultCount))
 			   .append("\r\n Invalids: ").append(Long.toString(_invalidCount))
 			   .append("\r\n");
-    		return dbg.toString();
-	    }
-    }
+			return dbg.toString();
+		}
+	}
 }

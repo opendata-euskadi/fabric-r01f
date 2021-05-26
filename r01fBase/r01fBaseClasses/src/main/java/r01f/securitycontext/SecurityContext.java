@@ -60,6 +60,14 @@ public interface SecurityContext
 	 * @return the login url
 	 */
 	public Url getLoginUrl();
+	/**
+	 * @return whether this security context is still valid
+	 */
+	public boolean isValid();
+	/**
+	 * Invalidates the security context
+	 */
+	public void invalidate();
 /////////////////////////////////////////////////////////////////////////////////////////
 //	USER ROLES (just for USER authenticated actors)
 /////////////////////////////////////////////////////////////////////////////////////////

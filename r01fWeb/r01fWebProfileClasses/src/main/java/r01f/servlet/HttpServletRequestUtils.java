@@ -3,15 +3,23 @@ package r01f.servlet;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
+import java.util.Collection;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.google.common.base.Predicate;
+import com.google.common.base.Splitter;
+import com.google.common.collect.FluentIterable;
+
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import r01f.types.url.Host;
+import r01f.util.types.StringSplitter;
 import r01f.util.types.Strings;
+import r01f.util.types.collections.CollectionUtils;
 
 /**
  * Utils about servlet request
@@ -38,12 +46,20 @@ public abstract class HttpServletRequestUtils {
 	 */
 	public static Host clientRequestedHost(final HttpServletRequest realHttpReq) {
 		// try to get the X-Forwarded-Host request header
-        String forwardedHost = realHttpReq.getHeader("X-Forwarded-Host");
-        
-        if (Strings.isNOTNullOrEmpty(forwardedHost)) return Host.of(forwardedHost);
-        
-        // it's NOT proxied
-        return Host.of(realHttpReq.getServerName());
+		// 		X-Forwarded-For: 	The IP address of the client.
+		//		X-Forwarded-Host: 	The original host requested by the client in the Host HTTP request header.
+		// 		X-Forwarded-Server: The hostname of the proxy server.
+		// BEWARE that these headers may contain more than a single value (comma separated)	
+		// (see http://httpd.apache.org/docs/2.2/mod/mod_proxy.html)
+		String forwardedHost = realHttpReq.getHeader("X-Forwarded-Host");
+		String theForwardedHost = Strings.isNOTNullOrEmpty(forwardedHost) ? StringSplitter.using(Splitter.on(','))
+																						  .at(forwardedHost)
+																						  .group(0)
+																		  : null;
+		if (Strings.isNOTNullOrEmpty(theForwardedHost)) return Host.of(theForwardedHost);
+		
+		// it's NOT proxied
+		return Host.of(realHttpReq.getServerName());
 	}
 	/**
 	 * Returns the real client ip
@@ -60,47 +76,52 @@ public abstract class HttpServletRequestUtils {
 	 * @return
 	 */
 	public static String requestingClientIp(final HttpServletRequest realHttpReq) { 
-        String ip = realHttpReq.getHeader("X-Forwarded-For");   
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {   
-            ip = realHttpReq.getHeader("Proxy-Client-IP");   
-        }   
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {   
-            ip = realHttpReq.getHeader("WL-Proxy-Client-IP");   
-        }   
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {   
-            ip = realHttpReq.getHeader("HTTP_CLIENT_IP");   
-        }   
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {   
-            ip = realHttpReq.getHeader("HTTP_X_FORWARDED_FOR");   
-        }   
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {   
-            ip = realHttpReq.getRemoteAddr();   
-        }   
-        return ip;   
+		// X-Forwarded-For: 	The IP address of the client.
+		// X-Forwarded-Host: 	The original host requested by the client in the Host HTTP request header.
+		// X-Forwarded-Server: The hostname of the proxy server.
+		// BEWARE that these headers may contain more than a single value (comma separated)	
+		String ip = realHttpReq.getHeader("X-Forwarded-For");   
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {   
+			ip = realHttpReq.getHeader("Proxy-Client-IP");   
+		}   
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {   
+			ip = realHttpReq.getHeader("WL-Proxy-Client-IP");   
+		}   
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {   
+			ip = realHttpReq.getHeader("HTTP_CLIENT_IP");   
+		}   
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {   
+			ip = realHttpReq.getHeader("HTTP_X_FORWARDED_FOR");   
+		}   
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {   
+			ip = realHttpReq.getRemoteAddr();   
+		}   
+		return ip;   
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  
 /////////////////////////////////////////////////////////////////////////////////////////
-    public static boolean isInternalIP(final HttpServletRequest realHttpReq) {
-    	String clientIp = HttpServletRequestUtils.requestingClientIp(realHttpReq);
-    	return HttpServletRequestUtils.isInternalIP(clientIp);
-    }
-    public static boolean isInternalIP(final String ip) {
-    	boolean internalIP = Strings.isNOTNullOrEmpty(ip)
-    					  && (ip.startsWith("10.")
-    					   || ip.startsWith("172.16.") 
-    					   || ip.startsWith("192.168.") 
-    					   || ip.startsWith("169.254.") 
-    					   || ip.equals("127.0.0.1") 
-    					   || ip.equals("0:0:0:0:0:0:0:1")
-    					   || ip.equals("::1"));    	
-    	return internalIP;
-    }
+	public static boolean isInternalIP(final HttpServletRequest realHttpReq) {
+		String clientIp = HttpServletRequestUtils.requestingClientIp(realHttpReq);
+		return HttpServletRequestUtils.isInternalIP(clientIp);
+	}
+	public static boolean isInternalIP(final String ip) {
+		boolean internalIP = Strings.isNOTNullOrEmpty(ip)
+						  && (ip.startsWith("10.")
+						   || ip.startsWith("172.16.") 
+						   || ip.startsWith("192.168.") 
+						   || ip.startsWith("169.254.") 
+						   || ip.equals("127.0.0.1") 
+						   || ip.equals("0:0:0:0:0:0:0:1")
+						   || ip.equals("::1"));		
+		return internalIP;
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	IP ADDRESS MATCHER 
 // 	see https://github.com/spring-projects/spring-security/blob/master/web/src/main/java/org/springframework/security/web/util/matcher/IpAddressMatcher.java
 //		https://seancfoley.github.io/IPAddress/#_Toc456708511
 /////////////////////////////////////////////////////////////////////////////////////////
+	@SuppressWarnings("unused")
 	private final class IpAddressMatcher {
 		
 		private final int _nMaskBits;
@@ -164,5 +185,40 @@ public abstract class HttpServletRequestUtils {
 				throw new IllegalArgumentException("Failed to parse address" + address, e);
 			}
 		}
-	}    
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	COOKIE
+/////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Finds all cookies matching
+	 * @param req
+	 * @param pred
+	 * @return
+	 */
+	public static Collection<Cookie> cookiesMatching(final HttpServletRequest req,
+									 		 		 final Predicate<Cookie> pred) {
+		Cookie[] cookies = req.getCookies();
+		if (CollectionUtils.isNullOrEmpty(cookies)) return null;
+		
+		return FluentIterable.from(cookies)
+							 .filter(pred)
+							 .toList();
+	}
+	/**
+	 * Finds a cookie with the given name (no matter the domain)
+	 * @param req
+	 * @param cookieName
+	 * @return
+	 */
+	public static Cookie cookieWithName(final HttpServletRequest req,
+									    final String cookieName) {
+		Collection<Cookie> cookiesMatching = HttpServletRequestUtils.cookiesMatching(req,
+																					 new Predicate<Cookie>() {
+																								@Override
+																								public boolean apply(final Cookie cookie) {
+																									return cookie.getName().equals(cookieName);
+																								}
+																			  		 });
+		return CollectionUtils.hasData(cookiesMatching) ? CollectionUtils.firstOf(cookiesMatching) : null;
+	}
 }

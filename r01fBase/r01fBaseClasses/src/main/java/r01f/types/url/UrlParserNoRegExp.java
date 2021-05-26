@@ -37,14 +37,13 @@ public class UrlParserNoRegExp
 																				   						   				  : urlWithoutProtocol.length())
 											: null;
 		String port = portBeginIndex > 0 ? urlWithoutProtocol.substring(portBeginIndex+1,
-																		 pathBeginIndex > 0 ? pathBeginIndex
-																				 			: urlWithoutProtocol.length())
+																		pathBeginIndex > 0 ? pathBeginIndex
+																				 		   : urlWithoutProtocol.length())
 										 : null;
 		String host = urlWithoutProtocol.substring(0,
 												   portBeginIndex > 0 ? portBeginIndex
 														   			  : pathBeginIndex > 0 ? pathBeginIndex
 															   			   			       : urlWithoutProtocol.length());
-
 		return new UrlComponents(protocol != null ? protocol : null,
 								 Host.strict(host),
 								 Strings.isNOTNullOrEmpty(port) ? Integer.parseInt(port) : -1,
