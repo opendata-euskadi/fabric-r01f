@@ -64,6 +64,15 @@ public abstract class StringSplitter {
 		return _splitter.split(_str);
 	}
 	/**
+	 * Returns the number of chunks
+	 * @return
+	 */
+	public int count() {
+		if (_str == null) return 0;
+		return this.toArray().length;
+	}
+	/**
+	 * The chunks array
 	 * @return the chunk iterator as an array
 	 */
 	public String[] toArray() {
@@ -73,12 +82,14 @@ public abstract class StringSplitter {
 		return out.toArray(new String[out.size()]);
 	}
 	/**
+	 * The chunks as a {@link Collection}
 	 * @return the iterator as a {@link Collection}
 	 */
 	public Collection<String> toCollection() {
 		return Lists.newArrayList(this.toArray());
 	}
 	/**
+	 * The chunks as a {@link Set}
 	 * @return the iterator as a {@link Set}
 	 */
 	public Set<String> toSet() {
