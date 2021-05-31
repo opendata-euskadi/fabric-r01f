@@ -50,7 +50,6 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 
 import lombok.Cleanup;
-import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import r01f.io.util.StringPersistenceUtils;
@@ -71,9 +70,7 @@ import r01f.util.types.collections.CollectionUtils;
  */
 @Slf4j
 @Accessors(prefix="_")
-@RequiredArgsConstructor
 public class HttpProxyServletDelegate {
-
 /////////////////////////////////////////////////////////////////////////////////////////
 //	CONSTANTS
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -92,7 +89,12 @@ public class HttpProxyServletDelegate {
 //	FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
 	private final HttpProxyServletConfig _config;
-
+/////////////////////////////////////////////////////////////////////////////////////////
+//	CONSTRUCTOR
+/////////////////////////////////////////////////////////////////////////////////////////
+	public HttpProxyServletDelegate(final HttpProxyServletConfig config) {
+		_config = config;
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	GET
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -120,9 +122,9 @@ public class HttpProxyServletDelegate {
 		String theDestinationUrlStr = originalRequest.getRequestURL().toString().endsWith("/")
 											? destinationUrl.asString() + "/"
 											: destinationUrl.asString();
-		log.warn("PROXY GET: requested url={} to url={}",
+		log.warn("PROXY GET: requested url={} to url={}{}",
 				 originalRequest.getRequestURL(),
-				 theDestinationUrlStr);
+				 endPoint.getUrl(),theDestinationUrlStr);
 
 		HttpGet getRequestToBeProxied = new HttpGet(theDestinationUrlStr);
 
@@ -310,7 +312,7 @@ public class HttpProxyServletDelegate {
 		HttpClient httpClient = clientBuilder.build(); 					// HttpClient httpClient = new SystemDefaultHttpClient(httpClientParams);
 
 		// [2] - Execute the request
-		HttpHost host = HttpHost.create(choosenEndPoint.getUrl().getHost().asString());
+		HttpHost host = HttpHost.create(choosenEndPoint.getUrl().asString());
 		HttpResponse endPointResponse = httpClient.execute(host,
 														   requestToBeProxied);
 		return endPointResponse;
@@ -329,6 +331,12 @@ public class HttpProxyServletDelegate {
 	}
 	private static UrlPath _getTargetUrlPath(final HttpProxyServletConfig config,
 									  		 final HttpServletRequest originalRequest) {
+		// get the servlet context
+		String servletContext = originalRequest.getServletContext()
+											   .getContextPath();
+		UrlPath servletContextUrlPath = UrlPath.from(Strings.isNOTNullOrEmpty(servletContext) ? UrlPath.from(servletContext)
+																					   		  : UrlPath.from("/"));	// default path
+		
 		// simply use whatever servlet path that was part of the request as opposed to
 		// getting a preset/configurable proxy path
 		String requestedServletPath = originalRequest.getServletPath();	// Returns the part of this request's URL that calls the servlet.
@@ -343,15 +351,18 @@ public class HttpProxyServletDelegate {
 																		// The extra path information follows the servlet path but precedes the query string
 																		// and will start with a "/" character.
 																		// This method returns null if there was no extra path information.
+		
 		UrlPath requestedUrlPath = Strings.isNOTNullOrEmpty(requestedServletPathInfo)
 												? UrlPath.preservingTrailingSlash()
-														 .from(config.getServletContextUrlPath())
+														 .from(servletContextUrlPath)
 														 .joinedWith(requestedServletPath,
 																 	 requestedServletPathInfo)
 												: UrlPath.preservingTrailingSlash()
-														 .from(config.getServletContextUrlPath())
+														 .from(servletContextUrlPath)
 														 .joinedWith(requestedServletPath);
 		UrlPath targetUrlPath = null;
+		
+		// --- path trim 
 		if (config.getPathTrim() == null) {
 			// nothing to remove
 			targetUrlPath = requestedUrlPath;
@@ -366,6 +377,12 @@ public class HttpProxyServletDelegate {
 			// nothing to remove
 			targetUrlPath = requestedUrlPath;
 		}
+		
+		// --- path prepend
+		if (config.getPathPrepend() != null) {
+			targetUrlPath = config.getPathPrepend().joinedWith(targetUrlPath);
+		}
+		
 		return targetUrlPath;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
