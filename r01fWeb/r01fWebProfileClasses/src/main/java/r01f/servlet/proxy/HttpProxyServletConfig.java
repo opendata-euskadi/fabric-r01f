@@ -16,6 +16,8 @@ import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import r01f.config.ContainsConfigData;
 import r01f.debug.Debuggable;
+import r01f.patterns.Memoized;
+import r01f.patterns.Supplier;
 import r01f.types.url.Host;
 import r01f.types.url.Url;
 import r01f.types.url.UrlPath;
@@ -65,7 +67,9 @@ public class HttpProxyServletConfig
 	 * The maximum size for uploaded files in bytes. Default value is 5MB.
 	 */
 	@Getter private final int _maxFileUploadSize;
-
+	/**
+	 * If the endopoint returns a redir, must this redir be followed?
+	 */
 	@Getter private final boolean _followRedirects;
 /////////////////////////////////////////////////////////////////////////////////////////
 //	CONSTRUCTOR
@@ -213,6 +217,24 @@ public class HttpProxyServletConfig
 										  						maxFileUploadSize,
 										  						followRedirects);
 		return out;
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	URL PATH REWRITE
+/////////////////////////////////////////////////////////////////////////////////////////
+	private final Memoized<HttpProxyServletUrlPathRewriter> _urlPathRewriter = Memoized.using(new Supplier<HttpProxyServletUrlPathRewriter>() {
+																										@Override
+																										public HttpProxyServletUrlPathRewriter supply() {
+																											return _pathPrepend != null 
+																												|| _pathTrim != null ? new HttpProxyServletUrlPathRewriterDefaultImpl(_pathTrim,_pathPrepend)
+																																	 : null;
+																										}
+																							  });
+	/**
+	 * Returns an url path rewriter that uses the pathTrim or pathPrepend config
+	 * @return
+	 */
+	public HttpProxyServletUrlPathRewriter getUrlPathRewriter() {
+		return _urlPathRewriter.get();
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	DEBUG

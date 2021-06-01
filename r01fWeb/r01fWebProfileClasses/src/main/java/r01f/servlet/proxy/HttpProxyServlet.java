@@ -78,13 +78,34 @@ public class HttpProxyServlet
 //	FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
 	private HttpProxyServletConfig _proxyServletConfig;
-	private final Memoized<HttpProxyServletDelegate> _proxyServletDelegate = Memoized.using(() -> new HttpProxyServletDelegate(_proxyServletConfig));
-		
+	private HttpProxyServletUrlPathRewriter _urlPathRewriter;
+	
+/////////////////////////////////////////////////////////////////////////////////////////
+//	PROXY DELEGATE
+/////////////////////////////////////////////////////////////////////////////////////////	
+	private final Memoized<HttpProxyServletDelegate> _proxyServletDelegate = Memoized.using(() -> _createHttpProxyServletDelegate(_proxyServletConfig,
+																																  _urlPathRewriter));
+	/**
+	 * Creates an HttpProxyServletDelegate. 
+	 * Override this method if a custom delegate has to be created
+	 * @return
+	 */
+	@SuppressWarnings("static-method")
+	protected HttpProxyServletDelegate _createHttpProxyServletDelegate(final HttpProxyServletConfig proxyServletConfig,
+																	   final HttpProxyServletUrlPathRewriter urlPathRewriter) {
+		return new HttpProxyServletDelegate(proxyServletConfig,
+											urlPathRewriter);
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
 	public HttpProxyServlet() {
 		// nothing
+	}
+	public HttpProxyServlet(// proxy params
+							final Collection<Url> endPoints) {
+		this(endPoints,
+			 null,null);	// pathTrim / pathPrepend
 	}
 	public HttpProxyServlet(// proxy params
 							final Collection<Url> endPoints,
@@ -103,6 +124,13 @@ public class HttpProxyServlet
 														 pathTrim,pathPrepend,
 														 maxFileUploadSize,
 														 followRedirects);
+	}
+	public HttpProxyServlet(// proxy params
+							final Collection<Url> endPoints,
+							final HttpProxyServletUrlPathRewriter urlPathRewriter) {
+		_proxyServletConfig = new HttpProxyServletConfig(endPoints,
+														 null,null);	// no path-trim, no path-prepend
+		_urlPathRewriter = urlPathRewriter;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //

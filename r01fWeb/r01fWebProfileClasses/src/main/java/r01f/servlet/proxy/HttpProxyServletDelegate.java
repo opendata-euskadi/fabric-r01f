@@ -89,11 +89,34 @@ public class HttpProxyServletDelegate {
 //	FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
 	private final HttpProxyServletConfig _config;
+	private final HttpProxyServletUrlPathRewriter _urlPathRewriter;
 /////////////////////////////////////////////////////////////////////////////////////////
 //	CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
 	public HttpProxyServletDelegate(final HttpProxyServletConfig config) {
+		this(config,
+			 config != null ? config.getUrlPathRewriter() : null);
+	}
+	public HttpProxyServletDelegate(final HttpProxyServletConfig config,
+									final HttpProxyServletUrlPathRewriter urlPathRewriter) {
 		_config = config;
+		_urlPathRewriter = config.getUrlPathRewriter() != null 
+						&& urlPathRewriter != null 
+									? // combine config-based url path rewriter with the given one
+									  new HttpProxyServletUrlPathRewriter() {
+												@Override
+												public UrlPath rewrite(final UrlPath requestedUrlPath) {
+													UrlPath urlPathRewritten1 = config.getUrlPathRewriter().rewrite(requestedUrlPath);
+													UrlPath urlPathRewritten2 = urlPathRewriter.rewrite(urlPathRewritten1);
+													return urlPathRewritten2;
+												}
+									  }
+									: // one of the url path rewriters is null
+									  config.getUrlPathRewriter() != null 
+											? config.getUrlPathRewriter()
+											: urlPathRewriter != null 
+													? urlPathRewriter
+													: null;		// both null
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	GET
@@ -114,8 +137,8 @@ public class HttpProxyServletDelegate {
 		
 		// [1] Create a GET request
 		//	   beware that R01F Url object when serialized to string does NOT include the final '/' char if present
-		UrlPath urlPath = _getTargetUrlPath(_config,
-											originalRequest);
+		UrlPath urlPath = _getTargetUrlPath(originalRequest,
+											_urlPathRewriter);
 		UrlQueryString urlQueryString  = UrlQueryString.fromParamsString(originalRequest.getQueryString());
 		Url destinationUrl = Url.from(urlPath,urlQueryString);
 		
@@ -158,8 +181,8 @@ public class HttpProxyServletDelegate {
 		HttpProxyEndPoint endPoint = _chooseEndPoint(originalRequest);
 		
 		// [1] Create the POST request
-		UrlPath urlPath = _getTargetUrlPath(_config,
-											originalRequest);
+		UrlPath urlPath = _getTargetUrlPath(originalRequest,
+											_urlPathRewriter);
 		UrlQueryString urlQueryString  = UrlQueryString.fromParamsString(originalRequest.getQueryString());
 		Url destinationUrl = Url.from(urlPath,urlQueryString);
 		
@@ -301,6 +324,17 @@ public class HttpProxyServletDelegate {
 		log.debug("Received status code: {} - Response: {}",endPointResponse,
 													  		endPointResponseIS);
 	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	ENDPOINT RESPONSE (default impl)
+/////////////////////////////////////////////////////////////////////////////////////////	
+	/**
+	 * Returns the [endpoint] {@link HttpResponse}
+	 * Override this method if a custom impl has to be used
+	 * @param choosenEndPoint
+	 * @param requestToBeProxied
+	 * @return
+	 * @throws IOException
+	 */
 	@SuppressWarnings( {"static-method","resource"} )
 	protected HttpResponse _getEndPointResponse(final HttpProxyEndPoint choosenEndPoint,
 												final HttpRequest requestToBeProxied) throws IOException {
@@ -317,7 +351,16 @@ public class HttpProxyServletDelegate {
 														   requestToBeProxied);
 		return endPointResponse;
 	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//	ENDPOINT SELECTION (default impl)
+/////////////////////////////////////////////////////////////////////////////////////////	
 	private static final SecureRandom RANDOM = new SecureRandom(UUID.randomUUID().toString().getBytes());
+	/**
+	 * Randomly chooses an [endpoint]
+	 * Override this method if a custom [endpoint] selection algorithm has to be used
+	 * @param originalRequest
+	 * @return
+	 */
 	protected HttpProxyEndPoint _chooseEndPoint(final HttpServletRequest originalRequest) {
 		Url url = null;
 		if (_config.getEndPoints().size() == 1) {
@@ -329,8 +372,8 @@ public class HttpProxyServletDelegate {
 		}
 		return new HttpProxyEndPointUrlImpl(url);
 	}
-	private static UrlPath _getTargetUrlPath(final HttpProxyServletConfig config,
-									  		 final HttpServletRequest originalRequest) {
+	private static UrlPath _getTargetUrlPath(final HttpServletRequest originalRequest,
+									  		 final HttpProxyServletUrlPathRewriter urlPathRewriter) {
 		// get the servlet context
 		String servletContext = originalRequest.getServletContext()
 											   .getContextPath();
@@ -360,28 +403,9 @@ public class HttpProxyServletDelegate {
 												: UrlPath.preservingTrailingSlash()
 														 .from(servletContextUrlPath)
 														 .joinedWith(requestedServletPath);
-		UrlPath targetUrlPath = null;
-		
-		// --- path trim 
-		if (config.getPathTrim() == null) {
-			// nothing to remove
-			targetUrlPath = requestedUrlPath;
-		}
-		else if (requestedUrlPath.startsWith(config.getPathTrim())) {
-			// remove the pathTrim part
-			targetUrlPath = requestedUrlPath.urlPathAfter(config.getPathTrim());
-			log.warn("path trim '{}' from url: resulting url > {}",
-					 config.getPathTrim(),targetUrlPath);
-		}
-		else {
-			// nothing to remove
-			targetUrlPath = requestedUrlPath;
-		}
-		
-		// --- path prepend
-		if (config.getPathPrepend() != null) {
-			targetUrlPath = config.getPathPrepend().joinedWith(targetUrlPath);
-		}
+		// rewrite
+		UrlPath targetUrlPath = urlPathRewriter != null ? urlPathRewriter.rewrite(requestedUrlPath)
+														: requestedUrlPath;
 		
 		return targetUrlPath;
 	}
