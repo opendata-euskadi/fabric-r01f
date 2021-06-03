@@ -1,8 +1,8 @@
 package r01f.types.url;
 
-import java.io.Serializable;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Objects;
 
@@ -28,8 +28,7 @@ import r01f.util.types.Strings;
 @Immutable
 @Accessors(prefix="_")
 public class UrlQueryStringParam
-  implements CanBeRepresentedAsString,
-	   	     Serializable {
+  implements CanBeRepresentedAsString {
 
 	private static final long serialVersionUID = 2469798253802346787L;
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -45,8 +44,8 @@ public class UrlQueryStringParam
 /////////////////////////////////////////////////////////////////////////////////////////
 //  BUILDERS
 /////////////////////////////////////////////////////////////////////////////////////////
-	public UrlQueryStringParam(@MarshallFrom("name") final String name,
-							   @MarshallFrom("value") final String value) {
+	public UrlQueryStringParam(@JsonProperty("name") @MarshallFrom("name") final String name,
+							   @JsonProperty("value") @MarshallFrom("value") final String value) {
 		_name = name;
 		_value = value;
 	}
