@@ -64,6 +64,8 @@ public class MarshallerMapperForJson
 				this.registerModule(jsonMod);
 			}
 		}
+		// maximize jackson performance: https://github.com/stevenschlansker/jackson-blackbird
+//		this.registerModule(new BlackbirdModule());
 
 		// [3] - Global default config
 		MarshallerObjectMappers.setDefaultConfig(this);

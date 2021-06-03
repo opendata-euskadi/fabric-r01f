@@ -33,8 +33,8 @@ public class MarshallerModuleForJson
 	}
 	public static MarshallerModuleForJson forApps(final Set<AppCode> appCodes) {
 		return new MarshallerModuleForJson(FluentIterable.from(appCodes)
-											 .transform(JavaPackage.APP_CODE_TO_JAVA_PACKAGE)
-											 .toSet());
+											 			 .transform(JavaPackage.APP_CODE_TO_JAVA_PACKAGE)
+											 			 .toSet());
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //

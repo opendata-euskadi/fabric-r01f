@@ -30,6 +30,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize.Typing;
 import com.fasterxml.jackson.databind.cfg.MapperConfig;
 import com.fasterxml.jackson.databind.introspect.Annotated;
 import com.fasterxml.jackson.databind.introspect.AnnotatedClass;
+import com.fasterxml.jackson.databind.introspect.AnnotatedConstructor;
 import com.fasterxml.jackson.databind.introspect.AnnotatedField;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMethod;
@@ -453,6 +454,52 @@ public class MarshallerAnnotationIntrospector
 		return typeId;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
+//	CREATOR
+/////////////////////////////////////////////////////////////////////////////////////////	
+	@Override
+	public Mode findCreatorAnnotation(final MapperConfig<?> config,
+									  final Annotated a) {
+		// If any constructor param is annotated with @MarshallFrom() then 
+		// the constructor should be annotated with @JsonCreator
+		// ... but this annotation can be AVOIDED
+		//
+		//		@MarshallFrom("myType"
+		// 		public class MyType {
+		//			private final String _myProp;
+		//
+		//			@JsonCreator	<---- Avoid having to set this annotation
+		//			public MyType(@MarshallFrom("myProp") String myProp) {
+		//				_myProp = myProp;
+		//			}
+		// If ALL the constructor params are annotated with @MarshallFrom, just simulate the @JsonCreator behavior
+		
+		Mode outMode = null;
+		if (a instanceof AnnotatedConstructor) {
+			AnnotatedConstructor annConstructor = (AnnotatedConstructor)a;
+			boolean allParamsAnnotatedWithMarshallFrom = true;
+			for (int i=0; i < annConstructor.getParameterCount(); i++) {
+				AnnotatedParameter annParam = annConstructor.getParameter(i);
+				if (annParam.getAnnotation(MarshallFrom.class) == null) {
+					allParamsAnnotatedWithMarshallFrom = false;	// not all params are annotated with @MarshallFrom
+					break;
+				}
+			}
+			outMode = allParamsAnnotatedWithMarshallFrom ? Mode.PROPERTIES : null;
+		}
+		// if outMode == null just delegate
+		return outMode != null ? outMode 
+							   : _delegatedJacksonAnnotationIntrospector.findCreatorAnnotation(config,
+																			 				   a);
+	}
+	@Override @Deprecated
+	public boolean hasCreatorAnnotation(final Annotated a) {
+		return _delegatedJacksonAnnotationIntrospector.hasCreatorAnnotation(a);
+	}
+	@Override @Deprecated
+	public Mode findCreatorBinding(final Annotated a) {
+		return _delegatedJacksonAnnotationIntrospector.findCreatorBinding(a);
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 	private static boolean _isNotInstanciable(final Class<?> type) {
@@ -733,19 +780,5 @@ public class MarshallerAnnotationIntrospector
 	@Override @Deprecated
 	public boolean hasAnySetterAnnotation(final AnnotatedMethod am) {
 		return _delegatedJacksonAnnotationIntrospector.hasAnySetterAnnotation(am);
-	}
-	@Override @Deprecated
-	public boolean hasCreatorAnnotation(final Annotated a) {
-		return _delegatedJacksonAnnotationIntrospector.hasCreatorAnnotation(a);
-	}
-	@Override @Deprecated
-	public Mode findCreatorBinding(final Annotated a) {
-		return _delegatedJacksonAnnotationIntrospector.findCreatorBinding(a);
-	}
-	@Override
-	public Mode findCreatorAnnotation(final MapperConfig<?> config,
-									  final Annotated a) {
-		return _delegatedJacksonAnnotationIntrospector.findCreatorAnnotation(config,
-																			 a);
 	}
 }
