@@ -70,7 +70,13 @@ import r01f.util.types.collections.CollectionUtils;
  */
 @Slf4j
 @Accessors(prefix="_")
+<<<<<<< HEAD:r01fWeb/r01fWebProfileClasses/src/main/java/r01f/servlet/proxy/HttpProxyServletDelegate.java
+@RequiredArgsConstructor
 public class HttpProxyServletDelegate {
+
+=======
+public class HttpProxyServletDelegate {
+>>>>>>> release/1.0.1-20210604-01:r01fWeb/r01fWebProfileClasses/src/main/java/r01f/servlet/proxy/HttpProxy.java
 /////////////////////////////////////////////////////////////////////////////////////////
 //	CONSTANTS
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -137,8 +143,13 @@ public class HttpProxyServletDelegate {
 		
 		// [1] Create a GET request
 		//	   beware that R01F Url object when serialized to string does NOT include the final '/' char if present
+<<<<<<< HEAD:r01fWeb/r01fWebProfileClasses/src/main/java/r01f/servlet/proxy/HttpProxyServletDelegate.java
+		UrlPath urlPath = _getTargetUrlPath(_config,
+											originalRequest);
+=======
 		UrlPath urlPath = _getTargetUrlPath(originalRequest,
 											_urlPathRewriter);
+>>>>>>> release/1.0.1-20210604-01:r01fWeb/r01fWebProfileClasses/src/main/java/r01f/servlet/proxy/HttpProxy.java
 		UrlQueryString urlQueryString  = UrlQueryString.fromParamsString(originalRequest.getQueryString());
 		Url destinationUrl = Url.from(urlPath,urlQueryString);
 		
@@ -147,7 +158,11 @@ public class HttpProxyServletDelegate {
 											: destinationUrl.asString();
 		log.warn("PROXY GET: requested url={} to url={}{}",
 				 originalRequest.getRequestURL(),
+<<<<<<< HEAD:r01fWeb/r01fWebProfileClasses/src/main/java/r01f/servlet/proxy/HttpProxyServletDelegate.java
+				 theDestinationUrlStr);
+=======
 				 endPoint.getUrl(),theDestinationUrlStr);
+>>>>>>> release/1.0.1-20210604-01:r01fWeb/r01fWebProfileClasses/src/main/java/r01f/servlet/proxy/HttpProxy.java
 
 		HttpGet getRequestToBeProxied = new HttpGet(theDestinationUrlStr);
 
@@ -181,8 +196,13 @@ public class HttpProxyServletDelegate {
 		HttpProxyEndPoint endPoint = _chooseEndPoint(originalRequest);
 		
 		// [1] Create the POST request
+<<<<<<< HEAD:r01fWeb/r01fWebProfileClasses/src/main/java/r01f/servlet/proxy/HttpProxyServletDelegate.java
+		UrlPath urlPath = _getTargetUrlPath(_config,
+											originalRequest);
+=======
 		UrlPath urlPath = _getTargetUrlPath(originalRequest,
 											_urlPathRewriter);
+>>>>>>> release/1.0.1-20210604-01:r01fWeb/r01fWebProfileClasses/src/main/java/r01f/servlet/proxy/HttpProxy.java
 		UrlQueryString urlQueryString  = UrlQueryString.fromParamsString(originalRequest.getQueryString());
 		Url destinationUrl = Url.from(urlPath,urlQueryString);
 		
@@ -324,6 +344,8 @@ public class HttpProxyServletDelegate {
 		log.debug("Received status code: {} - Response: {}",endPointResponse,
 													  		endPointResponseIS);
 	}
+<<<<<<< HEAD:r01fWeb/r01fWebProfileClasses/src/main/java/r01f/servlet/proxy/HttpProxyServletDelegate.java
+=======
 /////////////////////////////////////////////////////////////////////////////////////////
 //	ENDPOINT RESPONSE (default impl)
 /////////////////////////////////////////////////////////////////////////////////////////	
@@ -335,6 +357,7 @@ public class HttpProxyServletDelegate {
 	 * @return
 	 * @throws IOException
 	 */
+>>>>>>> release/1.0.1-20210604-01:r01fWeb/r01fWebProfileClasses/src/main/java/r01f/servlet/proxy/HttpProxy.java
 	@SuppressWarnings( {"static-method","resource"} )
 	protected HttpResponse _getEndPointResponse(final HttpProxyEndPoint choosenEndPoint,
 												final HttpRequest requestToBeProxied) throws IOException {
@@ -346,11 +369,18 @@ public class HttpProxyServletDelegate {
 		HttpClient httpClient = clientBuilder.build(); 					// HttpClient httpClient = new SystemDefaultHttpClient(httpClientParams);
 
 		// [2] - Execute the request
+<<<<<<< HEAD:r01fWeb/r01fWebProfileClasses/src/main/java/r01f/servlet/proxy/HttpProxyServletDelegate.java
+		HttpHost host = HttpHost.create(choosenEndPoint.getUrl().getHost().asString());
+=======
 		HttpHost host = HttpHost.create(choosenEndPoint.getUrl().asString());
+>>>>>>> release/1.0.1-20210604-01:r01fWeb/r01fWebProfileClasses/src/main/java/r01f/servlet/proxy/HttpProxy.java
 		HttpResponse endPointResponse = httpClient.execute(host,
 														   requestToBeProxied);
 		return endPointResponse;
 	}
+<<<<<<< HEAD:r01fWeb/r01fWebProfileClasses/src/main/java/r01f/servlet/proxy/HttpProxyServletDelegate.java
+	private static final SecureRandom RANDOM = new SecureRandom(UUID.randomUUID().toString().getBytes());
+=======
 /////////////////////////////////////////////////////////////////////////////////////////
 //	ENDPOINT SELECTION (default impl)
 /////////////////////////////////////////////////////////////////////////////////////////	
@@ -361,6 +391,7 @@ public class HttpProxyServletDelegate {
 	 * @param originalRequest
 	 * @return
 	 */
+>>>>>>> release/1.0.1-20210604-01:r01fWeb/r01fWebProfileClasses/src/main/java/r01f/servlet/proxy/HttpProxy.java
 	protected HttpProxyEndPoint _chooseEndPoint(final HttpServletRequest originalRequest) {
 		Url url = null;
 		if (_config.getEndPoints().size() == 1) {
@@ -372,6 +403,10 @@ public class HttpProxyServletDelegate {
 		}
 		return new HttpProxyEndPointUrlImpl(url);
 	}
+<<<<<<< HEAD:r01fWeb/r01fWebProfileClasses/src/main/java/r01f/servlet/proxy/HttpProxyServletDelegate.java
+	private static UrlPath _getTargetUrlPath(final HttpProxyServletConfig config,
+									  		 final HttpServletRequest originalRequest) {
+=======
 	private static UrlPath _getTargetUrlPath(final HttpServletRequest originalRequest,
 									  		 final HttpProxyServletUrlPathRewriter urlPathRewriter) {
 		// get the servlet context
@@ -380,6 +415,7 @@ public class HttpProxyServletDelegate {
 		UrlPath servletContextUrlPath = UrlPath.from(Strings.isNOTNullOrEmpty(servletContext) ? UrlPath.from(servletContext)
 																					   		  : UrlPath.from("/"));	// default path
 		
+>>>>>>> release/1.0.1-20210604-01:r01fWeb/r01fWebProfileClasses/src/main/java/r01f/servlet/proxy/HttpProxy.java
 		// simply use whatever servlet path that was part of the request as opposed to
 		// getting a preset/configurable proxy path
 		String requestedServletPath = originalRequest.getServletPath();	// Returns the part of this request's URL that calls the servlet.
@@ -394,6 +430,31 @@ public class HttpProxyServletDelegate {
 																		// The extra path information follows the servlet path but precedes the query string
 																		// and will start with a "/" character.
 																		// This method returns null if there was no extra path information.
+<<<<<<< HEAD:r01fWeb/r01fWebProfileClasses/src/main/java/r01f/servlet/proxy/HttpProxyServletDelegate.java
+		UrlPath requestedUrlPath = Strings.isNOTNullOrEmpty(requestedServletPathInfo)
+												? UrlPath.preservingTrailingSlash()
+														 .from(config.getServletContextUrlPath())
+														 .joinedWith(requestedServletPath,
+																 	 requestedServletPathInfo)
+												: UrlPath.preservingTrailingSlash()
+														 .from(config.getServletContextUrlPath())
+														 .joinedWith(requestedServletPath);
+		UrlPath targetUrlPath = null;
+		if (config.getPathTrim() == null) {
+			// nothing to remove
+			targetUrlPath = requestedUrlPath;
+		}
+		else if (requestedUrlPath.startsWith(config.getPathTrim())) {
+			// remove the pathTrim part
+			targetUrlPath = requestedUrlPath.urlPathAfter(config.getPathTrim());
+			log.warn("path trim '{}' from url: resulting url > {}",
+					 config.getPathTrim(),targetUrlPath);
+		}
+		else {
+			// nothing to remove
+			targetUrlPath = requestedUrlPath;
+		}
+=======
 		
 		UrlPath requestedUrlPath = Strings.isNOTNullOrEmpty(requestedServletPathInfo)
 												? UrlPath.preservingTrailingSlash()
@@ -407,6 +468,7 @@ public class HttpProxyServletDelegate {
 		UrlPath targetUrlPath = urlPathRewriter != null ? urlPathRewriter.rewrite(requestedUrlPath)
 														: requestedUrlPath;
 		
+>>>>>>> release/1.0.1-20210604-01:r01fWeb/r01fWebProfileClasses/src/main/java/r01f/servlet/proxy/HttpProxy.java
 		return targetUrlPath;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
