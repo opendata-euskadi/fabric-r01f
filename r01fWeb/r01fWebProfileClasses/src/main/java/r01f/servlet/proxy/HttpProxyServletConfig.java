@@ -8,10 +8,6 @@ import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.FluentIterable;
-<<<<<<< HEAD
-=======
-import com.google.common.collect.Iterables;
->>>>>>> release/1.0.1-20210604-01
 import com.google.common.collect.Lists;
 
 import lombok.Getter;
@@ -38,14 +34,10 @@ public class HttpProxyServletConfig
 /////////////////////////////////////////////////////////////////////////////////////////
 //	CONSTANTS
 /////////////////////////////////////////////////////////////////////////////////////////
-<<<<<<< HEAD
 	public static final String INIT_PARAM_NAME_FOR_TARGET_APP_SERVER_HOST_NAME = "TargetAppServerHost";
 	public static final String INIT_PARAM_NAME_FOR_TARGET_APP_SERVER_HOST_PORT = "TargetAppServerPort";
 
 	public static final String INIT_PARAM_NAME_FOR_TARGET_APP_SERVER_HOST_URLS = "TargetAppServerHosts";
-=======
-	public static final String INIT_PARAM_NAME_FOR_TARGET_APP_SERVER_HOSTS = "TargetAppServerHosts";	// BEWARE r01p: check that R01PProxyDefForAppServerCluster has the SAME value
->>>>>>> release/1.0.1-20210604-01
 
 	public static final String INIT_PARAM_NAME_FOR_PATH_TRIM = "PathTrim";
 	public static final String INIT_PARAM_NAME_FOR_PATH_PREPEND = "PathPrepend";
@@ -56,13 +48,10 @@ public class HttpProxyServletConfig
 //	FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
-<<<<<<< HEAD
 	 * The servlet context path (ie: xxxWar)
 	 */
 	@Getter private final UrlPath _servletContextUrlPath;
 	/**
-=======
->>>>>>> release/1.0.1-20210604-01
 	 * The host to which we are proxying requests. Default value is "localhost".
 	 */
 	@Getter private final Collection<Url> _endPoints;
@@ -94,17 +83,11 @@ public class HttpProxyServletConfig
 	public HttpProxyServletConfig() {
 		this(Host.localhost(),StandardUrlProtocol.HTTP.getDefaultPort());
 	}
-<<<<<<< HEAD
 	public HttpProxyServletConfig(final UrlPath servletContextPath,
 								  // proxy params
 								  final Host... targetHost) {
 		this(servletContextPath,
 			 FluentIterable.from(targetHost)
-=======
-	public HttpProxyServletConfig(// proxy params
-								  final Host... targetHost) {
-		this(FluentIterable.from(targetHost)
->>>>>>> release/1.0.1-20210604-01
 						   .transform(new Function<Host,Url>() {
 												@Override
 												public Url apply(final Host host) {
@@ -115,7 +98,6 @@ public class HttpProxyServletConfig
 	}
 	public HttpProxyServletConfig(// proxy params
 								  final Host targetHost,final int targetPort) {
-<<<<<<< HEAD
 		this(servletContextPath,
 			 Lists.newArrayList(Url.from(targetHost,targetPort)));
 	}
@@ -129,20 +111,9 @@ public class HttpProxyServletConfig
 		_pathPrepend = null;
 		_maxFileUploadSize = 5 * 1024 * 1024;
 		_followRedirects = true;
-=======
-		this(Lists.newArrayList(Url.from(targetHost,targetPort)));
-	}
-	public HttpProxyServletConfig(// proxy params
-								  final Collection<Url> endPoints) {
-		this(endPoints,
-			 null,null,					// path trim & path prepend
-			 DEF_MAX_UPLOAD_FILE_SIZE,	// max file upload
-			 true);						// follow redirs
->>>>>>> release/1.0.1-20210604-01
 	}
 	public HttpProxyServletConfig(// proxy params
 								  final Host targetHost,final int targetPort,
-<<<<<<< HEAD
 									 final UrlPath pathTrim,final UrlPath pathPrepend) {
 		this(servletContextPath,
 			 Lists.newArrayList(Url.from(targetHost,targetPort)),
@@ -159,11 +130,6 @@ public class HttpProxyServletConfig
 		_pathPrepend = pathPrepend;
 		_maxFileUploadSize = 5 * 1024 * 1024;
 		_followRedirects = true;
-=======
-								  final UrlPath pathTrim,final UrlPath pathPrepend) {
-		this(Lists.newArrayList(Url.from(targetHost,targetPort)),
-			 pathTrim,pathPrepend);
->>>>>>> release/1.0.1-20210604-01
 	}
 	public HttpProxyServletConfig(// proxy params
 								  final Collection<Url> endPoints,
@@ -175,23 +141,15 @@ public class HttpProxyServletConfig
 	}
 	public HttpProxyServletConfig(// proxy params
 								  final Host targetHost,final int targetPort,
-<<<<<<< HEAD
 									 final UrlPath pathTrim,final UrlPath pathPrepend,
 									 final int maxFileUploadSize,
 									 final boolean followRedirects) {
 		this(servletContextPath,
 			 Lists.newArrayList(Url.from(targetHost,targetPort)),
-=======
-								  final UrlPath pathTrim,final UrlPath pathPrepend,
-								  final int maxFileUploadSize,
-								  final boolean followRedirects) {
-		this(Lists.newArrayList(Url.from(targetHost,targetPort)),
->>>>>>> release/1.0.1-20210604-01
 			 pathTrim,pathPrepend,
 			 maxFileUploadSize,
 			 followRedirects);
 	}
-<<<<<<< HEAD
 	public HttpProxyServletConfig(final UrlPath servletContextPath,
 								  // proxy params
 								  final Collection<Url> endPoints,
@@ -199,13 +157,6 @@ public class HttpProxyServletConfig
 									 final int maxFileUploadSize,
 									 final boolean followRedirects) {
 		_servletContextUrlPath = servletContextPath;
-=======
-	public HttpProxyServletConfig(// proxy params
-								  final Collection<Url> endPoints,
-								  final UrlPath pathTrim,final UrlPath pathPrepend,
-								  final int maxFileUploadSize,
-								  final boolean followRedirects) {
->>>>>>> release/1.0.1-20210604-01
 		// proxy params
 		_endPoints = endPoints;
 		_pathTrim = pathTrim;
@@ -216,12 +167,9 @@ public class HttpProxyServletConfig
 	public HttpProxyServletConfig(final ServletConfig servletConfig) {
 		String proxyHostsFromWebXML = servletConfig.getInitParameter(INIT_PARAM_NAME_FOR_TARGET_APP_SERVER_HOSTS);
 
-<<<<<<< HEAD
 		String proxyHostsFromWebXML = servletConfig.getInitParameter(INIT_PARAM_NAME_FOR_TARGET_APP_SERVER_HOST_URLS);
 
 		// --- Multiple Hosts
-=======
->>>>>>> release/1.0.1-20210604-01
 		if (Strings.isNOTNullOrEmpty(proxyHostsFromWebXML)) {
 			_endPoints = FluentIterable.from(StringSplitter.using(Splitter.on(";"))
 														   .at(proxyHostsFromWebXML)
@@ -233,7 +181,6 @@ public class HttpProxyServletConfig
 															}
 									   			  })
 									   .toList();
-<<<<<<< HEAD
 		}
 		// --- Single Hosts
 		else {
@@ -255,11 +202,6 @@ public class HttpProxyServletConfig
 				targetPort = Host.of(endPointHostFromWebXML).asUrl().getPortOrDefault(StandardUrlProtocol.HTTP.getDefaultPort());
 			}
 			_endPoints = Lists.newArrayList(Url.from(targetHost,targetPort));
-=======
-		} else {
-			log.debug("[proxy servlet] > the web.xml file DOES NOT contains the {} param that contains the [target app server host]",INIT_PARAM_NAME_FOR_TARGET_APP_SERVER_HOSTS);
-			_endPoints = null;
->>>>>>> release/1.0.1-20210604-01
 		}
 
 		// Get the pathTrim & pathPrepend if specified
@@ -298,54 +240,6 @@ public class HttpProxyServletConfig
 		_followRedirects = true;
 		log.warn("{} intance initialized proxying to {}",
 				 HttpProxyServletDelegate.class.getSimpleName(),this.endPointsAsString());
-<<<<<<< HEAD
-=======
-	}
-	public HttpProxyServletConfig mixedWith(final HttpProxyServletConfig other) {
-		Collection<Url> endPoints = CollectionUtils.hasData(this.getEndPoints()) && CollectionUtils.hasData(other.getEndPoints())
-										? Lists.newArrayList(Iterables.concat(this.getEndPoints(),other.getEndPoints()))
-										: CollectionUtils.hasData(this.getEndPoints()) ? this.getEndPoints()
-																					   : CollectionUtils.hasData(other.getEndPoints()) ? other.getEndPoints()
-																							   										   : null;		// both null
-		UrlPath pathTrim = this.getPathTrim() != null && other.getPathTrim() != null
-								? this.getPathTrim() 
-								: this.getPathTrim() != null ? this.getPathTrim()
-															 : other.getPathTrim() != null ? other.getPathTrim()
-																	 					   : null;	// both null
-		UrlPath pathPrepend = this.getPathPrepend() != null && other.getPathPrepend() != null
-									? this.getPathPrepend()
-									: this.getPathPrepend() != null ? this.getPathPrepend()
-																	: other.getPathPrepend() != null ? other.getPathPrepend()
-																									 : null;	// both null;
-		int maxFileUploadSize = this.getMaxFileUploadSize() > other.getMaxFileUploadSize() 
-									? this.getMaxFileUploadSize()
-									: other.getMaxFileUploadSize();
-		boolean followRedirects = this.isFollowRedirects() | other.isFollowRedirects();
-		
-		HttpProxyServletConfig out = new HttpProxyServletConfig(endPoints,
-										  						pathTrim,pathPrepend,
-										  						maxFileUploadSize,
-										  						followRedirects);
-		return out;
-	}
-/////////////////////////////////////////////////////////////////////////////////////////
-//	URL PATH REWRITE
-/////////////////////////////////////////////////////////////////////////////////////////
-	private final Memoized<HttpProxyServletUrlPathRewriter> _urlPathRewriter = Memoized.using(new Supplier<HttpProxyServletUrlPathRewriter>() {
-																										@Override
-																										public HttpProxyServletUrlPathRewriter supply() {
-																											return _pathPrepend != null 
-																												|| _pathTrim != null ? new HttpProxyServletUrlPathRewriterDefaultImpl(_pathTrim,_pathPrepend)
-																																	 : null;
-																										}
-																							  });
-	/**
-	 * Returns an url path rewriter that uses the pathTrim or pathPrepend config
-	 * @return
-	 */
-	public HttpProxyServletUrlPathRewriter getUrlPathRewriter() {
-		return _urlPathRewriter.get();
->>>>>>> release/1.0.1-20210604-01
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	DEBUG
@@ -359,13 +253,7 @@ public class HttpProxyServletConfig
 								  _followRedirects);
 	}
 	public String endPointsAsString() {
-<<<<<<< HEAD
 		return FluentIterable.from(_endPoints)
 							 .join(Joiner.on(";"));
-=======
-		return CollectionUtils.hasData(_endPoints) ? FluentIterable.from(_endPoints)
-							 									   .join(Joiner.on("|"))
-							 					   : "";
->>>>>>> release/1.0.1-20210604-01
 	}
 }

@@ -13,11 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.experimental.Accessors;
 <<<<<<< HEAD
 import r01f.patterns.FactoryFrom;
-=======
-import r01f.patterns.Memoized;
-import r01f.types.url.Url;
-import r01f.types.url.UrlPath;
->>>>>>> release/1.0.1-20210604-01
 
 
 
@@ -81,35 +76,12 @@ public class HttpProxyServlet
 /////////////////////////////////////////////////////////////////////////////////////////
 //	FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
-<<<<<<< HEAD
 	private final FactoryFrom<ServletConfig,HttpProxyServletDelegate> _delegateFactory;
 	private HttpProxyServletDelegate _proxyServletDelegate;
-=======
-	private HttpProxyServletConfig _proxyServletConfig;
-	private HttpProxyServletUrlPathRewriter _urlPathRewriter;
-	
-/////////////////////////////////////////////////////////////////////////////////////////
-//	PROXY DELEGATE
-/////////////////////////////////////////////////////////////////////////////////////////	
-	private final Memoized<HttpProxyServletDelegate> _proxyServletDelegate = Memoized.using(() -> _createHttpProxyServletDelegate(_proxyServletConfig,
-																																  _urlPathRewriter));
-	/**
-	 * Creates an HttpProxyServletDelegate. 
-	 * Override this method if a custom delegate has to be created
-	 * @return
-	 */
-	@SuppressWarnings("static-method")
-	protected HttpProxyServletDelegate _createHttpProxyServletDelegate(final HttpProxyServletConfig proxyServletConfig,
-																	   final HttpProxyServletUrlPathRewriter urlPathRewriter) {
-		return new HttpProxyServletDelegate(proxyServletConfig,
-											urlPathRewriter);
-	}
->>>>>>> release/1.0.1-20210604-01
 /////////////////////////////////////////////////////////////////////////////////////////
 //	CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
 	public HttpProxyServlet() {
-<<<<<<< HEAD
 		_delegateFactory = new FactoryFrom<ServletConfig,HttpProxyServletDelegate>() {
 									@Override
 									public HttpProxyServletDelegate from(final ServletConfig servletConfig) {
@@ -119,39 +91,6 @@ public class HttpProxyServlet
 	}
 	public HttpProxyServlet(final FactoryFrom<ServletConfig,HttpProxyServletDelegate> delegateFactory) {
 		_delegateFactory = delegateFactory;
-=======
-		// nothing
-	}
-	public HttpProxyServlet(// proxy params
-							final Collection<Url> endPoints) {
-		this(endPoints,
-			 null,null);	// pathTrim / pathPrepend
-	}
-	public HttpProxyServlet(// proxy params
-							final Collection<Url> endPoints,
-							final UrlPath pathTrim,final UrlPath pathPrepend) {
-		this(endPoints,
-			 pathTrim,pathPrepend,
-			 HttpProxyServletConfig.DEF_MAX_UPLOAD_FILE_SIZE,
-			 true);		// follow redirs
-	}
-	public HttpProxyServlet(// proxy params
-							final Collection<Url> endPoints,
-							final UrlPath pathTrim,final UrlPath pathPrepend,
-							final int maxFileUploadSize,
-							final boolean followRedirects) {
-		_proxyServletConfig = new HttpProxyServletConfig(endPoints,
-														 pathTrim,pathPrepend,
-														 maxFileUploadSize,
-														 followRedirects);
-	}
-	public HttpProxyServlet(// proxy params
-							final Collection<Url> endPoints,
-							final HttpProxyServletUrlPathRewriter urlPathRewriter) {
-		_proxyServletConfig = new HttpProxyServletConfig(endPoints,
-														 null,null);	// no path-trim, no path-prepend
-		_urlPathRewriter = urlPathRewriter;
->>>>>>> release/1.0.1-20210604-01
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -169,13 +108,7 @@ public class HttpProxyServlet
 	 */
 	@Override
 	public void init(final ServletConfig servletConfig) {
-<<<<<<< HEAD
 		_proxyServletDelegate = _delegateFactory.from(servletConfig);
-=======
-		HttpProxyServletConfig cfgFromWebXml = new HttpProxyServletConfig(servletConfig);
-		_proxyServletConfig = _proxyServletConfig != null ? _proxyServletConfig.mixedWith(cfgFromWebXml)
-														  : cfgFromWebXml;
->>>>>>> release/1.0.1-20210604-01
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	GET
@@ -192,14 +125,8 @@ public class HttpProxyServlet
 	public void doGet(final HttpServletRequest originalRequest,
 					  final HttpServletResponse responseToClient) throws IOException,
 					  													 ServletException {
-<<<<<<< HEAD
 		_proxyServletDelegate.proxyGET(originalRequest,
 							   responseToClient);
-=======
-		_proxyServletDelegate.get()
-							 .proxyGET(originalRequest,
-							   		   responseToClient);
->>>>>>> release/1.0.1-20210604-01
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	POST
@@ -216,13 +143,7 @@ public class HttpProxyServlet
 	public void doPost(final HttpServletRequest originalReqest,
 					   final HttpServletResponse responseToClient) throws IOException,
 					   													  ServletException {
-<<<<<<< HEAD
 		_proxyServletDelegate.proxyPOST(originalReqest,
 								responseToClient);
-=======
-		_proxyServletDelegate.get()
-							 .proxyPOST(originalReqest,
-										responseToClient);
->>>>>>> release/1.0.1-20210604-01
 	}
  }
