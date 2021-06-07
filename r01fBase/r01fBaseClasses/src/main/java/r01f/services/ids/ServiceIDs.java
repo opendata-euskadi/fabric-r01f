@@ -172,6 +172,7 @@ public abstract class ServiceIDs {
 		public static final CoreModule SECURITY = CoreModule.forId("security");
 		public static final CoreModule HISTORY = CoreModule.forId("history");
 		public static final CoreModule CMS = CoreModule.forId("cms");
+		public static final CoreModule SCHEDULER = CoreModule.forId("scheduler");
 
 		@Override
 		public int hashCode() {
