@@ -25,4 +25,7 @@ public class PathCollection
 	public PathCollection(final Collection<PathCollectionItem> items) {
 		super(items);
 	}
+	public static PathCollection emptyPathCollection() {
+		return new PathCollection();
+	}
 }
