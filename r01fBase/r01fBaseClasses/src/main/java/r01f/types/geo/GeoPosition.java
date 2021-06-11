@@ -16,16 +16,17 @@ import r01f.types.geo.GeoOIDs.GeoZipCode;
  * Data about a geographical point
  * <pre>
  *		- x,y
- *      - Territory												Europe
- *           |_Country											Spain										
- *           	 |_State										Euskadi
- *           		 |_County									Bizkaia
- *           		 	|_Region								Gran Bilbao / valles alaveses
- *           				|_Municipality						Bilbao
- *           					|_District						01	
- *           						|_Neighborhood 				Abando
- *           							|_Street				General Concha
- *           								|_portal			12
+ * Territory											Europe
+ *   |_Country											Spain										
+ *   	 |_State										Euskadi
+ *   		 |_County									Bizkaia
+ *   		 	|_Region								Gran Bilbao / valles alaveses
+ *   				|_Municipality						Bilbao
+ *  					|_Locality						Bilbao	
+ *   						|_District					01	
+ *   							|_Neighborhood 			Abando
+ *   								|_Street			General Concha
+ *   									|_portal		12
  *		- Textual info
  * </pre>
  * Uso:
@@ -83,6 +84,11 @@ public class GeoPosition
 	 */
 	@MarshallField(as="municipality")
 	@Getter @Setter private GeoMunicipality _municipality;
+	/**
+	 * Locality
+	 */
+	@MarshallField(as="locality")
+	@Getter @Setter private GeoLocality _locality;
 	/**
 	 * District
 	 */
@@ -164,6 +170,10 @@ public class GeoPosition
 	}
 	public GeoPosition withMunicipality(final GeoMunicipality mun) {
 		_municipality = mun;
+		return this;
+	}
+	public GeoPosition withLocality(final GeoLocality locality) {
+		_locality = locality;
 		return this;
 	}
 	public GeoPosition withDistrict(final GeoDistrict dist) {

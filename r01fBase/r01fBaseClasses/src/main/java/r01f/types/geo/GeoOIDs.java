@@ -14,15 +14,17 @@ import r01f.util.types.Strings;
 /**
  * Geo catalog model object's oids
  * <pre>
- * Country
- *   |_Territory
- *   	 |_State
- *   		 |_County
- *   		 	|_Locality
- *   				|_Municipality
- *   					|_County
- *   						|_Street
- *   							|_portal
+ * Territory											Europe
+ *   |_Country											Spain										
+ *   	 |_State										Euskadi
+ *   		 |_County									Bizkaia
+ *   		 	|_Region								Gran Bilbao / valles alaveses
+ *   				|_Municipality						Bilbao
+ *  					|_Locality						Bilbao	
+ *   						|_District					01	
+ *   							|_Neighborhood 			Abando
+ *   								|_Street			General Concha
+ *   									|_portal		12
  * </pre>
  * They're modeled after a long code that encapsulates the geo element (country, territory, street, etc code)
  */
@@ -340,8 +342,8 @@ public class GeoOIDs {
 			return new GeoDistrictID(str);
 		}
 		public static GeoDistrictID from(final GeoCountyID countyId,
-								  final GeoMunicipalityID municipalityId,
-								  final long neigborhoodId) {
+								         final GeoMunicipalityID municipalityId,
+								         final long neigborhoodId) {
 			return GeoDistrictID.forId(Strings.customized("{}{}{}{}",	// 4{2}{3}{8}
 									  					  "4",
 									  					  countyId.asString(),
@@ -394,6 +396,7 @@ public class GeoOIDs {
 			return this.getNeigborhoodId();
 		}
 	}
+	
 	/**
 	 * District
 	 */
