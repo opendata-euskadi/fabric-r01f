@@ -20,6 +20,7 @@ import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 import r01f.types.geo.GeoFacets.GeoLocationBelongsToCountry;
 import r01f.types.geo.GeoFacets.GeoLocationBelongsToCounty;
 import r01f.types.geo.GeoFacets.GeoLocationBelongsToDistrict;
+import r01f.types.geo.GeoFacets.GeoLocationBelongsToLocality;
 import r01f.types.geo.GeoFacets.GeoLocationBelongsToMunicipality;
 import r01f.types.geo.GeoFacets.GeoLocationBelongsToNeighborhood;
 import r01f.types.geo.GeoFacets.GeoLocationBelongsToRegion;
@@ -28,6 +29,7 @@ import r01f.types.geo.GeoFacets.GeoLocationBelongsToTerritory;
 import r01f.types.geo.GeoOIDs.GeoCountryID;
 import r01f.types.geo.GeoOIDs.GeoDistrictID;
 import r01f.types.geo.GeoOIDs.GeoID;
+import r01f.types.geo.GeoOIDs.GeoLocalityID;
 import r01f.types.geo.GeoOIDs.GeoMunicipalityID;
 import r01f.types.geo.GeoOIDs.GeoNeighborhoodID;
 import r01f.types.geo.GeoOIDs.GeoRegionID;
@@ -38,16 +40,17 @@ import r01f.util.types.Strings;
 
 /**
  * Geo info base type
- * <pre>
- * Country
- *   |_Territory
- *   	 |_State
- *   		 |_County
- *   		 	|_Locality
- *   				|_Municipality
- *   					|_District
- *   						|_Street
- *   							|_portal
+ * Territory											Europe
+ *   |_Country											Spain										
+ *   	 |_State										Euskadi
+ *   		 |_County									Bizkaia
+ *   		 	|_Region								Gran Bilbao / valles alaveses
+ *   				|_Municipality						Bilbao
+ *  					|_Locality						Bilbao	
+ *   						|_District					01	
+ *   							|_Neighborhood 			Abando
+ *   								|_Street			General Concha
+ *   									|_portal		12
  * </pre>
  * @param <GID>
  */
@@ -194,6 +197,15 @@ public abstract class GeoLocationBase<GID extends GeoID,
 		return (GeoLocationBelongsToMunicipality)this;
 	}
 	@Override
+	public boolean isBelongsToLocality() {
+		return (this instanceof GeoLocationBelongsToLocality);
+	}
+	@Override
+	public GeoLocationBelongsToLocality asBelongsToLocality() {
+		if (!this.isBelongsToLocality()) throw new IllegalStateException();
+		return (GeoLocationBelongsToLocality)this;
+	}
+	@Override
 	public boolean isBelongsToDistrict() {
 		return (this instanceof GeoLocationBelongsToDistrict);
 	}
@@ -237,6 +249,10 @@ public abstract class GeoLocationBase<GID extends GeoID,
 		if (this instanceof GeoLocationBelongsToMunicipality) {
 			GeoMunicipalityID munId = this.asBelongsToMunicipality().getMunicipalityId();
 			if (munId != null) path.append(" municipality=").append(munId);
+		}
+		if (this instanceof GeoLocationBelongsToLocality) {
+			GeoLocalityID localityId = this.asBelongsToLocality().getLocalityId();
+			if (localityId != null) path.append(" locality=").append(localityId);
 		}
 		if (this instanceof GeoLocationBelongsToDistrict) {
 			GeoDistrictID districtId = this.asBelongsToDistrict().getDistrictId();
