@@ -10,16 +10,17 @@ import r01f.types.geo.GeoOIDs.GeoPortalID;
 /**
  * Country data
  * <pre>
- * Country												Spain
- *   |_Territory										
+ * Territory											Europe
+ *   |_Country											Spain										
  *   	 |_State										Euskadi
  *   		 |_County									Bizkaia
  *   		 	|_Region								Gran Bilbao / valles alaveses
  *   				|_Municipality						Bilbao
- *   					|_District						01	
- *   						|_Neighborhood 				Abando
- *   							|_Street				General Concha
- *   								|_portal			12
+ *  					|_Locality						Bilbao	
+ *   						|_District					01	
+ *   							|_Neighborhood 			Abando
+ *   								|_Street			General Concha
+ *   									|_portal		12
  * </pre>
  * <pre class='brush:java'>
  *		GeoPortal portal = new GeoPortalID(GeoPortalID.forId(34),

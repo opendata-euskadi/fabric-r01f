@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import r01f.types.geo.GeoOIDs.GeoCountryID;
 import r01f.types.geo.GeoOIDs.GeoCountyID;
 import r01f.types.geo.GeoOIDs.GeoDistrictID;
+import r01f.types.geo.GeoOIDs.GeoLocalityID;
 import r01f.types.geo.GeoOIDs.GeoMunicipalityID;
 import r01f.types.geo.GeoOIDs.GeoNeighborhoodID;
 import r01f.types.geo.GeoOIDs.GeoRegionID;
@@ -22,15 +23,16 @@ public abstract class GeoFacets {
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 // Territory											Europe
-//  |_Country											Spain
-//  	 |_State										Euskadi
-//  		 |_County									Bizkaia
-//  		 	|_Region								Gran Bilbao / valles alaveses
-//  				|_Municipality						Bilbao
-//  					|_District						01	
-//  						|_Neighborhood 				Abando
-//  							|_Street				General Concha
-//  								|_portal			12
+//   |_Country											Spain										
+//   	 |_State										Euskadi
+//   		 |_County									Bizkaia
+//   		 	|_Region								Gran Bilbao / valles alaveses
+//   				|_Municipality						Bilbao
+//  					|_Locality						Bilbao	
+//   						|_District					01	
+//   							|_Neighborhood 			Abando
+//   								|_Street			General Concha
+//   									|_portal		12
 /////////////////////////////////////////////////////////////////////////////////////////
 	public interface GeoLocationBelongsToTerritory {
 		public GeoTerritoryID getTerritoryId();
@@ -55,6 +57,10 @@ public abstract class GeoFacets {
 	public interface GeoLocationBelongsToMunicipality {
 		public GeoMunicipalityID getMunicipalityId();
 		public void setMunicipalityId(final GeoMunicipalityID munId);
+	}
+	public interface GeoLocationBelongsToLocality {
+		public GeoLocalityID getLocalityId();
+		public void setLocalityId(final GeoLocalityID localityId);
 	}
 	public interface GeoLocationBelongsToDistrict {
 		public GeoDistrictID getDistrictId();

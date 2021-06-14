@@ -32,10 +32,11 @@ import r01f.types.geo.GeoOIDs.GeoTerritoryID;
  *   		 |_County									Bizkaia
  *   		 	|_Region								Gran Bilbao / valles alaveses
  *   				|_Municipality						Bilbao
- *   					|_District						01	
- *   						|_Neighborhood 				Abando
- *   							|_Street				General Concha
- *   								|_portal			12
+ *  					|_Locality						Bilbao	
+ *   						|_District					01	
+ *   							|_Neighborhood 			Abando
+ *   								|_Street			General Concha
+ *   									|_portal		12
  * </pre>
  * <pre class='brush:java'>
  *		GeoDistrict dist = new GeoDistrict(GeoDistrictID.forId(34),
