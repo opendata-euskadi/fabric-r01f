@@ -9,6 +9,7 @@ import r01f.locale.LanguageTexts;
 import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 import r01f.objectstreamer.annotations.MarshallType;
+import r01f.types.geo.GeoFacets.GeoLocationBelongsToCountry;
 import r01f.types.geo.GeoFacets.GeoLocationBelongsToCounty;
 import r01f.types.geo.GeoFacets.GeoLocationBelongsToMunicipality;
 import r01f.types.geo.GeoFacets.GeoLocationBelongsToRegion;
@@ -16,7 +17,6 @@ import r01f.types.geo.GeoFacets.GeoLocationBelongsToState;
 import r01f.types.geo.GeoFacets.GeoLocationBelongsToTerritory;
 import r01f.types.geo.GeoOIDs.GeoCountryID;
 import r01f.types.geo.GeoOIDs.GeoCountyID;
-import r01f.types.geo.GeoOIDs.GeoDistrictID;
 import r01f.types.geo.GeoOIDs.GeoLocalityID;
 import r01f.types.geo.GeoOIDs.GeoMunicipalityID;
 import r01f.types.geo.GeoOIDs.GeoRegionID;
@@ -58,6 +58,7 @@ import r01f.types.geo.GeoOIDs.GeoTerritoryID;
 public class GeoLocality 
      extends GeoLocationBase<GeoLocalityID,GeoLocality> 
   implements GeoLocationBelongsToTerritory,
+  			 GeoLocationBelongsToCountry,
   			 GeoLocationBelongsToState,
   			 GeoLocationBelongsToCounty,
   			 GeoLocationBelongsToRegion,
