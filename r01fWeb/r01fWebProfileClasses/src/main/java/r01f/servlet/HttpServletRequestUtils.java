@@ -61,7 +61,7 @@ public abstract class HttpServletRequestUtils {
 		// r01 customized X-Forwarded-Host header
 		String r01ForwardedHost = realHttpReq.getHeader("X-R01-Forwarded-Host");
 		String theR01ForwardedHost = Strings.isNOTNullOrEmpty(r01ForwardedHost) ? StringSplitter.using(Splitter.on(','))
-																						  		.at(forwardedHost)
+																						  		.at(r01ForwardedHost)
 																						  		.group(0)
 																				: null;
 		if (Strings.isNOTNullOrEmpty(theR01ForwardedHost)) return Host.of(theR01ForwardedHost); 
