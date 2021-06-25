@@ -57,6 +57,14 @@ public abstract class HttpServletRequestUtils {
 																						  .group(0)
 																		  : null;
 		if (Strings.isNOTNullOrEmpty(theForwardedHost)) return Host.of(theForwardedHost);
+
+		// r01 customized X-Forwarded-Host header
+		String r01ForwardedHost = realHttpReq.getHeader("X-R01-Forwarded-Host");
+		String theR01ForwardedHost = Strings.isNOTNullOrEmpty(r01ForwardedHost) ? StringSplitter.using(Splitter.on(','))
+																						  		.at(r01ForwardedHost)
+																						  		.group(0)
+																				: null;
+		if (Strings.isNOTNullOrEmpty(theR01ForwardedHost)) return Host.of(theR01ForwardedHost); 
 		
 		// it's NOT proxied
 		return Host.of(realHttpReq.getServerName());

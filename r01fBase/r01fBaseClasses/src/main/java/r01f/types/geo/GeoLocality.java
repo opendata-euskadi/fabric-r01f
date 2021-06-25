@@ -9,6 +9,7 @@ import r01f.locale.LanguageTexts;
 import r01f.objectstreamer.annotations.MarshallField;
 import r01f.objectstreamer.annotations.MarshallField.MarshallFieldAsXml;
 import r01f.objectstreamer.annotations.MarshallType;
+import r01f.types.geo.GeoFacets.GeoLocationBelongsToCountry;
 import r01f.types.geo.GeoFacets.GeoLocationBelongsToCounty;
 import r01f.types.geo.GeoFacets.GeoLocationBelongsToMunicipality;
 import r01f.types.geo.GeoFacets.GeoLocationBelongsToRegion;
@@ -16,7 +17,6 @@ import r01f.types.geo.GeoFacets.GeoLocationBelongsToState;
 import r01f.types.geo.GeoFacets.GeoLocationBelongsToTerritory;
 import r01f.types.geo.GeoOIDs.GeoCountryID;
 import r01f.types.geo.GeoOIDs.GeoCountyID;
-import r01f.types.geo.GeoOIDs.GeoDistrictID;
 import r01f.types.geo.GeoOIDs.GeoLocalityID;
 import r01f.types.geo.GeoOIDs.GeoMunicipalityID;
 import r01f.types.geo.GeoOIDs.GeoRegionID;
@@ -27,13 +27,13 @@ import r01f.types.geo.GeoOIDs.GeoTerritoryID;
  * Locality
  * <pre>
  * Territory											Europe
- *   |_Country											Spain										
+ *   |_Country											Spain
  *   	 |_State										Euskadi
  *   		 |_County									Bizkaia
  *   		 	|_Region								Gran Bilbao / valles alaveses
  *   				|_Municipality						Bilbao
- *  					|_Locality						Bilbao	
- *   						|_District					01	
+ *  					|_Locality						Bilbao
+ *   						|_District					01
  *   							|_Neighborhood 			Abando
  *   								|_Street			General Concha
  *   									|_portal		12
@@ -55,14 +55,15 @@ import r01f.types.geo.GeoOIDs.GeoTerritoryID;
 @MarshallType(as="geoLocality")
 @Accessors(prefix="_")
 @NoArgsConstructor
-public class GeoLocality 
-     extends GeoLocationBase<GeoLocalityID,GeoLocality> 
+public class GeoLocality
+     extends GeoLocationBase<GeoLocalityID,GeoLocality>
   implements GeoLocationBelongsToTerritory,
+  			 GeoLocationBelongsToCountry,
   			 GeoLocationBelongsToState,
   			 GeoLocationBelongsToCounty,
   			 GeoLocationBelongsToRegion,
   			 GeoLocationBelongsToMunicipality {
-	
+
 	private static final long serialVersionUID = 1915717178768446718L;
 /////////////////////////////////////////////////////////////////////////////////////////
 //  FIELDS
@@ -70,27 +71,27 @@ public class GeoLocality
 	@MarshallField(as="territoryId",
 				   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter @Setter private GeoTerritoryID _territoryId;
-	
+
 	@MarshallField(as="countryId",
 				   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter @Setter private GeoCountryID _countryId;
-	
+
 	@MarshallField(as="stateId",
 				   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter @Setter private GeoStateID _stateId;
-	
+
 	@MarshallField(as="countyId",
 				   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter @Setter private GeoCountyID _countyId;
-	
+
 	@MarshallField(as="regionId",
 				   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter @Setter private GeoRegionID _regionId;
-	
+
 	@MarshallField(as="municipalityId",
 				   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter @Setter private GeoMunicipalityID _municipalityId;
-	
+
 	@MarshallField(as="localityId",
 				   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter @Setter private GeoLocalityID _localityId;
