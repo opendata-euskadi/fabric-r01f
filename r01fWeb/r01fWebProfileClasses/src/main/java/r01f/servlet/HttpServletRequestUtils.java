@@ -51,13 +51,7 @@ public abstract class HttpServletRequestUtils {
 		// 		X-Forwarded-Server: The hostname of the proxy server.
 		// BEWARE that these headers may contain more than a single value (comma separated)	
 		// (see http://httpd.apache.org/docs/2.2/mod/mod_proxy.html)
-		String forwardedHost = realHttpReq.getHeader("X-Forwarded-Host");
-		String theForwardedHost = Strings.isNOTNullOrEmpty(forwardedHost) ? StringSplitter.using(Splitter.on(','))
-																						  .at(forwardedHost)
-																						  .group(0)
-																		  : null;
-		if (Strings.isNOTNullOrEmpty(theForwardedHost)) return Host.of(theForwardedHost);
-
+		
 		// r01 customized X-Forwarded-Host header
 		String r01ForwardedHost = realHttpReq.getHeader("X-R01-Forwarded-Host");
 		String theR01ForwardedHost = Strings.isNOTNullOrEmpty(r01ForwardedHost) ? StringSplitter.using(Splitter.on(','))
@@ -65,6 +59,14 @@ public abstract class HttpServletRequestUtils {
 																						  		.group(0)
 																				: null;
 		if (Strings.isNOTNullOrEmpty(theR01ForwardedHost)) return Host.of(theR01ForwardedHost); 
+		
+		String forwardedHost = realHttpReq.getHeader("X-Forwarded-Host");
+		String theForwardedHost = Strings.isNOTNullOrEmpty(forwardedHost) ? StringSplitter.using(Splitter.on(','))
+																						  .at(forwardedHost)
+																						  .group(0)
+																		  : null;
+		if (Strings.isNOTNullOrEmpty(theForwardedHost)) return Host.of(theForwardedHost);
+
 		
 		// it's NOT proxied
 		return Host.of(realHttpReq.getServerName());
