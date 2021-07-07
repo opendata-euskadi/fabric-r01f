@@ -2,6 +2,7 @@ package r01f.types.geo;
 
 import java.io.Serializable;
 import java.util.LinkedHashMap;
+import java.util.function.BiConsumer;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -54,5 +55,8 @@ public class GeoPosition2DByStandard
 		if (pos == null) return this;
 		_positionByFormats.put(pos.getStandard(),pos);
 		return this;
+	}
+	public void forEach(BiConsumer<? super GeoPositionStandard, ? super GeoPosition2D> action) {
+		_positionByFormats.forEach(action);
 	}
 }

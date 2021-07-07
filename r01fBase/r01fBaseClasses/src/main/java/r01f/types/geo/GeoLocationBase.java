@@ -129,7 +129,7 @@ public abstract class GeoLocationBase<GID extends GeoID,
 		return _langDepNamedDelegate;
 	}
 	public String getNameIn(final Language lang) {
-		return _nameByLanguage != null ? _nameByLanguage.get(lang) : null;
+		return _nameByLanguage != null && _nameByLanguage.isTextDefinedFor(lang) ? _nameByLanguage.get(lang) : null;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  SUMMARIZABLE
