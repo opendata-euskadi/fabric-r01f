@@ -111,6 +111,14 @@ public abstract class GeoLocationBase<GID extends GeoID,
 		return (SELF_TYPE)this;
 	}
 	@SuppressWarnings("unchecked")
+	public SELF_TYPE withNameForDefault(final String name) {
+		_nameByLanguage = new LanguageTextsMapBacked(LangTextNotFoundBehabior.RETURN_NULL,null);
+		_nameByLanguage.add(Language.SPANISH,name);
+		_nameByLanguage.add(Language.BASQUE,name);
+		_officialName = name;
+		return (SELF_TYPE)this;
+	}
+	@SuppressWarnings("unchecked")
 	public SELF_TYPE positionedAt(final GeoPosition2D geoPosition) {
 		_position2D = geoPosition;
 		return (SELF_TYPE)this;
