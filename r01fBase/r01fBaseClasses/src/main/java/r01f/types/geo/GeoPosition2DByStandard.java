@@ -59,4 +59,13 @@ public class GeoPosition2DByStandard
 	public void forEach(BiConsumer<? super GeoPositionStandard, ? super GeoPosition2D> action) {
 		_positionByFormats.forEach(action);
 	}
+	public boolean contains(final GeoPositionStandard  geoPositionStandard) {
+		return _positionByFormats.containsKey(geoPositionStandard);
+	}
+	public GeoPosition2D get(final GeoPositionStandard  geoPositionStandard) {
+		if (contains(geoPositionStandard)) {
+			return _positionByFormats.get(geoPositionStandard);
+		}
+		return null;
+	}
 }
