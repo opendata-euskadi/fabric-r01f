@@ -12,6 +12,7 @@ import com.google.common.base.Function;
 
 import r01f.guids.OID;
 import r01f.reflection.ReflectionUtils;
+import r01f.types.CanBeRepresentedAsString;
 import r01f.util.types.Dates;
 import r01f.util.types.Strings;
 import r01f.util.types.collections.CollectionUtils;
@@ -59,13 +60,16 @@ public class TypeInstanceFromString {
 
 		} else if (dataType == Date.class) {
 			value = (T)Dates.fromMillis(Long.valueOf(valueStr));	// dates are serialized as milis
+			
+		} else if (dataType != null && ReflectionUtils.isSubClassOf(dataType,Enum.class)) {
+			value = (T)Enum.valueOf((Class<? extends Enum>)dataType,valueStr);
 
 		} else if (dataType != null && ReflectionUtils.isSubClassOf(dataType,OID.class)) {
 			value = (T)ReflectionUtils.invokeStaticMethod(dataType,
 														  OID.STATIC_FACTORY_METHOD_NAME,new Class<?>[] {String.class},new Object[] {valueStr});
-		} else if (dataType != null && ReflectionUtils.isSubClassOf(dataType,Enum.class)) {
-			value = (T)Enum.valueOf((Class<? extends Enum>)dataType,valueStr);
 
+		} else if (dataType != null && ReflectionUtils.isSubClassOf(dataType,CanBeRepresentedAsString.class)) {
+			value = (T)ReflectionUtils.createInstanceFromString(dataType,valueStr);
 		}
 		return value;
 	}

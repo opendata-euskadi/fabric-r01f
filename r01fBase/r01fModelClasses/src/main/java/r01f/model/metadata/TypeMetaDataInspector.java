@@ -37,6 +37,7 @@ import r01f.model.metadata.annotations.ModelObjectData;
 import r01f.reflection.ReflectionUtils;
 import r01f.reflection.outline.TypeOutline;
 import r01f.reflection.scanner.ScannerFilter;
+import r01f.types.CanBeRepresentedAsString;
 import r01f.types.JavaPackage;
 import r01f.util.types.Strings;
 import r01f.util.types.collections.CollectionUtils;
@@ -185,7 +186,7 @@ public class TypeMetaDataInspector
 //					 hasMetaData,
 //					 HasMetaDataForPersistableModelObject.class.getSimpleName());
 //			outTypeMetaData = this.inspect(HasMetaDataForPersistableModelObject.class);
-			throw new IllegalStateException("There's NO type metadata info for type " + hasMetaData);
+			throw new IllegalStateException("There's NO type metadata info for type " + hasMetaData + " (maybe the " + hasMetaData + " object might implement " + CanBeRepresentedAsString.class + ")");
 		}
 		return outTypeMetaData;
 	}
@@ -275,8 +276,8 @@ public class TypeMetaDataInspector
 
 		// [2] - Build the type metadata info using the @MetaDataForType annotation on the
 		// 		 type containing the metadata
-		final Class<? extends HasMetaDataForModelObject> hasMetaDataType = typeMetaDataRefAnnot.value();
-		final MetaDataForType typeMetaDataAnnot = hasMetaDataType.getAnnotation(MetaDataForType.class);
+		Class<? extends HasMetaDataForModelObject> hasMetaDataType = typeMetaDataRefAnnot.value();
+		MetaDataForType typeMetaDataAnnot = hasMetaDataType.getAnnotation(MetaDataForType.class);
 //		if (typeMetaDataAnnot == null) throw new IllegalStateException(String.format("%s is supposed to contain metadata about %s BUT it's not annotated with %s",
 //																					 hasMetaDataType,type,
 //																					 MetaDataForType.class));
@@ -302,13 +303,13 @@ public class TypeMetaDataInspector
 																										public TypeMetaData<? extends MetaDataDescribable> apply(final Class<?> superType) {
 																											return TypeMetaDataInspector.this.inspect((Class<? extends MetaDataDescribable>)superType);
 																										}
-																					 			})
+																					 		  })
 																					.toSet();
 
-		final TypeMetaData<M> typeMetaData = new TypeMetaData<M>(type,					// the metadata-described model object type
-														   		 TypeToken.of(hasMetaDataType),		// the annotated type that contains the model object's metadata
-														   		 typeMetaDataAnnot,		// the annotation info
-														   		 facetsTypeMetaData);	// the type facets' metadata
+		TypeMetaData<M> typeMetaData = new TypeMetaData<M>(type,					// the metadata-described model object type
+														   TypeToken.of(hasMetaDataType),		// the annotated type that contains the model object's metadata
+														   typeMetaDataAnnot,		// the annotation info
+														   facetsTypeMetaData);		// the type facets' metadata
 
 		// [3] - Introspect fields of the type containing the metadata
 		//		 (consider all fields, including those in the type hierarchy)
@@ -317,11 +318,11 @@ public class TypeMetaDataInspector
 											  .getTypes();
 		Iterator<TypeToken<?>> typeTokenIt = hasMetaDataTypeSet.iterator();
 		for (; typeTokenIt.hasNext(); ) {
-			final TypeToken<?> hasMetaDataTypeToken = typeTokenIt.next();
+			TypeToken<?> hasMetaDataTypeToken = typeTokenIt.next();
 
 			// 3.1 - Fields
-			final Field[] fields = hasMetaDataTypeToken.getRawType()
-													   .getDeclaredFields();
+			Field[] fields = hasMetaDataTypeToken.getRawType()
+												 .getDeclaredFields();
 			Collection<TypeFieldMetaData> nodeFieldsMetaData = FluentIterable.<Field>from(fields)
 																	 // filter fields annotated with @MetaDataForField
 																	 .filter(FIELD_ANNOTATED_FILTER)
@@ -333,7 +334,7 @@ public class TypeMetaDataInspector
 																																								 field);
 																							return _fieldMetaDataFor(fieldId,		// the type that contains the type being inspected
 																													 typeMetaData,	// metadata about the type that contains the field
-																													 hasMetaDataTypeToken,an);		// the type containing the field + field
+																													 hasMetaDataTypeToken,an);		// the meta-data type containing the field + field
 																						}
 																	 			})
 																	 .toList();
@@ -344,10 +345,10 @@ public class TypeMetaDataInspector
 			boolean isAbstract = ReflectionUtils.isAbstract(hasMetaDataTypeToken.getRawType());
 			if (!isIface && !isAbstract) continue;
 
-			final Method[] methods = hasMetaDataTypeToken.getRawType()
-														 .getDeclaredMethods();
+			Method[] methods = hasMetaDataTypeToken.getRawType()
+												   .getDeclaredMethods();
 			Collection<TypeFieldMetaData> nodeMethodsMetaData = FluentIterable.from(methods)
-																	 // filter getter methods annotated with @MetaDataForField
+																	 // filter methods annotated with @MetaDataForField
 																	 .filter(METHOD_ANNOTATED_FILTER)
 																	 // transform to TypeFieldMetaData
 																	 .transform(new Function<Method,TypeFieldMetaData>() {
@@ -389,11 +390,11 @@ public class TypeMetaDataInspector
 		if (parentFieldId != null) {
 			// it's a recursive call (a MetaDataDescribable field of another MetaDataDescribable object)
 			id = FieldID.forId(Strings.customized("{}.{}",
-														   parentFieldId,
-														   field.getId()));
+												  parentFieldId,
+												  field.getId()));
 		} else {
 			id = FieldID.forId(Strings.customized("{}",
-														   field.getId()));
+												  field.getId()));
 		}
 		// [2] - field type
 		Type fieldType = field.getType();
