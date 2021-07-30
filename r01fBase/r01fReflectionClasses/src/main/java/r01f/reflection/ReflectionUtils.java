@@ -634,12 +634,12 @@ public class ReflectionUtils {
 	public static <T> T createInstanceOf(final String className) {
 		@SuppressWarnings("unchecked")	 	
 		T outObj = (T)ReflectionUtils.createInstanceOf(className,
-														EMPTY_CLASS_ARRAY,EMPTY_OBJECT_ARRAY,
-														true);  // force		
+													   EMPTY_CLASS_ARRAY,EMPTY_OBJECT_ARRAY,
+													   true);  // force		
 		return outObj;
 	}
 	/**
-	 * Returns an object's instance from the type's fully quallified name (type name including package)
+	 * Returns an object's instance from the type's fully qualified name (type name including package)
 	 * @param className
 	 * @param constructorArgsTypes 
 	 * @param constructorArgs 
@@ -693,7 +693,8 @@ public class ReflectionUtils {
 	public static <T> T  createInstanceOf(final Class<?> type,
 										  final Class<?>[] constructorArgsTypes,final Object[] constructorArgs) {
 		@SuppressWarnings("unchecked")   	
-		T outObj = (T)ReflectionUtils.createInstanceOf(type,constructorArgsTypes,constructorArgs,true);
+		T outObj = (T)ReflectionUtils.createInstanceOf(type,constructorArgsTypes,constructorArgs,
+													   true);	// force access constructor
 		return outObj;
 	}
 	/**
@@ -701,7 +702,7 @@ public class ReflectionUtils {
 	 * @param type 
 	 * @param constructorArgsTypes 
 	 * @param constructorArgs 
-	 * @param force if the constructor accesibillity must be force (ie it's a private constructor)
+	 * @param force if the constructor accessibility must be force (ie it's a private constructor)
 	 * @return
 	 */
 	public static <T> T  createInstanceOf(final Class<?> type,
@@ -728,7 +729,7 @@ public class ReflectionUtils {
 	}
 	/**
 	 * Checks if a type's instance can be created from a {@link String}
-	 * It uses a secuential approach: 
+	 * It uses a sequential approach: 
 	 * <ul>
 	 * 		<li>First it tries to use a single String param constructor</li>
 	 * 		<li>Second it tries to use a static valueOf(String) method</li>
