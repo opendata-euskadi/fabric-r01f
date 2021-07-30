@@ -93,9 +93,9 @@ class QueryClauseStringEncoderDecoder {
 		QualifiedQueryClause<Q> outQry = null;
 		Matcher m = CLAUSE_URL_PATTERN.matcher(encodedQry);
 		if (m.find()) {
-			FieldID fieldId = new FieldID(m.group(1));
-			QueryClauseOccur occur = QueryClauseOccur.fromName(m.group(2));
-			QueryCondition condition = QueryCondition.fromName(m.group(3));
+			FieldID fieldId = new FieldID(m.group(1));							// fieldId
+			QueryClauseOccur occur = QueryClauseOccur.fromName(m.group(2));		// occur
+			QueryCondition condition = QueryCondition.fromName(m.group(3));		// condition
 			String value = m.group(4);
 			
 			if (Strings.isNullOrEmpty(value) && condition != QueryCondition.haveData) throw new IllegalArgumentException(encodedQry + " is NOT a valid encoded query clause");
