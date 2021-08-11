@@ -4,19 +4,20 @@ import java.util.Date;
 
 import r01f.model.ModelObjectTracking;
 import r01f.model.TrackableModelObject.HasTrackableFacet;
+import r01f.patterns.FactoryFrom;
 import r01f.securitycontext.SecurityIDS.LoginID;
 import r01f.securitycontext.SecurityOIDs.UserOID;
 
 
-public class TrackableModelObjectBuilder<CONTAINER_TYPE,
+public class TrackableModelObjectBuilder<NEXT_BUILDER,
 										 M extends HasTrackableFacet> 
-  	 extends FacetBuilderBase<CONTAINER_TYPE,M> {
+  	 extends FacetBuilderBase<NEXT_BUILDER,M> {
 /////////////////////////////////////////////////////////////////////////////////////////
 //  
 /////////////////////////////////////////////////////////////////////////////////////////
-	public TrackableModelObjectBuilder(final CONTAINER_TYPE parentBuilder,
+	public TrackableModelObjectBuilder(final FactoryFrom<M,NEXT_BUILDER> nextBuilderFactory,
 									   final M hasTrackableFacet) {
-		super(parentBuilder,
+		super(nextBuilderFactory,
 			  hasTrackableFacet);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -29,11 +30,11 @@ public class TrackableModelObjectBuilder<CONTAINER_TYPE,
 		return new TrackableModelObjectBuilderCreatedAtStep();
 	}
 	public class TrackableModelObjectBuilderCreatedAtStep {
-		public TrackableModelObjectBuilder<CONTAINER_TYPE,M> at(final Date createDate) {
+		public TrackableModelObjectBuilder<NEXT_BUILDER,M> at(final Date createDate) {
 			_modelObject.getTrackingInfo().setCreateDate(createDate);
 			return TrackableModelObjectBuilder.this;
 		}
-		public TrackableModelObjectBuilder<CONTAINER_TYPE,M> now() {
+		public TrackableModelObjectBuilder<NEXT_BUILDER,M> now() {
 			_modelObject.getTrackingInfo().setCreateDate(new Date());
 			return TrackableModelObjectBuilder.this;
 		}
@@ -47,11 +48,11 @@ public class TrackableModelObjectBuilder<CONTAINER_TYPE,
 		return new TrackableModelObjectBuilderLastUpdatedAtStep();
 	}
 	public class TrackableModelObjectBuilderLastUpdatedAtStep {
-		public TrackableModelObjectBuilder<CONTAINER_TYPE,M> at(final Date lastUpdateDate) {
+		public TrackableModelObjectBuilder<NEXT_BUILDER,M> at(final Date lastUpdateDate) {
 			_modelObject.getTrackingInfo().setLastUpdateDate(lastUpdateDate);
 			return TrackableModelObjectBuilder.this;
 		}
-		public TrackableModelObjectBuilder<CONTAINER_TYPE,M> now() {
+		public TrackableModelObjectBuilder<NEXT_BUILDER,M> now() {
 			_modelObject.getTrackingInfo().setLastUpdateDate(new Date());
 			return TrackableModelObjectBuilder.this;
 		}

@@ -1,9 +1,9 @@
 package r01f.model.builders.facets;
 
-import lombok.AccessLevel;
-import lombok.Setter;
 import lombok.experimental.Accessors;
+import r01f.patterns.FactoryFrom;
 import r01f.patterns.IsBuilder;
+import r01f.patterns.IsBuilderStep;
 
 /**
  * Base type for all content model object's builders
@@ -11,14 +11,15 @@ import r01f.patterns.IsBuilder;
 @Accessors(prefix="_")
 public abstract class FacetBuilderBase<NEXT_BUILDER,
 									   T> 
-		   implements IsBuilder { 
+		   implements IsBuilder,
+		   			  IsBuilderStep { 
 /////////////////////////////////////////////////////////////////////////////////////////
 //  FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Parent type containing this facet builder
 	 */
-	@Setter(AccessLevel.PROTECTED) protected NEXT_BUILDER _nextBuilder;
+	protected final FactoryFrom<T,NEXT_BUILDER> _nextBuilderFactory;
 	/**
 	 * Model object
 	 */
@@ -26,12 +27,19 @@ public abstract class FacetBuilderBase<NEXT_BUILDER,
 /////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR
 /////////////////////////////////////////////////////////////////////////////////////////
-	public FacetBuilderBase(final T modelObject) {
+	public FacetBuilderBase(final FactoryFrom<T,NEXT_BUILDER> nextBuilderFactory,
+							final T modelObject) {
+		_nextBuilderFactory = nextBuilderFactory;
 		_modelObject = modelObject;
 	}
 	public FacetBuilderBase(final NEXT_BUILDER nextBuilder,
 							final T modelObject) {
-		_nextBuilder = nextBuilder;
+		_nextBuilderFactory = new FactoryFrom<T,NEXT_BUILDER>() {
+										@Override
+										public NEXT_BUILDER from(final T modelObj) {
+											return nextBuilder;
+										}
+							  };
 		_modelObject = modelObject;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -40,7 +48,7 @@ public abstract class FacetBuilderBase<NEXT_BUILDER,
 	protected T getModelObject() {
 		return _modelObject;
 	}
-	public NEXT_BUILDER build() {
-		return _nextBuilder;
+	public NEXT_BUILDER next() {
+		return _nextBuilderFactory.from(_modelObject);
 	}
 }
