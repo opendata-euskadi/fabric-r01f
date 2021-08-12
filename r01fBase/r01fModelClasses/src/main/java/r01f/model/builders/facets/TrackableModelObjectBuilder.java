@@ -2,6 +2,7 @@ package r01f.model.builders.facets;
 
 import java.util.Date;
 
+import r01f.facets.builders.FacetBuilderBase;
 import r01f.model.ModelObjectTracking;
 import r01f.model.TrackableModelObject.HasTrackableFacet;
 import r01f.patterns.FactoryFrom;

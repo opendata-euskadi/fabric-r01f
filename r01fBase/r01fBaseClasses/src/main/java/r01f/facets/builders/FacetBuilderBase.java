@@ -1,4 +1,4 @@
-package r01f.model.builders.facets;
+package r01f.facets.builders;
 
 import lombok.experimental.Accessors;
 import r01f.patterns.FactoryFrom;

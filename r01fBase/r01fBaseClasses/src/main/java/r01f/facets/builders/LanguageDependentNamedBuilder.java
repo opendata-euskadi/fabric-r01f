@@ -1,4 +1,4 @@
-package r01f.model.builders.facets;
+package r01f.facets.builders;
 
 import java.util.Map;
 

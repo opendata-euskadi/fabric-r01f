@@ -1,4 +1,4 @@
-package r01f.model.builders.facets;
+package r01f.facets.builders;
 
 import r01f.facets.LangInDependentNamed.HasLangInDependentNamedFacet;
 import r01f.patterns.FactoryFrom;
