@@ -224,9 +224,9 @@ open a terminal and using this path:
 
 then install the certs:
 
-  keytool -keystore ..\lib\security\cacerts -import -file {develop_home}\projects\fabric\r01f\docs\eclipse\maven\certs\izenpe.com.cer -alias izenpe_root -storepass changeit
-  keytool -keystore ..\lib\security\cacerts -import -file {develop_home}\projects\fabric\r01f\docs\eclipse\maven\certs\CAAAPPVascas.cer -alias CAAAPPVascas -storepass changeit
-  keytool -keystore ..\lib\security\cacerts -import -file {develop_home}\projects\fabric\r01f\docs\eclipse\maven\certs\builds1.alm02.itbatera.euskadi.eus.cer -alias builds1.alm02.itbatera.euskadi.eus -storepass changeit
+  keytool -keystore ..\lib\security\cacerts -import -file {develop_home}\projects\fabric\r01f\docs\eclipse\maven\certs\izenpe.com.cer -alias izenpe_root -storepass changeit  
+  keytool -keystore ..\lib\security\cacerts -import -file {develop_home}\projects\fabric\r01f\docs\eclipse\maven\certs\CAAAPPVascas.cer -alias CAAAPPVascas -storepass changeit  
+  keytool -keystore ..\lib\security\cacerts -import -file {develop_home}\projects\fabric\r01f\docs\eclipse\maven\certs\builds1.alm02.itbatera.euskadi.eus.cer -alias builds1.alm02.itbatera.euskadi.eus -storepass changeit  
 
 
 
