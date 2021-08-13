@@ -232,14 +232,14 @@ then install the certs:
 
 c) **[Java]**
 
-_JDK8_
+_JDK8_  
 Create a new [JRE]: `[Java] > [Installed JREs] > [Add]` pointing to a JDK8 at  `{dev_home}/java/jdk8` **Make this JRE the DEFAULT one**
 
 Create another [JRE] pointing to a JDK8 hot-deploy *patched* JDK8 at `{dev_home}/java/jdk8-hotswap`
 see [how to installa a hotswap jre](../../java/java-hotswap.md to patch the JDK
 set the JRE default JVM arguments: `-XXaltjvm=dcevm -javaagent:c:\develop\local-libs\hotswap-agent\hotswap-agent-1.4.0.jar`
 
-_JDK11_
+_JDK11_  
 Create a new [JRE]: `[Java] > [Installed JREs] > [Add]` pointing to a JDK8 at  `{dev_home}/java/jdk11` 
 
 Create another [JRE] pointing to a JDK11 hot-deploy *patched* JDK11 at `{dev_home}/java/jdk11-hotswap`
