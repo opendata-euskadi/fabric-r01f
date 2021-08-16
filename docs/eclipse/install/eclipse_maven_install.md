@@ -15,7 +15,7 @@ The idea is:
 /{dev_home} = d:\develop in windows or /develop in linux
   + develop
     + eclipse
-        + .eclipse <-- will contain eclipse plugin config that usually is located at {user-home}/.eclipse
+      + .eclipse <-- will contain eclipse plugin config that usually is located at {user-home}/.eclipse
       + [instance-name]
       + ...
     + eclipse_workspaces
