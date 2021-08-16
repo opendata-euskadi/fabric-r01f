@@ -73,7 +73,7 @@ So just **ADD the following to the `eclipse.ini` file**
 
   # by default eclipse stores some plugin config at {USER_HOME}/.eclipse (ie c:/users/{user}/.eclipse in windows)
   # this vm argument CHANGES the location of these eclipse config
-  -Duser.home={dev_home}/eclipse/.eclipse
+  -Duser.home={dev_home}/eclipse/.[instance-name]
 
   # see [Runtime Options] http://help.eclipse.org/mars/topic/org.eclipse.platform.doc.isv/reference/misc/index.html
   # see http://stackoverflow.com/questions/316265/how-can-you-speed-up-eclipse/316535#316535
