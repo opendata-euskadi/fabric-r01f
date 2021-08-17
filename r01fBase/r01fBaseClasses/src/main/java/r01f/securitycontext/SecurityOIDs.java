@@ -19,7 +19,8 @@ public abstract class SecurityOIDs {
 /////////////////////////////////////////////////////////////////////////////////////////
 
 	public static interface SecurityObjectOID
-					extends PersistableObjectOID,OIDTyped<String> {
+					extends PersistableObjectOID,OIDTyped<String>,
+							FactDimension {
 		// just a marker interface
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -58,9 +59,9 @@ public abstract class SecurityOIDs {
 	@Immutable
 	@MarshallType(as="userOid")
 	public static final class UserOID
-				      extends SecurityObjectOIDBase
-			       implements SecurityObjectOID,
-			       			  PersistableObjectOID {
+					  extends SecurityObjectOIDBase
+				   implements SecurityObjectOID,
+							  PersistableObjectOID {
 
 		private static final long serialVersionUID = -7020929167799107328L;
 
@@ -108,9 +109,8 @@ public abstract class SecurityOIDs {
 	@Immutable
 	@MarshallType(as="loginOid")
 	public static final class LoginOID
-				      extends SecurityObjectOIDBase
-			       implements SecurityObjectOID,
-			       			  FactDimension {
+					  extends SecurityObjectOIDBase
+				   implements SecurityObjectOID {
 
 		private static final long serialVersionUID = -2162289370851262116L;
 
@@ -142,12 +142,12 @@ public abstract class SecurityOIDs {
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	USER PASSWORD LOGIN
-/////////////////////////////////////////////////////////////////////////////////////////	
+/////////////////////////////////////////////////////////////////////////////////////////
 	@Immutable
 	@MarshallType(as="userLoginEntryOid")
 	public static final class UserLoginEntryOID
-				      extends SecurityObjectOIDBase
-			       implements SecurityObjectOID {
+					  extends SecurityObjectOIDBase
+				   implements SecurityObjectOID {
 
 		private static final long serialVersionUID = -2162289370851262116L;
 
@@ -178,7 +178,7 @@ public abstract class SecurityOIDs {
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	PAIRED PHONE LOGIN
-/////////////////////////////////////////////////////////////////////////////////////////	
+/////////////////////////////////////////////////////////////////////////////////////////
 	@Immutable
 	@MarshallType(as="pairedPhoneLoginConsentOid")
 	public static final class PairedPhoneLoginConsentOID
@@ -219,8 +219,7 @@ public abstract class SecurityOIDs {
 	@MarshallType(as="apiKeyVersionOid")
 	public static final class ApiKeyVersionOID
 					  extends SecurityObjectOIDBase
-				   implements SecurityObjectOID,
-				   			  FactDimension {
+				   implements SecurityObjectOID {
 		private static final long serialVersionUID = 1158729335397111474L;
 		public ApiKeyVersionOID() {
 			super();
@@ -242,8 +241,8 @@ public abstract class SecurityOIDs {
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//	USER AUTHORIZATION ON RESOURCE                                                                          
-/////////////////////////////////////////////////////////////////////////////////////////	
+//	USER AUTHORIZATION ON RESOURCE
+/////////////////////////////////////////////////////////////////////////////////////////
 	@Immutable
 	@MarshallType(as="authorizationOnResourceOid")
 	public static final class UserAuthorizationOnResourceOID
@@ -279,7 +278,7 @@ public abstract class SecurityOIDs {
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	AUTHORIZATION TARGET RESOURCE
-/////////////////////////////////////////////////////////////////////////////////////////	
+/////////////////////////////////////////////////////////////////////////////////////////
 	@Immutable
 	@MarshallType(as="authorizationTargetResourceOid")
 	public static final class AuthorizationTargetResourceOID
