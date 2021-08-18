@@ -33,9 +33,9 @@ public abstract class ObjectValidationResultBuilder
 //  
 /////////////////////////////////////////////////////////////////////////////////////////
 	public static <M> ObjectValidationResultNOK<M> isNotValidBecauseNull(final String reason,final Object... args) {
-		return new ObjectValidationResultNOK<M>(null,
-												Strings.customized(reason,args),
-												null);	// no error sources
+		return new ObjectValidationResultNOK<>(null,
+											   Strings.customized(reason,args),
+											   null);	// no error sources
 	}
 	public static <M> ObjectValidationResultNOK<M> isNotValidBecauseNull() {
 		return ObjectValidationResultBuilder.isNotValidBecauseNull("Not valid because the object is null");
@@ -45,7 +45,7 @@ public abstract class ObjectValidationResultBuilder
 /////////////////////////////////////////////////////////////////////////////////////////
 	public static <M> ObjectValidationResultBuilderStep<M> on(final M Object) {
 		return new ObjectValidationResultBuilder() {/* ignore */}
-						.new ObjectValidationResultBuilderStep<M>(Object);
+						.new ObjectValidationResultBuilderStep<>(Object);
 	}
 	@RequiredArgsConstructor
 	public final class ObjectValidationResultBuilderStep<M> {
@@ -53,7 +53,7 @@ public abstract class ObjectValidationResultBuilder
 		private int _errorCode = -1;
 		
 		public ObjectValidationResultOK<M> isValid() {
-			return new ObjectValidationResultOK<M>(_modelObj);
+			return new ObjectValidationResultOK<>(_modelObj);
 		}
 		public ObjectValidationResultBuilderStep<M> notValidwithErrorCode(final int code) {
 			_errorCode = code;
@@ -61,32 +61,32 @@ public abstract class ObjectValidationResultBuilder
 		}
 		public ObjectValidationResultNOK<M> isNotValidBecause(final Collection<ObjectValidationErrorSourceID> errorSources,
 															  final String reason,final Object... args) {
-			return new ObjectValidationResultNOK<M>(_modelObj,
-												    _errorCode,
-												    Strings.customized(reason,args),
-												    errorSources);		
+			return new ObjectValidationResultNOK<>(_modelObj,
+												   _errorCode,
+												   Strings.customized(reason,args),
+												   errorSources);		
 		}
 		public ObjectValidationResultNOK<M> isNotValidBecause(final ObjectValidationErrorSourceID errorSource,
 															  final String reason,final Object... args) {
-			return new ObjectValidationResultNOK<M>(_modelObj,
-												    _errorCode,
-												    Strings.customized(reason,args),
-												    errorSource != null ? Lists.newArrayList(errorSource) : null);
+			return new ObjectValidationResultNOK<>(_modelObj,
+												   _errorCode,
+												   Strings.customized(reason,args),
+												   errorSource != null ? Lists.newArrayList(errorSource) : null);
 		}
 		public ObjectValidationResultNOK<M> isNotValidBecause(final String reason,final Object... args) {
-			return new ObjectValidationResultNOK<M>(_modelObj,
-												    _errorCode,Strings.customized(reason,args),
-												    null);		// no error sources
+			return new ObjectValidationResultNOK<>(_modelObj,
+												   _errorCode,Strings.customized(reason,args),
+												   null);		// no error sources
 		}
 		public ObjectValidationResultNOK<M> isNotValidBecause(final ObjectValidationResultNOK<?> otherValid) {
-			return new ObjectValidationResultNOK<M>(_modelObj,
-													_errorCode,
-												    Strings.customized("Error={} on {} object",
-																   	   otherValid.getReason(),
-																   	   otherValid.getValidatedObject() != null ? otherValid.getValidatedObject().getClass() : "null"),
-												    otherValid.getErrorSources());
+			return new ObjectValidationResultNOK<>(_modelObj,
+												   _errorCode,
+												   Strings.customized("Error={} on {} object",
+																   	  otherValid.getReason(),
+																   	  otherValid.getValidatedObject() != null ? otherValid.getValidatedObject().getClass() : "null"),
+												   otherValid.getErrorSources());
 		}
-		public ObjectValidationResult<M> combine(final Validates<M>... validators) {
+		public ObjectValidationResult<M> combine(@SuppressWarnings("unchecked") final Validates<M>... validators) {
 			Collection<ObjectValidationResult<M>> validResults = null;
 			if (CollectionUtils.hasData(validators)) {
 				validResults = FluentIterable.from(validators)
@@ -105,7 +105,7 @@ public abstract class ObjectValidationResultBuilder
 		 * @param validations
 		 * @return
 		 */
-		public ObjectValidationResult<M> combine(final ObjectValidationResult<M>... validations) {
+		public ObjectValidationResult<M> combine(@SuppressWarnings("unchecked") final ObjectValidationResult<M>... validations) {
 			if (CollectionUtils.isNullOrEmpty(validations)) return this.isValid();
 			return this.combine(FluentIterable.from(validations)
 										.filter(new Predicate<ObjectValidationResult<M>>() {
