@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
+import java.util.Random;
 import java.util.UUID;
 
 import com.google.common.annotations.GwtIncompatible;
@@ -31,7 +32,7 @@ import r01f.util.types.collections.CollectionUtils;
 
 @GwtIncompatible("uses reflection")
 @NoArgsConstructor(access=AccessLevel.PRIVATE)
-public class OIDs {
+public abstract class OIDs {
 /////////////////////////////////////////////////////////////////////////////////////////
 //  
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -87,10 +88,23 @@ public class OIDs {
 									   			   	  new Class<?>[] {},new Object[] {});
 		return oid;
 	}
+	public static String supplyShortOid() {
+		UUID uuid = UUID.randomUUID();
+		return _randomFragment(uuid.toString().toUpperCase());
+	}
 	public static <O extends OID> String fragmentAt(final O oid,
 													final int pos) {
-		String[] items = oid.asString().split("-");
+		return _fragmentAt(oid.asString(),pos);
+	}
+	private static String _fragmentAt(final String oid,final int pos) {
+		String[] items = oid.split("-");
 		if (pos < 0 || pos >= items.length) throw new IllegalArgumentException("the given pos=" + pos + " is NOT valid: it must be contained in [0.." + (items.length - 1) + "]");
+		return items[pos];
+	}
+	private static String _randomFragment(final String oid) {
+		String[] items = oid.split("-");
+		Random randomNum = new Random(System.currentTimeMillis());
+		int pos = 0 + randomNum.nextInt(items.length-1);
 		return items[pos];
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
