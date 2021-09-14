@@ -54,9 +54,8 @@ final class LocalFolderRecursiveListing
 		if (f.exists()
 		 && f.isDirectory()) {
 			return LocalFileProperties.from(f);
-		} else {
-			throw new IllegalArgumentException(folderPath + " is NOT a folder!");
-		}
+		} 
+		throw new IllegalArgumentException(folderPath + " is NOT a folder!");
 	}
 	@Override
 	protected Collection<FileProperties> listFolderContents(final Path folderPath,
@@ -95,7 +94,7 @@ final class LocalFolderRecursiveListing
 	 * @param aDirectory the dir.
 	 * @throws IOException
 	 */
-	private void _validateDirectory(final File aDirectory) throws IOException {
+	private static void _validateDirectory(final File aDirectory) throws IOException {
 		if (aDirectory == null) {
 			throw new IllegalArgumentException("Directory should not be null.");
 		}

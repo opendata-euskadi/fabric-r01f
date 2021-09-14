@@ -34,7 +34,7 @@ public class ZipFiles {
 	private final FileStoreAPI _fsApi;
 	private final FileStoreFilerAPI _fsFilerApi;
 /////////////////////////////////////////////////////////////////////////////////////////
-//	CONSTRUCTOR                                                                          
+//	CONSTRUCTOR																		  
 /////////////////////////////////////////////////////////////////////////////////////////
 	public ZipFiles() throws IOException {
 		this(new LocalFileStoreAPI(),
@@ -99,92 +99,92 @@ public class ZipFiles {
 				  fileFilter,
 				  os);	
 	}
-    protected final void walk(final Path startFolderPath,
-    						  final int deepthLimit,
-    						  final FileFilter fileFilter,
-    						  final OutputStream os) throws IOException {
-        if (startFolderPath == null) throw new NullPointerException("Start folder is null");
-        FileProperties starFolderProps = _fsFilerApi.getFolderProperties(startFolderPath);
-        if (!starFolderProps.isFolder()) throw new IllegalArgumentException("Path to zip " + startFolderPath + " is NOT a folder!");
-        
-        // Create the ZipOutputStream
-        ZipOutputStream zipOS = null;
-        try {
-        	// create the zip os
-        	zipOS = new ZipOutputStream(os);
-	        // walk
-	        _walk(startFolderPath,
-	        	  starFolderProps,0,
-	        	  deepthLimit,
-	        	  fileFilter,
-	        	  zipOS);
-        } finally {
-        	if (zipOS != null) {
-        		try {
-        			zipOS.flush();
-        			zipOS.close();
-        		} catch (IOException ioEx) {
-        			log.error("Error closing ZIP output stream: {}",
-        					  ioEx.getMessage(),ioEx);
-        		}
-        	}
-        }
-    }
-    private void _walk(final Path startFolderPath,
-    				   final FileProperties folderProps,final int depth,
-    				   final int depthLimit, 
-    				   final FileFilter fileFilter,
-    				   final ZipOutputStream zipOS) throws IOException {
-        int childDepth = depth + 1;
-        if (depthLimit < 0 || childDepth <= depthLimit) {
-            FileProperties[] folderChildren = _fsFilerApi.listFolderContents(folderProps.getPath(),
+	protected final void walk(final Path startFolderPath,
+							  final int deepthLimit,
+							  final FileFilter fileFilter,
+							  final OutputStream os) throws IOException {
+		if (startFolderPath == null) throw new NullPointerException("Start folder is null");
+		FileProperties starFolderProps = _fsFilerApi.getFolderProperties(startFolderPath);
+		if (!starFolderProps.isFolder()) throw new IllegalArgumentException("Path to zip " + startFolderPath + " is NOT a folder!");
+		
+		// Create the ZipOutputStream
+		ZipOutputStream zipOS = null;
+		try {
+			// create the zip os
+			zipOS = new ZipOutputStream(os);
+			// walk
+			_walk(startFolderPath,
+				  starFolderProps,0,
+				  deepthLimit,
+				  fileFilter,
+				  zipOS);
+		} finally {
+			if (zipOS != null) {
+				try {
+					zipOS.flush();
+					zipOS.close();
+				} catch (IOException ioEx) {
+					log.error("Error closing ZIP output stream: {}",
+							  ioEx.getMessage(),ioEx);
+				}
+			}
+		}
+	}
+	private void _walk(final Path startFolderPath,
+					   final FileProperties folderProps,final int depth,
+					   final int depthLimit, 
+					   final FileFilter fileFilter,
+					   final ZipOutputStream zipOS) throws IOException {
+		int childDepth = depth + 1;
+		if (depthLimit < 0 || childDepth <= depthLimit) {
+			FileProperties[] folderChildren = _fsFilerApi.listFolderContents(folderProps.getPath(),
 																  		   fileFilter,
 																  		   false);	// not recursive 
-            // give an opportunity to filter folder contents
-            folderChildren = _filterFolderContents(folderProps,depth,
-            									   folderChildren);
-            for (FileProperties childProps : folderChildren) {
-                if (childProps.isFolder()) {	
-                	// is folder >> BEWARE!! recursion
-                    _walk(startFolderPath,
-                    	  childProps,childDepth,
-                    	  depthLimit,
-                    	  fileFilter,
-                    	  zipOS);		
-                } 
-                else {						
-                	// ... it's a file >> create a zip file entry
-			    	Path zipEntryPath = childProps.getPath()
-			    								  .remainingPathFrom(startFolderPath);
-			        ZipEntry zipEntry = new ZipEntry(zipEntryPath.asRelativeString());
-			        zipOS.putNextEntry(zipEntry);
-			        
-			        // add the file to the entry
-			        InputStream fileIS = _fsApi.readFromFile(childProps.getPath());	        
+			// give an opportunity to filter folder contents
+			folderChildren = _filterFolderContents(folderProps,depth,
+												   folderChildren);
+			for (FileProperties childProps : folderChildren) {
+				if (childProps.isFolder()) {	
+					// is folder >> BEWARE!! recursion
+					_walk(startFolderPath,
+						  childProps,childDepth,
+						  depthLimit,
+						  fileFilter,
+						  zipOS);		
+				} 
+				else {						
+					// ... it's a file >> create a zip file entry
+					Path zipEntryPath = childProps.getPath()
+												  .remainingPathFrom(startFolderPath);
+					ZipEntry zipEntry = new ZipEntry(zipEntryPath.asRelativeString());
+					zipOS.putNextEntry(zipEntry);
+					
+					// add the file to the entry
+					InputStream fileIS = _fsApi.readFromFile(childProps.getPath());			
 					Streams.copy(fileIS,
 								 zipOS,
 								 false);	// do not close (a zipOS flush & close is needed)
 					zipOS.flush();
-			        zipOS.closeEntry();	        
-			        fileIS.close();
-                }
-            }
-        }
-    }
-    /**
-     * Overridable method invoked with the contents of each folder.
-     * @param folderProps  the current folder being processed
-     * @param depth  the current folder level (starting folder = 0)
-     * @param files the files (possibly filtered) in the folder
-     * @return the filtered list of files
-     * @throws IOException if an I/O Error occurs
-     */
-    protected static FileProperties[] _filterFolderContents(final FileProperties folderProps,final int depth,
-    										  	     		final FileProperties[] files) throws IOException {
-        return files;	// returns the files unchanged
-    }
+					zipOS.closeEntry();			
+					fileIS.close();
+				}
+			}
+		}
+	}
+	/**
+	 * Overridable method invoked with the contents of each folder.
+	 * @param folderProps  the current folder being processed
+	 * @param depth  the current folder level (starting folder = 0)
+	 * @param files the files (possibly filtered) in the folder
+	 * @return the filtered list of files
+	 * @throws IOException if an I/O Error occurs
+	 */
+	protected static FileProperties[] _filterFolderContents(final FileProperties folderProps,final int depth,
+											  		 		final FileProperties[] files) throws IOException {
+		return files;	// returns the files unchanged
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
-//	UNZIP                                                                          
+//	UNZIP																		  
 /////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * unzips a file to a given path

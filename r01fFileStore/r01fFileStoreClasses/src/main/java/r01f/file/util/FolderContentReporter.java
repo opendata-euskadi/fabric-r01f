@@ -46,7 +46,7 @@ import r01f.util.types.collections.CollectionUtils;
  */
 @RequiredArgsConstructor
 public class FolderContentReporter
-     extends FolderWalker<FolderContentReportItem> {
+	 extends FolderWalker<FolderContentReportItem> {
 /////////////////////////////////////////////////////////////////////////////////////////
 //  FIELDS
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -100,11 +100,11 @@ public class FolderContentReporter
 								: Lists.<FileProperties>newArrayList();
 	}
 	@Override
-    protected void _handleFile(final FileProperties fileProps,final int depth,
-    						   final Collection<FolderContentReportItem> results) throws IOException {
+	protected void _handleFile(final FileProperties fileProps,final int depth,
+							   final Collection<FolderContentReportItem> results) throws IOException {
 		FolderContentReportItem item = FolderContentReportItem.from(fileProps);
 		results.add(item);
-    }
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //  
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -115,7 +115,9 @@ public class FolderContentReporter
 			 implements Serializable,
 			 			Debuggable {
 		private static final long serialVersionUID = -6592740535253495605L;
-		
+/////////////////////////////////////////////////////////////////////////////////////////
+//	
+/////////////////////////////////////////////////////////////////////////////////////////		
 		@MarshallField(as="newOrUpdated",
 					   whenXml=@MarshallFieldAsXml(collectionElementName="newItem"))
 		@Getter @Setter private Set<FolderContentReportItem> _newOrUpdated;
@@ -127,7 +129,9 @@ public class FolderContentReporter
 		@MarshallField(as="untouched",
 					   whenXml=@MarshallFieldAsXml(collectionElementName="untouchedItem"))
 		@Getter @Setter private Set<FolderContentReportItem> _untouched;
-
+/////////////////////////////////////////////////////////////////////////////////////////
+//	
+/////////////////////////////////////////////////////////////////////////////////////////
 		public Set<Path> getNewOrUpadtedPaths() {
 			if (CollectionUtils.isNullOrEmpty(_newOrUpdated)) return null;
 			return FluentIterable.from(_newOrUpdated)

@@ -62,9 +62,8 @@ final class HDFSFolderRecursiveListing
 		if (hdfsFile != null
 		 && hdfsFile.isDirectory()) {
 			return HDFSFileProperties.from(hdfsFile);
-		} else {
-			throw new IllegalArgumentException(folderPath + " is NOT a folder!");
-		}
+		} 
+		throw new IllegalArgumentException(folderPath + " is NOT a folder!");
 	}
 	@Override
 	protected Collection<FileProperties> listFolderContents(final r01f.types.Path folderPath,
