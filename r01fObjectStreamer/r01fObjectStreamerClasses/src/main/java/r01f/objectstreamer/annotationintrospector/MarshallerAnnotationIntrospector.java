@@ -5,10 +5,12 @@ import java.lang.annotation.AnnotationFormatError;
 import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.fasterxml.jackson.annotation.JacksonInject;
 import com.fasterxml.jackson.annotation.JsonCreator.Mode;
@@ -43,7 +45,6 @@ import com.fasterxml.jackson.databind.jsontype.TypeResolverBuilder;
 import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
 import com.fasterxml.jackson.databind.util.NameTransformer;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 import lombok.extern.slf4j.Slf4j;
 import r01f.objectstreamer.PackageVersion;
@@ -348,10 +349,6 @@ public class MarshallerAnnotationIntrospector
 																															  		  		 am,containerType);
 		return outTypeResolverBuilder;
 	}
-
-	// A cache of sub-types by abstract type
-	private final Map<Class<?>,List<NamedType>> _subTypesByAbstractType = Maps.newHashMap();
-
 	@Override
 	public List<NamedType> findSubtypes(final Annotated ann) {
 		List<NamedType> outTypes = null;
@@ -372,71 +369,89 @@ public class MarshallerAnnotationIntrospector
 		}
 
 		// [1] - Find the type for which the subtypes might have to be found
-		Class<?> keyType = _keyTypeFor(type);
+		Class<?> annotatedSuperType = _findSuperTypeAnnotatedWithMarshallPolymorphicTypeInfoFor(type);
 
 		// [2] - Find subtypes
-		if (keyType != null) {
-			outTypes = _subTypesByAbstractType.get(keyType);	// check the cache
-			if (outTypes == null) {		// BEWARE!! do NOT use CollectionUtils.isNullOrEmpty()!!!!
-				Set<?> subTypes = TypeScan.findSubTypesOfInJavaPackages(keyType,
-														  				_javaPackagess);
-				log.trace("{} has {} subtypes",
-						  keyType,(subTypes != null ? subTypes.size() : 0));
-
-				if (subTypes != null && CollectionUtils.hasData(subTypes)) {
-					outTypes = Lists.newArrayListWithExpectedSize(subTypes.size());
-				} else {
-					outTypes = Lists.newArrayListWithExpectedSize(0);
-				}
-
-				if (subTypes != null) {
-					for (Object subTypeObj : subTypes) {
-						Class<?> subType = (Class<?>)subTypeObj;
-
-						// find the typeId from the @TypeMarshall annotation or @JsonRootName
-						// ... if none of these annotations is present, use the full class name
-						String typeId = _findTypeIdFor(subType);
-
-						// register the type with it's id
-						outTypes.add(new NamedType(subType,
-												   typeId));
-					}
-				}
-
-				// cache
-				_subTypesByAbstractType.put(keyType,outTypes);
-
-				// debug
-//				System.out.println("====>" + " > " + keyType + " > " + outTypes);
-				log.trace("SubType Info for {}: {}",
-						  keyType,outTypes);
-			}
-		}
+		if (annotatedSuperType != null) outTypes = _findSubtypesOfMarshallPolymorphicTypeAnnotated(annotatedSuperType);
 
 		// if not found, delegate
 		if (outTypes == null) outTypes = _delegatedJacksonAnnotationIntrospector.findSubtypes(ann);
 		return outTypes;
 	}
-	private static Class<?> _keyTypeFor(final Class<?> type) {
-		Class<?> outKeyType = null;
+	
+	// A cache of @MarshallPolymorphicType annotated super-types
+	private final Map<Class<?>,Class<?>> _marshallPolymorphicTypeAnnotatedSuperTypeByType = new HashMap<>(); // BEWARE! ConcurrentHashMap DOES NOT accept null values
+	
+	private Class<?> _findSuperTypeAnnotatedWithMarshallPolymorphicTypeInfoFor(final Class<?> type) {
+		// [1] - use a cache
+		Class<?> outAnnotatedType = _marshallPolymorphicTypeAnnotatedSuperTypeByType.get(type);
+		if (outAnnotatedType != null) return outAnnotatedType;
+		
+		// [2] - find annotated type
 		if (_isCollectionOrArrayType(type)) return null;
 		if (_isNotInstanciable(type)) {
-			outKeyType = type;
+			outAnnotatedType = type;
 		} else {
 			// find the @MarshallPolymorphicTypeInfo in the hierarchy
 			TypeAnnotation<MarshallPolymorphicTypeInfo> typeWithPolyAnn = TypeScan.findTypeAnnotaion(MarshallPolymorphicTypeInfo.class,
 													  			 		 							 type);
 			// if found, the type annotated is the key
 			if (typeWithPolyAnn != null) {
-				outKeyType = typeWithPolyAnn.getType();
+				outAnnotatedType = typeWithPolyAnn.getType();
 			} else if (type == Object.class) {
 				// object!! cannot know the subtypes
-				throw new IllegalStateException("Connot find subtypes of Object.class: this is usually originated at a willcard-parameterized field like final Person<?> _person; a more type specific parameter like Person<? extends PersonID> _person is needed");
+				// throw new IllegalStateException("Connot find subtypes of Object.class: this is usually originated at a willcard-parameterized field like final Person<?> _person; a more type specific parameter like Person<? extends PersonID> _person is needed");
+				//log.trace("Connot find subtypes of Object.class: this is usually originated at a willcard-parameterized field like final Person<?> _person; a more type specific parameter like Person<? extends PersonID> _person is needed");
 			}
 		}
-		return outKeyType;
+		// cache
+		_marshallPolymorphicTypeAnnotatedSuperTypeByType.put(type,outAnnotatedType);
+		
+		return outAnnotatedType;
 	}
-	private static String _findTypeIdFor(final Class<?> subType) {
+	// A cache of sub-types by abstract type
+	private final ConcurrentHashMap<Class<?>,List<NamedType>> _subTypesByAbstractType = new ConcurrentHashMap<>();
+	
+	private List<NamedType> _findSubtypesOfMarshallPolymorphicTypeAnnotated(final Class<?> marshallPolymorphicTypeAnnotated) {
+		// [1] - try the cache
+		List<NamedType> outTypes = _subTypesByAbstractType.get(marshallPolymorphicTypeAnnotated);	// check the cache
+		if (outTypes != null) return outTypes;
+		
+		// [2] - Find subtypes
+		Set<?> subTypes = TypeScan.findSubTypesOfInJavaPackages(marshallPolymorphicTypeAnnotated,
+												  				_javaPackagess);
+		if (log.isTraceEnabled()) log.trace("{} has {} subtypes",
+				  							marshallPolymorphicTypeAnnotated,(subTypes != null ? subTypes.size() : 0));
+
+		if (CollectionUtils.hasData(subTypes)) {
+			outTypes = Lists.newArrayListWithExpectedSize(subTypes.size());
+		} else {
+			outTypes = Lists.newArrayListWithExpectedSize(0);
+		}
+
+		if (subTypes != null) {
+			for (Object subTypeObj : subTypes) {
+				Class<?> subType = (Class<?>)subTypeObj;
+
+				// find the typeId from the @TypeMarshall annotation or @JsonRootName
+				// ... if none of these annotations is present, use the full class name
+				String typeId = MarshallerAnnotationIntrospector.findPolymorphicTypeIdFor(subType);
+
+				// register the type with it's id
+				outTypes.add(new NamedType(subType,
+										   typeId));
+			}
+		}
+
+		// cache
+		_subTypesByAbstractType.put(marshallPolymorphicTypeAnnotated,outTypes);
+
+		// debug
+		if (log.isTraceEnabled()) log.trace("SubType Info for {}: {}",
+				  							marshallPolymorphicTypeAnnotated,outTypes);
+		return outTypes;
+	}
+	static String findPolymorphicTypeIdFor(final Class<?> subType) {
 		String typeId = null;
 		MarshallType typeMarshallAnn = subType.getAnnotation(MarshallType.class);
 		if (typeMarshallAnn != null) {

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.cfg.MapperConfig;
 import com.fasterxml.jackson.databind.introspect.AnnotatedClass;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
+import com.fasterxml.jackson.databind.jsontype.TypeIdResolver;
 import com.fasterxml.jackson.databind.jsontype.TypeResolverBuilder;
 import com.fasterxml.jackson.databind.jsontype.impl.StdTypeResolverBuilder;
 
@@ -67,26 +68,51 @@ abstract class MarshallerTypeResolverBuilderDelegates {
 																  final BuilderFor builderFor) {
 		TypeResolverBuilder<?> outTypeResolverBuilder = null;
 		
+		// tries to find a type annotated with @MarshallPholymorphicTypeInfo at the type hierarchy
 		TypeAnnotation<MarshallPolymorphicTypeInfo> typeWithPolyAnn = TypeScan.findTypeAnnotaion(MarshallPolymorphicTypeInfo.class,
 												  			 		 				 		 	 javaType);
 		if (typeWithPolyAnn == null) {
+			// no @MarshallPholymorphicTypeInfo was found
 			if (builderFor == BuilderFor.PROPERTY 
 			 && javaType.getRawClass() == Object.class) {
-				// this is the case of willcard-parameterized fields
-				//			public class TestPersonContainerBean {
-				//				@MarshallField(as="thePerson")
-				//				@Getter @Setter private Person<?> _person;		<-- the type of the parameter is NOT known (object)
-				//			}
-				//	where Person type is like:
-				//		public class Person<T> {
-				//			@MarshallField(as="id")
-				//			@Getter @Setter private T _id;
-				//		}
-//				outTypeResolverBuilder =  _buildBuilderForGenericTypeResolverUsingProperty(CustomStreamers.TYPE_ID_PROPERTY_NAME,	// the typeId property name
-//																					  	   false);									// is the typeId property available at the deserializer?
+				// this is the case where a field's type is erased at runtime:
+				//  [1] - Fields defined with an interface
+				//				public interface Vehicle {
+				//					...
+				//				}
+				//				public class Car 
+				//				  implements Vehicle {
+				//					...
+				//				}
+				//				@MarshallType(as="bean")
+				//				public class VehicleContainerBean {
+				//					@MarshallField(as="vehicle")
+				//					@Getter @Setter private Vehicle _vehicle;	<-- the concrete type is unknown
+				//				}
+				//	[2] - willcard-parameterized fields
+				//				@MarshallType(as="person")
+				//				public class Person<T> {
+				//					@MarshallField(as="id")
+				//					@Getter @Setter private T _id;					<--
+				//				}
+				//				@MarshallType(as="bean")
+				//				public class PersonContainerBean {
+				//					@MarshallField(as="thePerson")
+				//					@Getter @Setter private Person<?> _person;		<-- the type of the parameter is NOT known (object)
+				//				}
+				//
+				// ... the only "mean" to generate the typeId property is to use the CONCRETE object type that's only known when 
+				//     serializing a CONCRETE object
+				//     (the default typeIdResolver uses the type-available info: does NOT need to check the concrete object type)
+						
+				// [2] - Create the type resolver builder and initialize it
+				outTypeResolverBuilder = _buildBuilderForGenericTypeResolverUsingProperty(new MarshallerTypeIdResolverBasedOnInstanceRunTimeType(),	// custo TypeIdResolver
+																						  "typeId",	// the typeId property name
+																						  true);	// is the typeId property available at the deserializer?
 			}
 		}
 		else {
+			// Found @MarshallPholymorphicTypeInfo
 			MarshallPolymorphicTypeInfo polyAnn = typeWithPolyAnn.getAnnotation();
 			if (builderFor == BuilderFor.TYPE
 			 && _hasToDefineTypeResolverFor(javaType,polyAnn.includeTypeInfo().type())) {
@@ -102,7 +128,6 @@ abstract class MarshallerTypeResolverBuilderDelegates {
 																					  	   polyAnn.typeInfoAvailableWhenDeserializing());	// is the typeId property available at the deserializer?
 			}
 		}
-		// System.out.println(">> type resolver builder for " + builderFor + " at " + javaType + " > " + outTypeResolverBuilder);
 		return outTypeResolverBuilder;
 	}
 	private static boolean _hasToDefineTypeResolverFor(final JavaType javaType,
@@ -121,30 +146,43 @@ abstract class MarshallerTypeResolverBuilderDelegates {
 		}
 		return outHasToDefineTypeResolver;
 	}
-    private static TypeResolverBuilder<?> _buildBuilderForGenericTypeResolverUsingProperty(final String typeIdPropName,
-    																					   final boolean typeIdPropVisibleByDeserializer) { 
-        TypeResolverBuilder<?> outTypeResolverBuilder;
-    	    	
-    	// [1] - Manually create the JsonTypeInfo data 
-//        JsonTypeInfo typeInfo = _createJsonTypeInfo();
-        
+	private static TypeResolverBuilder<?> _buildBuilderForGenericTypeResolverUsingProperty(final String typeIdPropName,
+																						   final boolean typeIdPropVisibleByDeserializer) { 
+		return _buildBuilderForGenericTypeResolverUsingProperty(null,typeIdPropName,	// use default TypeIdResolver
+																typeIdPropVisibleByDeserializer);
+	}
+	private static TypeResolverBuilder<?> _buildBuilderForGenericTypeResolverUsingProperty(final TypeIdResolver typeIdResolver,
+																						   final String typeIdPropName,
+																						   final boolean typeIdPropVisibleByDeserializer) { 
+		TypeResolverBuilder<?> outTypeResolverBuilder;
+				
+		// [1] - Manually create the JsonTypeInfo data 
+//		JsonTypeInfo typeInfo = _createJsonTypeInfo();
+		
 		// [2] - Create the type resolver builder and initialize it
-        outTypeResolverBuilder = new StdTypeResolverBuilder();
-        
-        outTypeResolverBuilder = outTypeResolverBuilder.init(JsonTypeInfo.Id.NAME,								// typeInfo.use(), 
-        													 null); 											// TypeIdResolver
-        outTypeResolverBuilder = outTypeResolverBuilder.inclusion(JsonTypeInfo.As.PROPERTY);					// typeInfo.include()
-        outTypeResolverBuilder = outTypeResolverBuilder.typeProperty(typeIdPropName); 							// typeInfo.property()
-        outTypeResolverBuilder = outTypeResolverBuilder.typeIdVisibility(typeIdPropVisibleByDeserializer);		// typeInfo.visible()
-        outTypeResolverBuilder = outTypeResolverBuilder.defaultImpl(null);										// typeInfo.defaultImpl()
-        
-        return outTypeResolverBuilder;
-    }
+		outTypeResolverBuilder = new StdTypeResolverBuilder();
+		
+		outTypeResolverBuilder = typeIdResolver == null 
+										// default TypeIdResolver that uses jackson's TypeNameIdResolver
+										// (this is the usual case)
+										? outTypeResolverBuilder.init(JsonTypeInfo.Id.NAME,		// typeInfo.use(), 
+															 		  null)						// TypeIdResolver
+										// custom TypeIdResolver
+										: outTypeResolverBuilder.init(JsonTypeInfo.Id.CUSTOM,	// typeInfo.use(), 
+															 		  typeIdResolver);			// TypeIdResolver
+														
+		outTypeResolverBuilder = outTypeResolverBuilder.inclusion(JsonTypeInfo.As.PROPERTY);					// typeInfo.include()
+		outTypeResolverBuilder = outTypeResolverBuilder.typeProperty(typeIdPropName); 							// typeInfo.property()
+		outTypeResolverBuilder = outTypeResolverBuilder.typeIdVisibility(typeIdPropVisibleByDeserializer);		// typeInfo.visible()
+		outTypeResolverBuilder = outTypeResolverBuilder.defaultImpl(null);										// typeInfo.defaultImpl()
+		
+		return outTypeResolverBuilder;
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	
-/////////////////////////////////////////////////////////////////////////////////////////    
-    private static JsonTypeInfo _createJsonTypeInfo() {
-        return new JsonTypeInfo() {
+/////////////////////////////////////////////////////////////////////////////////////////	
+	private static JsonTypeInfo _createJsonTypeInfo() {
+		return new JsonTypeInfo() {
 						@Override
 						public As include() {
 							return As.PROPERTY;			// type info is included as a json property
@@ -170,7 +208,7 @@ abstract class MarshallerTypeResolverBuilderDelegates {
 							return JsonTypeInfo.class;
 						}
 				};
-    }
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -178,8 +216,8 @@ abstract class MarshallerTypeResolverBuilderDelegates {
 		return javaType.isAbstract();
 	}
 	private static boolean _isNotInstanciable(final Class<?> type) {
-    	return type.isAnnotation()
-    		|| Modifier.isAbstract(type.getModifiers())	// is abstract
-    		|| Modifier.isInterface(type.getModifiers());	// is interface
-    }
+		return type.isAnnotation()
+			|| Modifier.isAbstract(type.getModifiers())	// is abstract
+			|| Modifier.isInterface(type.getModifiers());	// is interface
+	}
 }

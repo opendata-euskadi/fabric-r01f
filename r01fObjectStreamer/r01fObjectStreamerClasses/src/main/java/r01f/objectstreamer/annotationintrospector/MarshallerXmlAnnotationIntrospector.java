@@ -80,14 +80,14 @@ import r01f.util.types.Strings;
  * <pre>
  */
 public class MarshallerXmlAnnotationIntrospector
-     extends AnnotationIntrospector
+	 extends AnnotationIntrospector
   implements XmlAnnotationIntrospector {
 
 	private static final long serialVersionUID = 4120643020074142400L;
 /////////////////////////////////////////////////////////////////////////////////////////
 //	CONSTANTS
 /////////////////////////////////////////////////////////////////////////////////////////
-    private static final String JAXB_MARKER_FOR_DEFAULT = "##default";
+	private static final String JAXB_MARKER_FOR_DEFAULT = "##default";
 
 /////////////////////////////////////////////////////////////////////////////////////////
 //	FIELDS
@@ -99,7 +99,7 @@ public class MarshallerXmlAnnotationIntrospector
 	// module setup context
 	private final Module.SetupContext _moduleSetupContext;
 
-    // Delegates
+	// Delegates
 	private final JacksonXmlAnnotationIntrospector _jacksonXmlAnnotationIntrospector;
 	private final JaxbAnnotationIntrospector _jaxbAnnotationIntrospector;
 	private final MarshallerAnnotationIntrospector _marshallerAnnotationIntrospector;
@@ -150,8 +150,8 @@ public class MarshallerXmlAnnotationIntrospector
 			if (fmAnn.whenXml() != null
 			 && fmAnn.whenXml().asParentElementValue() == true
 			 && fmAnn.whenXml().attr() == true) throw new AnnotationFormatError(String.format("Field %s of type %s is set to be serialized as xml attribute and text: both modifiers cannot be set at the same time",
-																					    	  ((AnnotatedField)ann).getAnnotated().getName(),
-																					    	  ((AnnotatedField)ann).getDeclaringClass()));
+																							  ((AnnotatedField)ann).getAnnotated().getName(),
+																							  ((AnnotatedField)ann).getDeclaringClass()));
 		}
 		// [2] - Use Jackson xml annotations
 		if (outAttr == null) {
@@ -178,9 +178,9 @@ public class MarshallerXmlAnnotationIntrospector
 /////////////////////////////////////////////////////////////////////////////////////////
 //	NAME
 /////////////////////////////////////////////////////////////////////////////////////////
-    @Override
-    public PropertyName findRootName(final AnnotatedClass ac) {
-    	PropertyName outPropName = null;
+	@Override
+	public PropertyName findRootName(final AnnotatedClass ac) {
+		PropertyName outPropName = null;
 
 		// [1] - @TypeMarshall annotated
 		if (ac.hasAnnotation(MarshallType.class)) {
@@ -196,7 +196,7 @@ public class MarshallerXmlAnnotationIntrospector
 		}
 		// return
 		return outPropName;
-    }
+	}
 	@Override
 	public PropertyName findNameForSerialization(final Annotated ann) {
 		PropertyName outPropName = _findNameForSerializationOrDeSerialization(ann,
@@ -214,28 +214,28 @@ public class MarshallerXmlAnnotationIntrospector
 		NameTransformer outTransformer = _marshallerAnnotationIntrospector.findUnwrappingNameTransformer(member);
 		return outTransformer;
 	}
-    @Override
-    public PropertyName findWrapperName(final Annotated ann) {
-    	PropertyName outPropName = null;
+	@Override
+	public PropertyName findWrapperName(final Annotated ann) {
+		PropertyName outPropName = null;
 
-    	// [1] - @MarshallField annotated
-    	if (ann instanceof AnnotatedField
-    	 && ann.hasAnnotation(MarshallField.class)) {
-    		MarshallField fm = ann.getAnnotation(MarshallField.class);
-    		// ... do NOT wrap
-    		if (fm.whenCollectionLike() != null
-    		 && fm.whenCollectionLike().useWrapping() == false) {
-    			outPropName = PropertyName.NO_NAME;		// DO NOT WRAP
-    		}
-    		else if (fm.whenXml() != null
-    			  && fm.whenXml().asParentElementValue() == true) {
-    			outPropName = PropertyName.NO_NAME;		// DO NOT WRAP
-    		}
-    		else {
-    			outPropName = new PropertyName(fm.as());
-    		}
-    	}
-    	// [2] - jackson xml native annotations
+		// [1] - @MarshallField annotated
+		if (ann instanceof AnnotatedField
+		 && ann.hasAnnotation(MarshallField.class)) {
+			MarshallField fm = ann.getAnnotation(MarshallField.class);
+			// ... do NOT wrap
+			if (fm.whenCollectionLike() != null
+			 && fm.whenCollectionLike().useWrapping() == false) {
+				outPropName = PropertyName.NO_NAME;		// DO NOT WRAP
+			}
+			else if (fm.whenXml() != null
+				  && fm.whenXml().asParentElementValue() == true) {
+				outPropName = PropertyName.NO_NAME;		// DO NOT WRAP
+			}
+			else {
+				outPropName = new PropertyName(fm.as());
+			}
+		}
+		// [2] - jackson xml native annotations
 		if (outPropName == null
 		 || outPropName == PropertyName.USE_DEFAULT) {
 			outPropName = _findNameWithIntrospectorDelegates(ann,
@@ -243,16 +243,16 @@ public class MarshallerXmlAnnotationIntrospector
 		}
 		// return
 		return outPropName;
-    }
-    private enum NameFor {
-    	SERIALIZATION,
-    	DESERIALIZATION,
-    	ROOT,
-    	WRAPPER;
-    }
-    private PropertyName _findNameForSerializationOrDeSerialization(final Annotated ann,
-    																final NameFor whatFor) {
-    	if ( ann instanceof AnnotatedMethod ) return null;
+	}
+	private enum NameFor {
+		SERIALIZATION,
+		DESERIALIZATION,
+		ROOT,
+		WRAPPER;
+	}
+	private PropertyName _findNameForSerializationOrDeSerialization(final Annotated ann,
+																	final NameFor whatFor) {
+		if ( ann instanceof AnnotatedMethod ) return null;
 
 		PropertyName outPropName = null;
 
@@ -260,20 +260,20 @@ public class MarshallerXmlAnnotationIntrospector
 		if (ann instanceof AnnotatedField
 		 && ann.hasAnnotation(MarshallField.class)	// do NOT move!! (problem with aspects inter-type injected fields)
 		 && (ann.getType().isCollectionLikeType() || ann.getType().isArrayType())) {
-    		MarshallField fm = ann.getAnnotation(MarshallField.class);
-    		if (fm.whenXml() != null
-    		 && !fm.whenXml().collectionElementName().equals(MarshallField.MARKER_FOR_DEFAULT)) {
-    			// annotated with @MarshallField and explicitly setting the collection element names
-    			// 	@MarshallField(as="wrapper")
+			MarshallField fm = ann.getAnnotation(MarshallField.class);
+			if (fm.whenXml() != null
+			 && !fm.whenXml().collectionElementName().equals(MarshallField.MARKER_FOR_DEFAULT)) {
+				// annotated with @MarshallField and explicitly setting the collection element names
+				// 	@MarshallField(as="wrapper")
 				//				   whenXml=@MarshallXmlField(collectionElementName="item"))
-    			//	@Getter private Collection<MyType> _items;
-    			outPropName = PropertyName.construct(fm.whenXml().collectionElementName());
-    		} else {
-    			// not explicitly setting the collection element names: use the name set at the collection's items
-    			JavaType contentType = ann.getType().getContentType();
-    			MarshallType mtAnn = contentType.getRawClass().getAnnotation(MarshallType.class);
-    			if (mtAnn != null) outPropName = PropertyName.construct(mtAnn.as());
-    		}
+				//	@Getter private Collection<MyType> _items;
+				outPropName = PropertyName.construct(fm.whenXml().collectionElementName());
+			} else {
+				// not explicitly setting the collection element names: use the name set at the collection's items
+				JavaType contentType = ann.getType().getContentType();
+				MarshallType mtAnn = contentType.getRawClass().getAnnotation(MarshallType.class);
+				if (mtAnn != null) outPropName = PropertyName.construct(mtAnn.as());
+			}
 		}
 		// [2] - jackson xml native annotations
 		if (outPropName == null
@@ -284,11 +284,11 @@ public class MarshallerXmlAnnotationIntrospector
 
 		// return
 		return outPropName;
-    }
-    @SuppressWarnings("null")
+	}
+	@SuppressWarnings("null")
 	private PropertyName _findNameWithIntrospectorDelegates(final Annotated ann,
 								   				  	 		final NameFor whatFor) {
-    	PropertyName outPropName = null;
+		PropertyName outPropName = null;
 		// [1] - jackson xml native annotations
 		if (outPropName == null
 		 || outPropName.equals(PropertyName.USE_DEFAULT)) {
@@ -315,12 +315,12 @@ public class MarshallerXmlAnnotationIntrospector
 
 		// [5] - Return
 		return outPropName;
-    }
-    @SuppressWarnings("null")
+	}
+	@SuppressWarnings("null")
 	private static PropertyName _delegateFindName(final AnnotationIntrospector annIntrospector,
-    											  final Annotated ann,
-    											  final NameFor whatFor) {
-    	PropertyName outPropName = null;
+												  final Annotated ann,
+												  final NameFor whatFor) {
+		PropertyName outPropName = null;
 		if (outPropName == null
 		 || outPropName == PropertyName.USE_DEFAULT) {
 			switch(whatFor) {
@@ -338,14 +338,14 @@ public class MarshallerXmlAnnotationIntrospector
 			}
 		}
 		return outPropName;
-    }
-    private static PropertyName _combineNames(final String localName,
-    										  final String namespace) {
-        if (Strings.isNullOrEmpty(namespace)) {
-            return new PropertyName(localName);
-        }
-        return new PropertyName(localName,namespace);
-    }
+	}
+	private static PropertyName _combineNames(final String localName,
+											  final String namespace) {
+		if (Strings.isNullOrEmpty(namespace)) {
+			return new PropertyName(localName);
+		}
+		return new PropertyName(localName,namespace);
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	TEXT
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -370,9 +370,9 @@ public class MarshallerXmlAnnotationIntrospector
 			else if ((annF.getType().isCollectionLikeType() || annF.getType().isCollectionLikeType())
 				  && fmAnn != null
 				  && fmAnn.whenCollectionLike() != null
-    		      && fmAnn.whenCollectionLike().useWrapping() == false) {
-    			outText = true;
-    		}
+				  && fmAnn.whenCollectionLike().useWrapping() == false) {
+				outText = true;
+			}
 		}
 		return outText != null ? outText
 							   : _jacksonXmlAnnotationIntrospector.isOutputAsText(ann);		// just delegate
@@ -382,7 +382,7 @@ public class MarshallerXmlAnnotationIntrospector
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public Boolean isOutputAsCData(final Annotated ann) {
-    	Boolean outCDATA = null;
+		Boolean outCDATA = null;
 		// [1] - @FieldMarshall annotated
 		if (ann.hasAnnotation(MarshallField.class)) {
 			MarshallField fm = ann.getAnnotation(MarshallField.class);
@@ -399,8 +399,8 @@ public class MarshallerXmlAnnotationIntrospector
 		}
 		// [3] - jaxb annotations
 		if (outCDATA == null) {
-            //There is no CData annotation in JAXB
-            return null;
+			//There is no CData annotation in JAXB
+			return null;
 		}
 		// return
 		return outCDATA;
@@ -409,7 +409,7 @@ public class MarshallerXmlAnnotationIntrospector
 //	NAMESPACE
 /////////////////////////////////////////////////////////////////////////////////////////
 	@Override
-    public String findNamespace(final Annotated ann) {
+	public String findNamespace(final Annotated ann) {
 		String outNameSpace = null;
 
 		// [1] - @FieldMarshall annotated fields
@@ -417,46 +417,46 @@ public class MarshallerXmlAnnotationIntrospector
 			MarshallField m = ann.getAnnotation(MarshallField.class);
 			outNameSpace = m.namespace();
 		}
-    	// [2] - @TypeMarshall annotated types
+		// [2] - @TypeMarshall annotated types
 		if (Strings.isNullOrEmpty(outNameSpace)
 		 && ann.hasAnnotation(MarshallType.class)) {
-    		MarshallType t = ann.getAnnotation(MarshallType.class);
-    		outNameSpace = t.namespace();
-	    }
+			MarshallType t = ann.getAnnotation(MarshallType.class);
+			outNameSpace = t.namespace();
+		}
 
-    	// [3] - jackson xml annotations
-    	if (Strings.isNullOrEmpty(outNameSpace)) {
-    		outNameSpace = _jacksonXmlAnnotationIntrospector.findNamespace(ann);
-    	}
-    	// [4] - jaxb annotations
-    	if (Strings.isNullOrEmpty(outNameSpace)) {
-    		outNameSpace = _jaxbAnnotationIntrospector.findNamespace(ann);
-    	}
+		// [3] - jackson xml annotations
+		if (Strings.isNullOrEmpty(outNameSpace)) {
+			outNameSpace = _jacksonXmlAnnotationIntrospector.findNamespace(ann);
+		}
+		// [4] - jaxb annotations
+		if (Strings.isNullOrEmpty(outNameSpace)) {
+			outNameSpace = _jaxbAnnotationIntrospector.findNamespace(ann);
+		}
 
-    	// checkings
-    	if (JAXB_MARKER_FOR_DEFAULT.equals(outNameSpace)) outNameSpace = null;
-    	if (Strings.isNullOrEmpty(outNameSpace)) outNameSpace = null;
+		// checkings
+		if (JAXB_MARKER_FOR_DEFAULT.equals(outNameSpace)) outNameSpace = null;
+		if (Strings.isNullOrEmpty(outNameSpace)) outNameSpace = null;
 
-    	// return
-    	return outNameSpace;
-    }
+		// return
+		return outNameSpace;
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	DELEGATE
 //  =====================================================================================
 // 	Beware that since this type extends AnnotationIntrospector, ONLY methods overridden
 //	at JacksonAnnotationIntrospector are delegated
 /////////////////////////////////////////////////////////////////////////////////////////
-    @Override
-    public boolean hasIgnoreMarker(final AnnotatedMember am) {
-    	return _marshallerAnnotationIntrospector.hasIgnoreMarker(am);
-    }
+	@Override
+	public boolean hasIgnoreMarker(final AnnotatedMember am) {
+		return _marshallerAnnotationIntrospector.hasIgnoreMarker(am);
+	}
 /////////////////////////////////////////////////////////////////////////////////////////
-    @Override
-    public TypeResolverBuilder<?> findTypeResolver(final MapperConfig<?> config,
-    											   final AnnotatedClass ac,final JavaType baseType) {
+	@Override
+	public TypeResolverBuilder<?> findTypeResolver(final MapperConfig<?> config,
+												   final AnnotatedClass ac,final JavaType baseType) {
 		return _marshallerAnnotationIntrospector.findTypeResolver(config, ac, baseType);
 	}
-    @Override
+	@Override
 	public TypeResolverBuilder<?> findPropertyTypeResolver(final MapperConfig<?> config,
 														   final AnnotatedMember am,final JavaType baseType) {
 		return _marshallerAnnotationIntrospector.findPropertyTypeResolver(config, am, baseType);
@@ -483,7 +483,7 @@ public class MarshallerXmlAnnotationIntrospector
 	public String[] findEnumValues(final Class<?> enumType,
 								   final Enum<?>[] enumValues,final String[] names) {
 		return _marshallerAnnotationIntrospector.findEnumValues(enumType,
-															    enumValues,names);
+																enumValues,names);
 	}
 	@Override
 	public Enum<?> findDefaultEnumValue(final Class<Enum<?>> enumCls) {
