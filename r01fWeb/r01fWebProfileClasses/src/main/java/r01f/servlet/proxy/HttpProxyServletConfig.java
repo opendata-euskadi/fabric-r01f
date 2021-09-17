@@ -198,7 +198,7 @@ public class HttpProxyServletConfig
 																					   : CollectionUtils.hasData(other.getEndPoints()) ? other.getEndPoints()
 																							   										   : null;		// both null
 		UrlPath pathTrim = this.getPathTrim() != null && other.getPathTrim() != null
-								? this.getPathTrim() 
+								? this.getPathTrim()
 								: this.getPathTrim() != null ? this.getPathTrim()
 															 : other.getPathTrim() != null ? other.getPathTrim()
 																	 					   : null;	// both null
@@ -207,11 +207,11 @@ public class HttpProxyServletConfig
 									: this.getPathPrepend() != null ? this.getPathPrepend()
 																	: other.getPathPrepend() != null ? other.getPathPrepend()
 																									 : null;	// both null;
-		int maxFileUploadSize = this.getMaxFileUploadSize() > other.getMaxFileUploadSize() 
+		int maxFileUploadSize = this.getMaxFileUploadSize() > other.getMaxFileUploadSize()
 									? this.getMaxFileUploadSize()
 									: other.getMaxFileUploadSize();
 		boolean followRedirects = this.isFollowRedirects() | other.isFollowRedirects();
-		
+
 		HttpProxyServletConfig out = new HttpProxyServletConfig(endPoints,
 										  						pathTrim,pathPrepend,
 										  						maxFileUploadSize,
@@ -224,7 +224,7 @@ public class HttpProxyServletConfig
 	private final Memoized<HttpProxyServletUrlPathRewriter> _urlPathRewriter = Memoized.using(new Supplier<HttpProxyServletUrlPathRewriter>() {
 																										@Override
 																										public HttpProxyServletUrlPathRewriter supply() {
-																											return _pathPrepend != null 
+																											return _pathPrepend != null
 																												|| _pathTrim != null ? new HttpProxyServletUrlPathRewriterDefaultImpl(_pathTrim,_pathPrepend)
 																																	 : null;
 																										}

@@ -79,14 +79,14 @@ public class HttpProxyServlet
 /////////////////////////////////////////////////////////////////////////////////////////
 	private HttpProxyServletConfig _proxyServletConfig;
 	private HttpProxyServletUrlPathRewriter _urlPathRewriter;
-	
+
 /////////////////////////////////////////////////////////////////////////////////////////
 //	PROXY DELEGATE
-/////////////////////////////////////////////////////////////////////////////////////////	
+/////////////////////////////////////////////////////////////////////////////////////////
 	private final Memoized<HttpProxyServletDelegate> _proxyServletDelegate = Memoized.using(() -> _createHttpProxyServletDelegate(_proxyServletConfig,
 																																  _urlPathRewriter));
 	/**
-	 * Creates an HttpProxyServletDelegate. 
+	 * Creates an HttpProxyServletDelegate.
 	 * Override this method if a custom delegate has to be created
 	 * @return
 	 */

@@ -15,7 +15,7 @@ The idea is:
 /{dev_home} = d:\develop in windows or /develop in linux
   + develop
     + eclipse
-        + .eclipse <-- will contain eclipse plugin config that usually is located at {user-home}/.eclipse
+      + .eclipse <-- will contain eclipse plugin config that usually is located at {user-home}/.eclipse
       + [instance-name]
       + ...
     + eclipse_workspaces
@@ -48,62 +48,43 @@ d) Edit the `/{dev_home}/eclipse/[instance-name]/eclipse.ini` file and set this 
 
 > Download lombok.jar from this site https://projectlombok.org/download, and copy to eclipse instance root dir.
 
-```
-  -clean
-  -startup
-  plugins/org.eclipse.equinox.launcher_1.3.200.v20160318-1642.jar
-  --launcher.library
-  plugins/org.eclipse.equinox.launcher.win32.win32.x86_64_1.1.400.v20160518-1444
-  -product
-  org.eclipse.epp.package.java.product
-  --launcher.defaultAction
-  openFile
-  --launcher.XXMaxPermSize
-  256M
-  -showsplash
-  org.eclipse.platform
-  --launcher.defaultAction
-  openFile
-  --launcher.appendVmargs
-```
-
-```
-  -vmargs
-  --add-modules=ALL-SYSTEM
-
-    # by default eclipse stores some plugin config at {USER_HOME}/.eclipse (ie c:/users/{user}/.eclipse in windows)
-    # this vm argument CHANGES the location of these eclipse config
-    -Duser.home={dev_home}/eclipse/.eclipse
-
-  # see [Runtime Options] http://help.eclipse.org/mars/topic/org.eclipse.platform.doc.isv/reference/misc/index.html
-  # see http://stackoverflow.com/questions/316265/how-can-you-speed-up-eclipse/316535#316535
-  -Dosgi.requiredJavaVersion=1.8
-  -XX:+UseG1GC
-  -XX:+UseStringDeduplication
-  -Dosgi.requiredJavaVersion=1.8
-  -Dosgi.clean=true
-  -Duser.language=en
-  -Duser.country=US
-  -Dhelp.lucene.tokenizer=standard
-  -javaagent:lombok.jar
-  -Xbootclasspath/a:lombok.jar
-  -Xms256m
-  -Xmx1024m
-  -Xverify:none
-```
-
-NOTE: latest versions of eclipse have an embeded JRE so this is **NOT necessary** (see eclipse.ini)
+NOTE: latest versions of eclipse have an embeded JRE so it is **NOT necessary** to set the JVM like (see eclipse.ini)
 ```
   # JDK 1.8 <<<<<<<< USE JDK8 if runninig OEPE (Oracle Enterprise Pack)
   -vm
-  d:/java/jdk8/jre/bin/server/jvm.dll
-  -vmargs
-
+  c_/develop/java/jdk8/jre/bin/server/jvm.dll
+  
   # JDK > 9: see  https://wiki.eclipse.org/Configure_Eclipse_for_Java_9
-  --launcher.appendVmargs
   -vm
-  d:/java/jdk15/bin/server/jvm.dll
+  c://develop/java/jdk15/bin/server/jvm.dll
 ```
+
+So just **ADD the following to the `eclipse.ini` file**
+
+```
+  -clean
+  -startup
+
+
+  -vmargs
+  --add-modules=ALL-SYSTEM
+  --illegal-access=warn
+  --add-opens java.base/java.lang=ALL-UNNAMED
+
+  # by default eclipse stores some plugin config at {USER_HOME}/.eclipse (ie c:/users/{user}/.eclipse in windows)
+  # this vm argument CHANGES the location of these eclipse config
+  -Duser.home={dev_home}/eclipse/.[instance-name]
+
+  # see [Runtime Options] http://help.eclipse.org/mars/topic/org.eclipse.platform.doc.isv/reference/misc/index.html
+  # see http://stackoverflow.com/questions/316265/how-can-you-speed-up-eclipse/316535#316535
+  -Duser.language=en
+  -Duser.country=US
+  -Dhelp.lucene.tokenizer=standard
+  -javaagent:lombok-edge.jar
+  -Xbootclasspath/a:lombok-edge.jar
+  -Dosgi.requiredJavaVersion=11
+```
+
 
 ## [3]: Launch Eclipse
 
@@ -233,11 +214,19 @@ then install the certs:
 
 c) **[Java]**
 
+_JDK8_  
 Create a new [JRE]: `[Java] > [Installed JREs] > [Add]` pointing to a JDK8 at  `{dev_home}/java/jdk8` **Make this JRE the DEFAULT one**
 
 Create another [JRE] pointing to a JDK8 hot-deploy *patched* JDK8 at `{dev_home}/java/jdk8-hotswap`
 see [how to installa a hotswap jre](../../java/java-hotswap.md to patch the JDK
 set the JRE default JVM arguments: `-XXaltjvm=dcevm -javaagent:c:\develop\local-libs\hotswap-agent\hotswap-agent-1.4.0.jar`
+
+_JDK11_  
+Create a new [JRE]: `[Java] > [Installed JREs] > [Add]` pointing to a JDK8 at  `{dev_home}/java/jdk11` 
+
+Create another [JRE] pointing to a JDK11 hot-deploy *patched* JDK11 at `{dev_home}/java/jdk11-hotswap`
+see [how to installa a hotswap jre](../../java/java-hotswap.md to patch the JDK
+set the JRE default JVM arguments: `-XX:HotswapAgent=fatjar`
 
 Preferences
 > Import `[compiler preferences]`: `[File] > [Import] > [Preferences]` browse filesystem and select `/{dev_home}/projects/fabric-r01f/docs/eclipse/preferences/pci_compiler_preferences.epf`

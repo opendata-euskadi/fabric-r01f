@@ -75,11 +75,11 @@ public class HttpProxyServletDelegate {
 //	CONSTANTS
 /////////////////////////////////////////////////////////////////////////////////////////
 	private static final int FOUR_KB = 4196;
-	
+
 	private static final String LOCATION_HEADER = "Location";					// Key for redirect location header.
 	private static final String CONTENT_LENGTH_HEADER_NAME = "Content-Length";	// Key for content length header.
 	private static final String HOST_HEADER_NAME = "Host";						// Key for host header
-	
+
 	public static final String GWT_COMPILEDCODE_PROXIEDWAR_RELPATH_HEADER = "X-gwtCodeRelPath";	// Key for proxy servlet informationKey for proxy servlet information
 	/**
 	 * The directory to use to temporarily store uploaded files
@@ -100,8 +100,8 @@ public class HttpProxyServletDelegate {
 	public HttpProxyServletDelegate(final HttpProxyServletConfig config,
 									final HttpProxyServletUrlPathRewriter urlPathRewriter) {
 		_config = config;
-		_urlPathRewriter = config.getUrlPathRewriter() != null 
-						&& urlPathRewriter != null 
+		_urlPathRewriter = config.getUrlPathRewriter() != null
+						&& urlPathRewriter != null
 									? // combine config-based url path rewriter with the given one
 									  new HttpProxyServletUrlPathRewriter() {
 												@Override
@@ -112,9 +112,9 @@ public class HttpProxyServletDelegate {
 												}
 									  }
 									: // one of the url path rewriters is null
-									  config.getUrlPathRewriter() != null 
+									  config.getUrlPathRewriter() != null
 											? config.getUrlPathRewriter()
-											: urlPathRewriter != null 
+											: urlPathRewriter != null
 													? urlPathRewriter
 													: null;		// both null
 	}
@@ -132,16 +132,16 @@ public class HttpProxyServletDelegate {
 	public void proxyGET(final HttpServletRequest originalRequest,
 					  	 final HttpServletResponse responseToClient) throws IOException,
 					  													 	ServletException {
-		// [0] Get the endpoint url 
+		// [0] Get the endpoint url
 		HttpProxyEndPoint endPoint = _chooseEndPoint(originalRequest);
-		
+
 		// [1] Create a GET request
 		//	   beware that R01F Url object when serialized to string does NOT include the final '/' char if present
 		UrlPath urlPath = _getTargetUrlPath(originalRequest,
 											_urlPathRewriter);
 		UrlQueryString urlQueryString  = UrlQueryString.fromParamsString(originalRequest.getQueryString());
 		Url destinationUrl = Url.from(urlPath,urlQueryString);
-		
+
 		String theDestinationUrlStr = originalRequest.getRequestURL().toString().endsWith("/")
 											? destinationUrl.asString() + "/"
 											: destinationUrl.asString();
@@ -177,19 +177,19 @@ public class HttpProxyServletDelegate {
 	public void proxyPOST(final HttpServletRequest originalRequest,
 						  final HttpServletResponse responseToClient) throws IOException,
 					   													  	 ServletException {
-		// [0] Get the endpoint url 
+		// [0] Get the endpoint url
 		HttpProxyEndPoint endPoint = _chooseEndPoint(originalRequest);
-		
+
 		// [1] Create the POST request
 		UrlPath urlPath = _getTargetUrlPath(originalRequest,
 											_urlPathRewriter);
 		UrlQueryString urlQueryString  = UrlQueryString.fromParamsString(originalRequest.getQueryString());
 		Url destinationUrl = Url.from(urlPath,urlQueryString);
-		
+
 		String theDestinationUrlStr = originalRequest.getRequestURL().toString().endsWith("/")
 											? destinationUrl.asString() + "/"
 											: destinationUrl.asString();
-		
+
 		ContentType contentType = Strings.isNOTNullOrEmpty(originalRequest.getContentType())
 												// beware that content type might be like [application/x-www-form-urlencoded; charset=UTF-8]
 												// ... but the content-type is just the first part
@@ -326,7 +326,7 @@ public class HttpProxyServletDelegate {
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	ENDPOINT RESPONSE (default impl)
-/////////////////////////////////////////////////////////////////////////////////////////	
+/////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Returns the [endpoint] {@link HttpResponse}
 	 * Override this method if a custom impl has to be used
@@ -353,7 +353,7 @@ public class HttpProxyServletDelegate {
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	ENDPOINT SELECTION (default impl)
-/////////////////////////////////////////////////////////////////////////////////////////	
+/////////////////////////////////////////////////////////////////////////////////////////
 	private static final SecureRandom RANDOM = new SecureRandom(UUID.randomUUID().toString().getBytes());
 	/**
 	 * Randomly chooses an [endpoint]
@@ -379,7 +379,7 @@ public class HttpProxyServletDelegate {
 											   .getContextPath();
 		UrlPath servletContextUrlPath = UrlPath.from(Strings.isNOTNullOrEmpty(servletContext) ? UrlPath.from(servletContext)
 																					   		  : UrlPath.from("/"));	// default path
-		
+
 		// simply use whatever servlet path that was part of the request as opposed to
 		// getting a preset/configurable proxy path
 		String requestedServletPath = originalRequest.getServletPath();	// Returns the part of this request's URL that calls the servlet.
@@ -394,7 +394,7 @@ public class HttpProxyServletDelegate {
 																		// The extra path information follows the servlet path but precedes the query string
 																		// and will start with a "/" character.
 																		// This method returns null if there was no extra path information.
-		
+
 		UrlPath requestedUrlPath = Strings.isNOTNullOrEmpty(requestedServletPathInfo)
 												? UrlPath.preservingTrailingSlash()
 														 .from(servletContextUrlPath)
@@ -406,12 +406,12 @@ public class HttpProxyServletDelegate {
 		// rewrite
 		UrlPath targetUrlPath = urlPathRewriter != null ? urlPathRewriter.rewrite(requestedUrlPath)
 														: requestedUrlPath;
-		
+
 		return targetUrlPath;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////
 //	TRANSFER
-/////////////////////////////////////////////////////////////////////////////////////////	
+/////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Sets up the given {@link PostMethod} to send the same form/url-encoded POST
 	 * data as was sent in the given {@link HttpServletRequest}
@@ -470,7 +470,7 @@ public class HttpProxyServletDelegate {
 			int clientPort = originalRequest.getLocalPort();
 			String clientUrl = clientHost + ((clientPort != 80) ? ":" + clientPort : "");
 			String serverUrl = Urls.serverAndPort(endPointUrl.getHost(),endPointUrl.getPort()) +
-							   originalRequest.getServletPath();	
+							   originalRequest.getServletPath();
 			//debug("Replacing client (" + clientUrl + ") with server (" + serverUrl + ")");
 			postContent = postContent.replace(clientUrl,
 											  serverUrl);
@@ -487,7 +487,7 @@ public class HttpProxyServletDelegate {
 	 * data as was sent in the given {@link HttpServletRequest}
 	 * @param originalRequest The {@link HttpServletRequest} that contains
 	 *						  the mutlipart POST data to be sent via the {@link PostMethod}
-  	 * @param endPointUrl 
+  	 * @param endPointUrl
 	 * @param postRequestToBeProxied The {@link PostMethod} that we are
 	 *							   configuring to send a multipart POST request
 	 */
@@ -675,7 +675,7 @@ public class HttpProxyServletDelegate {
 			return true;
 		}
 		Url redirLocationUrl = Url.from(redirLocationStr);
-		
+
 		if (redirLocationUrl.getHost() != null && endPointUrl.getHost().is(redirLocationUrl.getHost())				// same host
 		 && redirLocationUrl.getPort() == endPointUrl.getPort()														// same port
 		 && !redirLocationUrl.getUrlPath().startsWith(UrlPath.from(originalReq.getContextPath()))  			// does NOT start with the proxy context path
@@ -686,7 +686,7 @@ public class HttpProxyServletDelegate {
 									   UrlPath.preservingTrailingSlash()
 										      .from(originalReq.getContextPath()));
 			String strToReplace = endPointUrl.getProtocolOrDefault(StandardUrlProtocol.HTTP.toUrlProtocol()) + "://" + Urls.serverAndPort(endPointUrl.getHost(),endPointUrl.getPort());
-			
+
 			log.warn("...redir location: {} replace {} with {}",
 					 redirLocationStr,strToReplace,originalUrl.asString());
 

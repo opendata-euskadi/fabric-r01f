@@ -27,13 +27,13 @@ import r01f.types.geo.GeoOIDs.GeoTerritoryID;
  * Locality
  * <pre>
  * Territory											Europe
- *   |_Country											Spain										
+ *   |_Country											Spain
  *   	 |_State										Euskadi
  *   		 |_County									Bizkaia
  *   		 	|_Region								Gran Bilbao / valles alaveses
  *   				|_Municipality						Bilbao
- *  					|_Locality						Bilbao	
- *   						|_District					01	
+ *  					|_Locality						Bilbao
+ *   						|_District					01
  *   							|_Neighborhood 			Abando
  *   								|_Street			General Concha
  *   									|_portal		12
@@ -55,15 +55,15 @@ import r01f.types.geo.GeoOIDs.GeoTerritoryID;
 @MarshallType(as="geoLocality")
 @Accessors(prefix="_")
 @NoArgsConstructor
-public class GeoLocality 
-     extends GeoLocationBase<GeoLocalityID,GeoLocality> 
+public class GeoLocality
+     extends GeoLocationBase<GeoLocalityID,GeoLocality>
   implements GeoLocationBelongsToTerritory,
   			 GeoLocationBelongsToCountry,
   			 GeoLocationBelongsToState,
   			 GeoLocationBelongsToCounty,
   			 GeoLocationBelongsToRegion,
   			 GeoLocationBelongsToMunicipality {
-	
+
 	private static final long serialVersionUID = 1915717178768446718L;
 /////////////////////////////////////////////////////////////////////////////////////////
 //  FIELDS
@@ -71,27 +71,27 @@ public class GeoLocality
 	@MarshallField(as="territoryId",
 				   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter @Setter private GeoTerritoryID _territoryId;
-	
+
 	@MarshallField(as="countryId",
 				   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter @Setter private GeoCountryID _countryId;
-	
+
 	@MarshallField(as="stateId",
 				   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter @Setter private GeoStateID _stateId;
-	
+
 	@MarshallField(as="countyId",
 				   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter @Setter private GeoCountyID _countyId;
-	
+
 	@MarshallField(as="regionId",
 				   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter @Setter private GeoRegionID _regionId;
-	
+
 	@MarshallField(as="municipalityId",
 				   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter @Setter private GeoMunicipalityID _municipalityId;
-	
+
 	@MarshallField(as="localityId",
 				   whenXml=@MarshallFieldAsXml(attr=true))
 	@Getter @Setter private GeoLocalityID _localityId;
