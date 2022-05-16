@@ -22,7 +22,7 @@
 		<!-- Dependencies versions -->
 		<lombok.version>1.18.20</lombok.version>
 		<slf4j.version>1.7.30</slf4j.version>
-		<logback.version>1.2.3</logback.version>
+		<logback.version>1.2.9</logback.version>
 		<guava.version>30.1.1-jre</guava.version>	<!-- v30 requires jdk 1.8 for jdk 1.6 use 20.0 -->
 		
 		<jackson.version>2.12.5</jackson.version>	<!-- v2.12.5 requires jdk1.8 for jdk 1.6 use 2.9.0-->	
